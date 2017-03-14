@@ -12,7 +12,7 @@
 
 ## Credits
 
-### Adminat is build on:
+### Adminaut is build on:
 - [Zend Framework](https://framework.zend.com/)
 - [Doctrine Project](http://www.doctrine-project.org/)
 - [AdminLTE Control Panel Template](https://almsaeedstudio.com/)
