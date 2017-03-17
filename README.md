@@ -10,13 +10,13 @@
     }
     ```
 
-2. Tell composer to download __Adminaut Module__:
+2. Tell composer to download Adminaut module:
 
     ```bash
     $ php composer.phar update
     ```
 
-3. Add following modules to your application
+3. Add following modules to your application:
     ```php
     'DoctrineModule',
     'DoctrineORMModule',
@@ -25,17 +25,14 @@
     'Adminaut'
     ```
 
-4. Copy vendor/adminaut/adminaut/config/adminaut.local.php.dist to your apllication config and configure
+4. Copy vendor/adminaut/adminaut/config/adminaut.local.php.dist to your apllication config and configure.
 
 5. Set up Doctrine connection - https://github.com/doctrine/DoctrineORMModule
 
-6. Create DB from Doctrine ORM Entity
+6. Create DB from Doctrine ORM Entity:
 
     ```bash
     $ vendor/bin/doctrine-module orm:schema-tool:create
-    ```
-  
-    ```bash
     $ vendor/bin/doctrine-module orm:schema-tool:update --force
     ```
 
