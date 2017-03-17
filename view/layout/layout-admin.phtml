@@ -6,9 +6,10 @@
         echo $this->headTitle('Adminaut')->setSeparator(' | ')->setAutoEscape(false);
 
         echo $this->headMeta()
+            ->appendName('generator', 'Adminaut (www.adminaut.com)')
             ->appendName('viewport', 'width=device-width, initial-scale=1.0')
-            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
-            ->appendHttpEquiv('author', 'Massimo Filippi s.r.o. (www.mfcc.cz)');
+            ->appendName('robots', 'noindex, nofollow')
+            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge');
 
         echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath('img/adminaut/favicon.ico')))
             ->appendStylesheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
