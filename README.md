@@ -1,13 +1,8 @@
 # Adminaut
 
-Installation
-------------
+## Installation
 
-### Main Setup
-
-#### With composer (the faster way)
-
-1. Add this project in your composer.json:
+1. Add this project to your composer.json:
 
     ```json
     "require": {
@@ -15,7 +10,7 @@ Installation
     }
     ```
 
-2. Now tell composer to download __MFCC Admin Module__ by running the command:
+2. Tell composer to download __Adminaut Module__:
 
     ```bash
     $ php composer.phar update
@@ -30,11 +25,11 @@ Installation
     'Adminaut'
     ```
 
-4. copy vendor/adminaut/adminaut/config/adminaut.local.php.dist to your apllication config and set up
+4. Copy vendor/adminaut/adminaut/config/adminaut.local.php.dist to your apllication config and configure
 
-5. set up doctrine connection viz. https://github.com/doctrine/DoctrineORMModule
+5. Set up Doctrine connection - https://github.com/doctrine/DoctrineORMModule
 
-6. To create db from Doctrine ORM Entity
+6. Create DB from Doctrine ORM Entity
 
     ```bash
     $ vendor/bin/doctrine-module orm:schema-tool:create
