@@ -1,0 +1,131 @@
+<section class="content-header">
+    <h1>
+        <?php echo $this->translate('Module: ') ?>
+        <small><?php echo $this->parentModuleOption->getModuleName() ?></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('adminaut-dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="<?php echo $this->url('adminaut-module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->parentModuleOption->getModuleName() ?></a></li>
+        <?php if($this->url_params['mode'] == 'detail') { ?>
+            <li><a href="<?php echo $this->url('adminaut-module/action', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'mode' => $this->url_params['mode']]) ?>"><?php echo $this->parentModuleOption->getLabels()['entity_detail'] ?></a></li>
+        <?php } else { ?>
+            <li><a href="<?php echo $this->url('adminaut-module/action', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'mode' => $this->url_params['mode']]) ?>"><?php echo $this->parentModuleOption->getLabels()['update_entity'] ?></a></li>
+        <?php } ?>
+        <li class="active"><?php echo $this->tabs[$this->currentTab]['label'] ?></li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="nav-tabs-custom">
+                <?php
+                $actions = [];
+                if ($mode == 'show' && $this->isAllowed($this->parentModuleOption->getModuleName(), \Adminaut\Service\AccessControlService::WRITE)) {
+                    $actions[] = [
+                        'url' => $this->url('adminaut-module/action', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'mode' => 'update']),
+                        'icon' => 'fa fa-pencil'
+                    ];
+                }
+                ?>
+                <?php echo $this->partial('partial/tabs.phtml', ['url_params' => $this->url_params, 'tabs' => $this->tabs, 'actions' => $actions]); ?>
+                <div class="tab-content">
+                    <?php echo $this->partial('partial/flashMessanger.phtml', ['flashMessenger' => $this->flashMessenger()]); ?>
+
+                    <table id="cyclicEntityTable" class="table table-striped table-bordered table-hover dataTables">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <?php foreach($this->listedElements as $listedElement) { ?>
+                                <th><?php echo $listedElement->getOption('label'); ?></th>
+                            <?php } ?>
+                            <?php if($this->mode == "update") { ?>
+                                <th><?php echo $this->translate('Actions'); ?></th>
+                            <?php } ?>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($this->list as $entity) { ?>
+                            <?php /* @var $entity Adminaut\Entity\Base */ ?>
+                            <tr rel="<?php echo $entity->getId(); ?>">
+                                <td><?php echo $entity->getId(); ?></td>
+                                <?php foreach($this->listedElements as $listedElement) { ?>
+                                    <?php $listedElement->setValue($entity->{$listedElement->getName()}) ?>
+                                    <?php if(method_exists($listedElement, 'getListedValue')) { ?>
+                                        <td><?php echo $listedElement->getListedValue(); ?></td>
+                                    <?php } else { ?>
+                                        <td><?php echo $listedElement->getValue(); ?></td>
+                                    <?php } ?>
+                                <?php } ?>
+                                <?php if($this->mode == "update") { ?>
+                                <td>
+                                    <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
+                                        <?php if ($this->isAllowed($this->parentModuleOption->getModuleId(), 2)) { ?>
+                                            <a href="<?php echo $this->url('adminaut-module/action/tab/action', ['module_id' => $this->url_params['module_id'], 'mode' => 'update', 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId(), 'entity_action' => 'update']); ?>" type="button" class="btn btn-info"
+                                               data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
+                                            <a href="<?php echo $this->url('adminaut-module/action/tab/action', ['module_id' => $this->url_params['module_id'], 'mode' => 'update', 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId(), 'entity_action' => 'delete']); ?>" type="button" class="btn btn-danger btn-modal-delete"
+                                               data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                                        <?php } ?>
+                                    </div>
+                                </td>
+                                <?php } ?>
+                            </tr>
+                        <?php } ?>
+                        </tbody>
+                    </table>
+                    <script>
+                        (function($){
+                            $('#cyclicEntityTable').DataTable({
+                                "paging": true,
+                                "lengthChange": false,
+                                "searching": true,
+                                "ordering": true,
+                                "info": true,
+                                "autoWidth": false
+                            });
+                        })(jQuery);
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php
+        if ($this->mode == "update" && $this->isAllowed($this->parentModuleOption->getModuleId(), 2)) {
+            $form = $this->form;
+            $form->prepare();
+            echo $this->form(null, null)->openTag($form);
+    ?>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box <?php echo ($this->action == 'update') ? 'box-action' : 'box-primary' ?>">
+                <div class="box-header with-border">
+                    <i class="fa fa-plus fa-fw"></i>
+                    <h3 class="box-title"><?php echo $this->translate('Add new') ?></h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <?php echo $this->formCollection($form); ?>
+                </div>
+                <!-- /.box-body -->
+
+                <div class="box-footer clearfix">
+                    <?php if($this->action == "update") { ?>
+                        <a href="<?php echo $this->url('adminaut-module/action/tab', ['module_id' => $this->url_params['module_id'], 'mode' => $this->url_params['mode'], 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId()]); ?>" class="btn btn-sm btn-primary btn-flat pull-left"><i class="fa fa-chevron-left"></i> <?php echo $this->translate('Close update'); ?></a>
+                    <?php } ?>
+                    <button type="submit" name="submit" class="btn btn-sm btn-primary btn-flat pull-left" value=""><i class="fa fa-send"></i> Submit</button>
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <?php
+                echo $this->form()->closeTag();
+            }
+        ?>
+    </div>
+</section>
+<?php echo $this->partial('partial/deleteModal.phtml'); ?>

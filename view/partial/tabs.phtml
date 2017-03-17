@@ -1,0 +1,19 @@
+<ul class="nav nav-tabs" role="tablist">
+    <?php foreach($this->tabs as $tabName => $tab) { ?>
+        <li role="presentation"<?php if($tab['active']) { ?> class="active"<?php } ?>>
+            <?php if($tabName == 'main') { ?>
+                <a href="<?php echo $this->url('adminaut-module/action', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'mode' => $this->url_params['mode']]) ?>" aria-controls="<?php echo $tabName ?>" role="tab"><?php echo $tab['label'] ?></a>
+            <?php } else { ?>
+                <a href="<?php echo $this->url('adminaut-module/action/tab', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'tab' => $tabName, 'mode' => $this->url_params['mode']]) ?>" aria-controls="<?php echo $tabName ?>" role="tab"><?php echo $tab['label'] ?></a>
+            <?php } ?>
+        </li>
+    <?php } ?>
+    <?php if(isset($this->actions)) {
+        $this->actions = array_reverse($this->actions);
+        foreach ($this->actions as $action) { ?>
+            <li class="pull-right">
+                <a href="<?php echo $action['url'] ?>" class="text-muted"><i class="<?php echo $action['icon'] ?>"></i></a>
+            </li>
+        <?php }
+    } ?>
+</ul>

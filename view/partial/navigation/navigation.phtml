@@ -1,0 +1,73 @@
+<?php
+/* @var $container Zend\Navigation\Navigation */
+$container = $this->container;
+?>
+<ul  class="sidebar-menu">
+    <?php foreach ($container as $page) { ?>
+        <?php if (!$this->navigation()->accept($page)) continue; ?>
+        <?php /* @var $page Zend\Navigation\Page\Mvc */ ?>
+        <?php $hasChildren = $page->hasPages(); ?>
+        <?php if (!$hasChildren) { ?>
+            <li class="treeview<?php if ($page->isActive()) echo ' active'; ?>">
+                <a href="<?php echo $page->getHref(); ?>"
+                    <?php if ($page->getTarget() != "") { ?>
+                        target="<?php echo $page->getTarget(); ?>"
+                    <?php } ?>
+                >
+                    <?php if ($page->get("icon") !== "") { ?>
+                        <i class="<?php echo $page->get("icon"); ?>"></i>
+                    <?php } ?>
+                    <span><?php echo $this->escapeHtml($this->translate($page->getLabel(), $this->navigation($container)->getTranslatorTextDomain())); ?></span>
+                </a>
+            </li>
+        <?php } else { ?>
+            <?php
+            //check if access is allowed at least one item
+            $access = false;
+            foreach ($page->getPages() as $child) {
+                if ($this->navigation()->accept($child) && $child->get("separator") !== true) {
+                    $access = true;
+                }
+            }
+            ?>
+            <?php if ($access) { ?>
+                <li class="treeview<?php if ($page->isActive(true)) echo ' active'; ?>">
+                    <a href="#" class="<?php if ($page->isActive(true)) echo ' active'; ?>">
+                        <?php if ($page->get("icon") !== "") { ?>
+                            <i class="<?php echo $page->get("icon"); ?>"></i>
+                        <?php } ?>
+                        <span><?php echo $this->escapeHtml($this->translate($page->getLabel(),$this->navigation($container)->getTranslatorTextDomain())); ?></span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <?php foreach ($page->getPages() as $child) { ?>
+                            <?php if (!$this->navigation()->accept($child)) continue; ?>
+                            <?php if ($child->get("separator") === true) { ?>
+                                <li class="divider"></li>
+                                <?php
+                                continue;
+                            };
+                            ?>
+                            <li<?php if ($child->isActive()) echo ' class="active"'; ?>>
+                                <a
+                                    href="<?php echo $child->getHref(); ?>"
+                                    <?php if ($child->getTarget() != "") { ?>
+                                        target="<?php echo $child->getTarget(); ?>"
+                                    <?php } ?> >
+                                    <?php if ($child->get("icon") !== "") { ?>
+                                        <i class="<?php echo $child->get("icon"); ?>"></i>
+                                    <?php } else { ?>
+                                        <i class="fa fa-circle-o"></i>
+                                    <?php } ?>
+                                    <?php echo $this->escapeHtml($this->translate($child->getLabel(),$this->navigation($container)->getTranslatorTextDomain())); ?>
+                                </a>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                </li>
+            <?php } ?>
+        <?php } ?>
+    <?php } ?>
+</ul>

@@ -1,0 +1,99 @@
+<section class="content-header">
+    <h1>
+        <?php echo $this->translate('Module: ') ?>
+        <small><?php echo $this->moduleOption->getModuleName() ?></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('adminaut-dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active"><?php echo $this->moduleOption->getModuleName() ?></li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><?php echo $this->moduleOption->getModuleName() ?></h3>
+
+                    <div class="box-tools pull-right">
+                        <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::WRITE)) { ?>
+                        <a href="<?php echo $this->url('adminaut-module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode'=>'add']); ?>" class="btn btn-box-tool" data-widget="add"><i class="fa fa-plus"></i></a>
+                        <?php } ?>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <?php echo $this->partial('partial/flashMessanger.phtml', ['flashMessenger' => $this->flashMessenger()]); ?>
+
+                    <table id="moduleEntityTable" class="table table-striped table-bordered table-hover dataTables">
+                        <thead>
+                            <tr>
+                                <th><?php echo $this->translate('ID'); ?></th>
+                                <?php foreach($this->listedElements as $listedElement) { ?>
+                                    <th><?php echo $listedElement->getOption('label'); ?></th>
+                                <?php } ?>
+                                <th><?php echo $this->translate('Actions'); ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($this->list as $entity) { ?>
+                                <?php /* @var $entity Adminaut\Entity\Base */ ?>
+                                <tr rel="<?php echo $entity->getId(); ?>">
+                                    <td><?php echo $entity->getId(); ?></td>
+                                    <?php foreach($this->listedElements as $listedElement) { ?>
+                                        <?php $listedElement->setValue($entity->{$listedElement->getName()}) ?>
+                                        <?php if(method_exists($listedElement, 'getListedValue')) { ?>
+                                            <td><?php echo $listedElement->getListedValue(); ?></td>
+                                        <?php } else { ?>
+                                            <td><?php echo $listedElement->getValue(); ?></td>
+                                        <?php } ?>
+                                    <?php } ?>
+                                    <td>
+                                        <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
+                                            <a href="<?php echo $this->url('adminaut-module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'show', 'entity_id' => $entity->getId()]); ?>" type="button" class="btn btn-success"
+                                               data-toggle="tooltip" data-placement="top" title="Show" data-original-title="Show"><i class="fa fa-eye"></i></a>
+                                            <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::WRITE)) { ?>
+                                                <a href="<?php echo $this->url('adminaut-module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'update', 'entity_id' => $entity->getId()]); ?>" type="button" class="btn btn-info"
+                                                   data-toggle="tooltip" data-placement="top" title="Update" data-original-title="Update"><i class="fa fa-pencil"></i></a>
+                                            <?php } if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::FULL)) { ?>
+                                                <a href="<?php echo $this->url('adminaut-module/delete', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $entity->getId()]); ?>" type="button" class="btn btn-danger btn-modal-delete"
+                                                   data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                                            <?php } ?>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                    <script>
+                        (function($){
+                            $('#moduleEntityTable').DataTable({
+                                "paging": true,
+                                "lengthChange": false,
+                                "searching": true,
+                                "ordering": true,
+                                "info": true,
+                                "autoWidth": false
+                            });
+                        })(jQuery);
+                    </script>
+                </div>
+                <!-- /.box-body -->
+
+                <div class="box-footer clearfix">
+                    <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::WRITE)) { ?>
+                        <a href="<?php echo $this->url('adminaut-module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode'=>'add']); ?>" class="btn btn-sm btn-primary btn-flat pull-left"><i class="fa fa-plus"></i> <?php echo $this->moduleOption->getLabels()['add_entity'] ?></a>
+                    <?php } ?>
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+
+<?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::FULL)) { ?>
+<?php echo $this->partial('partial/deleteModal.phtml'); ?>
+<?php } ?>

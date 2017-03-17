@@ -1,0 +1,52 @@
+<section class="content-header">
+    <h1>
+        <?php echo $this->translate('Module: ') ?>
+        <small><?php echo $this->moduleOption->getModuleName() ?></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('adminaut-dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="<?php echo $this->url('adminaut-module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->moduleOption->getModuleName() ?></a></li>
+        <li class="active"><?php echo $this->moduleOption->getLabels()['entity_detail'] ?></li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="nav-tabs-custom">
+                <?php
+                    $actions = [];
+                    if ($this->isAllowed($this->moduleOption->getModuleName(), \Adminaut\Service\AccessControlService::WRITE)) {
+                        $actions[] = [
+                            'url' => $this->url('adminaut-module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode' => 'update']),
+                            'icon' => 'fa fa-pencil'
+                        ];
+                    }
+                ?>
+                <?php echo $this->partial('partial/tabs.phtml', ['url_params' => $this->url_params, 'tabs' => $this->tabs, 'actions' => $actions]); ?>
+                <div class="tab-content">
+                    <?php foreach ($this->elements as $element) { ?>
+                        <?php $element->setValue($this->entity->{$element->getName()}); ?>
+                        <h4><?php echo $element->getLabel() ?></h4>
+                        <p>
+                        <?php if(method_exists($element, 'getListedValue')) { ?>
+                            <?php echo $element->getListedValue(); ?>
+                        <?php } else { ?>
+                            <?php echo $element->getValue(); ?>
+                        <?php } ?>
+                        </p>
+                        <hr />
+                    <?php } ?>
+                </div>
+                <!-- /.tab-content -->
+                <div class="box-footer clearfix">
+                    <a href="<?php echo $this->url('adminaut-module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>" class="btn btn-sm btn-default btn-flat pull-left"><i class="fa fa-chevron-left"></i> <?php echo $this->translate('Back'); ?></a>
+                    <?php if ($this->isAllowed($this->moduleOption->getModuleName(), 2)) { ?>
+                        <a href="<?php echo $this->url('adminaut-module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode' => 'update']); ?>" class="btn btn-sm btn-primary btn-flat pull-left"><i class="fa fa-pencil"></i> <?php echo $this->translate('Update'); ?></a>
+                    <?php } ?>
+                </div>
+                <!-- /.box-footer -->
+            </div>
+        </div>
+    </div>
+</section>

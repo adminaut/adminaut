@@ -1,0 +1,42 @@
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('adminaut-users/update', ['id' => $this->user->getId()]));
+$form->prepare();
+?>
+<section class="content-header">
+    <h1>
+        <?php echo $this->translate('Users:') ?>
+        <small><?php echo $this->user->getName() ?></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('adminaut-dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="<?php echo $this->url('adminaut-users/list'); ?>">Users</a></li>
+        <li class="active">Update</li>
+    </ol>
+</section>
+
+<section class="content">
+    <?php echo $this->form(null, null)->openTag($form); ?>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Update</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <?php echo $this->partial('partial/flashMessanger.phtml', ['flashMessenger' => $this->flashMessenger()]); ?>
+
+                    <?php echo $this->formCollection($form); ?>
+                </div>
+                <!-- /.tab-content -->
+                <div class="box-footer clearfix">
+                    <a href="<?php echo $this->url('adminaut-users'); ?>" class="btn btn-sm btn-default btn-flat pull-left"><i class="fa fa-chevron-left"></i> <?php echo $this->translate('Back'); ?></a>
+                    <button type="submit" name="submit" class="btn btn-sm btn-primary btn-flat pull-left" value=""><i class="fa fa-send"></i> Submit</button>
+                </div>
+                <!-- /.box-footer -->
+            </div>
+        </div>
+    </div>
+    <?php echo $this->form()->closeTag(); ?>
+</section>

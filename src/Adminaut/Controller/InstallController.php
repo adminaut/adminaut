@@ -1,0 +1,81 @@
+<?php
+
+namespace Adminaut\Controller;
+
+use Adminaut\Form\User as UserForm;
+use Adminaut\Form\InputFilter\User as UserInputFilter;
+use Adminaut\Service\User as UserService;
+
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
+
+/**
+ * Class InstallController
+ * @package Adminaut\Controller
+ */
+class InstallController extends AbstractActionController
+{
+    /**
+     * @var UserService
+     */
+    protected $userService;
+
+    /**
+     * InstallController constructor.
+     * @param $userService
+     */
+    public function __construct(UserService $userService)
+    {
+        $this->setUserService($userService);
+    }
+
+    /**
+     * @return \Zend\Http\Response|ViewModel
+     */
+    public function indexAction()
+    {
+        $user = $this->getUserService()->getUserMapper()->findFirst();
+        if ($user) {
+            return $this->redirect()->toRoute('adminaut-dashboard');
+        }
+
+        $form = new UserForm(UserForm::STATUS_INSTALL);
+        $form->setInputFilter(new UserInputFilter());
+
+        if ($this->getRequest()->isPost()) {
+            $post = $this->getRequest()->getPost()->toArray();
+            $form->setData($post);
+            if ($form->isValid()) {
+                try {
+                    $userService = $this->getUserService();
+                    $userService->createSuperuser($post);
+                    $this->flashMessenger()->addSuccessMessage('User has been successfully added');
+                    return $this->redirect()->toRoute('adminaut-user/login');
+                } catch(\Exception $e) {
+                    $this->flashMessenger()->addErrorMessage('Error: '.$e->getMessage());
+                    return $this->redirect()->toRoute('adminaut-install');
+                }
+            }
+        }
+        $this->layout('layout/admin-login');
+        return new ViewModel([
+            'form' => $form,
+        ]);
+    }
+
+    /**
+     * @return UserService
+     */
+    public function getUserService()
+    {
+        return $this->userService;
+    }
+
+    /**
+     * @param UserService $userService
+     */
+    public function setUserService(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+}

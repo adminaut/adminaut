@@ -1,0 +1,40 @@
+<?php
+    $form = $this->form;
+//    $form->setAttribute('action', $this->url('adminaut-module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode' => 'update']));
+    $form->prepare();
+?>
+
+<section class="content-header">
+    <h1>
+        <?php echo $this->translate('Module: ') ?>
+        <small><?php echo $this->moduleOption->getModuleName() ?></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="<?php echo $this->url('adminaut-dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="<?php echo $this->url('adminaut-module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->moduleOption->getModuleName() ?></a></li>
+        <li class="active"><?php echo $this->moduleOption->getLabels()['update_entity'] ?></li>
+    </ol>
+</section>
+
+<section class="content">
+    <?php echo $this->form(null, null)->openTag($form); ?>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="nav-tabs-custom">
+                <?php echo $this->partial('partial/tabs.phtml', ['url_params' => $this->url_params, 'tabs' => $this->tabs]); ?>
+                <div class="tab-content">
+                    <?php echo $this->partial('partial/flashMessanger.phtml', ['flashMessenger' => $this->flashMessenger()]); ?>
+
+                    <?php echo $this->formCollection($form); ?>
+                </div>
+                <!-- /.tab-content -->
+                <div class="box-footer clearfix">
+                    <a href="<?php echo $this->url('adminaut-module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>" class="btn btn-sm btn-default btn-flat pull-left"><i class="fa fa-chevron-left"></i> <?php echo $this->translate('Back'); ?></a>
+                    <button type="submit" name="submit" class="btn btn-sm btn-primary btn-flat pull-left"><i class="fa fa-send"></i> Submit</button>
+                </div>
+                <!-- /.box-footer -->
+            </div>
+        </div>
+    </div>
+    <?php echo $this->form()->closeTag(); ?>
+</section>

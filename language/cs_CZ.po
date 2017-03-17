@@ -1,0 +1,292 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ZendSkeletonApplication\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-12-08 16:51+0100\n"
+"PO-Revision-Date: 2015-12-08 16:56+0100\n"
+"Last-Translator: David Lukas <david.lukas@zfdaily.com>\n"
+"Language-Team: ZF Contibutors <zf-devteam@zend.com>\n"
+"Language: cs_CZ\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: translate\n"
+"X-Poedit-Basepath: ..\n"
+"X-Generator: Poedit 1.8.6\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: public\n"
+
+#: src/MfccAdminModule/Controller/ModuleController.php:85
+#: src/MfccAdminModule/Controller/ModuleController.php:135
+#: src/MfccAdminModule/Form/Role.php:41
+#: src/MfccAdminModule/Form/RolePermission.php:84
+#: src/MfccAdminModule/Form/User.php:109
+#: src/MfccAdminModule/Form/UserLogin.php:53
+msgid "Submit"
+msgstr ""
+
+#: src/MfccAdminModule/Form/Role.php:30 src/MfccAdminModule/Form/Role.php:33
+#: src/MfccAdminModule/Form/User.php:45 src/MfccAdminModule/Form/User.php:48
+#: view/adminaut/acl/index.phtml:16
+#: view/adminaut/acl/show-role.phtml:10
+#: view/adminaut/users/index.phtml:16
+#: view/adminaut/users/show.phtml:10
+msgid "Name"
+msgstr ""
+
+#: src/MfccAdminModule/Form/User.php:56 src/MfccAdminModule/Form/User.php:59
+#: src/MfccAdminModule/Form/UserLogin.php:30
+#: src/MfccAdminModule/Form/UserLogin.php:33
+#: view/adminaut/users/index.phtml:17
+#: view/adminaut/users/show.phtml:16
+msgid "Email"
+msgstr ""
+
+#: src/MfccAdminModule/Form/User.php:67 src/MfccAdminModule/Form/User.php:70
+#: src/MfccAdminModule/Form/UserLogin.php:41
+#: src/MfccAdminModule/Form/UserLogin.php:44
+msgid "Password"
+msgstr ""
+
+#: src/MfccAdminModule/Form/User.php:78 src/MfccAdminModule/Form/User.php:81
+#: view/adminaut/acl/show-role.phtml:3
+#: view/adminaut/users/index.phtml:18
+msgid "Role"
+msgstr ""
+
+#: src/MfccAdminModule/Form/User.php:82
+msgid "Select role"
+msgstr ""
+
+#: src/MfccAdminModule/Form/User.php:90
+#: view/adminaut/users/index.phtml:19
+msgid "Status"
+msgstr ""
+
+#: view/adminaut/acl/add-role.phtml:3
+#: view/adminaut/acl/index.phtml:52
+msgid "Add new role"
+msgstr ""
+
+#: view/adminaut/acl/index.phtml:3
+msgid "Roles"
+msgstr ""
+
+#: view/adminaut/acl/index.phtml:17
+#: view/adminaut/module/list.phtml:19
+#: view/adminaut/users/index.phtml:20
+msgid "Actions"
+msgstr ""
+
+#: view/adminaut/acl/show-role.phtml:21
+msgid "Permission"
+msgstr ""
+
+#: view/adminaut/acl/show-role.phtml:28
+#: view/adminaut/acl/show-role.phtml:38
+#: view/adminaut/acl/show-role.phtml:43
+#: view/adminaut/acl/show-role.phtml:45
+msgid "Read"
+msgstr ""
+
+#: view/adminaut/acl/show-role.phtml:39
+#: view/adminaut/acl/show-role.phtml:46
+msgid "Write"
+msgstr ""
+
+#: view/adminaut/acl/show-role.phtml:48
+#: view/adminaut/acl/show-role.phtml:51
+msgid "None"
+msgstr ""
+
+#: view/adminaut/acl/show-role.phtml:67
+msgid "Users assigned to role"
+msgstr ""
+
+#: view/adminaut/acl/show-role.phtml:86
+#: view/adminaut/users/show.phtml:36
+msgid "Back"
+msgstr ""
+
+#: view/adminaut/acl/show-role.phtml:89
+#: view/adminaut/users/show.phtml:38
+msgid "Edit"
+msgstr ""
+
+#: view/adminaut/acl/show-role.phtml:90
+msgid "Edit role permission"
+msgstr ""
+
+#: view/adminaut/acl/update-role-permission.phtml:3
+#: view/adminaut/acl/update-role.phtml:3
+msgid "Update role"
+msgstr ""
+
+#: view/adminaut/dashboard/index.phtml:3
+msgid "Dashboard"
+msgstr ""
+
+#: view/adminaut/module/add.phtml:3
+msgid "Add new"
+msgstr ""
+
+#: view/adminaut/module/index.phtml:3
+msgid "Module"
+msgstr ""
+
+#: view/adminaut/module/list.phtml:3
+msgid "Module: "
+msgstr ""
+
+#: view/adminaut/module/list.phtml:15
+msgid "ID"
+msgstr ""
+
+#: view/adminaut/module/list.phtml:52
+msgid "Add"
+msgstr ""
+
+#: view/adminaut/module/update.phtml:3
+msgid "Update"
+msgstr ""
+
+#: view/adminaut/user/login.phtml:3
+msgid "Sign In"
+msgstr ""
+
+#: view/adminaut/users/add.phtml:3
+#: view/adminaut/users/index.phtml:65
+msgid "Add new user"
+msgstr ""
+
+#: view/adminaut/users/index.phtml:3
+msgid "Users"
+msgstr ""
+
+#: view/adminaut/users/index.phtml:41
+#: view/adminaut/users/show.phtml:22
+#: view/adminaut/users/show.phtml:25
+msgid "Active"
+msgstr ""
+
+#: view/adminaut/users/index.phtml:43
+#: view/adminaut/users/show.phtml:27
+msgid "Inactive"
+msgstr ""
+
+#: view/adminaut/users/show.phtml:3
+msgid "User"
+msgstr ""
+
+#: view/adminaut/users/update.phtml:3
+msgid "Update user"
+msgstr ""
+
+#: view/partial/deleteModal.phtml:6
+msgid "Confirm delete"
+msgstr ""
+
+#: view/partial/deleteModal.phtml:9
+msgid "Are you sure?"
+msgstr ""
+
+#: view/partial/deleteModal.phtml:12
+msgid "No"
+msgstr ""
+
+#: view/partial/deleteModal.phtml:13
+msgid "Yes, delete it"
+msgstr ""
+
+#~ msgid "Skeleton Application"
+#~ msgstr "Skeleton aplikace"
+
+#~ msgid "Home"
+#~ msgstr "Úvod"
+
+#~ msgid "All rights reserved."
+#~ msgstr "Všechna práva vyhrazena."
+
+#~ msgid "Welcome to %sZend Framework 2%s"
+#~ msgstr "Vítejte v %sZend Framework 2%s"
+
+#~ msgid "Congratulations! You have successfully installed the %sZF2 Skeleton Application%s. You are currently running Zend Framework version %s. This skeleton can serve as a simple starting point for you to begin building your application on ZF2."
+#~ msgstr "Blahopřejeme! Úspěšně jste nainstalovali %sZF2 Skeleton Application%s. Právě používáte Zend Framework verze %s. Tato kostra aplikace vám poslouží jako jednoduchý výchozí bod, ze kterého můžete vyjít při tvorbě vlastní aplikace nad ZF2."
+
+#~ msgid "Fork Zend Framework 2 on GitHub"
+#~ msgstr "Fork Zend Framework 2 na GitHub"
+
+#~ msgid "Follow Development"
+#~ msgstr "Sledujte vývoj"
+
+#~ msgid "Zend Framework 2 is under active development. If you are interested in following the development of ZF2, there is a special ZF2 portal on the official Zend Framework website which provides links to the ZF2 %swiki%s, %sdev blog%s, %sissue tracker%s, and much more. This is a great resource for staying up to date with the latest developments!"
+#~ msgstr "Zend Framework 2 je aktivně vyvíjen. Chcete-li sledovat vývoj ZF2, máte na oficiálních webových stránkách Zend Framework k dispozici zvláštní portál ZF2, na kterém najdete odkazy na ZF2 %swiki%s, %svývojářský blog%s, %sissue tracker%s a mnoho dalšího. Tento portál je skvělý zdroj aktuálních informací o nejnovějším vývoji!"
+
+#~ msgid "ZF2 Development Portal"
+#~ msgstr "Vývojářský portál ZF2"
+
+#~ msgid "Discover Modules"
+#~ msgstr "Objevte Moduly"
+
+#~ msgid "The community is working on developing a community site to serve as a repository and gallery for ZF2 modules. The project is available %son GitHub%s. The site is currently live and currently contains a list of some of the modules already available for ZF2."
+#~ msgstr "Komunita pracuje na vývoji komunitního webu, který bude sloužit jako archiv a galerie modulů ZF2. Tento projekt je dostupný %sna GitHub%s. Web je aktuálně v provozu a obsahuje seznam některých již dostupných modulů ZF2."
+
+#~ msgid "Explore ZF2 Modules"
+#~ msgstr "Prozkoumejte Moduly ZF2"
+
+#~ msgid "Help &amp; Support"
+#~ msgstr "Pomoc &amp; Podpora"
+
+#~ msgid "If you need any help or support while developing with ZF2, you may reach us via IRC: %s#zftalk on Freenode%s. We'd love to hear any questions or feedback you may have regarding the beta releases. Alternatively, you may subscribe and post questions to the %smailing lists%s."
+#~ msgstr "Budete-li při vývoji se ZF2 potřebovat jakoukoli pomoc nebo podporu, můžete nás zastihnout přes IRC: %s#zftalk na Freenode%s. Budeme rádi za jakékoli vaše otázky nebo připomínky týkající se beta verzí. Případně se také můžete přihlásit k odběru a posílat otázky na naše %se-mailové distribuční seznamy%s."
+
+#~ msgid "Ping us on IRC"
+#~ msgstr "Ozvěte se nám na IRC"
+
+#~ msgid "An error occurred"
+#~ msgstr "Vyskytla se chyba"
+
+#~ msgid "Additional information"
+#~ msgstr "Další informace"
+
+#~ msgid "File"
+#~ msgstr "Soubor"
+
+#~ msgid "Message"
+#~ msgstr "Zpráva"
+
+#~ msgid "Stack trace"
+#~ msgstr "Trasování zásobníku (Stack trace)"
+
+#~ msgid "Previous exceptions"
+#~ msgstr "Předchozí výjimky"
+
+#~ msgid "No Exception available"
+#~ msgstr "Žádná výjimka není k dispozici"
+
+#~ msgid "A 404 error occurred"
+#~ msgstr "Vyskytla se chyba 404"
+
+#~ msgid "The requested controller was unable to dispatch the request."
+#~ msgstr "Požadovaný controller nemohl vyřídit požadavek."
+
+#~ msgid "The requested controller could not be mapped to an existing controller class."
+#~ msgstr "Požadovaný controller se nepodařilo namapovat na žádnou existující třídu controlleru."
+
+#~ msgid "The requested controller was not dispatchable."
+#~ msgstr "Požadovaný controller nepodporuje vyřízení (controller not dispatchable)."
+
+#~ msgid "The requested URL could not be matched by routing."
+#~ msgstr "S požadovaným URL nebyla při směrování (routing) nalezena shoda."
+
+#~ msgid "We cannot determine at this time why a 404 was generated."
+#~ msgstr "Momentálně nedokážeme určit, proč byla vygenerována chyba 404."
+
+#~ msgid "Controller"
+#~ msgstr "Controller"
+
+#~ msgid "resolves to %s"
+#~ msgstr "je mapován na %s"
+
+#~ msgid "Exception"
+#~ msgstr "Výjimka"
