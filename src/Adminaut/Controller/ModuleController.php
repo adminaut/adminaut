@@ -115,7 +115,7 @@ class ModuleController extends AdminModuleBaseController
         ]);
     }
 
-    public function showAction()
+    public function viewAction()
     {
         $moduleId = $this->params()->fromRoute('module_id', false);
         $entityId = (int)$this->params()->fromRoute('entity_id', 0);
@@ -151,7 +151,7 @@ class ModuleController extends AdminModuleBaseController
             'url_params' => [
                 'module_id' => $moduleId,
                 'entity_id' => $entityId,
-                'mode' => 'show'
+                'mode' => 'view'
             ],
             'entity' => $entity,
             'elements' => $elements,
@@ -211,7 +211,7 @@ class ModuleController extends AdminModuleBaseController
 
                     $entity = $this->moduleManager->addEntity($form, $this->userAuthentication()->getIdentity());
                     $this->flashMessenger()->addSuccessMessage('Entity has been successfully updated');
-                    return $this->redirect()->toRoute('adminaut-module/action', ['module_id' => $moduleId, 'entity_id' => $entity->getId(), 'mode'=>'update']);
+                    return $this->redirect()->toRoute('adminaut-module/action', ['module_id' => $moduleId, 'entity_id' => $entity->getId(), 'mode'=>'edit']);
                 } catch(\Exception $e) {
                     $this->flashMessenger()->addErrorMessage('Error: '.$e->getMessage());
                     return $this->redirect()->toRoute('adminaut-module/action', ['module_id' => $moduleId, 'mode'=>'add']);
@@ -228,7 +228,7 @@ class ModuleController extends AdminModuleBaseController
     /**
      * @return \Zend\Http\Response|ViewModel
      */
-    public function updateAction()
+    public function editAction()
     {
         $moduleId = $this->params()->fromRoute('module_id', false);
         $entityId = (int)$this->params()->fromRoute('entity_id', 0);
@@ -282,10 +282,10 @@ class ModuleController extends AdminModuleBaseController
                     $this->moduleManager->updateEntity($entity, $form, $this->userAuthentication()->getIdentity());
 
                     $this->flashMessenger()->addSuccessMessage('Entity has been successfully updated');
-                    return $this->redirect()->toRoute('adminaut-module/action', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode'=>'update']);
+                    return $this->redirect()->toRoute('adminaut-module/action', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode'=>'edit']);
                 } catch (\Exception $e) {
                     $this->flashMessenger()->addErrorMessage('Error: ' . $e->getMessage());
-                    return $this->redirect()->toRoute('adminaut-module/action', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode'=>'update']);
+                    return $this->redirect()->toRoute('adminaut-module/action', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode'=>'edit']);
                 }
             }
         }
@@ -297,7 +297,7 @@ class ModuleController extends AdminModuleBaseController
             'url_params' => [
                 'module_id' => $moduleId,
                 'entity_id' => $entityId,
-                'mode' => 'update'
+                'mode' => 'edit'
             ]
         ]);
     }
@@ -409,7 +409,7 @@ class ModuleController extends AdminModuleBaseController
 
         $form->getElements()['parentId']->setValue($entityId);
 
-        if($action === 'update') {
+        if($action === 'edit') {
             $cyclicEntity = $moduleManager->findById($cyclicEntityId);
 
             if(!$cyclicEntity) {
@@ -450,17 +450,17 @@ class ModuleController extends AdminModuleBaseController
                         $fm->upload($form->getElements()[$key], $this->userAuthentication()->getIdentity());
                     }
 
-                    if($action == 'update') {
+                    if($action == 'edit') {
                         $entity = $moduleManager->updateEntity($cyclicEntity, $form, $this->userAuthentication()->getIdentity());
                     } else {
                         $entity = $moduleManager->addEntity($form, $this->userAuthentication()->getIdentity());
                     }
 
                     $this->flashMessenger()->addSuccessMessage('Entity has been successfully updated');
-                    return $this->redirect()->toRoute('adminaut-module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'update', 'tab' => $currentTab]);
+                    return $this->redirect()->toRoute('adminaut-module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'edit', 'tab' => $currentTab]);
                 } catch (\Exception $e) {
                     $this->flashMessenger()->addErrorMessage('Error: ' . $e->getMessage());
-                    return $this->redirect()->toRoute('adminaut-module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'update', 'tab' => $currentTab]);
+                    return $this->redirect()->toRoute('adminaut-module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'edit', 'tab' => $currentTab]);
                 }
             }
         }

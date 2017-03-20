@@ -6,8 +6,7 @@
 
 <section class="content-header">
     <h1>
-        <?php echo $this->translate('Module: ') ?>
-        <small><?php echo $this->moduleOption->getModuleName() ?></small>
+        <?php echo $this->moduleOption->getModuleName() ?>
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?php echo $this->url('adminaut-dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
@@ -16,7 +15,7 @@
 </section>
 
 <section class="content">
-    <?php echo $this->form(null, null)->openTag($form); ?>
+    <?php echo $this->form()->openTag($form); ?>
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
@@ -33,8 +32,10 @@
                 <!-- /.box-body -->
 
                 <div class="box-footer clearfix">
-                    <a href="<?php echo $this->url('adminaut-module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>" class="btn btn-sm btn-default btn-flat pull-left"><i class="fa fa-chevron-left"></i> <?php echo $this->translate('Back'); ?></a>
-                    <button type="submit" name="submit" class="btn btn-sm btn-primary btn-flat pull-left" value=""><i class="fa fa-send"></i> Submit</button>
+                    <button type="submit" name="submit" class="btn btn-primary" value="">Create</button>
+                    <button type="submit" name="submit" class="btn btn-default" value="">Create and continue</button>
+                    <button type="submit" name="submit" class="btn btn-default" value="">Create and new</button>
+                    <a href="<?php echo $this->url('adminaut-module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>" class="btn btn-link"><?php echo $this->translate('Back to list'); ?></a>
                 </div>
             </div>
             <!-- /.box -->

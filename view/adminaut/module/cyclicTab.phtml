@@ -1,7 +1,6 @@
 <section class="content-header">
     <h1>
-        <?php echo $this->translate('Module: ') ?>
-        <small><?php echo $this->parentModuleOption->getModuleName() ?></small>
+        <?php echo $this->parentModuleOption->getModuleName() ?>
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?php echo $this->url('adminaut-dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
@@ -19,16 +18,7 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="nav-tabs-custom">
-                <?php
-                $actions = [];
-                if ($mode == 'show' && $this->isAllowed($this->parentModuleOption->getModuleName(), \Adminaut\Service\AccessControlService::WRITE)) {
-                    $actions[] = [
-                        'url' => $this->url('adminaut-module/action', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'mode' => 'update']),
-                        'icon' => 'fa fa-pencil'
-                    ];
-                }
-                ?>
-                <?php echo $this->partial('partial/tabs.phtml', ['url_params' => $this->url_params, 'tabs' => $this->tabs, 'actions' => $actions]); ?>
+                <?php echo $this->partial('partial/tabs.phtml', ['url_params' => $this->url_params, 'tabs' => $this->tabs]); ?>
                 <div class="tab-content">
                     <?php echo $this->partial('partial/flashMessanger.phtml', ['flashMessenger' => $this->flashMessenger()]); ?>
 
@@ -57,13 +47,13 @@
                                         <td><?php echo $listedElement->getValue(); ?></td>
                                     <?php } ?>
                                 <?php } ?>
-                                <?php if($this->mode == "update") { ?>
+                                <?php if($this->mode == "edit") { ?>
                                 <td>
                                     <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
                                         <?php if ($this->isAllowed($this->parentModuleOption->getModuleId(), 2)) { ?>
-                                            <a href="<?php echo $this->url('adminaut-module/action/tab/action', ['module_id' => $this->url_params['module_id'], 'mode' => 'update', 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId(), 'entity_action' => 'update']); ?>" type="button" class="btn btn-info"
+                                            <a href="<?php echo $this->url('adminaut-module/action/tab/action', ['module_id' => $this->url_params['module_id'], 'mode' => 'edit', 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId(), 'entity_action' => 'edit']); ?>" type="button" class="btn btn-info"
                                                data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
-                                            <a href="<?php echo $this->url('adminaut-module/action/tab/action', ['module_id' => $this->url_params['module_id'], 'mode' => 'update', 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId(), 'entity_action' => 'delete']); ?>" type="button" class="btn btn-danger btn-modal-delete"
+                                            <a href="<?php echo $this->url('adminaut-module/action/tab/action', ['module_id' => $this->url_params['module_id'], 'mode' => 'edit', 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId(), 'entity_action' => 'delete']); ?>" type="button" class="btn btn-danger btn-modal-delete"
                                                data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><i class="fa fa-trash"></i></a>
                                         <?php } ?>
                                     </div>
@@ -77,7 +67,7 @@
                         (function($){
                             $('#cyclicEntityTable').DataTable({
                                 "paging": true,
-                                "lengthChange": false,
+                                "lengthChange": true,
                                 "searching": true,
                                 "ordering": true,
                                 "info": true,
@@ -86,19 +76,27 @@
                         })(jQuery);
                     </script>
                 </div>
+                <?php if($this->mode == 'view') { ?>
+                    <div class="box-footer clearfix">
+                        <?php if ($this->isAllowed($this->parentModuleOption->getModuleName(), 2)) { ?>
+                            <a href="<?php echo $this->url('adminaut-module/action/tab', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'mode' => 'edit', 'tab' => $this->currentTab]); ?>" class="btn btn-primary"><?php echo $this->translate('Edit'); ?></a>
+                        <?php } ?>
+                        <a href="<?php echo $this->url('adminaut-module/list', ['module_id' => $this->parentModuleOption->getModuleId()]); ?>" class="btn btn-link"><?php echo $this->translate('Back to list'); ?></a>
+                    </div>
+                <?php } ?>
             </div>
         </div>
     </div>
 
     <?php
-        if ($this->mode == "update" && $this->isAllowed($this->parentModuleOption->getModuleId(), 2)) {
+        if ($this->mode == "edit" && $this->isAllowed($this->parentModuleOption->getModuleId(), 2)) {
             $form = $this->form;
             $form->prepare();
-            echo $this->form(null, null)->openTag($form);
+            echo $this->form()->openTag($form);
     ?>
     <div class="row">
         <div class="col-xs-12">
-            <div class="box <?php echo ($this->action == 'update') ? 'box-action' : 'box-primary' ?>">
+            <div class="box <?php echo ($this->action == 'edit') ? 'box-info' : 'box-primary' ?>">
                 <div class="box-header with-border">
                     <i class="fa fa-plus fa-fw"></i>
                     <h3 class="box-title"><?php echo $this->translate('Add new') ?></h3>
@@ -116,7 +114,7 @@
                     <?php if($this->action == "update") { ?>
                         <a href="<?php echo $this->url('adminaut-module/action/tab', ['module_id' => $this->url_params['module_id'], 'mode' => $this->url_params['mode'], 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId()]); ?>" class="btn btn-sm btn-primary btn-flat pull-left"><i class="fa fa-chevron-left"></i> <?php echo $this->translate('Close update'); ?></a>
                     <?php } ?>
-                    <button type="submit" name="submit" class="btn btn-sm btn-primary btn-flat pull-left" value=""><i class="fa fa-send"></i> Submit</button>
+                    <button type="submit" name="submit" class="btn btn-primary" value="">Create</button>
                 </div>
             </div>
             <!-- /.box -->

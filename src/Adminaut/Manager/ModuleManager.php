@@ -15,6 +15,7 @@ use Adminaut\Mapper\ModuleMapper;
 use Adminaut\Options\ModuleOptions;
 use Adminaut\Form\Form;
 use Adminaut\Form\Annotation\AnnotationBuilder;
+use Zend\Form\Element\Radio;
 
 /**
  * Class ModuleManager
@@ -182,6 +183,14 @@ class ModuleManager
                 ]);
 
                 $form->remove($element->getName());
+            }
+
+            $element->setOption('twb-layout', 'horizontal');
+            if($element instanceof Element\Checkbox || $element instanceof Radio) {
+                $element->setOption('column-size', 'sm-10 col-sm-offset-1');
+            } else {
+                $element->setOption('column-size', 'sm-10');
+                $element->setLabelAttributes(['class' => 'col-sm-1']);
             }
         }
 

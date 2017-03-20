@@ -13,7 +13,6 @@
 
         echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath('img/adminaut/favicon.ico')))
             ->appendStylesheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
-            ->appendStylesheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css')
             ->appendStylesheet($this->basePath('css/adminaut/timeline.css'))
             ->appendStylesheet('https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css')
             ->appendStylesheet($this->basePath('css/adminaut/bootstrap-datetimepicker.min.css'))
@@ -21,8 +20,11 @@
             ->appendStylesheet($this->basePath('css/adminaut/dataTables.bootstrap.css'))
             ->appendStylesheet($this->basePath('css/adminaut/dataTables.responsive.css'))
             ->appendStylesheet($this->basePath('css/adminaut/morris.css'))
-            ->appendStylesheet($this->basePath('adminaut/themes/almasaeed2010/adminlte/dist/css/AdminLTE.min.css'))
-            ->appendStylesheet($this->basePath('adminaut/themes/almasaeed2010/adminlte/dist/css/skins/skin-green.min.css'));
+            ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/AdminLTE.min.css'))
+            ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/skins/skin-blue.min.css'))
+            ->appendStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/flat.css'))
+            ->appendStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/blue.css'))
+            ->appendStylesheet($this->basePath('adminaut/css/adminaut.css'));
 
         echo $this->headScript()
             ->appendFile($this->basePath('js/adminaut/html5shiv.min.js'), 'text/javascript', ['conditional' => 'lt IE 9'])
@@ -34,14 +36,14 @@
             ->appendFile($this->basePath('js/adminaut/bootstrap-datetimepicker.min.js'))
             ->appendFile($this->basePath('js/adminaut/jquery.dataTables.min.js'))
             ->appendFile($this->basePath('js/adminaut/dataTables.bootstrap.min.js'))
-            ->appendFile($this->basePath('js/adminaut/morris.min.js'))
-            ->appendFile($this->basePath('js/adminaut/raphael-min.js'))
-            ->appendFile($this->basePath('adminaut/themes/almasaeed2010/adminlte/dist/js/app.min.js'));
+            ->appendFile($this->basePath('adminaut/themes/adminlte/dist/js/app.min.js'))
+            ->appendFile($this->basePath('adminaut/themes/adminlte/plugins/iCheck/iCheck.min.js'))
+            ->appendFile($this->basePath('adminaut/js/adminaut.js'));
 
         ?>
 
     </head>
-    <body class="hold-transition skin-green sidebar-mini">
+    <body class="hold-transition skin-blue sidebar-mini">
         <header class="main-header">
             <!-- Logo -->
             <a href="<?php echo $this->url('adminaut'); ?>" class="logo">
@@ -62,13 +64,13 @@
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="<?php echo $this->basePath("/adminaut/themes/almasaeed2010/adminlte/dist/img/user2-160x160.jpg"); ?>" class="user-image" alt="<?php echo $this->userIdentity()->getName(); ?>">
+                                <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="user-image" alt="<?php echo $this->userIdentity()->getName(); ?>">
                                 <span class="hidden-xs"><?php echo $this->userIdentity()->getName(); ?></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header">
-                                    <img src="<?php echo $this->basePath("/adminaut/themes/almasaeed2010/adminlte/dist/img/user2-160x160.jpg"); ?>" class="img-circle" alt="<?php echo $this->userIdentity()->getName(); ?>">
+                                    <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="img-circle" alt="<?php echo $this->userIdentity()->getName(); ?>">
 
                                     <p>
                                         <?php echo $this->userIdentity()->getName(); ?>
@@ -78,7 +80,7 @@
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="<?php echo $this->url('adminaut-users/show', ['id' => $this->userIdentity()->getId()]); ?>" class="btn btn-default btn-flat">Profile</a>
+                                        <a href="<?php echo $this->url('adminaut-users/view', ['id' => $this->userIdentity()->getId()]); ?>" class="btn btn-default btn-flat">Profile</a>
                                     </div>
                                     <div class="pull-right">
                                         <a href="<?php echo $this->url('adminaut-user/logout'); ?>" class="btn btn-default btn-flat">Sign out</a>
@@ -97,7 +99,7 @@
                 <!-- Sidebar user panel -->
                 <div class="user-panel">
                     <div class="pull-left image">
-                        <img src="<?php echo $this->basePath("/adminaut/themes/almasaeed2010/adminlte/dist/img/user2-160x160.jpg"); ?>" class="img-circle" alt="<?php echo $this->userIdentity()->getName(); ?>">
+                        <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="img-circle" alt="<?php echo $this->userIdentity()->getName(); ?>">
                     </div>
                     <div class="pull-left info">
                         <p><?php echo $this->userIdentity()->getName(); ?></p>
@@ -134,6 +136,9 @@
         </div>
 
         <footer class="main-footer">
+            <?php if($this->config()['adminaut']['appearance']['footer']) { ?>
+                <?php echo $this->config()['adminaut']['appearance']['footer'] ?>
+            <?php } ?>
             Powered by <a href="http://adminaut.com/" target="_blank">Adminaut</a>
         </footer>
 

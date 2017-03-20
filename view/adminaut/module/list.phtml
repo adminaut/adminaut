@@ -1,7 +1,6 @@
 <section class="content-header">
     <h1>
-        <?php echo $this->translate('Module: ') ?>
-        <small><?php echo $this->moduleOption->getModuleName() ?></small>
+        <?php echo $this->moduleOption->getModuleName() ?>
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?php echo $this->url('adminaut-dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
@@ -14,13 +13,9 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><?php echo $this->moduleOption->getModuleName() ?></h3>
-
-                    <div class="box-tools pull-right">
-                        <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::WRITE)) { ?>
-                        <a href="<?php echo $this->url('adminaut-module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode'=>'add']); ?>" class="btn btn-box-tool" data-widget="add"><i class="fa fa-plus"></i></a>
-                        <?php } ?>
-                    </div>
+                    <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::WRITE)) { ?>
+                        <a href="<?php echo $this->url('adminaut-module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode'=>'add']); ?>" class="btn btn-primary pull-left"><i class="fa fa-plus"></i> <?php echo $this->moduleOption->getLabels()['add_entity'] ?></a>
+                    <?php } ?>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -51,11 +46,11 @@
                                     <?php } ?>
                                     <td>
                                         <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
-                                            <a href="<?php echo $this->url('adminaut-module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'show', 'entity_id' => $entity->getId()]); ?>" type="button" class="btn btn-success"
-                                               data-toggle="tooltip" data-placement="top" title="Show" data-original-title="Show"><i class="fa fa-eye"></i></a>
+                                            <a href="<?php echo $this->url('adminaut-module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $entity->getId()]); ?>" type="button" class="btn btn-success"
+                                               data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="fa fa-eye"></i></a>
                                             <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::WRITE)) { ?>
-                                                <a href="<?php echo $this->url('adminaut-module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'update', 'entity_id' => $entity->getId()]); ?>" type="button" class="btn btn-info"
-                                                   data-toggle="tooltip" data-placement="top" title="Update" data-original-title="Update"><i class="fa fa-pencil"></i></a>
+                                                <a href="<?php echo $this->url('adminaut-module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'edit', 'entity_id' => $entity->getId()]); ?>" type="button" class="btn btn-primary"
+                                                   data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
                                             <?php } if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::FULL)) { ?>
                                                 <a href="<?php echo $this->url('adminaut-module/delete', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $entity->getId()]); ?>" type="button" class="btn btn-danger btn-modal-delete"
                                                    data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><i class="fa fa-trash"></i></a>
@@ -70,7 +65,7 @@
                         (function($){
                             $('#moduleEntityTable').DataTable({
                                 "paging": true,
-                                "lengthChange": false,
+                                "lengthChange": true,
                                 "searching": true,
                                 "ordering": true,
                                 "info": true,
@@ -83,7 +78,7 @@
 
                 <div class="box-footer clearfix">
                     <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::WRITE)) { ?>
-                        <a href="<?php echo $this->url('adminaut-module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode'=>'add']); ?>" class="btn btn-sm btn-primary btn-flat pull-left"><i class="fa fa-plus"></i> <?php echo $this->moduleOption->getLabels()['add_entity'] ?></a>
+                        <a href="<?php echo $this->url('adminaut-module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode'=>'add']); ?>" class="btn btn-primary pull-left"><i class="fa fa-plus"></i> <?php echo $this->moduleOption->getLabels()['add_entity'] ?></a>
                     <?php } ?>
                 </div>
             </div>

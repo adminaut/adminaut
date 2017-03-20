@@ -67,8 +67,7 @@ class Base implements BaseInterface
 
     /**
      * @ORM\Column(name="active", type="boolean");
-     * @Annotation\Attributes({"data-toggle":"toggle", "data-onstyle":"success", "data-offstyle":"danger", "data-on":"Active", "data-off":"Inactive"});
-     * @Annotation\Options({"label":"Status", "listed":true, "listed_checked_value":"Active", "listed_unchecked_value":"Inactive"});
+     * @Annotation\Options({"label":"Active", "listed":true, "listed_checked_value":"Active", "listed_unchecked_value":"Inactive"});
      * @Annotation\Type("Adminaut\Form\Element\Checkbox");
      * @var boolean
      */

@@ -80,6 +80,7 @@ return [
             'formElement'                                           => \Adminaut\Form\View\Helper\Factory\FormElementFactory::class,
             'userIdentity'                                          => \Adminaut\View\Helper\Factory\UserIdentityViewHelperFactory::class,
             'isAllowed'                                             => \Adminaut\View\Helper\Factory\IsAllowedViewHelperFactory::class,
+            'config'                                                => \Adminaut\View\Helper\Factory\ConfigViewHelperFactory::class,
 //            'getFileById'                                           => 'MfccAdminModule\Factory\Vie'
         ]
     ],
@@ -179,7 +180,7 @@ return [
                                 'action' => 'index'
                             ],
                             'constraints' => [
-                                'mode'    => '(show|add|update)',
+                                'mode'    => '(view|add|edit)',
                                 'module_id' => '[a-z]*',
                                 'entity_id' => '[0-9]*',
                             ],
@@ -313,12 +314,12 @@ return [
                             ],
                         ],
                     ],
-                    'show' => [
+                    'view' => [
                         'type' => Segment::class,
                         'options' => [
-                            'route' => '/show/:id',
+                            'route' => '/view/:id',
                             'defaults' => [
-                                'action' => 'show',
+                                'action' => 'view',
                             ],
                             'constraints' => [
                                 'id' => '[0-9]*',
@@ -380,12 +381,12 @@ return [
                             ],
                         ],
                     ],
-                    'show-role' => [
+                    'view-role' => [
                         'type' => Segment::class,
                         'options' => [
-                            'route' => '/show-role/:roleId',
+                            'route' => '/view-role/:roleId',
                             'defaults' => [
-                                'action' => 'show-role',
+                                'action' => 'view-role',
                             ],
                             'constraints' => [
                                 'roleId' => '[0-9]*',
@@ -438,12 +439,12 @@ return [
                             ],
                         ],
                     ],
-                    'show-role' => [
+                    'view-role' => [
                         'type' => Segment::class,
                         'options' => [
-                            'route' => '/show-role/:roleId',
+                            'route' => '/view-role/:roleId',
                             'defaults' => [
-                                'action' => 'show-role',
+                                'action' => 'view-role',
                             ],
                             'constraints' => [
                                 'roleId' => '[0-9]*',
