@@ -1,22 +1,24 @@
-<div class="row">
-<div class="col-lg-12">
-    <h1 class="page-header"><?php echo $this->translate('Install - Add new user'); ?></h1>
-</div>
-</div>
-
-<div class="row">
-    <div class="col-lg-9">
+<?php
+    $form = $this->form;
+    $form->setAttribute('action', $this->url('adminaut-install'));
+    $form->prepare();
+?>
+<div class="login-box">
+    <?php echo $this->form(null, null)->openTag($form); ?>
+    <div class="login-logo">
+        <a href="<?php echo $this->url('adminaut-user/login') ?>">Adminaut</a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="box login-box-body box-success">
+        <p class="login-box-msg"><?php echo $this->translate("Register first user"); ?></p>
 
         <?php echo $this->partial('partial/flashMessanger.phtml', ['flashMessenger' => $this->flashMessenger()]); ?>
-
         <?php
-        $form = $this->form;
-        $form->setAttribute('action', $this->url('adminaut-install'));
-        $form->prepare();
-        echo $this->form(null, null)->openTag($form);
-        echo $this->formCollection($form);
-        echo $this->form()->closeTag();
+            echo $this->formCollection($form);
         ?>
 
     </div>
+    <!-- /.login-box-body -->
+    <?php echo $this->form()->closeTag(); ?>
 </div>
+<!-- /.login-box -->

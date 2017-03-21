@@ -99,6 +99,20 @@ class User extends Form
                 ]
             ]);
         }
+
+        if($status == static::STATUS_INSTALL) {
+            $this->add([
+                'type' => 'Zend\Form\Element\Button',
+                'name' => 'submit',
+                'options' => [
+                    'label' => 'Register',
+                ],
+                'attributes' => [
+                    'type' => 'submit',
+                    'class' => 'btn btn-primary pull-right'
+                ],
+            ]);
+        }
     }
 
     /**

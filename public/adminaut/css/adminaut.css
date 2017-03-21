@@ -1,0 +1,12 @@
+.checkbox label, .radio label {
+    padding-left: 30px !important;
+}
+
+.checkbox label div, .radio label div {
+    position: absolute !important;
+    left: 0;
+}
+
+.view-value {
+    padding-top: 7px;
+}

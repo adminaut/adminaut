@@ -34,7 +34,7 @@ class Role
     protected $resources;
 
     /**
-     * @ORM\OneToMany(targetEntity="Adminaut\Entity\User", mappedBy="role")
+     * @ORM\OneToMany(targetEntity="Adminaut\Entity\UserEntity", mappedBy="role")
      */
     protected $users;
 

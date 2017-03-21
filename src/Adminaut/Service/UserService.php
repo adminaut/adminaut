@@ -120,13 +120,11 @@ class UserService extends EventProvider
      */
     public function createSuperuser(array $data)
     {
-        /* @var $role RoleEntity */
-        $role = $this->getAccessControlService()->createRole(['name' => 'admin']);
         $entity = new UserEntity();
         $entity->setInsertedBy(1);
         $entity->setUpdatedBy(1);
         $data['active'] = true;
-        $data['role'] = $role->getId();
+        $data['role'] = 'admin';
         $entity = $this->populateData($entity, $data);
         $bcrypt = new Bcrypt;
         $bcrypt->setCost($this->getUserOptions()->getPasswordCost());

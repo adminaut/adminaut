@@ -4,8 +4,7 @@ namespace Adminaut\Controller;
 
 use Adminaut\Form\User as UserForm;
 use Adminaut\Form\InputFilter\User as UserInputFilter;
-use Adminaut\Service\User as UserService;
-
+use Adminaut\Service\UserService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -57,10 +56,14 @@ class InstallController extends AbstractActionController
                 }
             }
         }
-        $this->layout('layout/admin-login');
-        return new ViewModel([
-            'form' => $form,
+
+        $this->layout()->setVariables([
+            'bodyClasses' => ['login-page']
         ]);
+        $this->layout('layout/admin-blank');
+        return [
+            'form' => $form
+        ];
     }
 
     /**

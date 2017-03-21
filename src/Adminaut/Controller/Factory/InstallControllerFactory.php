@@ -3,6 +3,7 @@ namespace Adminaut\Controller\Factory;
 
 
 use Adminaut\Controller\InstallController;
+use Adminaut\Service\UserService;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -22,7 +23,7 @@ class InstallControllerFactory implements FactoryInterface
         $sm = $serviceLocator->getServiceLocator();
 
         return new InstallController(
-            $sm->get('UserService')
+            $sm->get(UserService::class)
         );
     }
 

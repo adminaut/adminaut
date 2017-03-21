@@ -1,32 +1,53 @@
 <?php
-
 return [
-'mfcc_admin' => [
+    'adminaut' => [
         'modules' => [
-            2 => [
+            'example' => [
                 'type' => 'module',
-                'module_name' => 'Datatypes',
-                'module_icon' => 'fa-list-alt',
-                'entity_class' => 'Application\Entity\Datatypes'
-            ],
-            1 => [
-                'type' => 'module',
-                'module_name' => 'News',
-                'module_icon' => 'fa-list-alt',
-                'entity_class' => 'Application\Entity\News'
+                'module_name' => 'Example module',
+                'module_icon' => 'fa-newspaper-o',
+                'entity_class' => 'Application\Entity\ExampleEntity'
             ],
         ],
-        'user' => [
-            'login_redirect_route' => 'adminaut-user',
-            'logout_redirect_route' => 'adminaut-user/login',
-            'enable_user_status' => true,
-            'default_user_status' => 1,
-            'allowed_login_status' => [null, 1],
-            'user_entity_class' => 'Adminaut\Entity\User',
-            'auth_adapters' => [100 => 'Adminaut\Authentication\Adapter\Db'],
-            'auth_identity_fields' => ['email'],
-            'password_cost' => 10,
-            'use_redirect_parameter_if_present' => true,
+
+        'roles' => [],
+
+        'appearance' => [
+            'theme' => 'adminlte',
+            'footer' => 'Custom footer text.'
         ],
+    ],
+    'manifest' => [
+        'name' => 'Adminaut',
+        'show_name' => 'Adminaut',
+        'description' => 'Adminaut - universal automatic administration system',
+        'display' => 'standalone',
+        'theme_color' => '#3c8dbc',
+        'background_color' => '#3c8dbc',
+        "icons" => [
+            [
+                "src" => "/static/favicons/android-chrome-36x36.png",
+                "sizes" => "36x36",
+                "type" => "image/png",
+                "density" => "0.75"
+            ]
+        ]
+    ],
+
+    'bsb_flysystem' => [
+        'adapters' => [
+            'default'     => [
+                'type'    => 'local',
+                'options' => [
+                    'root' => './data/files'
+                ],
+            ],
+            'cache'     => [
+                'type'    => 'local',
+                'options' => [
+                    'root' => './public/_cache/files'
+                ],
+            ]
+        ]
     ],
 ];
