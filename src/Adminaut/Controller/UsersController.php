@@ -64,7 +64,7 @@ class UsersController extends AdminModuleBaseController
     /**
      * @return \Zend\Http\Response|ViewModel
      */
-    public function showAction()
+    public function viewAction()
     {
         if (!$this->acl()->isAllowed('users', AccessControlService::READ)) {
             return $this->redirect()->toRoute('adminaut-dashboard');
@@ -128,7 +128,7 @@ class UsersController extends AdminModuleBaseController
     /**
      * @return \Zend\Http\Response|ViewModel
      */
-    public function updateAction()
+    public function editAction()
     {
         if (!$this->acl()->isAllowed('users', AccessControlService::WRITE)) {
             return $this->redirect()->toRoute('adminaut-dashboard');
@@ -168,7 +168,7 @@ class UsersController extends AdminModuleBaseController
                 } catch(\Exception $e) {
                     $this->flashMessenger()->addErrorMessage('Error: '.$e->getMessage());
                 }
-                return $this->redirect()->toRoute('adminaut-users/update', ['id' => $id]);
+                return $this->redirect()->toRoute('adminaut-users/edit', ['id' => $id]);
             }
         }
 

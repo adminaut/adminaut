@@ -73,7 +73,8 @@ return [
         'invokables' => [
             'formDate'                                              => \Adminaut\Form\View\Helper\FormDate::class,
             'formDateTime'                                          => \Adminaut\Form\View\Helper\FormDateTime::class,
-            'formFile'                                              => \Adminaut\Form\View\Helper\FormFile::class
+            'formFile'                                              => \Adminaut\Form\View\Helper\FormFile::class,
+//            'formCheckbox'                                          => \Adminaut\Form\View\Helper\Checkbox::class,
         ],
 
         'factories' => [
@@ -335,12 +336,12 @@ return [
                             ],
                         ],
                     ],
-                    'update' => [
+                    'edit' => [
                         'type' => Segment::class,
                         'options' => [
-                            'route' => '/update/:id',
+                            'route' => '/edit/:id',
                             'defaults' => [
-                                'action' => 'update',
+                                'action' => 'edit',
                             ],
                             'constraints' => [
                                 'id' => '[0-9]*',
@@ -393,12 +394,12 @@ return [
                             ],
                         ],
                     ],
-                    'update-role' => [
+                    'edit-role' => [
                         'type' => Segment::class,
                         'options' => [
-                            'route' => '/update-role/:roleId',
+                            'route' => '/edit-role/:roleId',
                             'defaults' => [
-                                'action' => 'update-role',
+                                'action' => 'edit-role',
                             ],
                             'constraints' => [
                                 'roleId' => '[0-9]*',
@@ -451,12 +452,12 @@ return [
                             ],
                         ],
                     ],
-                    'update-role' => [
+                    'edit-role' => [
                         'type' => Segment::class,
                         'options' => [
-                            'route' => '/update-role/:roleId',
+                            'route' => '/edit-role/:roleId',
                             'defaults' => [
-                                'action' => 'update-role',
+                                'action' => 'edit-role',
                             ],
                             'constraints' => [
                                 'roleId' => '[0-9]*',
@@ -475,12 +476,12 @@ return [
                             ],
                         ],
                     ],
-                    'update-role-permission' => [
+                    'edit-role-permission' => [
                         'type' => Segment::class,
                         'options' => [
-                            'route' => '/update-role-permission/:roleId',
+                            'route' => '/edit-role-permission/:roleId',
                             'defaults' => [
-                                'action' => 'update-role-permission',
+                                'action' => 'edit-role-permission',
                             ],
                             'constraints' => [
                                 'roleId' => '[0-9]*',

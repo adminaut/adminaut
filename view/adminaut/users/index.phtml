@@ -53,9 +53,9 @@
                                     </td>
                                     <td>
                                         <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
-                                            <a href="<?php echo $this->url('adminaut-users/show', ['id' => $entity->getId()]); ?>" type="button" class="btn btn-success"><i class="fa fa-eye"></i></a>
+                                            <a href="<?php echo $this->url('adminaut-users/view', ['id' => $entity->getId()]); ?>" type="button" class="btn btn-success"><i class="fa fa-eye"></i></a>
                                             <?php if ($this->isAllowed('users', \Adminaut\Service\AccessControlService::WRITE)) { ?>
-                                                <a href="<?php echo $this->url('adminaut-users/update', ['id' => $entity->getId()]); ?>" type="button" class="btn btn-info"><i class="fa fa-pencil"></i></a>
+                                                <a href="<?php echo $this->url('adminaut-users/edit', ['id' => $entity->getId()]); ?>" type="button" class="btn btn-info"><i class="fa fa-pencil"></i></a>
                                             <?php } if ($this->isAllowed('users', \Adminaut\Service\AccessControlService::FULL)) { ?>
                                                 <a href="<?php echo $this->url('adminaut-users/delete', ['id' => $entity->getId()]); ?>" type="button" class="btn btn-danger btn-modal-delete"><i class="fa fa-user-times"></i></a>
                                             <?php } ?>

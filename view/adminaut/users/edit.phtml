@@ -1,6 +1,6 @@
 <?php
 $form = $this->form;
-$form->setAttribute('action', $this->url('adminaut-users/update', ['id' => $this->user->getId()]));
+$form->setAttribute('action', $this->url('adminaut-users/edit', ['id' => $this->user->getId()]));
 $form->prepare();
 ?>
 <section class="content-header">
@@ -31,8 +31,8 @@ $form->prepare();
                 </div>
                 <!-- /.tab-content -->
                 <div class="box-footer clearfix">
-                    <a href="<?php echo $this->url('adminaut-users'); ?>" class="btn btn-sm btn-default btn-flat pull-left"><i class="fa fa-chevron-left"></i> <?php echo $this->translate('Back'); ?></a>
-                    <button type="submit" name="submit" class="btn btn-sm btn-primary btn-flat pull-left" value=""><i class="fa fa-send"></i> Submit</button>
+                    <button type="submit" name="submit" class="btn btn-primary" value="">Save</button>
+                    <a href="<?php echo $this->url('adminaut-users'); ?>" class="btn btn-default"><?php echo $this->translate('Back to list'); ?></a>
                 </div>
                 <!-- /.box-footer -->
             </div>

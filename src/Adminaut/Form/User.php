@@ -87,21 +87,15 @@ class User extends Form
             ]);
 
             $this->add([
-                'type' => 'Zend\Form\Element\Checkbox',
+                'type' => 'Adminaut\Form\Element\Checkbox',
                 'name' => 'active',
                 'options' => [
-                    'label' => _('Status'),
-                    'use_hidden_element' => true,
+                    'label' => _('Active'),
                     'checked_value' => 1,
                     'unchecked_value' => 0
                 ],
                 'attributes' => [
                     'value' => false,
-                    'data-toggle' => 'toggle',
-                    'data-onstyle' => 'success',
-                    'data-offstyle' => 'danger',
-                    'data-on' => 'Active',
-                    'data-off' => 'Inactive',
                 ]
             ]);
         }
