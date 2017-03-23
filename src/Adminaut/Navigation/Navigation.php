@@ -51,7 +51,17 @@ class Navigation extends DefaultNavigationFactory
                         'params' => [
                             'module_id' => $key,
                         ],
-                        'icon' => 'fa fa-fw ' . $icon,
+                        'icon' => $icon,
+                        'pages' => [
+                            [
+                                'label' => 'Action',
+                                'route' => 'adminaut-module/action',
+                                'hidden' => 'true',
+                                'params' => [
+                                    'module_id' => $key,
+                                ],
+                            ]
+                        ]
                     ];
                 }
             }
@@ -62,8 +72,22 @@ class Navigation extends DefaultNavigationFactory
             if ($accessControl->isAllowed('users', AccessControlService::READ)) {
                 $subPage[] = [
                     'label' => 'Users',
-                    'route' => 'adminaut-users/list',
+                    'route' => 'adminaut-users',
                     'icon' => 'fa fa-fw fa-user',
+                    'pages' => [
+                        [
+                            'label' => 'Add',
+                            'route' => 'adminaut-users/add'
+                        ],
+                        [
+                            'label' => 'View',
+                            'route' => 'adminaut-users/view'
+                        ],
+                        [
+                            'label' => 'Edit',
+                            'route' => 'adminaut-users/edit'
+                        ]
+                    ]
                 ];
             }
             $pages[] = [

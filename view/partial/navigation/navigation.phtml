@@ -31,6 +31,20 @@ $container = $this->container;
             }
             ?>
             <?php if ($access) { ?>
+                <?php if(sizeof($page->getPages()) == 1 && $child->get('hidden') == 'true') { ?>
+                    <li class="treeview<?php if ($page->isActive()) echo ' active'; ?>">
+                        <a href="<?php echo $page->getHref(); ?>"
+                            <?php if ($page->getTarget() != "") { ?>
+                                target="<?php echo $page->getTarget(); ?>"
+                            <?php } ?>
+                        >
+                            <?php if ($page->get("icon") !== "") { ?>
+                                <i class="<?php echo $page->get("icon"); ?>"></i>
+                            <?php } ?>
+                            <span><?php echo $this->escapeHtml($this->translate($page->getLabel(), $this->navigation($container)->getTranslatorTextDomain())); ?></span>
+                        </a>
+                    </li>
+                <?php } else { ?>
                 <li class="treeview<?php if ($page->isActive(true)) echo ' active'; ?>">
                     <a href="#" class="<?php if ($page->isActive(true)) echo ' active'; ?>">
                         <?php if ($page->get("icon") !== "") { ?>
@@ -42,15 +56,16 @@ $container = $this->container;
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <?php foreach ($page->getPages() as $child) { ?>
-                            <?php if (!$this->navigation()->accept($child)) continue; ?>
-                            <?php if ($child->get("separator") === true) { ?>
+                        <?php foreach ($page->getPages() as $child) {
+                            $childClasses = $child->get('classes') ? $child->get('classes') : [];
+                            if (!$this->navigation()->accept($child)) continue;
+                            if ($child->get("separator") === true) { ?>
                                 <li class="divider"></li>
-                                <?php
+                            <?php
                                 continue;
                             };
                             ?>
-                            <li<?php if ($child->isActive()) echo ' class="active"'; ?>>
+                            <li<?php if ($child->isActive(true)) echo ' class="active"'; ?>>
                                 <a
                                     href="<?php echo $child->getHref(); ?>"
                                     <?php if ($child->getTarget() != "") { ?>
@@ -67,6 +82,7 @@ $container = $this->container;
                         <?php } ?>
                     </ul>
                 </li>
+                <?php } ?>
             <?php } ?>
         <?php } ?>
     <?php } ?>

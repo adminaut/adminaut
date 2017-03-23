@@ -178,6 +178,7 @@ return [
                             'route' => '/:module_id/:mode[/:entity_id]',
                             'defaults' => [
                                 'tab' => 'main',
+                                'mode' => 'list',
                                 'action' => 'index'
                             ],
                             'constraints' => [
@@ -303,18 +304,6 @@ return [
                 ],
                 'may_terminate' => true,
                 'child_routes' => [
-                    'list' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/list',
-                            'defaults' => [
-                                'action' => 'index',
-                            ],
-                            'constraints' => [
-                                'id' => '[0-9]*',
-                            ],
-                        ],
-                    ],
                     'view' => [
                         'type' => Segment::class,
                         'options' => [

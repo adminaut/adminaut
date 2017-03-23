@@ -25,7 +25,6 @@
     "zendframework/zendframework": "~2.5",
     "zendframework/zend-i18n-resources": "^2.5",
     "doctrine/doctrine-orm-module": "~0.9",
-    "neilime/zf2-twb-bundle": "^2.5",
     "smottt/wideimage": "^1.1",
     "bushbaby/flysystem": "^2.0",
     "almasaeed2010/adminlte": "~2.0"
