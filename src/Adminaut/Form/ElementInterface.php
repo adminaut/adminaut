@@ -8,7 +8,7 @@ use Adminaut\Entity\BaseInterface;
  * Interface ElementInterface
  * @package Adminaut\Form
  */
-interface ElementInterface
+interface ElementInterface extends \Zend\Form\ElementInterface
 {
     /**
      * @return mixed
