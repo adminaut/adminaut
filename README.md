@@ -1,5 +1,11 @@
 # Adminaut
 
+
+## Description
+
+Adminaut is the open-source platform for rapid development of PHP applications with the automatic construction of administration backend. It's built on the top of PHP, Zend Framework, Doctrine ORM and other frameworks.
+
+
 ## Installation
 
 1. Add this project to your composer.json:
