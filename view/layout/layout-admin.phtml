@@ -24,7 +24,8 @@
             ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/skins/skin-'.$skin.'.min.css'))
             ->appendStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/flat.css'))
             ->appendStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/blue.css'))
-            ->appendStylesheet($this->basePath('adminaut/css/adminaut.css'));
+            ->appendStylesheet($this->basePath('adminaut/css/adminaut.css'))
+            ->headLink(['rel' => 'manifest', 'href' => $this->url('adminaut/manifest')], 'APPEND');
 
         echo $this->headScript()
             ->appendFile($this->basePath('adminaut/js/html5shiv.min.js'), 'text/javascript', ['conditional' => 'lt IE 9'])
@@ -36,139 +37,148 @@
             ->appendFile($this->basePath('adminaut/js/bootstrap-datetimepicker.min.js'))
             ->appendFile($this->basePath('adminaut/js/jquery.dataTables.min.js'))
             ->appendFile($this->basePath('adminaut/js/dataTables.bootstrap.min.js'))
-            ->appendFile($this->basePath('adminaut/themes/adminlte/dist/js/app.min.js'))
+            ->appendFile($this->basePath('adminaut/themes/adminlte/dist/js/app.js'))
             ->appendFile($this->basePath('adminaut/themes/adminlte/plugins/iCheck/icheck.min.js'))
             ->appendFile($this->basePath('adminaut/js/js.cookie.js'))
             ->appendFile($this->basePath('adminaut/js/adminaut.js'));
 
         ?>
-
     </head>
-    <body class="hold-transition skin-<?php echo $skin ?> sidebar-mini<?php echo (isset($_COOKIE['sidebar-collapsed']) ? ' sidebar-collapse' : '') ?>">
-        <header class="main-header">
-            <!-- Logo -->
-            <a href="<?php echo $this->url('adminaut'); ?>" class="logo<?php if($this->config()['adminaut']['appearance']['logo']['type'] == 'image') { echo ' logo-image'; } ?>">
-                <?php if($this->config()['adminaut']['appearance']['logo']['type'] == 'text') { ?>
+    <body class="hold-transition skin-<?php echo $skin ?> sidebar-mini<?php echo (isset($_COOKIE['sidebar-collapsed']) ? ' sidebar-collapse' : '') ?> fixed">
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=1536749893231201";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+        </script>
+        <div class="wrapper">
+            <header class="main-header">
+                <!-- Logo -->
+                <a href="<?php echo $this->url('adminaut'); ?>" class="logo<?php if($this->config()['adminaut']['appearance']['logo']['type'] == 'image') { echo ' logo-image'; } ?>">
+                    <?php if($this->config()['adminaut']['appearance']['logo']['type'] == 'text') { ?>
 
-                    <?php if($this->config()['adminaut']['appearance']['logo']['large']) { ?>
-                        <span class="logo-lg"><?php echo $this->config()['adminaut']['appearance']['logo']['large'] ?></span>
-                    <?php } else { ?>
-                        <span class="logo-lg">Adminaut</span>
+                        <?php if($this->config()['adminaut']['appearance']['logo']['large']) { ?>
+                            <span class="logo-lg"><?php echo $this->config()['adminaut']['appearance']['logo']['large'] ?></span>
+                        <?php } else { ?>
+                            <span class="logo-lg">Adminaut</span>
+                        <?php } ?>
+
+                        <?php if($this->config()['adminaut']['appearance']['logo']['small']) { ?>
+                            <span class="logo-mini"><?php echo $this->config()['adminaut']['appearance']['logo']['small'] ?></span>
+                        <?php } ?>
+
+                    <?php } elseif($this->config()['adminaut']['appearance']['logo']['type'] == 'image') { ?>
+
+                        <?php if($this->config()['adminaut']['appearance']['logo']['large']) { ?>
+                            <span class="logo-lg"><img src="<?php echo $this->basePath($this->config()['adminaut']['appearance']['logo']['large']); ?>" alt="<?php echo $this->config()['adminaut']['appearance']['title'] ?>"></span>
+                        <?php } else { ?>
+                            <span class="logo-lg">Adminaut</span>
+                        <?php } ?>
+
+                        <?php if($this->config()['adminaut']['appearance']['logo']['small']) { ?>
+                            <span class="logo-mini"><img src="<?php echo $this->basePath($this->config()['adminaut']['appearance']['logo']['small']); ?>" alt="<?php echo $this->config()['adminaut']['appearance']['title'] ?>"></span>
+                        <?php } ?>
+
                     <?php } ?>
 
-                    <?php if($this->config()['adminaut']['appearance']['logo']['small']) { ?>
-                        <span class="logo-mini"><?php echo $this->config()['adminaut']['appearance']['logo']['small'] ?></span>
-                    <?php } ?>
-
-                <?php } elseif($this->config()['adminaut']['appearance']['logo']['type'] == 'image') { ?>
-
-                    <?php if($this->config()['adminaut']['appearance']['logo']['large']) { ?>
-                        <span class="logo-lg"><img src="<?php echo $this->basePath($this->config()['adminaut']['appearance']['logo']['large']); ?>" alt="<?php echo $this->config()['adminaut']['appearance']['title'] ?>"></span>
-                    <?php } else { ?>
-                        <span class="logo-lg">Adminaut</span>
-                    <?php } ?>
-
-                    <?php if($this->config()['adminaut']['appearance']['logo']['small']) { ?>
-                        <span class="logo-mini"><img src="<?php echo $this->basePath($this->config()['adminaut']['appearance']['logo']['small']); ?>" alt="<?php echo $this->config()['adminaut']['appearance']['title'] ?>"></span>
-                    <?php } ?>
-
-                <?php } ?>
-
-            </a>
-            <!-- Header Navbar: style can be found in header.less -->
-            <nav class="navbar navbar-static-top">
-                <!-- Sidebar toggle button-->
-                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
                 </a>
+                <!-- Header Navbar: style can be found in header.less -->
+                <nav class="navbar navbar-static-top">
+                    <!-- Sidebar toggle button-->
+                    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
 
-                <div class="navbar-custom-menu">
-                    <ul class="nav navbar-nav">
-                        <!-- User Account: style can be found in dropdown.less -->
-                        <li class="dropdown user user-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="user-image" alt="<?php echo $this->userIdentity()->getName(); ?>">
-                                <span class="hidden-xs"><?php echo $this->userIdentity()->getName(); ?></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <!-- User image -->
-                                <li class="user-header">
-                                    <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="img-circle" alt="<?php echo $this->userIdentity()->getName(); ?>">
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">
+                            <!-- User Account: style can be found in dropdown.less -->
+                            <li class="dropdown user user-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="user-image" alt="<?php echo $this->userIdentity()->getName(); ?>">
+                                    <span class="hidden-xs"><?php echo $this->userIdentity()->getName(); ?></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <!-- User image -->
+                                    <li class="user-header">
+                                        <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="img-circle" alt="<?php echo $this->userIdentity()->getName(); ?>">
 
-                                    <p>
-                                        <?php echo $this->userIdentity()->getName(); ?>
-<!--                                        <small>Member since Nov. 2012</small>-->
-                                    </p>
-                                </li>
-                                <!-- Menu Footer-->
-                                <li class="user-footer">
-                                    <div class="pull-left">
-                                        <a href="<?php echo $this->url('adminaut-users/view', ['id' => $this->userIdentity()->getId()]); ?>" class="btn btn-default btn-flat">Profile</a>
-                                    </div>
-                                    <div class="pull-right">
-                                        <a href="<?php echo $this->url('adminaut-user/logout'); ?>" class="btn btn-default btn-flat">Sign out</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </header>
+                                        <p>
+                                            <?php echo $this->userIdentity()->getName(); ?>
+    <!--                                        <small>Member since Nov. 2012</small>-->
+                                        </p>
+                                    </li>
+                                    <!-- Menu Footer-->
+                                    <li class="user-footer">
+                                        <div class="pull-left">
+                                            <a href="<?php echo $this->url('adminaut-users/view', ['id' => $this->userIdentity()->getId()]); ?>" class="btn btn-default btn-flat">Profile</a>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="<?php echo $this->url('adminaut-user/logout'); ?>" class="btn btn-default btn-flat">Sign out</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
 
-        <aside class="main-sidebar">
-            <!-- sidebar: style can be found in sidebar.less -->
-            <section class="sidebar">
-                <!-- Sidebar user panel -->
-                <div class="user-panel">
-                    <div class="pull-left image">
-                        <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="img-circle" alt="<?php echo $this->userIdentity()->getName(); ?>">
+            <aside class="main-sidebar">
+                <!-- sidebar: style can be found in sidebar.less -->
+                <section class="sidebar">
+                    <!-- Sidebar user panel -->
+                    <div class="user-panel">
+                        <div class="pull-left image">
+                            <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="img-circle" alt="<?php echo $this->userIdentity()->getName(); ?>">
+                        </div>
+                        <div class="pull-left info">
+                            <p><?php echo $this->userIdentity()->getName(); ?></p>
+                            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                        </div>
                     </div>
-                    <div class="pull-left info">
-                        <p><?php echo $this->userIdentity()->getName(); ?></p>
-                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-                    </div>
-                </div>
-                <!-- search form -->
-                <form action="#" method="get" class="sidebar-form">
-                    <div class="input-group">
-                        <input type="text" name="q" class="form-control" placeholder="Search...">
-                        <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-                    </div>
-                </form>
-                <!-- /.search form -->
-                <!-- sidebar menu: : style can be found in sidebar.less -->
+                    <!-- search form -->
+                    <form action="#" method="get" class="sidebar-form">
+                        <div class="input-group">
+                            <input type="text" name="q" class="form-control" placeholder="Search...">
+                            <span class="input-group-btn">
+                    <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                    </button>
+                  </span>
+                        </div>
+                    </form>
+                    <!-- /.search form -->
+                    <!-- sidebar menu: : style can be found in sidebar.less -->
+                    <?php
+                    echo $this->navigation(\Adminaut\Navigation\Navigation::class)->menu()
+                        ->setUlClass('nav')
+                        ->setPartial('partial/navigation/navigation.phtml');
+                    ?>
+                </section>
+                <!-- /.sidebar -->
+            </aside>
+
+            <div class="content-wrapper">
                 <?php
-                echo $this->navigation(\Adminaut\Navigation\Navigation::class)->menu()
-                    ->setUlClass('nav')
-                    ->setPartial('partial/navigation/navigation.phtml');
-                ?>
-            </section>
-            <!-- /.sidebar -->
-        </aside>
+                // TODO
+                //echo $this->navigation('Navigation')->breadcrumbs()->setPartial(false); ?>
 
-        <div class="content-wrapper">
-            <?php
-            // TODO
-            //echo $this->navigation('Navigation')->breadcrumbs()->setPartial(false); ?>
+                <?php echo $this->content; ?>
+            </div>
 
-            <?php echo $this->content; ?>
+            <footer class="main-footer">
+                <?php if($this->config()['adminaut']['appearance']['footer']) { ?>
+                    <?php echo $this->config()['adminaut']['appearance']['footer'] ?>
+                <?php } ?>
+                Powered by <a href="http://adminaut.com/" target="_blank">Adminaut</a>
+            </footer>
+
+            <?php echo $this->inlineScript(); ?>
         </div>
-
-        <footer class="main-footer">
-            <?php if($this->config()['adminaut']['appearance']['footer']) { ?>
-                <?php echo $this->config()['adminaut']['appearance']['footer'] ?>
-            <?php } ?>
-            Powered by <a href="http://adminaut.com/" target="_blank">Adminaut</a>
-        </footer>
-
-        <?php echo $this->inlineScript(); ?>
-
     </body>
 </html>

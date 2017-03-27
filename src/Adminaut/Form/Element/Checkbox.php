@@ -16,28 +16,8 @@ class Checkbox extends ZendCheckbox implements InputProviderInterface
      * @var array
      */
     protected $attributes = [
-        'type' => 'checkbox'
+        'type' => 'single_checkbox'
     ];
-
-    /**
-     * @var \Zend\Validator\ValidatorInterface
-     */
-    protected $validator;
-
-    /**
-     * @var bool
-     */
-    protected $useHiddenElement = true;
-
-    /**
-     * @var string
-     */
-    protected $uncheckedValue = '0';
-
-    /**
-     * @var string
-     */
-    protected $checkedValue = '1';
 
     /**
      * @var string
@@ -48,6 +28,11 @@ class Checkbox extends ZendCheckbox implements InputProviderInterface
      * @var string
      */
     protected $listedCheckedValue = 'No';
+
+    /**
+     * @var string
+     */
+    protected $checkboxLabel = '';
 
     /**
      * Accepted options for MultiCheckbox:
@@ -62,18 +47,6 @@ class Checkbox extends ZendCheckbox implements InputProviderInterface
     {
         parent::setOptions($options);
 
-        if (isset($options['use_hidden_element'])) {
-            $this->setUseHiddenElement($options['use_hidden_element']);
-        }
-
-        if (isset($options['unchecked_value'])) {
-            $this->setUncheckedValue($options['unchecked_value']);
-        }
-
-        if (isset($options['checked_value'])) {
-            $this->setCheckedValue($options['checked_value']);
-        }
-
         if (isset($options['listed_unchecked_value'])) {
             $this->setListedUncheckedValue($options['listed_unchecked_value']);
         }
@@ -82,73 +55,11 @@ class Checkbox extends ZendCheckbox implements InputProviderInterface
             $this->setListedCheckedValue($options['listed_checked_value']);
         }
 
+        if (isset($options['checkbox_label'])) {
+            $this->setCheckboxLabel($options['checkbox_label']);
+        }
+
         return $this;
-    }
-
-    /**
-     * Do we render hidden element?
-     *
-     * @param  bool $useHiddenElement
-     * @return Checkbox
-     */
-    public function setUseHiddenElement($useHiddenElement)
-    {
-        $this->useHiddenElement = (bool) $useHiddenElement;
-        return $this;
-    }
-
-    /**
-     * Do we render hidden element?
-     *
-     * @return bool
-     */
-    public function useHiddenElement()
-    {
-        return $this->useHiddenElement;
-    }
-
-    /**
-     * Set the value to use when checkbox is unchecked
-     *
-     * @param $uncheckedValue
-     * @return Checkbox
-     */
-    public function setUncheckedValue($uncheckedValue)
-    {
-        $this->uncheckedValue = $uncheckedValue;
-        return $this;
-    }
-
-    /**
-     * Get the value to use when checkbox is unchecked
-     *
-     * @return string
-     */
-    public function getUncheckedValue()
-    {
-        return $this->uncheckedValue;
-    }
-
-    /**
-     * Set the value to use when checkbox is checked
-     *
-     * @param $checkedValue
-     * @return Checkbox
-     */
-    public function setCheckedValue($checkedValue)
-    {
-        $this->checkedValue = $checkedValue;
-        return $this;
-    }
-
-    /**
-     * Get the value to use when checkbox is checked
-     *
-     * @return string
-     */
-    public function getCheckedValue()
-    {
-        return $this->checkedValue;
     }
 
     /**
@@ -208,77 +119,18 @@ class Checkbox extends ZendCheckbox implements InputProviderInterface
     }
 
     /**
-     * Get validator
-     *
-     * @return \Zend\Validator\ValidatorInterface
+     * @return string
      */
-    protected function getValidator()
+    public function getCheckboxLabel()
     {
-        if (null === $this->validator) {
-            $this->validator = new InArrayValidator([
-                'haystack' => [$this->checkedValue, $this->uncheckedValue],
-                'strict'   => false
-            ]);
-        }
-        return $this->validator;
+        return $this->checkboxLabel;
     }
 
     /**
-     * Provide default input rules for this element
-     *
-     * Attaches the captcha as a validator.
-     *
-     * @return array
+     * @param string $checkboxLabel
      */
-    public function getInputSpecification()
+    public function setCheckboxLabel(string $checkboxLabel)
     {
-        $spec = [
-            'name' => $this->getName(),
-            'required' => true,
-        ];
-
-        if ($validator = $this->getValidator()) {
-            $spec['validators'] = [
-                $validator,
-            ];
-        }
-
-        return $spec;
-    }
-
-    /**
-     * Checks if this checkbox is checked.
-     *
-     * @return bool
-     */
-    public function isChecked()
-    {
-        return $this->value === $this->getCheckedValue();
-    }
-
-    /**
-     * Checks or unchecks the checkbox.
-     *
-     * @param bool $value The flag to set.
-     * @return Checkbox
-     */
-    public function setChecked($value)
-    {
-        $this->value = $value ? $this->getCheckedValue() : $this->getUncheckedValue();
-        return $this;
-    }
-
-    /**
-     * Checks or unchecks the checkbox.
-     *
-     * @param mixed $value A boolean flag or string that is checked against the "checked value".
-     * @return Element
-     */
-    public function setValue($value)
-    {
-        // Cast to strings because POST data comes in string form
-        $checked = (string) $value === (string) $this->getCheckedValue();
-        $this->value = $checked ? $this->getCheckedValue() : $this->getUncheckedValue();
-        return $this;
+        $this->checkboxLabel = $checkboxLabel;
     }
 }

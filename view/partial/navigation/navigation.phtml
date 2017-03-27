@@ -31,20 +31,6 @@ $container = $this->container;
             }
             ?>
             <?php if ($access) { ?>
-                <?php if(sizeof($page->getPages()) == 1 && $child->get('hidden') == 'true') { ?>
-                    <li class="treeview<?php if ($page->isActive()) echo ' active'; ?>">
-                        <a href="<?php echo $page->getHref(); ?>"
-                            <?php if ($page->getTarget() != "") { ?>
-                                target="<?php echo $page->getTarget(); ?>"
-                            <?php } ?>
-                        >
-                            <?php if ($page->get("icon") !== "") { ?>
-                                <i class="<?php echo $page->get("icon"); ?>"></i>
-                            <?php } ?>
-                            <span><?php echo $this->escapeHtml($this->translate($page->getLabel(), $this->navigation($container)->getTranslatorTextDomain())); ?></span>
-                        </a>
-                    </li>
-                <?php } else { ?>
                 <li class="treeview<?php if ($page->isActive(true)) echo ' active'; ?>">
                     <a href="#" class="<?php if ($page->isActive(true)) echo ' active'; ?>">
                         <?php if ($page->get("icon") !== "") { ?>
@@ -82,7 +68,19 @@ $container = $this->container;
                         <?php } ?>
                     </ul>
                 </li>
-                <?php } ?>
+            <?php } else { ?>
+                <li class="treeview<?php if ($page->isActive(true)) echo ' active'; ?>">
+                    <a href="<?php echo $page->getHref(); ?>"
+                        <?php if ($page->getTarget() != "") { ?>
+                            target="<?php echo $page->getTarget(); ?>"
+                        <?php } ?>
+                    >
+                        <?php if ($page->get("icon") !== "") { ?>
+                            <i class="<?php echo $page->get("icon"); ?>"></i>
+                        <?php } ?>
+                        <span><?php echo $this->escapeHtml($this->translate($page->getLabel(), $this->navigation($container)->getTranslatorTextDomain())); ?></span>
+                    </a>
+                </li>
             <?php } ?>
         <?php } ?>
     <?php } ?>

@@ -184,14 +184,6 @@ class ModuleManager
 
                 $form->remove($element->getName());
             }
-
-            $element->setOption('twb-layout', 'horizontal');
-            if($element instanceof Element\Checkbox || $element instanceof Radio) {
-                $element->setOption('column-size', 'sm-10 col-sm-offset-1');
-            } else {
-                $element->setOption('column-size', 'sm-10');
-                $element->setLabelAttributes(['class' => 'col-sm-1']);
-            }
         }
 
         return $form;

@@ -1,4 +1,5 @@
 <?php
+    /** @var \Zend\Form\Form $form */
     $form = $this->form;
     $form->setAttribute('action', $this->url('adminaut-module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode'=>'add']));
     $form->prepare();
@@ -17,7 +18,7 @@
 <section class="content">
     <?php echo $this->form()->openTag($form); ?>
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-xs-12 col-sm-8">
             <div class="box">
                 <div class="box-header with-border">
                     <h3 class="box-title"><?php echo $this->moduleOption->getLabels()['add_entity'] ?></h3>

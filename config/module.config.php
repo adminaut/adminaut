@@ -6,6 +6,7 @@ use Zend\Mvc\Router\Http\Segment;
 return [
     'controllers' => [
         'factories' => [
+            \Adminaut\Controller\IndexController::class  => \Adminaut\Controller\Factory\IndexControllerFactory::class,
             \Adminaut\Controller\DashboardController::class  => \Adminaut\Controller\Factory\DashboardControllerFactory::class,
             Adminaut\Controller\AclController::class         => \Adminaut\Controller\Factory\AclControllerFactory::class,
             Adminaut\Controller\InstallController::class     => \Adminaut\Controller\Factory\InstallControllerFactory::class,
@@ -74,6 +75,7 @@ return [
             'formDate'                                              => \Adminaut\Form\View\Helper\FormDate::class,
             'formDateTime'                                          => \Adminaut\Form\View\Helper\FormDateTime::class,
             'formFile'                                              => \Adminaut\Form\View\Helper\FormFile::class,
+            'formCheckbox'                                          => \Adminaut\Form\View\Helper\FormCheckbox::class,
 //            'formCheckbox'                                          => \Adminaut\Form\View\Helper\Checkbox::class,
         ],
 
@@ -125,6 +127,18 @@ return [
                     'defaults' => [
                         'controller' => \Adminaut\Controller\IndexController::class,
                         'action' => 'index',
+                    ],
+                ],
+                'may_terminate' => true,
+                'child_routes' => [
+                    'manifest' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/manifest',
+                            'defaults' => [
+                                'action' => 'manifest',
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -548,7 +562,10 @@ return [
             'layout/admin-blank' => __DIR__ . '/../view/layout/layout-admin-blank.phtml',
         ],
         'template_path_stack' => [
-            'MfccAdminModule' => __DIR__ . '/../view',
+            'Adminaut' => __DIR__ . '/../view',
+        ],
+        'strategies' => [
+            'ViewJsonStrategy',
         ],
     ],
 ];

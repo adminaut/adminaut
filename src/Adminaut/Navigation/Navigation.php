@@ -54,9 +54,8 @@ class Navigation extends DefaultNavigationFactory
                         'icon' => $icon,
                         'pages' => [
                             [
-                                'label' => 'Action',
                                 'route' => 'adminaut-module/action',
-                                'hidden' => 'true',
+                                'visible' => false,
                                 'params' => [
                                     'module_id' => $key,
                                 ],

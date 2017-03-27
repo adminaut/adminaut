@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Josef
- * Date: 26.8.2016
- * Time: 11:01
- */
-
 namespace Adminaut\Form\Annotation;
 
 
