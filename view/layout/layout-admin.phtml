@@ -75,8 +75,8 @@
         <div class="wrapper">
             <header class="main-header">
                 <!-- Logo -->
-                <a href="<?php echo $this->url('adminaut'); ?>" class="logo<?php if($this->config()['adminaut']['appearance']['logo']['type'] == 'image') { echo ' logo-image'; } ?>">
-                    <?php if($this->config()['adminaut']['appearance']['logo']['type'] == 'text') { ?>
+                <a href="<?php echo $this->url('adminaut'); ?>" class="logo<?php if(isset($this->config()['adminaut']['appearance']['logo']['type']) && $this->config()['adminaut']['appearance']['logo']['type'] == 'image') { echo ' logo-image'; } ?>">
+                    <?php if(!isset($this->config()['adminaut']['appearance']['logo']['type']) || $this->config()['adminaut']['appearance']['logo']['type'] == 'text') { ?>
 
                         <?php if(isset($this->config()['adminaut']['appearance']['logo']['large'])) { ?>
                             <span class="logo-lg"><?php echo $this->config()['adminaut']['appearance']['logo']['large'] ?></span>
