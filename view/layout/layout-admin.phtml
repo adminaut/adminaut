@@ -78,25 +78,25 @@
                 <a href="<?php echo $this->url('adminaut'); ?>" class="logo<?php if($this->config()['adminaut']['appearance']['logo']['type'] == 'image') { echo ' logo-image'; } ?>">
                     <?php if($this->config()['adminaut']['appearance']['logo']['type'] == 'text') { ?>
 
-                        <?php if($this->config()['adminaut']['appearance']['logo']['large']) { ?>
+                        <?php if(isset($this->config()['adminaut']['appearance']['logo']['large'])) { ?>
                             <span class="logo-lg"><?php echo $this->config()['adminaut']['appearance']['logo']['large'] ?></span>
                         <?php } else { ?>
                             <span class="logo-lg">Adminaut</span>
                         <?php } ?>
 
-                        <?php if($this->config()['adminaut']['appearance']['logo']['small']) { ?>
+                        <?php if(isset($this->config()['adminaut']['appearance']['logo']['small'])) { ?>
                             <span class="logo-mini"><?php echo $this->config()['adminaut']['appearance']['logo']['small'] ?></span>
                         <?php } ?>
 
                     <?php } elseif($this->config()['adminaut']['appearance']['logo']['type'] == 'image') { ?>
 
-                        <?php if($this->config()['adminaut']['appearance']['logo']['large']) { ?>
+                        <?php if(isset($this->config()['adminaut']['appearance']['logo']['large'])) { ?>
                             <span class="logo-lg"><img src="<?php echo $this->basePath($this->config()['adminaut']['appearance']['logo']['large']); ?>" alt="<?php echo $this->config()['adminaut']['appearance']['title'] ?>"></span>
                         <?php } else { ?>
                             <span class="logo-lg">Adminaut</span>
                         <?php } ?>
 
-                        <?php if($this->config()['adminaut']['appearance']['logo']['small']) { ?>
+                        <?php if(isset($this->config()['adminaut']['appearance']['logo']['small'])) { ?>
                             <span class="logo-mini"><img src="<?php echo $this->basePath($this->config()['adminaut']['appearance']['logo']['small']); ?>" alt="<?php echo $this->config()['adminaut']['appearance']['title'] ?>"></span>
                         <?php } ?>
 
