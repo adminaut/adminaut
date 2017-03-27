@@ -27,72 +27,72 @@ class IndexController extends AbstractActionController
         'background_color' => '#3c8dbc',
         "icons" => [
             [
-                "src" => "/public/adminaut/img/adminaut-favicon-16x16.png",
+                "src" => "/adminaut/img/adminaut-favicon-16x16.png",
                 "sizes" => "16x16",
                 "type" => "image/png"
             ],
             [
-                "src" => "/public/adminaut/img/adminaut-favicon-24x24.png",
+                "src" => "/adminaut/img/adminaut-favicon-24x24.png",
                 "sizes" => "24x24",
                 "type" => "image/png"
             ],
             [
-                "src" => "/public/adminaut/img/adminaut-favicon-32x32.png",
+                "src" => "/adminaut/img/adminaut-favicon-32x32.png",
                 "sizes" => "32x32",
                 "type" => "image/png"
             ],
             [
-                "src" => "/public/adminaut/img/adminaut-favicon-48x48.png",
+                "src" => "/adminaut/img/adminaut-favicon-48x48.png",
                 "sizes" => "48x48",
                 "type" => "image/png"
             ],
             [
-                "src" => "/public/adminaut/img/adminaut-favicon-57x57.png",
+                "src" => "/adminaut/img/adminaut-favicon-57x57.png",
                 "sizes" => "57x57",
                 "type" => "image/png"
             ],
             [
-                "src" => "/public/adminaut/img/adminaut-favicon-64x64.png",
+                "src" => "/adminaut/img/adminaut-favicon-64x64.png",
                 "sizes" => "64x64",
                 "type" => "image/png"
             ],
             [
-                "src" => "/public/adminaut/img/adminaut-favicon-72x72.png",
+                "src" => "/adminaut/img/adminaut-favicon-72x72.png",
                 "sizes" => "72x72",
                 "type" => "image/png"
             ],
             [
-                "src" => "/public/adminaut/img/adminaut-favicon-114x114.png",
+                "src" => "/adminaut/img/adminaut-icon-114x114.png",
                 "sizes" => "114x114",
                 "type" => "image/png"
             ],
             [
-                "src" => "/public/adminaut/img/adminaut-favicon-120x120.png",
+                "src" => "/adminaut/img/adminaut-icon-120x120.png",
                 "sizes" => "120x120",
                 "type" => "image/png"
             ],
             [
-                "src" => "/public/adminaut/img/adminaut-favicon-144x144.png",
+                "src" => "/adminaut/img/adminaut-icon-144x144.png",
                 "sizes" => "144x144",
                 "type" => "image/png"
             ],
             [
-                "src" => "/public/adminaut/img/adminaut-favicon-152x152.png",
+                "src" => "/adminaut/img/adminaut-icon-152x152.png",
                 "sizes" => "152x152",
                 "type" => "image/png"
             ],
             [
-                "src" => "/public/adminaut/img/adminaut-favicon-167x167.png",
+                "src" => "/adminaut/img/adminaut-icon-167x167.png",
                 "sizes" => "167x167",
                 "type" => "image/png"
             ],
             [
-                "src" => "/public/adminaut/img/adminaut-favicon-180x180.png",
+                "src" => "/adminaut/img/adminaut-icon-180x180.png",
                 "sizes" => "180x180",
                 "type" => "image/png"
             ],
             [
-                "src" => "/public/adminaut/img/adminaut-favicon-1024x1024.png",
+                "src" => "/adminaut/img/adminaut-icon-1024x1024.png",
                 "sizes" => "1024x1024",
                 "type" => "image/png"
             ]
@@ -124,6 +124,14 @@ class IndexController extends AbstractActionController
             $manifest = array_merge($this->config['adminaut']['manifest'], $this->defaultManifest);
         } else {
             $manifest = $this->defaultManifest;
+        }
+
+        $uri = $this->getRequest()->getUri();
+        $baseUrl = sprintf('%s://%s', $uri->getScheme(), $uri->getHost());
+        foreach($manifest['icons'] as &$icon) {
+            if(strpos('http', $icon['src']) === false && strpos('https', $icon['src']) === false) {
+                $icon['src'] = $baseUrl . $icon['src'];
+            }
         }
 
         return new JsonModel($manifest);
