@@ -19,6 +19,7 @@ class IndexController extends AdminautBaseController
         'display' => 'standalone',
         'theme_color' => '#3c8dbc',
         'background_color' => '#3c8dbc',
+        'start_url' => '/admin/',
         "icons" => [
             [
                 "src" => "/adminaut/img/adminaut-favicon-16x16.png",
