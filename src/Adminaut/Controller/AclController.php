@@ -13,7 +13,7 @@ use Zend\View\Model\ViewModel;
  * @package Adminaut\Controller
  * @method \Adminaut\Controller\Plugin\Acl acl()
  */
-class AclController extends AdminModuleBaseController
+class AclController extends AdminautBaseController
 {
     /**
      * @var array

@@ -11,7 +11,7 @@ use Zend\View\Model\ViewModel;
  * Class SettingsController
  * @package Adminaut\Controller
  */
-class SettingsController extends AdminModuleBaseController
+class SettingsController extends AdminautBaseController
 {
     /**
      * @return ViewModel

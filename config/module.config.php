@@ -6,8 +6,6 @@ use Zend\Mvc\Router\Http\Segment;
 return [
     'controllers' => [
         'factories' => [
-            \Adminaut\Controller\IndexController::class  => \Adminaut\Controller\Factory\IndexControllerFactory::class,
-            \Adminaut\Controller\DashboardController::class  => \Adminaut\Controller\Factory\DashboardControllerFactory::class,
             Adminaut\Controller\AclController::class         => \Adminaut\Controller\Factory\AclControllerFactory::class,
             Adminaut\Controller\InstallController::class     => \Adminaut\Controller\Factory\InstallControllerFactory::class,
             Adminaut\Controller\ModuleController::class      => \Adminaut\Controller\Factory\ModuleControllerFactory::class,
@@ -240,58 +238,6 @@ return [
                             ],
                         ]
                     ],
-                    /*'update' => [
-                        'type' => 'Segment',
-                        'options' => [
-                            'route' => '/:module_id/update[/:entity_id]',
-                            'defaults' => [
-                                'action' => 'update',
-                                'tab' => 'main'
-                            ],
-                            'constraints' => [
-                                'module_id' => '[a-z]*',
-                                'entity_id' => '[0-9]*'
-                            ],
-                        ],
-                        'may_terminate' => true,
-                        'child_routes' => [
-                            'tab' => [
-                                'type' => 'Segment',
-                                'options' => [
-                                    'route' => '/:tab',
-                                    'defaults' => [
-                                        'action' => 'tab',
-                                        'tab' => 'main'
-                                    ],
-                                    'constraints' => [
-                                        'module_id' => '[a-z]*',
-                                        'entity_id' => '[0-9]*',
-                                        'cyclic_entity_id' => '[0-9]*',
-                                        'tab' => '[a-z]*'
-                                    ]
-                                ],
-                                'may_terminate' => true,
-                                'child_routes' => [
-                                    'action' => [
-                                        'type' => 'Segment',
-                                        'options' => [
-                                            'route' => '/:cyclic_entity_id/:entity_action',
-                                            'defaults' => [
-                                                'action' => 'tab'
-                                            ],
-                                            'constraints' => [
-                                                'module_id' => '[a-z]*',
-                                                'entity_id' => '[0-9]*',
-                                                'cyclic_entity_id' => '[0-9]*',
-                                                'entity_action' => '[a-z]*',
-                                                'tab' => '[a-z]*'
-                                            ]
-                                        ],
-                                    ],
-                                ]
-                            ],
-                        ]
-                    ],*/
                     'delete' => [
                         'type' => Segment::class,
                         'options' => [

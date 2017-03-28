@@ -40,6 +40,7 @@ class AdminautControllerAbstractFactory implements AbstractFactoryInterface
             $parentLocator = $serviceLocator->getServiceLocator();
 
             return new $requestedName(
+                $parentLocator->get('config'),
                 $parentLocator->get(AccessControlService::class),
                 $parentLocator->get(\Doctrine\ORM\EntityManager::class)
             );

@@ -17,7 +17,7 @@ use Zend\View\Model\ViewModel;
  * @package Adminaut\Controller
  * @method Acl acl();
  */
-class UsersController extends AdminModuleBaseController
+class UsersController extends AdminautBaseController
 {
     /**
      * @var UserMapper
@@ -29,17 +29,10 @@ class UsersController extends AdminModuleBaseController
      */
     protected $userService;
 
-    /**
-     * @var array
-     */
-    protected $config;
 
-
-    public function __construct($acl, $em, $config, $userMapper, $userService)
+    public function __construct($config, $acl, $em, $userMapper, $userService)
     {
-        parent::__construct($acl, $em);
-
-        $this->config = $config;
+        parent::__construct($config, $acl, $em);
         $this->setUserMapper($userMapper);
         $this->setUserService($userService);
     }
@@ -112,8 +105,14 @@ class UsersController extends AdminModuleBaseController
                 try {
                     $userService = $this->getUserService();
                     $user = $userService->add($post, $this->userAuthentication()->getIdentity());
-                    $this->flashMessenger()->addSuccessMessage('User has been successfully updated');
-                    return $this->redirect()->toRoute('adminaut-users/update', ['id' => $user->getId()]);
+                    $this->flashMessenger()->addSuccessMessage('User has been successfully created');
+                    switch($post['submit']) {
+                        case 'create-and-continue' :
+                            return $this->redirect()->toRoute('adminaut-users/update', ['id' => $user->getId()]);
+                        case 'create' :
+                        default :
+                            return $this->redirect()->toRoute('adminaut-users');
+                    }
                 } catch(\Exception $e) {
                     $this->flashMessenger()->addErrorMessage('Error: '.$e->getMessage());
                     return $this->redirect()->toRoute('adminaut-users/add');
@@ -165,10 +164,17 @@ class UsersController extends AdminModuleBaseController
                     $userService = $this->getUserService();
                     $userService->update($user, $post, $this->userAuthentication()->getIdentity());
                     $this->flashMessenger()->addSuccessMessage('User has been successfully updated.');
+
+                    switch($post['submit']) {
+                        case 'save-and-continue' :
+                            return $this->redirect()->toRoute('adminaut-users/edit', ['id' => $id]);
+                        case 'save' :
+                        default :
+                        return $this->redirect()->toRoute('adminaut-users');
+                    }
                 } catch(\Exception $e) {
                     $this->flashMessenger()->addErrorMessage('Error: '.$e->getMessage());
                 }
-                return $this->redirect()->toRoute('adminaut-users/edit', ['id' => $id]);
             }
         }
 

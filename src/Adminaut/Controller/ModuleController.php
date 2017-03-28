@@ -26,12 +26,8 @@ use Zend\View\View;
  * @package Adminaut\Controller
  * @method Acl acl()
  */
-class ModuleController extends AdminModuleBaseController
+class ModuleController extends AdminautBaseController
 {
-    /**
-     * @var array
-     */
-    protected $config;
 
     /**
      * @var ModuleManager
@@ -48,6 +44,9 @@ class ModuleController extends AdminModuleBaseController
      */
     protected $filemanager;
 
+    /**
+     * @var array
+     */
     protected $tabs;
 
     /**
@@ -55,11 +54,9 @@ class ModuleController extends AdminModuleBaseController
      */
     protected $moduleManagerService;
 
-    public function __construct($acl, $em, $config, $moduleManager, $viewRenderer, $filemanager)
+    public function __construct($config, $acl, $em, $moduleManager, $viewRenderer, $filemanager)
     {
-        parent::__construct($acl, $em);
-
-        $this->setConfig($config);
+        parent::__construct($config, $acl, $em);
         $this->setModuleManagerService($moduleManager);
         $this->setViewRenderer($viewRenderer);
         $this->setFilemanager($filemanager);
@@ -210,8 +207,16 @@ class ModuleController extends AdminModuleBaseController
                     }
 
                     $entity = $this->moduleManager->addEntity($form, $this->userAuthentication()->getIdentity());
-                    $this->flashMessenger()->addSuccessMessage('Entity has been successfully updated');
-                    return $this->redirect()->toRoute('adminaut-module/action', ['module_id' => $moduleId, 'entity_id' => $entity->getId(), 'mode'=>'edit']);
+                    $this->flashMessenger()->addSuccessMessage('Entity has been successfully created');
+                    switch($post['submit']) {
+                        case 'create-and-continue' :
+                            return $this->redirect()->toRoute('adminaut-module/action', ['module_id' => $moduleId, 'entity_id' => $entity->getId(), 'mode' => 'edit']);
+                        case 'create-and-new' :
+                            return $this->redirect()->toRoute('adminaut-module/action', ['module_id' => $moduleId, 'mode' => 'add']);
+                        case 'create' :
+                        default :
+                            return $this->redirect()->toRoute('adminaut-module/list', ['module_id' => $moduleId]);
+                    }
                 } catch(\Exception $e) {
                     $this->flashMessenger()->addErrorMessage('Error: '.$e->getMessage());
                     return $this->redirect()->toRoute('adminaut-module/action', ['module_id' => $moduleId, 'mode'=>'add']);
@@ -221,6 +226,7 @@ class ModuleController extends AdminModuleBaseController
 
         return new ViewModel([
             'form' => $form,
+            'entity' => $entity,
             'moduleOption' => $this->moduleManager->getOptions()
         ]);
     }
@@ -282,7 +288,11 @@ class ModuleController extends AdminModuleBaseController
                     $this->moduleManager->updateEntity($entity, $form, $this->userAuthentication()->getIdentity());
 
                     $this->flashMessenger()->addSuccessMessage('Entity has been successfully updated');
-                    return $this->redirect()->toRoute('adminaut-module/action', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode'=>'edit']);
+                    if($post['submit'] == 'save-and-continue') {
+                        return $this->redirect()->toRoute('adminaut-module/action', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'edit']);
+                    } else {
+                        return $this->redirect()->toRoute('adminaut-module/list', ['module_id' => $moduleId]);
+                    }
                 } catch (\Exception $e) {
                     $this->flashMessenger()->addErrorMessage('Error: ' . $e->getMessage());
                     return $this->redirect()->toRoute('adminaut-module/action', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode'=>'edit']);
@@ -293,6 +303,7 @@ class ModuleController extends AdminModuleBaseController
         return new ViewModel([
             'form' => $form,
             'tabs' => $tabs,
+            'entity' => $entity,
             'moduleOption' => $this->moduleManager->getOptions(),
             'url_params' => [
                 'module_id' => $moduleId,
@@ -544,22 +555,6 @@ class ModuleController extends AdminModuleBaseController
         } else {
             return $this->moduleManager;
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function getConfig()
-    {
-        return $this->config;
-    }
-
-    /**
-     * @param array $config
-     */
-    public function setConfig($config)
-    {
-        $this->config = $config;
     }
 
     /**

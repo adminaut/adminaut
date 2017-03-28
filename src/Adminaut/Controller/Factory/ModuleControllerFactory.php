@@ -27,9 +27,9 @@ class ModuleControllerFactory implements FactoryInterface
         $parentLocator = $serviceLocator->getServiceLocator();
 
         return new ModuleController(
+            $parentLocator->get('config'),
             $parentLocator->get(AccessControlService::class),
             $parentLocator->get(\Doctrine\ORM\EntityManager::class),
-            $parentLocator->get('config'),
             $parentLocator->get(ModuleManager::class),
             $parentLocator->get('ViewRenderer'),
             $parentLocator->get(FileManager::class)

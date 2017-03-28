@@ -10,7 +10,9 @@
         }
     }
 
-    $skin = isset($this->config()['adminaut']['appearance']['skin']) ? $this->config()['adminaut']['appearance']['skin'] : 'blue';
+    /** @var array $appearance */
+    /** @var string $skin */
+    $skin = $appearance['skin'];
     $msappTileColor = isset($this->config()['adminaut']['manifest']['theme_color']) ? $this->config()['adminaut']['manifest']['theme_color'] : '#3c8dbc';
     $msappTileImage = isset($this->config()['adminaut']['manifest']['icons']) && $msTileImageIconPos != -1 ? $this->basePath($this->config()['adminaut']['manifest']['icons'][0]) : $this->basePath('adminaut/img/adminaut-icon-114x114.png');
 ?>
@@ -75,33 +77,9 @@
         <div class="wrapper">
             <header class="main-header">
                 <!-- Logo -->
-                <a href="<?php echo $this->url('adminaut'); ?>" class="logo<?php if(isset($this->config()['adminaut']['appearance']['logo']['type']) && $this->config()['adminaut']['appearance']['logo']['type'] == 'image') { echo ' logo-image'; } ?>">
-                    <?php if(!isset($this->config()['adminaut']['appearance']['logo']['type']) || $this->config()['adminaut']['appearance']['logo']['type'] == 'text') { ?>
-
-                        <?php if(isset($this->config()['adminaut']['appearance']['logo']['large'])) { ?>
-                            <span class="logo-lg"><?php echo $this->config()['adminaut']['appearance']['logo']['large'] ?></span>
-                        <?php } else { ?>
-                            <span class="logo-lg">Adminaut</span>
-                        <?php } ?>
-
-                        <?php if(isset($this->config()['adminaut']['appearance']['logo']['small'])) { ?>
-                            <span class="logo-mini"><?php echo $this->config()['adminaut']['appearance']['logo']['small'] ?></span>
-                        <?php } ?>
-
-                    <?php } elseif($this->config()['adminaut']['appearance']['logo']['type'] == 'image') { ?>
-
-                        <?php if(isset($this->config()['adminaut']['appearance']['logo']['large'])) { ?>
-                            <span class="logo-lg"><img src="<?php echo $this->basePath($this->config()['adminaut']['appearance']['logo']['large']); ?>" alt="<?php echo $this->config()['adminaut']['appearance']['title'] ?>"></span>
-                        <?php } else { ?>
-                            <span class="logo-lg">Adminaut</span>
-                        <?php } ?>
-
-                        <?php if(isset($this->config()['adminaut']['appearance']['logo']['small'])) { ?>
-                            <span class="logo-mini"><img src="<?php echo $this->basePath($this->config()['adminaut']['appearance']['logo']['small']); ?>" alt="<?php echo $this->config()['adminaut']['appearance']['title'] ?>"></span>
-                        <?php } ?>
-
-                    <?php } ?>
-
+                <a href="<?php echo $this->url('adminaut'); ?>" class="logo logo-image">
+                    <span class="logo-lg"><img src="<?php echo $this->basePath($appearance['logo']['large']); ?>" alt="<?php echo $appearance['title'] ?>"></span>
+                    <span class="logo-mini"><img src="<?php echo $this->basePath($appearance['logo']['small']); ?>" alt="<?php $appearance['title'] ?>"></span>
                 </a>
                 <!-- Header Navbar: style can be found in header.less -->
                 <nav class="navbar navbar-static-top">

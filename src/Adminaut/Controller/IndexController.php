@@ -1,20 +1,14 @@
 <?php
 namespace Adminaut\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 
 /**
  * Class IndexController
  * @package Adminaut\Controller
  */
-class IndexController extends AbstractActionController
+class IndexController extends AdminautBaseController
 {
-    /**
-     * @var array
-     */
-    protected $config;
-
     /**
      * @var array
      */
@@ -100,15 +94,6 @@ class IndexController extends AbstractActionController
     ];
 
     /**
-     * IndexController constructor.
-     * @param array $config
-     */
-    public function __construct($config)
-    {
-        $this->config = $config;
-    }
-
-    /**
      * @return \Zend\Http\Response
      */
     public function indexAction()
@@ -120,8 +105,8 @@ class IndexController extends AbstractActionController
      * @return JsonModel
      */
     public function manifestAction() {
-        if(isset($this->config['adminaut']['manifest'])) {
-            $manifest = array_merge($this->config['adminaut']['manifest'], $this->defaultManifest);
+        if(isset($this->getConfig()['adminaut']['manifest'])) {
+            $manifest = array_merge($this->getConfig()['adminaut']['manifest'], $this->defaultManifest);
         } else {
             $manifest = $this->defaultManifest;
         }

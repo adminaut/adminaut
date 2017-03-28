@@ -27,9 +27,9 @@ class UsersControllerFactory implements FactoryInterface
         $parentLocator = $serviceLocator->getServiceLocator();
 
         return new UsersController(
+            $parentLocator->get('config'),
             $parentLocator->get(AccessControlService::class),
             $parentLocator->get(\Doctrine\ORM\EntityManager::class),
-            $parentLocator->get('config'),
             $parentLocator->get(UserMapper::class),
             $parentLocator->get(UserService::class)
         );

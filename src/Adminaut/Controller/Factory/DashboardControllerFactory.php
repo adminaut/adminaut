@@ -22,6 +22,7 @@ class DashboardControllerFactory implements FactoryInterface
         $parentLocator = $serviceLocator->getServiceLocator();
 
         return new DashboardController(
+            $parentLocator->get('config'),
             $parentLocator->get(AccessControlService::class),
             $parentLocator->get(\Doctrine\ORM\EntityManager::class)
         );

@@ -8,7 +8,7 @@ use Zend\View\Model\ViewModel;
  * Class DashboardController
  * @package Adminaut\Controller
  */
-class DashboardController extends AdminModuleBaseController
+class DashboardController extends AdminautBaseController
 {
     /**
      * @return ViewModel

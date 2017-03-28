@@ -26,8 +26,25 @@ class AdminautBaseController extends AbstractActionController
      */
     protected $acl;
 
-    public function __construct($acl, $em)
+    /**
+     * @var array
+     */
+    protected $config;
+
+    private $defaultAppearance = [
+        'skin' => 'blue',
+        'title' => 'Adminaut',
+        'logo' => [
+            'type' => 'image',
+            'large' => 'adminaut/img/adminaut-logo.svg',
+            'small' => 'adminaut/img/adminaut-logo-mini.svg',
+        ],
+        'footer' => ''
+    ];
+
+    public function __construct($config, $acl, $em)
     {
+        $this->setConfig($config);
         $this->setAcl($acl);
         $this->setEntityManager($em);
     }
@@ -47,6 +64,8 @@ class AdminautBaseController extends AbstractActionController
 
         $this->layout('layout/admin');
         $this->layout()->setVariable('acl', $acl);
+        $appearance = array_merge($this->defaultAppearance, $this->config['adminaut']['appearance']);
+        $this->layout()->setVariable('appearance', $appearance);
         return $this;
     }
 
@@ -80,6 +99,22 @@ class AdminautBaseController extends AbstractActionController
     public function setAcl($acl)
     {
         $this->acl = $acl;
+    }
+
+    /**
+     * @return array
+     */
+    public function getConfig(): array
+    {
+        return $this->config;
+    }
+
+    /**
+     * @param array $config
+     */
+    public function setConfig(array $config)
+    {
+        $this->config = $config;
     }
 
     /**
