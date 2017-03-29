@@ -23,13 +23,13 @@
                         <td><?php echo $entity->getName(); ?></td>
                         <td>
                             <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
-                                <a href="<?php echo $this->url('adminaut-acl/show-role', ['roleId' => $entity->getId()]); ?>" type="button" class="btn btn-success"
+                                <a href="<?php echo $this->url('adminaut/acl/show-role', ['roleId' => $entity->getId()]); ?>" type="button" class="btn btn-success"
                                    data-toggle="tooltip" data-placement="top" title="Show" data-original-title="Show"><i class="fa fa-eye"></i></a>
                                 <?php if ($entity->getId() != 1) { ?>
                                     <?php if ($this->isAllowed('Roles', 2)) { ?>
-                                        <a href="<?php echo $this->url('adminaut-acl/update-role', ['roleId' => $entity->getId()]); ?>" type="button" class="btn btn-info"
+                                        <a href="<?php echo $this->url('adminaut/acl/update-role', ['roleId' => $entity->getId()]); ?>" type="button" class="btn btn-info"
                                            data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
-                                        <a href="<?php echo $this->url('adminaut-acl/delete-role', ['roleId' => $entity->getId()]); ?>" type="button" class="btn btn-danger btn-modal-delete"
+                                        <a href="<?php echo $this->url('adminaut/acl/delete-role', ['roleId' => $entity->getId()]); ?>" type="button" class="btn btn-danger btn-modal-delete"
                                            data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><i class="fa fa-trash"></i></a>
                                     <?php } ?>
                                 <?php } ?>
@@ -45,7 +45,7 @@
 <div class="row">
     <div class="col-lg-12">
         <?php if ($this->isAllowed('Roles', 2)) { ?>
-            <a href="<?php echo $this->url('adminaut-acl/add-role'); ?>" class="btn btn-primary "><i class="fa fa-plus"></i> <?php echo $this->translate('Add new role'); ?></a>
+            <a href="<?php echo $this->url('adminaut/acl/add-role'); ?>" class="btn btn-primary "><i class="fa fa-plus"></i> <?php echo $this->translate('Add new role'); ?></a>
         <?php } ?>
     </div>
 </div>

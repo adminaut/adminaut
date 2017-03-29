@@ -30,7 +30,7 @@ class AdminModulesManager implements ServiceManagerAwareInterface
             $modules,
             [
                 'label' => 'Dashboard',
-                'route' => 'adminaut-dashboard',
+                'route' => 'adminaut/dashboard',
                 'icon' => 'fa fa-fw fa-dashboard',
             ]
         );

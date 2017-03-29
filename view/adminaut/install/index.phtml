@@ -1,12 +1,12 @@
 <?php
     $form = $this->form;
-    $form->setAttribute('action', $this->url('adminaut-install'));
+    $form->setAttribute('action', $this->url('adminaut/install'));
     $form->prepare();
 ?>
 <div class="login-box">
     <?php echo $this->form(null, null)->openTag($form); ?>
     <div class="login-logo">
-        <a href="<?php echo $this->url('adminaut-user/login') ?>">Adminaut</a>
+        <a href="<?php echo $this->url('adminaut/user/login') ?>">Adminaut</a>
     </div>
     <!-- /.login-logo -->
     <div class="box login-box-body box-success">

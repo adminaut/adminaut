@@ -19,12 +19,12 @@ class UserOptions extends AbstractOptions
     /**
      * @var string
      */
-    protected $loginRedirectRoute = 'adminaut-dashboard';
+    protected $loginRedirectRoute = 'adminaut/dashboard';
 
     /**
      * @var string
      */
-    protected $logoutRedirectRoute = 'adminaut-user/login';
+    protected $logoutRedirectRoute = 'adminaut/user/login';
 
     /**
      * @var bool

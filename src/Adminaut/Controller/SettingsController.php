@@ -19,7 +19,7 @@ class SettingsController extends AdminautBaseController
     public function indexAction()
     {
         if (!$this->acl()->isAllowed('settings', AccessControl::READ)) {
-            return $this->redirect()->toRoute('adminaut-dashboard');
+            return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
         $roleRepository = $this->getEntityManager()->getRepository('Adminaut\Entity\Role');

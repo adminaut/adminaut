@@ -98,13 +98,13 @@ class RedirectCallback
             $redirect = false;
         }
         switch ($currentRoute) {
-            case 'adminaut-user/register':
-            case 'adminaut-user/login':
-            case 'adminaut-user/authenticate':
+            case 'adminaut/user/register':
+            case 'adminaut/user/login':
+            case 'adminaut/user/authenticate':
                 $route = ($redirect) ?: $this->options->getLoginRedirectRoute();
                 return $this->router->assemble([], ['name' => $route]);
                 break;
-            case 'adminaut-user/logout':
+            case 'adminaut/user/logout':
                 $route = ($redirect) ?: $this->options->getLogoutRedirectRoute();
                 return $this->router->assemble([], ['name' => $route]);
                 break;

@@ -38,7 +38,7 @@ class AclController extends AdminautBaseController
     public function indexAction()
     {
         if (!$this->acl()->isAllowed('Roles', ACL::READ)) {
-            return $this->redirect()->toRoute('adminaut-dashboard');
+            return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
         $roleRepository = $this->getEntityManager()->getRepository('Adminaut\Entity\Role');
@@ -55,7 +55,7 @@ class AclController extends AdminautBaseController
     public function showRoleAction()
     {
         if (!$this->acl()->isAllowed('Roles', ACL::READ)) {
-            return $this->redirect()->toRoute('adminaut-dashboard');
+            return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
         $id = (int) $this->params()->fromRoute('roleId', 0);
@@ -92,7 +92,7 @@ class AclController extends AdminautBaseController
     public function addRoleAction()
     {
         if (!$this->acl()->isAllowed('Roles', ACL::WRITE)) {
-            return $this->redirect()->toRoute('adminaut-dashboard');
+            return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
         $form = new RoleForm();
@@ -105,10 +105,10 @@ class AclController extends AdminautBaseController
                     $AccessControl = $this->getAcl();
                     $role = $AccessControl->createRole($post);
                     $this->flashMessenger()->addSuccessMessage('Role has been successfully added.');
-                    return $this->redirect()->toRoute('adminaut-acl/update-role', ['roleId' => $role->getId()]);
+                    return $this->redirect()->toRoute('adminaut/acl/update-role', ['roleId' => $role->getId()]);
                 } catch(\Exception $e) {
                     $this->flashMessenger()->addErrorMessage('Error: '.$e->getMessage());
-                    return $this->redirect()->toRoute('adminaut-acl/add-role');
+                    return $this->redirect()->toRoute('adminaut/acl/add-role');
                 }
             }
         }
@@ -123,12 +123,12 @@ class AclController extends AdminautBaseController
     public function updateRoleAction()
     {
         if (!$this->acl()->isAllowed('Roles', ACL::WRITE)) {
-            return $this->redirect()->toRoute('adminaut-dashboard');
+            return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
         $id = (int) $this->params()->fromRoute('roleId', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('adminaut-acl');
+            return $this->redirect()->toRoute('adminaut/acl');
         }
 
         $roleMapper = $this->getRoleMapper();
@@ -137,7 +137,7 @@ class AclController extends AdminautBaseController
          */
         $role = $roleMapper->findById($id);
         if (!$role) {
-            return $this->redirect()->toRoute('adminaut-acl');
+            return $this->redirect()->toRoute('adminaut/acl');
         }
 
         /* @var $AccessControl \Adminaut\Service\AccessControl */
@@ -158,7 +158,7 @@ class AclController extends AdminautBaseController
                 } catch(\Exception $e) {
                     $this->flashMessenger()->addErrorMessage('Error: '.$e->getMessage());
                 }
-                return $this->redirect()->toRoute('adminaut-acl/update-role', ['roleId' => $id]);
+                return $this->redirect()->toRoute('adminaut/acl/update-role', ['roleId' => $id]);
             }
         }
 
@@ -174,7 +174,7 @@ class AclController extends AdminautBaseController
     public function deleteRoleAction()
     {
         if (!$this->acl()->isAllowed('Roles', ACL::WRITE)) {
-            return $this->redirect()->toRoute('adminaut-dashboard');
+            return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
         $id = (int) $this->params()->fromRoute('roleId', 0);
@@ -194,7 +194,7 @@ class AclController extends AdminautBaseController
                 }
             }
         }
-        return $this->redirect()->toRoute('adminaut-acl');
+        return $this->redirect()->toRoute('adminaut/acl');
     }
 
 

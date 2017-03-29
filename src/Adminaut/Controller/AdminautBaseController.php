@@ -57,7 +57,7 @@ class AdminautBaseController extends AbstractActionController
     {
         parent::onDispatch($e);
         if (!$this->userAuthentication()->hasIdentity()) {
-            return $this->redirect()->toRoute('adminaut-user/login');
+            return $this->redirect()->toRoute('adminaut/user/login');
         }
         $acl = $this->getAcl();
         $acl->setUser($this->userAuthentication()->getIdentity());

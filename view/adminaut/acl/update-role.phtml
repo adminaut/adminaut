@@ -11,7 +11,7 @@
 
         <?php
         $form = $this->form;
-        $form->setAttribute('action', $this->url('adminaut-acl/update-role', ['roleId' => $this->role->getId()]));
+        $form->setAttribute('action', $this->url('adminaut/acl/update-role', ['roleId' => $this->role->getId()]));
         $form->prepare();
 
         echo $this->form(null, null)->openTag($form); ?>
@@ -47,7 +47,7 @@
         </div>
         <?php } ?>
         <div class="form-group ">
-            <a href="<?php echo $this->url('adminaut-acl'); ?>" type="button" class="btn btn-default"><i class="fa fa-chevron-left"></i> <?php echo $this->translate('Back'); ?></a>
+            <a href="<?php echo $this->url('adminaut/acl'); ?>" type="button" class="btn btn-default"><i class="fa fa-chevron-left"></i> <?php echo $this->translate('Back'); ?></a>
             <button type="submit" name="submit" class="btn btn-primary" value="Save"><i class="fa fa-send fa"></i> Submit</button>
         </div>
         <?php echo $this->form()->closeTag(); ?>

@@ -138,356 +138,355 @@ return [
                             ],
                         ],
                     ],
-                ],
-            ],
-            'adminaut-install' => [
-                'type' => Literal::class,
-                'options' => [
-                    'route' => '/admin/install',
-                    'defaults' => [
-                        'controller' => \Adminaut\Controller\InstallController::class,
-                        'action' => 'index',
-                    ],
-                ],
-            ],
-            'adminaut-dashboard' => [
-                'type' => Literal::class,
-                'options' => [
-                    'route' => '/admin/dashboard',
-                    'defaults' => [
-                        'controller' => \Adminaut\Controller\DashboardController::class,
-                        'action' => 'index',
-                    ],
-                ],
-                'may_terminate' => false,
-            ],
-            'adminaut-module' => [
-                'type' => Literal::class,
-                'options' => [
-                    'route' => '/admin/module',
-                    'defaults' => [
-                        'controller' => \Adminaut\Controller\ModuleController::class,
-                        'action' => 'index',
-                    ],
-                ],
-                'may_terminate' => true,
-                'child_routes' => [
-                    'list' => [
-                        'type' => Segment::class,
+                    'install' => [
+                        'type' => Literal::class,
                         'options' => [
-                            'route' => '/:module_id',
+                            'route' => '/install',
                             'defaults' => [
-                                'action' => 'list',
-                            ],
-                            'constraints' => [
-                                'module_id' => '[a-z]*',
+                                'controller' => \Adminaut\Controller\InstallController::class,
+                                'action' => 'index',
                             ],
                         ],
                     ],
-                    'action' => [
-                        'type' => Segment::class,
+                    'dashboard' => [
+                        'type' => Literal::class,
                         'options' => [
-                            'route' => '/:module_id/:mode[/:entity_id]',
+                            'route' => '/dashboard',
                             'defaults' => [
-                                'tab' => 'main',
-                                'mode' => 'list',
-                                'action' => 'index'
+                                'controller' => \Adminaut\Controller\DashboardController::class,
+                                'action' => 'index',
                             ],
-                            'constraints' => [
-                                'mode'    => '(view|add|edit)',
-                                'module_id' => '[a-z]*',
-                                'entity_id' => '[0-9]*',
+                        ],
+                    ],
+                    'module' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/module',
+                            'defaults' => [
+                                'controller' => \Adminaut\Controller\ModuleController::class,
+                                'action' => 'index',
                             ],
                         ],
                         'may_terminate' => true,
                         'child_routes' => [
-                            'tab' => [
+                            'list' => [
                                 'type' => Segment::class,
                                 'options' => [
-                                    'route' => '/:tab',
+                                    'route' => '/:module_id',
                                     'defaults' => [
-                                        'action' => 'tab',
-                                        'tab' => 'main'
+                                        'action' => 'list',
                                     ],
                                     'constraints' => [
                                         'module_id' => '[a-z]*',
+                                    ],
+                                ],
+                            ],
+                            'action' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/:module_id/:mode[/:entity_id]',
+                                    'defaults' => [
+                                        'tab' => 'main',
+                                        'mode' => 'list',
+                                        'action' => 'index'
+                                    ],
+                                    'constraints' => [
+                                        'mode'    => '(view|add|edit)',
+                                        'module_id' => '[a-z]*',
                                         'entity_id' => '[0-9]*',
-                                        'cyclic_entity_id' => '[0-9]*',
-                                        'tab' => '[a-z]*'
-                                    ]
+                                    ],
                                 ],
                                 'may_terminate' => true,
                                 'child_routes' => [
-                                    'action' => [
+                                    'tab' => [
                                         'type' => Segment::class,
                                         'options' => [
-                                            'route' => '/:cyclic_entity_id/:entity_action',
+                                            'route' => '/:tab',
                                             'defaults' => [
-                                                'action' => 'tab'
+                                                'action' => 'tab',
+                                                'tab' => 'main'
                                             ],
                                             'constraints' => [
                                                 'module_id' => '[a-z]*',
                                                 'entity_id' => '[0-9]*',
                                                 'cyclic_entity_id' => '[0-9]*',
-                                                'entity_action' => '[a-z]*',
                                                 'tab' => '[a-z]*'
                                             ]
                                         ],
+                                        'may_terminate' => true,
+                                        'child_routes' => [
+                                            'action' => [
+                                                'type' => Segment::class,
+                                                'options' => [
+                                                    'route' => '/:cyclic_entity_id/:entity_action',
+                                                    'defaults' => [
+                                                        'action' => 'tab'
+                                                    ],
+                                                    'constraints' => [
+                                                        'module_id' => '[a-z]*',
+                                                        'entity_id' => '[0-9]*',
+                                                        'cyclic_entity_id' => '[0-9]*',
+                                                        'entity_action' => '[a-z]*',
+                                                        'tab' => '[a-z]*'
+                                                    ]
+                                                ],
+                                            ],
+                                        ]
                                     ],
                                 ]
                             ],
-                        ]
-                    ],
-                    'delete' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/:module_id/delete/:entity_id',
-                            'defaults' => [
-                                'action' => 'delete',
-                            ],
-                            'constraints' => [
-                                'module_id' => '[a-z]*',
-                                'entity_id' => '[0-9]*',
-                            ],
-                        ],
-                    ]
-                ],
-            ],
-            'adminaut-users' => [
-                'type' => Literal::class,
-                'options' => [
-                    'route' => '/admin/users',
-                    'defaults' => [
-                        'controller' => \Adminaut\Controller\UsersController::class,
-                        'action' => 'index',
-                    ],
-                ],
-                'may_terminate' => true,
-                'child_routes' => [
-                    'view' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/view/:id',
-                            'defaults' => [
-                                'action' => 'view',
-                            ],
-                            'constraints' => [
-                                'id' => '[0-9]*',
-                            ],
+                            'delete' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/:module_id/delete/:entity_id',
+                                    'defaults' => [
+                                        'action' => 'delete',
+                                    ],
+                                    'constraints' => [
+                                        'module_id' => '[a-z]*',
+                                        'entity_id' => '[0-9]*',
+                                    ],
+                                ],
+                            ]
                         ],
                     ],
-                    'add' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/add',
-                            'defaults' => [
-                                'action' => 'add',
-                            ],
-                        ],
-                    ],
-                    'edit' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/edit/:id',
-                            'defaults' => [
-                                'action' => 'edit',
-                            ],
-                            'constraints' => [
-                                'id' => '[0-9]*',
-                            ],
-                        ],
-                    ],
-                    'delete' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/delete/:id',
-                            'defaults' => [
-                                'action' => 'delete',
-                            ],
-                            'constraints' => [
-                                'id' => '[0-9]*',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            'adminaut-acl' => [
-                'type' => Literal::class,
-                'options' => [
-                    'route' => '/admin/acl',
-                    'defaults' => [
-                        'controller' => \Adminaut\Controller\AclController::class,
-                        'action' => 'index',
-                    ],
-                ],
-                'may_terminate' => true,
-                'child_routes' => [
-                    'add-role' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/add-role',
-                            'defaults' => [
-                                'action' => 'add-role',
-                            ],
-                        ],
-                    ],
-                    'view-role' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/view-role/:roleId',
-                            'defaults' => [
-                                'action' => 'view-role',
-                            ],
-                            'constraints' => [
-                                'roleId' => '[0-9]*',
-                            ],
-                        ],
-                    ],
-                    'edit-role' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/edit-role/:roleId',
-                            'defaults' => [
-                                'action' => 'edit-role',
-                            ],
-                            'constraints' => [
-                                'roleId' => '[0-9]*',
-                            ],
-                        ],
-                    ],
-                    'delete-role' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/delete-role/:roleId',
-                            'defaults' => [
-                                'action' => 'delete-role',
-                            ],
-                            'constraints' => [
-                                'roleId' => '[0-9]*',
-                            ],
-                        ],
-                    ]
-                ],
-            ],
-            'adminaut-settings' => [
-                'type' => Literal::class,
-                'options' => [
-                    'route' => '/admin/acl',
-                    'defaults' => [
-                        'controller' => \Adminaut\Controller\AclController::class,
-                        'action' => 'index',
-                    ],
-                ],
-                'may_terminate' => true,
-                'child_routes' => [
-                    'add-role' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/add-role',
-                            'defaults' => [
-                                'action' => 'add-role',
-                            ],
-                        ],
-                    ],
-                    'view-role' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/view-role/:roleId',
-                            'defaults' => [
-                                'action' => 'view-role',
-                            ],
-                            'constraints' => [
-                                'roleId' => '[0-9]*',
-                            ],
-                        ],
-                    ],
-                    'edit-role' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/edit-role/:roleId',
-                            'defaults' => [
-                                'action' => 'edit-role',
-                            ],
-                            'constraints' => [
-                                'roleId' => '[0-9]*',
-                            ],
-                        ],
-                    ],
-                    'delete-role' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/delete-role/:roleId',
-                            'defaults' => [
-                                'action' => 'delete-role',
-                            ],
-                            'constraints' => [
-                                'roleId' => '[0-9]*',
-                            ],
-                        ],
-                    ],
-                    'edit-role-permission' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/edit-role-permission/:roleId',
-                            'defaults' => [
-                                'action' => 'edit-role-permission',
-                            ],
-                            'constraints' => [
-                                'roleId' => '[0-9]*',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            'adminaut-user' => [
-                'type' => Literal::class,
-                'priority' => 1000,
-                'options' => [
-                    'route' => '/admin/user',
-                    'defaults' => [
-                        'controller' => \Adminaut\Controller\UserController::class,
-                        'action' => 'index',
-                    ],
-                ],
-                'may_terminate' => true,
-                'child_routes' => [
-                    'login' => [
+                    'users' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/login',
+                            'route' => '/users',
                             'defaults' => [
-                                'controller' => \Adminaut\Controller\UserController::class,
-                                'action' => 'login',
+                                'controller' => \Adminaut\Controller\UsersController::class,
+                                'action' => 'index',
+                            ],
+                        ],
+                        'may_terminate' => true,
+                        'child_routes' => [
+                            'view' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/view/:id',
+                                    'defaults' => [
+                                        'action' => 'view',
+                                    ],
+                                    'constraints' => [
+                                        'id' => '[0-9]*',
+                                    ],
+                                ],
+                            ],
+                            'add' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/add',
+                                    'defaults' => [
+                                        'action' => 'add',
+                                    ],
+                                ],
+                            ],
+                            'edit' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/edit/:id',
+                                    'defaults' => [
+                                        'action' => 'edit',
+                                    ],
+                                    'constraints' => [
+                                        'id' => '[0-9]*',
+                                    ],
+                                ],
+                            ],
+                            'delete' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/delete/:id',
+                                    'defaults' => [
+                                        'action' => 'delete',
+                                    ],
+                                    'constraints' => [
+                                        'id' => '[0-9]*',
+                                    ],
+                                ],
                             ],
                         ],
                     ],
-                    'forgot-password' => [
+                    'acl' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/forgot-password',
+                            'route' => '/acl',
                             'defaults' => [
-                                'controller' => \Adminaut\Controller\UserController::class,
-                                'action' => 'forgotPassword',
+                                'controller' => \Adminaut\Controller\AclController::class,
+                                'action' => 'index',
+                            ],
+                        ],
+                        'may_terminate' => true,
+                        'child_routes' => [
+                            'add-role' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/add-role',
+                                    'defaults' => [
+                                        'action' => 'add-role',
+                                    ],
+                                ],
+                            ],
+                            'view-role' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/view-role/:roleId',
+                                    'defaults' => [
+                                        'action' => 'view-role',
+                                    ],
+                                    'constraints' => [
+                                        'roleId' => '[0-9]*',
+                                    ],
+                                ],
+                            ],
+                            'edit-role' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/edit-role/:roleId',
+                                    'defaults' => [
+                                        'action' => 'edit-role',
+                                    ],
+                                    'constraints' => [
+                                        'roleId' => '[0-9]*',
+                                    ],
+                                ],
+                            ],
+                            'delete-role' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/delete-role/:roleId',
+                                    'defaults' => [
+                                        'action' => 'delete-role',
+                                    ],
+                                    'constraints' => [
+                                        'roleId' => '[0-9]*',
+                                    ],
+                                ],
+                            ]
+                        ],
+                    ],
+                    'settings' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/acl',
+                            'defaults' => [
+                                'controller' => \Adminaut\Controller\AclController::class,
+                                'action' => 'index',
+                            ],
+                        ],
+                        'may_terminate' => true,
+                        'child_routes' => [
+                            'add-role' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/add-role',
+                                    'defaults' => [
+                                        'action' => 'add-role',
+                                    ],
+                                ],
+                            ],
+                            'view-role' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/view-role/:roleId',
+                                    'defaults' => [
+                                        'action' => 'view-role',
+                                    ],
+                                    'constraints' => [
+                                        'roleId' => '[0-9]*',
+                                    ],
+                                ],
+                            ],
+                            'edit-role' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/edit-role/:roleId',
+                                    'defaults' => [
+                                        'action' => 'edit-role',
+                                    ],
+                                    'constraints' => [
+                                        'roleId' => '[0-9]*',
+                                    ],
+                                ],
+                            ],
+                            'delete-role' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/delete-role/:roleId',
+                                    'defaults' => [
+                                        'action' => 'delete-role',
+                                    ],
+                                    'constraints' => [
+                                        'roleId' => '[0-9]*',
+                                    ],
+                                ],
+                            ],
+                            'edit-role-permission' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/edit-role-permission/:roleId',
+                                    'defaults' => [
+                                        'action' => 'edit-role-permission',
+                                    ],
+                                    'constraints' => [
+                                        'roleId' => '[0-9]*',
+                                    ],
+                                ],
                             ],
                         ],
                     ],
-                    'authenticate' => [
+                    'user' => [
                         'type' => Literal::class,
+                        'priority' => 1000,
                         'options' => [
-                            'route' => '/authenticate',
+                            'route' => '/user',
                             'defaults' => [
                                 'controller' => \Adminaut\Controller\UserController::class,
-                                'action' => 'authenticate',
+                                'action' => 'index',
                             ],
                         ],
-                    ],
-                    'logout' => [
-                        'type' => Literal::class,
-                        'options' => [
-                            'route' => '/logout',
-                            'defaults' => [
-                                'controller' => \Adminaut\Controller\UserController::class,
-                                'action'     => 'logout',
+                        'may_terminate' => true,
+                        'child_routes' => [
+                            'login' => [
+                                'type' => Literal::class,
+                                'options' => [
+                                    'route' => '/login',
+                                    'defaults' => [
+                                        'controller' => \Adminaut\Controller\UserController::class,
+                                        'action' => 'login',
+                                    ],
+                                ],
+                            ],
+                            'forgot-password' => [
+                                'type' => Literal::class,
+                                'options' => [
+                                    'route' => '/forgot-password',
+                                    'defaults' => [
+                                        'controller' => \Adminaut\Controller\UserController::class,
+                                        'action' => 'forgotPassword',
+                                    ],
+                                ],
+                            ],
+                            'authenticate' => [
+                                'type' => Literal::class,
+                                'options' => [
+                                    'route' => '/authenticate',
+                                    'defaults' => [
+                                        'controller' => \Adminaut\Controller\UserController::class,
+                                        'action' => 'authenticate',
+                                    ],
+                                ],
+                            ],
+                            'logout' => [
+                                'type' => Literal::class,
+                                'options' => [
+                                    'route' => '/logout',
+                                    'defaults' => [
+                                        'controller' => \Adminaut\Controller\UserController::class,
+                                        'action'     => 'logout',
+                                    ],
+                                ],
                             ],
                         ],
                     ],

@@ -11,13 +11,13 @@
 
         <?php
         $form = $this->form;
-        $form->setAttribute('action', $this->url('adminaut-acl/add-role'));
+        $form->setAttribute('action', $this->url('adminaut/acl/add-role'));
         $form->prepare();
         echo $this->form(null, null)->openTag($form);
         echo $this->formCollection($form);
         ?>
         <div class="form-group ">
-            <a href="<?php echo $this->url('adminaut-acl'); ?>" class="btn btn-default"><i class="fa fa-chevron-left"></i> <?php echo $this->translate('Back'); ?></a>
+            <a href="<?php echo $this->url('adminaut/acl'); ?>" class="btn btn-default"><i class="fa fa-chevron-left"></i> <?php echo $this->translate('Back'); ?></a>
             <button type="submit" name="submit" class="btn btn-primary" value=""><i class="fa fa-send"></i> Submit</button>
         </div>
         <?php echo $this->form()->closeTag(); ?>

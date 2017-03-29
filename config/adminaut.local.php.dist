@@ -17,8 +17,8 @@ return [
             ],
         ],
         'user' => [
-            'login_redirect_route' => 'adminaut-user',
-            'logout_redirect_route' => 'adminaut-user/login',
+            'login_redirect_route' => 'adminaut/user',
+            'logout_redirect_route' => 'adminaut/user/login',
             'enable_user_status' => true,
             'default_user_status' => 1,
             'allowed_login_status' => [null, 1],

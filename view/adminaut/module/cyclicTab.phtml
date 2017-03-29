@@ -3,12 +3,12 @@
         <?php echo $this->parentModuleOption->getModuleName() ?>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="<?php echo $this->url('adminaut-dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="<?php echo $this->url('adminaut-module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->parentModuleOption->getModuleName() ?></a></li>
+        <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->parentModuleOption->getModuleName() ?></a></li>
         <?php if($this->url_params['mode'] == 'detail') { ?>
-            <li><a href="<?php echo $this->url('adminaut-module/action', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'mode' => $this->url_params['mode']]) ?>"><?php echo $this->parentModuleOption->getLabels()['entity_detail'] ?></a></li>
+            <li><a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'mode' => $this->url_params['mode']]) ?>"><?php echo $this->parentModuleOption->getLabels()['entity_detail'] ?></a></li>
         <?php } else { ?>
-            <li><a href="<?php echo $this->url('adminaut-module/action', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'mode' => $this->url_params['mode']]) ?>"><?php echo $this->parentModuleOption->getLabels()['update_entity'] ?></a></li>
+            <li><a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'mode' => $this->url_params['mode']]) ?>"><?php echo $this->parentModuleOption->getLabels()['update_entity'] ?></a></li>
         <?php } ?>
         <li class="active"><?php echo $this->tabs[$this->currentTab]['label'] ?></li>
     </ol>
@@ -51,9 +51,9 @@
                                 <td>
                                     <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
                                         <?php if ($this->isAllowed($this->parentModuleOption->getModuleId(), 2)) { ?>
-                                            <a href="<?php echo $this->url('adminaut-module/action/tab/action', ['module_id' => $this->url_params['module_id'], 'mode' => 'edit', 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId(), 'entity_action' => 'edit']); ?>" type="button" class="btn btn-info"
+                                            <a href="<?php echo $this->url('adminaut/module/action/tab/action', ['module_id' => $this->url_params['module_id'], 'mode' => 'edit', 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId(), 'entity_action' => 'edit']); ?>" type="button" class="btn btn-info"
                                                data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
-                                            <a href="<?php echo $this->url('adminaut-module/action/tab/action', ['module_id' => $this->url_params['module_id'], 'mode' => 'edit', 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId(), 'entity_action' => 'delete']); ?>" type="button" class="btn btn-danger btn-modal-delete"
+                                            <a href="<?php echo $this->url('adminaut/module/action/tab/action', ['module_id' => $this->url_params['module_id'], 'mode' => 'edit', 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId(), 'entity_action' => 'delete']); ?>" type="button" class="btn btn-danger btn-modal-delete"
                                                data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><i class="fa fa-trash"></i></a>
                                         <?php } ?>
                                     </div>
@@ -79,9 +79,9 @@
                 <?php if($this->mode == 'view') { ?>
                     <div class="box-footer clearfix">
                         <?php if ($this->isAllowed($this->parentModuleOption->getModuleName(), 2)) { ?>
-                            <a href="<?php echo $this->url('adminaut-module/action/tab', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'mode' => 'edit', 'tab' => $this->currentTab]); ?>" class="btn btn-primary"><?php echo $this->translate('Edit'); ?></a>
+                            <a href="<?php echo $this->url('adminaut/module/action/tab', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'mode' => 'edit', 'tab' => $this->currentTab]); ?>" class="btn btn-primary"><?php echo $this->translate('Edit'); ?></a>
                         <?php } ?>
-                        <a href="<?php echo $this->url('adminaut-module/list', ['module_id' => $this->parentModuleOption->getModuleId()]); ?>" class="btn btn-link"><?php echo $this->translate('Back to list'); ?></a>
+                        <a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->parentModuleOption->getModuleId()]); ?>" class="btn btn-link"><?php echo $this->translate('Back to list'); ?></a>
                     </div>
                 <?php } ?>
             </div>
@@ -112,7 +112,7 @@
 
                 <div class="box-footer clearfix">
                     <?php if($this->action == "update") { ?>
-                        <a href="<?php echo $this->url('adminaut-module/action/tab', ['module_id' => $this->url_params['module_id'], 'mode' => $this->url_params['mode'], 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId()]); ?>" class="btn btn-sm btn-primary btn-flat pull-left"><i class="fa fa-chevron-left"></i> <?php echo $this->translate('Close update'); ?></a>
+                        <a href="<?php echo $this->url('adminaut/module/action/tab', ['module_id' => $this->url_params['module_id'], 'mode' => $this->url_params['mode'], 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId()]); ?>" class="btn btn-sm btn-primary btn-flat pull-left"><i class="fa fa-chevron-left"></i> <?php echo $this->translate('Close update'); ?></a>
                     <?php } ?>
                     <button type="submit" name="submit" class="btn btn-primary" value="">Create</button>
                 </div>

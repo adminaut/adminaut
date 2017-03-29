@@ -18,10 +18,10 @@ use Zend\View\Model\ViewModel;
  */
 class UserController extends AbstractActionController
 {
-    const ROUTE_CHANGEPASSWD = 'adminaut-user/changepassword';
-    const ROUTE_LOGIN = 'adminaut-user/login';
-    const ROUTE_REGISTER = 'adminaut-user/register';
-    const ROUTE_CHANGEEMAIL  = 'adminaut-user/changeemail';
+    const ROUTE_CHANGEPASSWD = 'adminaut/user/changepassword';
+    const ROUTE_LOGIN = 'adminaut/user/login';
+    const ROUTE_REGISTER = 'adminaut/user/register';
+    const ROUTE_CHANGEEMAIL  = 'adminaut/user/changeemail';
     const CONTROLLER_NAME = self::class;
 
     /**
@@ -101,7 +101,7 @@ class UserController extends AbstractActionController
 
         // check superuser, if not exist, create
         if (!$this->getUserService()->checkSuperuser()){
-            return $this->redirect()->toRoute('adminaut-install');
+            return $this->redirect()->toRoute('adminaut/install');
         }
 
         $request = $this->getRequest();

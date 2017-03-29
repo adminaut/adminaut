@@ -3,8 +3,8 @@
         <?php echo $this->moduleOption->getModuleName() ?>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="<?php echo $this->url('adminaut-dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="<?php echo $this->url('adminaut-module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->moduleOption->getModuleName() ?></a></li>
+        <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->moduleOption->getModuleName() ?></a></li>
         <li class="active"><?php echo $this->moduleOption->getLabels()['entity_detail'] ?></li>
     </ol>
 </section>
@@ -17,11 +17,11 @@
                 $actions = [];
                 if ($this->isAllowed($this->moduleOption->getModuleName(), \Adminaut\Service\AccessControlService::WRITE)) {
                     $actions[] = [
-                        'url' => $this->url('adminaut-module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode' => 'update']),
+                        'url' => $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode' => 'update']),
                         'icon' => 'fa fa-pencil'
                     ];
                     $actions[] = [
-                        'url' => $this->url('adminaut-module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode'=>'add']),
+                        'url' => $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode'=>'add']),
                         'icon' => 'fa fa-plus'
                     ];
                 }

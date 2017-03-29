@@ -33,7 +33,7 @@ class Navigation extends DefaultNavigationFactory
 
         $pages[] = [
             'label' => 'Dashboard',
-            'route' => 'adminaut-dashboard',
+            'route' => 'adminaut/dashboard',
             'icon' => 'fa fa-fw fa-dashboard'
         ];
 
@@ -47,14 +47,14 @@ class Navigation extends DefaultNavigationFactory
                     }
                     $pages[] = [
                         'label' => $item['module_name'],
-                        'route' => 'adminaut-module/list',
+                        'route' => 'adminaut/module/list',
                         'params' => [
                             'module_id' => $key,
                         ],
                         'icon' => $icon,
                         'pages' => [
                             [
-                                'route' => 'adminaut-module/action',
+                                'route' => 'adminaut/module/action',
                                 'visible' => false,
                                 'params' => [
                                     'module_id' => $key,
@@ -71,20 +71,20 @@ class Navigation extends DefaultNavigationFactory
             if ($accessControl->isAllowed('users', AccessControlService::READ)) {
                 $subPage[] = [
                     'label' => 'Users',
-                    'route' => 'adminaut-users',
+                    'route' => 'adminaut/users',
                     'icon' => 'fa fa-fw fa-user',
                     'pages' => [
                         [
                             'label' => 'Add',
-                            'route' => 'adminaut-users/add'
+                            'route' => 'adminaut/users/add'
                         ],
                         [
                             'label' => 'View',
-                            'route' => 'adminaut-users/view'
+                            'route' => 'adminaut/users/view'
                         ],
                         [
                             'label' => 'Edit',
-                            'route' => 'adminaut-users/edit'
+                            'route' => 'adminaut/users/edit'
                         ]
                     ]
                 ];

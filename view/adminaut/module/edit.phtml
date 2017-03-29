@@ -1,6 +1,6 @@
 <?php
     $form = $this->form;
-//    $form->setAttribute('action', $this->url('adminaut-module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode' => 'update']));
+//    $form->setAttribute('action', $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode' => 'update']));
     $form->prepare();
 ?>
 
@@ -9,8 +9,8 @@
         <?php echo $this->moduleOption->getModuleName() ?>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="<?php echo $this->url('adminaut-dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="<?php echo $this->url('adminaut-module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->moduleOption->getModuleName() ?></a></li>
+        <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->moduleOption->getModuleName() ?></a></li>
         <li class="active"><?php echo $this->moduleOption->getLabels()['update_entity'] ?></li>
     </ol>
 </section>
@@ -36,8 +36,8 @@
                 <div class="box-footer clearfix">
                     <button type="submit" name="submit" value="save" class="btn btn-primary"><?php echo $this->translate('Save'); ?></button>
                     <button type="submit" name="submit" value="save-and-continue" class="btn btn-default"><?php echo $this->translate('Save and continue'); ?></button>
-                    <a href="<?php echo $this->url('adminaut-module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>" class="btn btn-link"><?php echo $this->translate('Back to list'); ?></a>
-                    <a href="<?php echo $this->url('adminaut-module/delete', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId()]); ?>" class="btn btn-danger pull-right"><?php echo $this->translate('Delete'); ?></a>
+                    <a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>" class="btn btn-link"><?php echo $this->translate('Back to list'); ?></a>
+                    <a href="<?php echo $this->url('adminaut/module/delete', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId()]); ?>" class="btn btn-danger pull-right"><?php echo $this->translate('Delete'); ?></a>
                 </div>
                 <!-- /.box-footer -->
             </div>

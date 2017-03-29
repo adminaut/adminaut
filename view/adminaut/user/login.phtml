@@ -1,6 +1,6 @@
 <div class="login-box">
     <div class="login-logo">
-        <a href="<?php echo $this->url('adminaut-user/login') ?>">Adminaut</a>
+        <a href="<?php echo $this->url('adminaut/user/login') ?>">Adminaut</a>
     </div>
     <!-- /.login-logo -->
     <div class="box login-box-body box-success">
@@ -8,7 +8,7 @@
 
         <?php
         $form = $this->loginForm;
-        $form->setAttribute('action', $this->url('adminaut-user/login'));
+        $form->setAttribute('action', $this->url('adminaut/user/login'));
         $form->prepare();
 
         echo $this->form(null, null)->openTag($form);
@@ -16,7 +16,7 @@
         echo $this->form()->closeTag();
         ?>
 
-        <!--<form action="<?php echo $this->url('adminaut-user/login') ?>" method="post">
+        <!--<form action="<?php echo $this->url('adminaut/user/login') ?>" method="post">
             <div class="form-group has-feedback">
                 <input type="email" class="form-control" placeholder="Email">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -29,7 +29,7 @@
             </div>
         </form>-->
 
-        <a href="<?php echo $this->url('adminaut-user/forgot-password'); ?>">I forgot my password</a><br>
+        <a href="<?php echo $this->url('adminaut/user/forgot-password'); ?>">I forgot my password</a><br>
         <a href="#">Request access</a>
 
     </div>

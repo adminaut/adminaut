@@ -4,8 +4,8 @@
         <small><?php echo $this->user->getName() ?></small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="<?php echo $this->url('adminaut-dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="<?php echo $this->url('adminaut-users'); ?>">Users</a></li>
+        <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="<?php echo $this->url('adminaut/users'); ?>">Users</a></li>
         <li class="active">Detail</li>
     </ol>
 </section>
@@ -43,9 +43,9 @@
                 <!-- /.tab-content -->
                 <div class="box-footer clearfix">
                     <?php if ($this->isAllowed('users', 2)) { ?>
-                        <a href="<?php echo $this->url('adminaut-users/edit', ['id' => $this->user->getId()]); ?>" class="btn btn-primary"><?php echo $this->translate('Edit'); ?></a>
+                        <a href="<?php echo $this->url('adminaut/users/edit', ['id' => $this->user->getId()]); ?>" class="btn btn-primary"><?php echo $this->translate('Edit'); ?></a>
                     <?php } ?>
-                    <a href="<?php echo $this->url('adminaut-users'); ?>" class="btn btn-link"><?php echo $this->translate('Back to list'); ?></a>
+                    <a href="<?php echo $this->url('adminaut/users'); ?>" class="btn btn-link"><?php echo $this->translate('Back to list'); ?></a>
                 </div>
                 <!-- /.box-footer -->
             </div>

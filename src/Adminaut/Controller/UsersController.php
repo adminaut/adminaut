@@ -43,7 +43,7 @@ class UsersController extends AdminautBaseController
     public function indexAction()
     {
         if (!$this->acl()->isAllowed('users', AccessControlService::READ)) {
-            return $this->redirect()->toRoute('adminaut-dashboard');
+            return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
         /** @var UserRepository $userRepository */
@@ -60,18 +60,18 @@ class UsersController extends AdminautBaseController
     public function viewAction()
     {
         if (!$this->acl()->isAllowed('users', AccessControlService::READ)) {
-            return $this->redirect()->toRoute('adminaut-dashboard');
+            return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('adminaut-users');
+            return $this->redirect()->toRoute('adminaut/users');
         }
 
         $userService = $this->getUserMapper();
         $user = $userService->findById($id);
         if (!$user) {
-            return $this->redirect()->toRoute('adminaut-users');
+            return $this->redirect()->toRoute('adminaut/users');
         }
 
         return new ViewModel([
@@ -85,7 +85,7 @@ class UsersController extends AdminautBaseController
     public function addAction()
     {
         if (!$this->acl()->isAllowed('users', AccessControlService::WRITE)) {
-            return $this->redirect()->toRoute('adminaut-dashboard');
+            return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
         $form = new UserForm(UserForm::STATUS_ADD);
@@ -108,14 +108,14 @@ class UsersController extends AdminautBaseController
                     $this->flashMessenger()->addSuccessMessage('User has been successfully created');
                     switch($post['submit']) {
                         case 'create-and-continue' :
-                            return $this->redirect()->toRoute('adminaut-users/update', ['id' => $user->getId()]);
+                            return $this->redirect()->toRoute('adminaut/users/update', ['id' => $user->getId()]);
                         case 'create' :
                         default :
-                            return $this->redirect()->toRoute('adminaut-users');
+                            return $this->redirect()->toRoute('adminaut/users');
                     }
                 } catch(\Exception $e) {
                     $this->flashMessenger()->addErrorMessage('Error: '.$e->getMessage());
-                    return $this->redirect()->toRoute('adminaut-users/add');
+                    return $this->redirect()->toRoute('adminaut/users/add');
                 }
             }
         }
@@ -130,18 +130,18 @@ class UsersController extends AdminautBaseController
     public function editAction()
     {
         if (!$this->acl()->isAllowed('users', AccessControlService::WRITE)) {
-            return $this->redirect()->toRoute('adminaut-dashboard');
+            return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('adminaut-users');
+            return $this->redirect()->toRoute('adminaut/users');
         }
 
         $userService = $this->getUserMapper();
         $user = $userService->findById($id);
         if (!$user) {
-            return $this->redirect()->toRoute('adminaut-users');
+            return $this->redirect()->toRoute('adminaut/users');
         }
 
         $form = new UserForm(UserForm::STATUS_UPDATE);
@@ -167,10 +167,10 @@ class UsersController extends AdminautBaseController
 
                     switch($post['submit']) {
                         case 'save-and-continue' :
-                            return $this->redirect()->toRoute('adminaut-users/edit', ['id' => $id]);
+                            return $this->redirect()->toRoute('adminaut/users/edit', ['id' => $id]);
                         case 'save' :
                         default :
-                        return $this->redirect()->toRoute('adminaut-users');
+                        return $this->redirect()->toRoute('adminaut/users');
                     }
                 } catch(\Exception $e) {
                     $this->flashMessenger()->addErrorMessage('Error: '.$e->getMessage());
@@ -190,7 +190,7 @@ class UsersController extends AdminautBaseController
     public function deleteAction()
     {
         if (!$this->acl()->isAllowed('users', AccessControlService::FULL)) {
-            return $this->redirect()->toRoute('adminaut-dashboard');
+            return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
         $id = (int) $this->params()->fromRoute('id', 0);
@@ -207,7 +207,7 @@ class UsersController extends AdminautBaseController
                 }
             }
         }
-        return $this->redirect()->toRoute('adminaut-users');
+        return $this->redirect()->toRoute('adminaut/users');
     }
 
 

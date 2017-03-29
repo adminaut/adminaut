@@ -35,7 +35,7 @@ class InstallController extends AbstractActionController
     {
         $user = $this->getUserService()->getUserMapper()->findFirst();
         if ($user) {
-            return $this->redirect()->toRoute('adminaut-dashboard');
+            return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
         $form = new UserForm(UserForm::STATUS_INSTALL);
@@ -49,10 +49,10 @@ class InstallController extends AbstractActionController
                     $userService = $this->getUserService();
                     $userService->createSuperuser($post);
                     $this->flashMessenger()->addSuccessMessage('User has been successfully added');
-                    return $this->redirect()->toRoute('adminaut-user/login');
+                    return $this->redirect()->toRoute('adminaut/user/login');
                 } catch(\Exception $e) {
                     $this->flashMessenger()->addErrorMessage('Error: '.$e->getMessage());
-                    return $this->redirect()->toRoute('adminaut-install');
+                    return $this->redirect()->toRoute('adminaut/install');
                 }
             }
         }
