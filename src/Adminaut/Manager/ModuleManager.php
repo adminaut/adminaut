@@ -51,9 +51,7 @@ class ModuleManager
     {
         $this->setEntityManager($em);
     }
-
-
-
+    
     /**
      * @return array
      */
@@ -100,6 +98,11 @@ class ModuleManager
         return $this->getMapper()->update($entity);
     }
 
+    /**
+     * @param BaseInterface $entity
+     * @param UserInterface $user
+     * @return mixed
+     */
     public function deleteEntity(BaseInterface $entity, UserInterface $user)
     {
         $entity->setDeleted(true);
