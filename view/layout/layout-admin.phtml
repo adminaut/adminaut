@@ -175,7 +175,7 @@
             </div>
 
             <footer class="main-footer">
-                <?php if($this->config()['adminaut']['appearance']['footer']) { ?>
+                <?php if (isset($this->config()['adminaut']['appearance']['footer'])) { ?>
                     <?php echo $this->config()['adminaut']['appearance']['footer'] ?>
                 <?php } ?>
                 Powered by <a href="http://adminaut.com/" target="_blank">Adminaut</a>.
