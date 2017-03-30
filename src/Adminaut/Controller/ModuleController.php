@@ -54,6 +54,15 @@ class ModuleController extends AdminautBaseController
      */
     protected $moduleManagerService;
 
+    /**
+     * ModuleController constructor.
+     * @param $config
+     * @param $acl
+     * @param $em
+     * @param $moduleManager
+     * @param $viewRenderer
+     * @param $filemanager
+     */
     public function __construct($config, $acl, $em, $moduleManager, $viewRenderer, $filemanager)
     {
         parent::__construct($config, $acl, $em);
@@ -68,7 +77,7 @@ class ModuleController extends AdminautBaseController
     public function indexAction()
     {
         $mode = $this->params()->fromRoute('mode', false);
-        if($mode) {
+        if ($mode) {
             $view = $this->{$mode . "Action"}();
             $view->setTemplate('adminaut/module/' . $mode . ".phtml");
             return $view;
@@ -178,14 +187,14 @@ class ModuleController extends AdminautBaseController
         $form = $this->moduleManager->getForm();
 
         /* @var Element $element */
-        foreach($form->getElements() as $element){
-            if(!$this->acl()->isAllowed($moduleId, AccessControlService::READ, $element->getName())) {
+        foreach ($form->getElements() as $element) {
+            if (!$this->acl()->isAllowed($moduleId, AccessControlService::READ, $element->getName())) {
                 $form->remove($element->getName());
                 continue;
             }
 
             $element->setAttribute('disabled', true);
-            if($this->acl()->isAllowed($moduleId, AccessControlService::WRITE, $element->getName())) {
+            if ($this->acl()->isAllowed($moduleId, AccessControlService::WRITE, $element->getName())) {
                 $element->removeAttribute('disabled');
             }
         }
@@ -202,7 +211,6 @@ class ModuleController extends AdminautBaseController
                         if($file['error'] != 0){
                             continue;
                         }
-
                         $fm->upload($form->getElements()[$key], $this->userAuthentication()->getIdentity());
                     }
 

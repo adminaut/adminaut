@@ -1,20 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Josef
- * Date: 25.8.2016
- * Time: 10:59
- */
 
 namespace Adminaut\Form\View\Helper;
 
-
-use Adminaut\Form\Element\File;
+use Adminaut\Datatype\File;
 use Adminaut\Form\Element\FileImage;
 use Adminaut\Manager\FileManager;
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\FormFile as ZendFormFile;
 
+/**
+ * Class FormFile
+ * @package Adminaut\Form\View\Helper
+ */
 class FormFile extends ZendFormFile
 {
     /**
@@ -27,13 +24,13 @@ class FormFile extends ZendFormFile
     }
 
     /**
-     * @param File $element
+     * @param ElementInterface $element
      * @return string
      */
     public function render(ElementInterface $element)
     {
-        if($element instanceof File && $element->getFileObject()) {
-            $fileObject = $element->getFileObject();
+        if ($element instanceof File && $element->getFile()) {
+            $fileObject = $element->getFile();
             $fm = FileManager::getInstance();
             $element->setAttribute('class', 'hidden');
             $render = parent::render($element);

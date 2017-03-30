@@ -104,7 +104,7 @@ class AdminautBaseController extends AbstractActionController
     /**
      * @return array
      */
-    public function getConfig(): array
+    public function getConfig()
     {
         return $this->config;
     }
