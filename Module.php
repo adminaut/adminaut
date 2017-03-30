@@ -22,19 +22,19 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, In
      */
     public function init(ModuleManagerInterface $manager)
     {
-        $loadModules = $manager->getModules();
         $adminautModules = [
             'DoctrineModule',
             'DoctrineORMModule',
             'TwbBundle',
+            'BsbFlysystem'
         ];
-        $addModules = [];
+
+        $loadedModules = $manager->getLoadedModules(false);
         foreach ($adminautModules as $adminautModule) {
-            if (!in_array($adminautModule, $loadModules)) {
-                $addModules[] = $adminautModule;
+            if (!in_array($adminautModule, $loadedModules)) {
+                $manager->loadModule($adminautModule);
             }
         }
-        $manager->setModules(array_merge($addModules, $loadModules));
     }
 
     /**
