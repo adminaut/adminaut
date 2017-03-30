@@ -1,8 +1,6 @@
 <?php
 namespace Adminaut\Form;
 
-use Adminaut\Entity\BaseInterface;
-
 use Zend\Form\Element as ZendFormElement;
 
 /***

@@ -8,7 +8,7 @@ use DoctrineModule\Form\Element\ObjectMultiCheckbox;
 use DoctrineModule\Form\Element\ObjectRadio;
 use DoctrineModule\Form\Element\ObjectSelect;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
-use Adminaut\Entity\BaseInterface;
+use Adminaut\Entity\BaseEntityInterface;
 use Adminaut\Entity\UserInterface;
 use Adminaut\Form\Element;
 use Adminaut\Mapper\ModuleMapper;
@@ -51,7 +51,7 @@ class ModuleManager
     {
         $this->setEntityManager($em);
     }
-    
+
     /**
      * @return array
      */
@@ -77,7 +77,7 @@ class ModuleManager
     public function addEntity($form, UserInterface $user)
     {
         $entityClass = $this->options->getEntityClass();
-        /* @var $entity BaseInterface */
+        /* @var $entity BaseEntityInterface */
         $entity = new $entityClass();
         $entity->setInsertedBy($user->getId());
         $entity->setUpdatedBy($user->getId());
@@ -86,12 +86,12 @@ class ModuleManager
     }
 
     /**
-     * @param BaseInterface $entity
+     * @param BaseEntityInterface $entity
      * @param Form $form
      * @param $user
      * @return mixed
      */
-    public function updateEntity(BaseInterface $entity, Form $form, UserInterface $user)
+    public function updateEntity(BaseEntityInterface $entity, Form $form, UserInterface $user)
     {
         $entity->setUpdatedBy($user->getId());
         $entity = $this->bind($entity, $form);
@@ -99,11 +99,11 @@ class ModuleManager
     }
 
     /**
-     * @param BaseInterface $entity
+     * @param BaseEntityInterface $entity
      * @param UserInterface $user
      * @return mixed
      */
-    public function deleteEntity(BaseInterface $entity, UserInterface $user)
+    public function deleteEntity(BaseEntityInterface $entity, UserInterface $user)
     {
         $entity->setDeleted(true);
         $entity->setDeletedBy($user->getId());
@@ -111,11 +111,11 @@ class ModuleManager
     }
 
     /**
-     * @param BaseInterface $entity
+     * @param BaseEntityInterface $entity
      * @param Form $form
-     * @return BaseInterface
+     * @return BaseEntityInterface
      */
-    public function bind(BaseInterface $entity, Form $form)
+    public function bind(BaseEntityInterface $entity, Form $form)
     {
         /* @var $element Element */
         foreach ($form->getElements() as $element) {

@@ -11,7 +11,7 @@ use Zend\Form\Annotation;
  * @ORM\HasLifecycleCallbacks
  * @package Adminaut\Entity
  */
-class Base implements BaseInterface
+class Base implements BaseEntityInterface
 {
     /**
      * @ORM\Id

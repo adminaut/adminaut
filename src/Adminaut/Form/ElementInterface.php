@@ -2,8 +2,6 @@
 
 namespace Adminaut\Form;
 
-use Adminaut\Entity\BaseInterface;
-
 /**
  * Interface ElementInterface
  * @package Adminaut\Form

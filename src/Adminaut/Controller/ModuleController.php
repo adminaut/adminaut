@@ -6,7 +6,7 @@ use Adminaut\Controller\Plugin\Acl;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
-use Adminaut\Entity\BaseInterface;
+use Adminaut\Entity\BaseEntityInterface;
 use Adminaut\Form\Element;
 use Adminaut\Manager\ModuleManager;
 use Adminaut\Manager\FileManager;
@@ -257,7 +257,7 @@ class ModuleController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
-        /* @var $entity BaseInterface */
+        /* @var $entity BaseEntityInterface */
         $entity = $this->getAdminModuleManager($moduleId)->findById($entityId);
         if(!$entity){
             $this->flashMessenger()->addErrorMessage('Entity was not found.');
@@ -335,7 +335,7 @@ class ModuleController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
-        /* @var $entity BaseInterface */
+        /* @var $entity BaseEntityInterface */
         $entity = $this->getAdminModuleManager($moduleId)->findById($entityId);
         if(!$entity){
             $this->flashMessenger()->addErrorMessage('Entity was not found.');
@@ -385,7 +385,7 @@ class ModuleController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
-        /* @var $entity BaseInterface */
+        /* @var $entity BaseEntityInterface */
         $entity = $this->getAdminModuleManager($moduleId)->findById($entityId);
         if(!$entity){
             $this->flashMessenger()->addErrorMessage('Entity was not found.');
@@ -520,7 +520,7 @@ class ModuleController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
-        /* @var $entity BaseInterface */
+        /* @var $entity BaseEntityInterface */
         $entity = $this->getAdminModuleManager($moduleId)->findById($entityId);
         if(!$entity){
             $this->flashMessenger()->addErrorMessage('Entity was not found.');
