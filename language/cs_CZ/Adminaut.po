@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-04-03 14:21+0200\n"
-"PO-Revision-Date: 2017-04-03 11:15-0400\n"
+"PO-Revision-Date: 2017-04-03 11:35-0400\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: Czech\n"
 "Language: cs_CZ\n"
@@ -145,7 +145,7 @@ msgstr "Žádný"
 
 #: view/adminaut/acl/show-role.phtml:55
 msgid "Users assigned to role"
-msgstr ""
+msgstr "Uživatelé přiřazení k roli"
 
 #: view/adminaut/acl/show-role.phtml:77 view/adminaut/module/cyclicTab.phtml:82
 #: view/adminaut/module/view.phtml:43 view/adminaut/users/view.phtml:46
@@ -154,7 +154,7 @@ msgstr "Upravit"
 
 #: view/adminaut/acl/update-role.phtml:3
 msgid "Update role"
-msgstr ""
+msgstr "Aktualizovat roli"
 
 #: view/adminaut/dashboard/index.phtml:3 view/adminaut/dashboard/index.phtml:6
 #: view/adminaut/module/add.phtml:13 view/adminaut/module/cyclicTab.phtml:6
@@ -181,7 +181,7 @@ msgstr "Vytvořit a pokračovat"
 
 #: view/adminaut/module/add.phtml:38
 msgid "Create and new"
-msgstr ""
+msgstr "Vytvořit + nový záznam"
 
 #: view/adminaut/module/add.phtml:39 view/adminaut/module/cyclicTab.phtml:84
 #: view/adminaut/module/edit.phtml:39 view/adminaut/module/view.phtml:45
