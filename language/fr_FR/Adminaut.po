@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-04-03 14:21+0200\n"
-"PO-Revision-Date: 2017-04-03 12:40-0400\n"
+"PO-Revision-Date: 2017-04-03 12:53-0400\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -208,7 +208,7 @@ msgstr ""
 
 #: view/adminaut/module/edit.phtml:40 view/adminaut/module/view.phtml:46
 msgid "Delete"
-msgstr ""
+msgstr "Supprimer"
 
 #: view/adminaut/module/index.phtml:3 view/adminaut/module/index.phtml:7
 msgid "Module"
@@ -248,15 +248,15 @@ msgstr ""
 #: view/adminaut/users/index.phtml:3 view/adminaut/users/index.phtml:7
 #: view/adminaut/users/view.phtml:8
 msgid "Users"
-msgstr ""
+msgstr "Utilisateurs"
 
 #: view/adminaut/users/add.phtml:13
 msgid "Add"
-msgstr ""
+msgstr "Ajouter"
 
 #: view/adminaut/users/add.phtml:23
 msgid "Add new user"
-msgstr ""
+msgstr "Ajouter un nouvel utilisateur"
 
 #: view/adminaut/users/edit.phtml:14 view/adminaut/users/edit.phtml:24
 msgid "Update"
