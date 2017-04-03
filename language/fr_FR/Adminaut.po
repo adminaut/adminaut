@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-04-03 14:21+0200\n"
-"PO-Revision-Date: 2017-04-03 13:20-0400\n"
+"PO-Revision-Date: 2017-04-03 13:30-0400\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -204,7 +204,7 @@ msgstr "Sauvegarder"
 
 #: view/adminaut/module/edit.phtml:38 view/adminaut/users/edit.phtml:35
 msgid "Save and continue"
-msgstr ""
+msgstr "Sauvegarder et continuer"
 
 #: view/adminaut/module/edit.phtml:40 view/adminaut/module/view.phtml:46
 msgid "Delete"
