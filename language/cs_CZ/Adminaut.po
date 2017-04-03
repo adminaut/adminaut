@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-04-03 14:21+0200\n"
-"PO-Revision-Date: 2017-04-03 10:55-0400\n"
+"PO-Revision-Date: 2017-04-03 11:01-0400\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: Czech\n"
 "Language: cs_CZ\n"
@@ -76,7 +76,7 @@ msgstr ""
 #: view/adminaut/acl/index.phtml:15 view/adminaut/users/index.phtml:27
 #: view/adminaut/users/view.phtml:22
 msgid "Name"
-msgstr ""
+msgstr "Jméno"
 
 #: src/Adminaut/Form/User.php:58 src/Adminaut/Form/User.php:61
 #: src/Adminaut/Form/UserLogin.php:30 src/Adminaut/Form/UserLogin.php:34
@@ -87,12 +87,12 @@ msgstr ""
 #: src/Adminaut/Form/User.php:69 src/Adminaut/Form/User.php:72
 #: src/Adminaut/Form/UserLogin.php:42 src/Adminaut/Form/UserLogin.php:46
 msgid "Password"
-msgstr ""
+msgstr "Heslo"
 
 #: src/Adminaut/Form/User.php:81 src/Adminaut/Form/User.php:84
 #: view/adminaut/acl/show-role.phtml:3 view/adminaut/users/index.phtml:29
 msgid "Role"
-msgstr ""
+msgstr "Role"
 
 #: src/Adminaut/Form/User.php:85
 msgid "Select role"
@@ -115,11 +115,11 @@ msgstr ""
 #: view/adminaut/acl/update-role.phtml:50
 #: view/adminaut/user/forgot-password.phtml:17
 msgid "Back"
-msgstr ""
+msgstr "Zpět"
 
 #: view/adminaut/acl/index.phtml:3
 msgid "Roles"
-msgstr ""
+msgstr "Role"
 
 #: view/adminaut/acl/index.phtml:16 view/adminaut/module/cyclicTab.phtml:33
 #: view/adminaut/module/list.phtml:31 view/adminaut/users/index.phtml:31
@@ -133,15 +133,15 @@ msgstr ""
 #: view/adminaut/acl/show-role.phtml:18 view/adminaut/acl/show-role.phtml:28
 #: view/adminaut/acl/show-role.phtml:33 view/adminaut/acl/show-role.phtml:35
 msgid "Read"
-msgstr ""
+msgstr "Čtení"
 
 #: view/adminaut/acl/show-role.phtml:29 view/adminaut/acl/show-role.phtml:36
 msgid "Write"
-msgstr ""
+msgstr "Zápis"
 
 #: view/adminaut/acl/show-role.phtml:38 view/adminaut/acl/show-role.phtml:41
 msgid "None"
-msgstr ""
+msgstr "Žádný"
 
 #: view/adminaut/acl/show-role.phtml:55
 msgid "Users assigned to role"
@@ -150,7 +150,7 @@ msgstr ""
 #: view/adminaut/acl/show-role.phtml:77 view/adminaut/module/cyclicTab.phtml:82
 #: view/adminaut/module/view.phtml:43 view/adminaut/users/view.phtml:46
 msgid "Edit"
-msgstr ""
+msgstr "Upravit"
 
 #: view/adminaut/acl/update-role.phtml:3
 msgid "Update role"
@@ -173,11 +173,11 @@ msgstr ""
 #: view/adminaut/module/add.phtml:36 view/adminaut/module/cyclicTab.phtml:117
 #: view/adminaut/users/add.phtml:33
 msgid "Create"
-msgstr ""
+msgstr "Vytvořit"
 
 #: view/adminaut/module/add.phtml:37 view/adminaut/users/add.phtml:34
 msgid "Create and continue"
-msgstr ""
+msgstr "Vytvořit a pokračovat"
 
 #: view/adminaut/module/add.phtml:38
 msgid "Create and new"
