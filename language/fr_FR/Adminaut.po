@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-04-03 14:21+0200\n"
-"PO-Revision-Date: 2017-04-03 13:05-0400\n"
+"PO-Revision-Date: 2017-04-03 13:10-0400\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -35,7 +35,7 @@ msgstr ""
 #: src/Adminaut/Controller/UsersController.php:206
 #, php-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Erreur: %s"
 
 #: src/Adminaut/Controller/ModuleController.php:210
 msgid "Entity has been successfully created"
@@ -164,7 +164,7 @@ msgstr ""
 #: view/adminaut/users/edit.phtml:12 view/adminaut/users/index.phtml:6
 #: view/adminaut/users/view.phtml:7
 msgid "Dashboard"
-msgstr ""
+msgstr "Tableau de bord"
 
 #: view/adminaut/install/index.phtml:13
 msgid "Register first user"
@@ -192,7 +192,7 @@ msgstr ""
 
 #: view/adminaut/module/cyclicTab.phtml:102
 msgid "Add new"
-msgstr ""
+msgstr "Ajouter un nouveau"
 
 #: view/adminaut/module/cyclicTab.phtml:115
 msgid "Close update"
@@ -221,11 +221,11 @@ msgstr "Détail"
 
 #: view/adminaut/user/forgot-password.phtml:7
 msgid "Forgot password"
-msgstr ""
+msgstr "Mot de passe oublié"
 
 #: view/adminaut/user/forgot-password.phtml:16
 msgid "Send new password"
-msgstr ""
+msgstr "Envoyer le nouveau mot de passe"
 
 #: view/adminaut/user/login.phtml:7
 msgid "Sign in to start your session"
@@ -233,7 +233,7 @@ msgstr ""
 
 #: view/adminaut/user/login.phtml:32
 msgid "I forgot my password"
-msgstr ""
+msgstr "J’ai oublié mon mot de passe"
 
 #: view/adminaut/user/login.phtml:33
 msgid "Request access"
@@ -284,7 +284,7 @@ msgstr ""
 
 #: view/layout/layout-admin.phtml:124
 msgid "Sign out"
-msgstr ""
+msgstr "Se déconnecter"
 
 #: view/layout/layout-admin.phtml:150
 msgid "Search..."
@@ -293,7 +293,7 @@ msgstr "Rechercher..."
 #: view/layout/layout-admin.phtml:180
 #, php-format
 msgid "Powered by %s."
-msgstr ""
+msgstr "Powered by %s."
 
 #: view/partial/deleteModal.phtml:6
 msgid "Confirm delete"
@@ -301,7 +301,7 @@ msgstr ""
 
 #: view/partial/deleteModal.phtml:9
 msgid "Are you sure?"
-msgstr ""
+msgstr "Supprimer?"
 
 #: view/partial/deleteModal.phtml:12
 msgid "No"
@@ -309,4 +309,4 @@ msgstr "Non"
 
 #: view/partial/deleteModal.phtml:13
 msgid "Yes, delete it"
-msgstr ""
+msgstr "Oui, supprimez"
