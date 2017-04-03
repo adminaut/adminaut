@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-04-03 14:21+0200\n"
-"PO-Revision-Date: 2017-04-03 13:10-0400\n"
+"PO-Revision-Date: 2017-04-03 13:20-0400\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -69,7 +69,7 @@ msgstr ""
 
 #: src/Adminaut/Controller/UsersController.php:204
 msgid "User has been successfully deleted."
-msgstr ""
+msgstr "L’utilisateur a été supprimé avec succès."
 
 #: src/Adminaut/Form/Role.php:34 src/Adminaut/Form/Role.php:37
 #: src/Adminaut/Form/User.php:47 src/Adminaut/Form/User.php:50
@@ -133,15 +133,15 @@ msgstr ""
 #: view/adminaut/acl/show-role.phtml:18 view/adminaut/acl/show-role.phtml:28
 #: view/adminaut/acl/show-role.phtml:33 view/adminaut/acl/show-role.phtml:35
 msgid "Read"
-msgstr ""
+msgstr "Lecture"
 
 #: view/adminaut/acl/show-role.phtml:29 view/adminaut/acl/show-role.phtml:36
 msgid "Write"
-msgstr ""
+msgstr "Écriture"
 
 #: view/adminaut/acl/show-role.phtml:38 view/adminaut/acl/show-role.phtml:41
 msgid "None"
-msgstr ""
+msgstr "Aucun"
 
 #: view/adminaut/acl/show-role.phtml:55
 msgid "Users assigned to role"
@@ -150,7 +150,7 @@ msgstr ""
 #: view/adminaut/acl/show-role.phtml:77 view/adminaut/module/cyclicTab.phtml:82
 #: view/adminaut/module/view.phtml:43 view/adminaut/users/view.phtml:46
 msgid "Edit"
-msgstr ""
+msgstr "Modifier"
 
 #: view/adminaut/acl/update-role.phtml:3
 msgid "Update role"
@@ -173,22 +173,22 @@ msgstr ""
 #: view/adminaut/module/add.phtml:36 view/adminaut/module/cyclicTab.phtml:117
 #: view/adminaut/users/add.phtml:33
 msgid "Create"
-msgstr ""
+msgstr "Créer"
 
 #: view/adminaut/module/add.phtml:37 view/adminaut/users/add.phtml:34
 msgid "Create and continue"
-msgstr ""
+msgstr "Créer et continuer"
 
 #: view/adminaut/module/add.phtml:38
 msgid "Create and new"
-msgstr ""
+msgstr "Créer et nouveau"
 
 #: view/adminaut/module/add.phtml:39 view/adminaut/module/cyclicTab.phtml:84
 #: view/adminaut/module/edit.phtml:39 view/adminaut/module/view.phtml:45
 #: view/adminaut/users/add.phtml:35 view/adminaut/users/edit.phtml:36
 #: view/adminaut/users/view.phtml:48
 msgid "Back to list"
-msgstr ""
+msgstr "Retour à la liste"
 
 #: view/adminaut/module/cyclicTab.phtml:102
 msgid "Add new"
@@ -200,7 +200,7 @@ msgstr ""
 
 #: view/adminaut/module/edit.phtml:37 view/adminaut/users/edit.phtml:34
 msgid "Save"
-msgstr ""
+msgstr "Sauvegarder"
 
 #: view/adminaut/module/edit.phtml:38 view/adminaut/users/edit.phtml:35
 msgid "Save and continue"
@@ -297,7 +297,7 @@ msgstr "Powered by %s."
 
 #: view/partial/deleteModal.phtml:6
 msgid "Confirm delete"
-msgstr ""
+msgstr "Confirmer la suppression"
 
 #: view/partial/deleteModal.phtml:9
 msgid "Are you sure?"
