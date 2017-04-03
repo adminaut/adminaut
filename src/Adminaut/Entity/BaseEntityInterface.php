@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Zend\Form\Annotation;
 
 /**
- * Interface BaseInterface
+ * Interface BaseEntityInterface
  * @package Adminaut\Entity
  */
-interface BaseInterface
+interface BaseEntityInterface
 {
     /**
      * @return int

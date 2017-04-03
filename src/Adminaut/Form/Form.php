@@ -1,11 +1,14 @@
 <?php
 namespace Adminaut\Form;
 
-
-use Zend\Form\Element\Checkbox;
-use Zend\Form\Element\Radio;
+use Adminaut\Datatype\Checkbox;
+use Adminaut\Datatype\Radio;
 use Zend\Form\FieldsetInterface;
 
+/**
+ * Class Form
+ * @package Adminaut\Form
+ */
 class Form extends \Zend\Form\Form
 {
     /**
@@ -35,10 +38,18 @@ class Form extends \Zend\Form\Form
         $this->tabs = $tabs;
     }
 
-    public function addTab($name, $data){
+    /**
+     * @param $name
+     * @param $data
+     */
+    public function addTab($name, $data)
+    {
         $this->tabs[$name] = $data;
     }
 
+    /**
+     * @return \Zend\Form\Form
+     */
     public function prepare()
     {
         /** @var ElementInterface | FieldsetInterface $elementOrFieldset */
@@ -46,23 +57,20 @@ class Form extends \Zend\Form\Form
             $elementOrFieldset->setOption('twb-layout', 'horizontal');
             $elementOrFieldset->setOption('column-size', 'sm-10');
 
-            if($elementOrFieldset->getLabel()) {
+            if ($elementOrFieldset->getLabel()) {
                 $elementOrFieldset->setLabelAttributes(['class' => 'col-sm-2']);
             } else {
                 $elementOrFieldset->setOption('column-size', 'sm-10 col-sm-offset-2');
             }
 
-            if($elementOrFieldset instanceof Checkbox) {
+            if ($elementOrFieldset instanceof Checkbox) {
                 $elementOrFieldset->setOption('column-size', 'sm-10 checkbox');
             }
 
-            if($elementOrFieldset instanceof Radio) {
+            if ($elementOrFieldset instanceof Radio) {
                 $elementOrFieldset->setOption('column-size', 'sm-10 radio');
             }
         }
-
         return parent::prepare();
     }
-
-
 }

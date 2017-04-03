@@ -3,7 +3,6 @@
 namespace Adminaut\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use Zend\Form\Annotation;
 
 /**
@@ -12,7 +11,7 @@ use Zend\Form\Annotation;
  * @ORM\HasLifecycleCallbacks
  * @package Adminaut\Entity
  */
-class Base implements BaseInterface
+class Base implements BaseEntityInterface
 {
     /**
      * @ORM\Id
@@ -24,7 +23,7 @@ class Base implements BaseInterface
     protected $id;
 
     /**
-     * @ORM\Column(name="inserted", type="datetime", options={"default":"CURRENT_TIMESTAMP"});
+     * @ORM\Column(name="inserted", type="datetime");
      * @Annotation\Exclude();
      * @var \DateTime
      */
@@ -38,7 +37,7 @@ class Base implements BaseInterface
     protected $insertedBy;
 
     /**
-     * @ORM\Column(name="updated", type="datetime", options={"default":"CURRENT_TIMESTAMP"});
+     * @ORM\Column(name="updated", type="datetime");
      * @Annotation\Exclude();
      * @var \DateTime
      */
@@ -67,8 +66,8 @@ class Base implements BaseInterface
 
     /**
      * @ORM\Column(name="active", type="boolean");
-     * @Annotation\Options({"label":"Status", "listed":false, "checkbox_label" : "Active"});
-     * @Annotation\Type("Adminaut\Form\Element\Checkbox");
+     * @Annotation\Options({"label":"Status", "listed":false, "checkbox_label":"Active"});
+     * @Annotation\Type("Adminaut\Datatype\Checkbox");
      * @var boolean
      */
     protected $active = true;

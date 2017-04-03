@@ -42,6 +42,12 @@ Adminaut is the open-source platform for rapid development of PHP applications w
     $ vendor/bin/doctrine-module orm:schema-tool:update --force
     ```
 
+
+## Links
+
+- [Adminaut translation project at Crowdin](https://crowdin.com/project/adminaut)
+
+
 ## Browser Support (admin)
 
 - IE 9+
@@ -54,11 +60,12 @@ Adminaut is the open-source platform for rapid development of PHP applications w
 ## Credits
 
 ### Adminaut is build with:
-- [Zend Framework](https://framework.zend.com/)
-- [Doctrine Project](http://www.doctrine-project.org/)
-- [AdminLTE Control Panel Template](https://almsaeedstudio.com/)
-- [Bootstrap 3](https://getbootstrap.com/)
+- [Zend Framework](https://framework.zend.com)
+- [Doctrine Project](http://www.doctrine-project.org)
+- [AdminLTE Control Panel Template](https://almsaeedstudio.com)
+- [Bootstrap 3](https://getbootstrap.com)
 - [Font Awesome](http://fontawesome.io)
+- [Crowdin](https://crowdin.com)
 
 
 ## License
