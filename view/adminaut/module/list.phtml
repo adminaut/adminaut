@@ -3,7 +3,7 @@
         <?php echo $this->moduleOption->getModuleName() ?>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
         <li class="active"><?php echo $this->moduleOption->getModuleName() ?></li>
     </ol>
 </section>
@@ -24,7 +24,7 @@
                     <table id="moduleEntityTable" class="table table-striped table-bordered table-hover dataTables">
                         <thead>
                             <tr>
-                                <th><?php echo $this->translate('ID'); ?></th>
+                                <th>#</th>
                                 <?php foreach($this->listedElements as $listedElement) { ?>
                                     <th><?php echo $listedElement->getOption('label'); ?></th>
                                 <?php } ?>

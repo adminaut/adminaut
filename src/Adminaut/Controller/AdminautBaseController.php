@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Adminaut\Controller\Plugin\UserAuthentication;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Mvc\I18n\Translator;
 use Zend\Mvc\MvcEvent;
 
 /**
@@ -31,6 +32,14 @@ class AdminautBaseController extends AbstractActionController
      */
     protected $config;
 
+    /**
+     * @var Translator
+     */
+    protected $translator;
+
+    /**
+     * @var array
+     */
     private $defaultAppearance = [
         'skin' => 'blue',
         'title' => 'Adminaut',
@@ -42,11 +51,18 @@ class AdminautBaseController extends AbstractActionController
         'footer' => ''
     ];
 
-    public function __construct($config, $acl, $em)
+    /**
+     * AdminautBaseController constructor.
+     * @param $config
+     * @param $acl
+     * @param $em
+     */
+    public function __construct($config, $acl, $em, $translator)
     {
         $this->setConfig($config);
         $this->setAcl($acl);
         $this->setEntityManager($em);
+        $this->setTranslator($translator);
     }
 
     /**
@@ -135,5 +151,21 @@ class AdminautBaseController extends AbstractActionController
         }, 100);
         */
         return $this;
+    }
+
+    /**
+     * @return Translator
+     */
+    public function getTranslator()
+    {
+        return $this->translator;
+    }
+
+    /**
+     * @param Translator $translator
+     */
+    public function setTranslator(Translator $translator)
+    {
+        $this->translator = $translator;
     }
 }

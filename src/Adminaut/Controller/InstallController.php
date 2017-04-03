@@ -5,6 +5,7 @@ namespace Adminaut\Controller;
 use Adminaut\Form\User as UserForm;
 use Adminaut\Form\InputFilter\User as UserInputFilter;
 use Adminaut\Service\UserService;
+use Zend\I18n\Translator\Translator;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -18,6 +19,11 @@ class InstallController extends AbstractActionController
      * @var UserService
      */
     protected $userService;
+
+    /**
+     * @var Translator
+     */
+    protected $translator;
 
     /**
      * InstallController constructor.
@@ -48,10 +54,10 @@ class InstallController extends AbstractActionController
                 try {
                     $userService = $this->getUserService();
                     $userService->createSuperuser($post);
-                    $this->flashMessenger()->addSuccessMessage('User has been successfully added');
+                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully added'));
                     return $this->redirect()->toRoute('adminaut/user/login');
                 } catch(\Exception $e) {
-                    $this->flashMessenger()->addErrorMessage('Error: '.$e->getMessage());
+                    $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
                     return $this->redirect()->toRoute('adminaut/install');
                 }
             }
@@ -80,5 +86,21 @@ class InstallController extends AbstractActionController
     public function setUserService(UserService $userService)
     {
         $this->userService = $userService;
+    }
+
+    /**
+     * @return Translator
+     */
+    public function getTranslator()
+    {
+        return $this->translator;
+    }
+
+    /**
+     * @param Translator $translator
+     */
+    public function setTranslator(Translator $translator)
+    {
+        $this->translator = $translator;
     }
 }

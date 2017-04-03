@@ -9,9 +9,9 @@ $form->prepare();
         <small><?php echo $this->user->getName() ?></small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="<?php echo $this->url('adminaut/users'); ?>">Users</a></li>
-        <li class="active">Update</li>
+        <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
+        <li><a href="<?php echo $this->url('adminaut/users'); ?>"><?php echo $this->translate("Users"); ?></a></li>
+        <li class="active"><?php echo $this->translate("Update"); ?></li>
     </ol>
 </section>
 
@@ -21,7 +21,7 @@ $form->prepare();
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Update</h3>
+                    <h3 class="box-title"><?php echo $this->translate("Update"); ?></h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -31,8 +31,8 @@ $form->prepare();
                 </div>
                 <!-- /.tab-content -->
                 <div class="box-footer clearfix">
-                    <button type="submit" name="submit" class="btn btn-primary" value="save">Save</button>
-                    <button type="submit" name="submit" class="btn btn-default" value="save-and-continue">Save and continue</button>
+                    <button type="submit" name="submit" class="btn btn-primary" value="save"><?php echo $this->translate("Save"); ?></button>
+                    <button type="submit" name="submit" class="btn btn-default" value="save-and-continue"><?php echo $this->translate("Save and continue"); ?>"</button>
                     <a href="<?php echo $this->url('adminaut/users'); ?>" class="btn btn-link"><?php echo $this->translate('Back to list'); ?></a>
                 </div>
                 <!-- /.box-footer -->

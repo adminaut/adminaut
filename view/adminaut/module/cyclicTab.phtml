@@ -3,7 +3,7 @@
         <?php echo $this->parentModuleOption->getModuleName() ?>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
         <li><a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->parentModuleOption->getModuleName() ?></a></li>
         <?php if($this->url_params['mode'] == 'detail') { ?>
             <li><a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'mode' => $this->url_params['mode']]) ?>"><?php echo $this->parentModuleOption->getLabels()['entity_detail'] ?></a></li>
@@ -114,7 +114,7 @@
                     <?php if($this->action == "update") { ?>
                         <a href="<?php echo $this->url('adminaut/module/action/tab', ['module_id' => $this->url_params['module_id'], 'mode' => $this->url_params['mode'], 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId()]); ?>" class="btn btn-sm btn-primary btn-flat pull-left"><i class="fa fa-chevron-left"></i> <?php echo $this->translate('Close update'); ?></a>
                     <?php } ?>
-                    <button type="submit" name="submit" class="btn btn-primary" value="">Create</button>
+                    <button type="submit" name="submit" class="btn btn-primary" value=""><?php echo $this->translate("Create"); ?></button>
                 </div>
             </div>
             <!-- /.box -->

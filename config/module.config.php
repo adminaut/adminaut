@@ -63,6 +63,8 @@ return [
             // Service
             \Adminaut\Service\AccessControlService::class           => \Adminaut\Service\Factory\AccessControlServiceFactory::class,
             \Adminaut\Service\UserService::class                    => \Adminaut\Service\Factory\UserServiceFactory::class,
+
+            \Zend\Mvc\I18n\Translator::class => \Zend\Mvc\Service\TranslatorServiceFactory::class,
         ]
     ],
 

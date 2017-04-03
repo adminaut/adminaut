@@ -25,8 +25,8 @@ class AclController extends AdminautBaseController
      */
     protected $roleMapper;
 
-    public function __construct($acl, $em, $config, $roleMapper) {
-        parent::__construct($acl, $em);
+    public function __construct($config, $acl, $em, $translator, $roleMapper) {
+        parent::__construct($config, $acl, $em, $translator);
 
         $this->setConfig($config);
         $this->setRoleMapper($roleMapper);
