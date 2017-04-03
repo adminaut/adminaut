@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-04-03 14:21+0200\n"
-"PO-Revision-Date: 2017-04-03 12:40-0400\n"
+"PO-Revision-Date: 2017-04-03 13:40-0400\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: Slovak\n"
 "Language: sk_SK\n"
@@ -92,7 +92,7 @@ msgstr "Heslo"
 #: src/Adminaut/Form/User.php:81 src/Adminaut/Form/User.php:84
 #: view/adminaut/acl/show-role.phtml:3 view/adminaut/users/index.phtml:29
 msgid "Role"
-msgstr ""
+msgstr "Rola"
 
 #: src/Adminaut/Form/User.php:85
 msgid "Select role"
@@ -109,7 +109,7 @@ msgstr "Prihlásiť sa"
 
 #: view/adminaut/acl/add-role.phtml:3 view/adminaut/acl/index.phtml:48
 msgid "Add new role"
-msgstr ""
+msgstr "Pridať novú rolu"
 
 #: view/adminaut/acl/add-role.phtml:20 view/adminaut/acl/show-role.phtml:74
 #: view/adminaut/acl/update-role.phtml:50
