@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-04-03 14:21+0200\n"
-"PO-Revision-Date: 2017-04-03 11:56-0400\n"
+"PO-Revision-Date: 2017-04-03 12:11-0400\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: Slovak\n"
 "Language: sk_SK\n"
@@ -35,7 +35,7 @@ msgstr ""
 #: src/Adminaut/Controller/UsersController.php:206
 #, php-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Chyba: %s"
 
 #: src/Adminaut/Controller/ModuleController.php:210
 msgid "Entity has been successfully created"
@@ -105,7 +105,7 @@ msgstr "Aktívne"
 
 #: src/Adminaut/Form/UserLogin.php:55
 msgid "Sing in"
-msgstr ""
+msgstr "Prihlásiť sa"
 
 #: view/adminaut/acl/add-role.phtml:3 view/adminaut/acl/index.phtml:48
 msgid "Add new role"
