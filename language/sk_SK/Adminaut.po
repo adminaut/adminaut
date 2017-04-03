@@ -1,0 +1,312 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: adminaut\n"
+"POT-Creation-Date: 2017-04-03 14:21+0200\n"
+"PO-Revision-Date: 2017-04-03 10:55-0400\n"
+"Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
+"Language-Team: Slovak\n"
+"Language: sk_SK\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: crowdin.com\n"
+"X-Poedit-Basepath: ../..\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Poedit-KeywordsList: translate;translatePlural:1,2;translateContext:1c,2;translateContextPlural:1c,2,3\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Crowdin-Project: adminaut\n"
+"X-Crowdin-Language: sk\n"
+"X-Crowdin-File: /develop/language/source/Adminaut.po\n"
+
+#: src/Adminaut/Controller/InstallController.php:57
+msgid "User has been successfully added"
+msgstr ""
+
+#: src/Adminaut/Controller/InstallController.php:60
+#: src/Adminaut/Controller/ModuleController.php:221
+#: src/Adminaut/Controller/ModuleController.php:296
+#: src/Adminaut/Controller/ModuleController.php:441
+#: src/Adminaut/Controller/ModuleController.php:474
+#: src/Adminaut/Controller/ModuleController.php:530
+#: src/Adminaut/Controller/UsersController.php:117
+#: src/Adminaut/Controller/UsersController.php:176
+#: src/Adminaut/Controller/UsersController.php:206
+#, php-format
+msgid "Error: %s"
+msgstr ""
+
+#: src/Adminaut/Controller/ModuleController.php:210
+msgid "Entity has been successfully created"
+msgstr ""
+
+#: src/Adminaut/Controller/ModuleController.php:255
+#: src/Adminaut/Controller/ModuleController.php:334
+#: src/Adminaut/Controller/ModuleController.php:385
+#: src/Adminaut/Controller/ModuleController.php:428
+#: src/Adminaut/Controller/ModuleController.php:520
+msgid "Entity was not found."
+msgstr ""
+
+#: src/Adminaut/Controller/ModuleController.php:289
+#: src/Adminaut/Controller/ModuleController.php:471
+msgid "Entity has been successfully updated"
+msgstr ""
+
+#: src/Adminaut/Controller/ModuleController.php:438
+#: src/Adminaut/Controller/ModuleController.php:527
+msgid "Entity has been deleted"
+msgstr ""
+
+#: src/Adminaut/Controller/UsersController.php:108
+msgid "User has been successfully created"
+msgstr ""
+
+#: src/Adminaut/Controller/UsersController.php:166
+msgid "User has been successfully updated."
+msgstr ""
+
+#: src/Adminaut/Controller/UsersController.php:204
+msgid "User has been successfully deleted."
+msgstr ""
+
+#: src/Adminaut/Form/Role.php:34 src/Adminaut/Form/Role.php:37
+#: src/Adminaut/Form/User.php:47 src/Adminaut/Form/User.php:50
+#: view/adminaut/acl/index.phtml:15 view/adminaut/users/index.phtml:27
+#: view/adminaut/users/view.phtml:22
+msgid "Name"
+msgstr ""
+
+#: src/Adminaut/Form/User.php:58 src/Adminaut/Form/User.php:61
+#: src/Adminaut/Form/UserLogin.php:30 src/Adminaut/Form/UserLogin.php:34
+#: view/adminaut/users/index.phtml:28 view/adminaut/users/view.phtml:28
+msgid "Email"
+msgstr ""
+
+#: src/Adminaut/Form/User.php:69 src/Adminaut/Form/User.php:72
+#: src/Adminaut/Form/UserLogin.php:42 src/Adminaut/Form/UserLogin.php:46
+msgid "Password"
+msgstr ""
+
+#: src/Adminaut/Form/User.php:81 src/Adminaut/Form/User.php:84
+#: view/adminaut/acl/show-role.phtml:3 view/adminaut/users/index.phtml:29
+msgid "Role"
+msgstr ""
+
+#: src/Adminaut/Form/User.php:85
+msgid "Select role"
+msgstr ""
+
+#: src/Adminaut/Form/User.php:93 view/adminaut/users/index.phtml:44
+#: view/adminaut/users/view.phtml:34 view/adminaut/users/view.phtml:37
+msgid "Active"
+msgstr ""
+
+#: src/Adminaut/Form/UserLogin.php:55
+msgid "Sing in"
+msgstr ""
+
+#: view/adminaut/acl/add-role.phtml:3 view/adminaut/acl/index.phtml:48
+msgid "Add new role"
+msgstr ""
+
+#: view/adminaut/acl/add-role.phtml:20 view/adminaut/acl/show-role.phtml:74
+#: view/adminaut/acl/update-role.phtml:50
+#: view/adminaut/user/forgot-password.phtml:17
+msgid "Back"
+msgstr ""
+
+#: view/adminaut/acl/index.phtml:3
+msgid "Roles"
+msgstr ""
+
+#: view/adminaut/acl/index.phtml:16 view/adminaut/module/cyclicTab.phtml:33
+#: view/adminaut/module/list.phtml:31 view/adminaut/users/index.phtml:31
+msgid "Actions"
+msgstr ""
+
+#: view/adminaut/acl/show-role.phtml:11 view/adminaut/acl/update-role.phtml:21
+msgid "Permission"
+msgstr ""
+
+#: view/adminaut/acl/show-role.phtml:18 view/adminaut/acl/show-role.phtml:28
+#: view/adminaut/acl/show-role.phtml:33 view/adminaut/acl/show-role.phtml:35
+msgid "Read"
+msgstr ""
+
+#: view/adminaut/acl/show-role.phtml:29 view/adminaut/acl/show-role.phtml:36
+msgid "Write"
+msgstr ""
+
+#: view/adminaut/acl/show-role.phtml:38 view/adminaut/acl/show-role.phtml:41
+msgid "None"
+msgstr ""
+
+#: view/adminaut/acl/show-role.phtml:55
+msgid "Users assigned to role"
+msgstr ""
+
+#: view/adminaut/acl/show-role.phtml:77 view/adminaut/module/cyclicTab.phtml:82
+#: view/adminaut/module/view.phtml:43 view/adminaut/users/view.phtml:46
+msgid "Edit"
+msgstr ""
+
+#: view/adminaut/acl/update-role.phtml:3
+msgid "Update role"
+msgstr ""
+
+#: view/adminaut/dashboard/index.phtml:3 view/adminaut/dashboard/index.phtml:6
+#: view/adminaut/module/add.phtml:13 view/adminaut/module/cyclicTab.phtml:6
+#: view/adminaut/module/edit.phtml:12 view/adminaut/module/index.phtml:6
+#: view/adminaut/module/list.phtml:6 view/adminaut/module/tab.phtml:6
+#: view/adminaut/module/view.phtml:6 view/adminaut/users/add.phtml:11
+#: view/adminaut/users/edit.phtml:12 view/adminaut/users/index.phtml:6
+#: view/adminaut/users/view.phtml:7
+msgid "Dashboard"
+msgstr ""
+
+#: view/adminaut/install/index.phtml:13
+msgid "Register first user"
+msgstr ""
+
+#: view/adminaut/module/add.phtml:36 view/adminaut/module/cyclicTab.phtml:117
+#: view/adminaut/users/add.phtml:33
+msgid "Create"
+msgstr ""
+
+#: view/adminaut/module/add.phtml:37 view/adminaut/users/add.phtml:34
+msgid "Create and continue"
+msgstr ""
+
+#: view/adminaut/module/add.phtml:38
+msgid "Create and new"
+msgstr ""
+
+#: view/adminaut/module/add.phtml:39 view/adminaut/module/cyclicTab.phtml:84
+#: view/adminaut/module/edit.phtml:39 view/adminaut/module/view.phtml:45
+#: view/adminaut/users/add.phtml:35 view/adminaut/users/edit.phtml:36
+#: view/adminaut/users/view.phtml:48
+msgid "Back to list"
+msgstr ""
+
+#: view/adminaut/module/cyclicTab.phtml:102
+msgid "Add new"
+msgstr ""
+
+#: view/adminaut/module/cyclicTab.phtml:115
+msgid "Close update"
+msgstr ""
+
+#: view/adminaut/module/edit.phtml:37 view/adminaut/users/edit.phtml:34
+msgid "Save"
+msgstr ""
+
+#: view/adminaut/module/edit.phtml:38 view/adminaut/users/edit.phtml:35
+msgid "Save and continue"
+msgstr ""
+
+#: view/adminaut/module/edit.phtml:40 view/adminaut/module/view.phtml:46
+msgid "Delete"
+msgstr ""
+
+#: view/adminaut/module/index.phtml:3 view/adminaut/module/index.phtml:7
+msgid "Module"
+msgstr ""
+
+#: view/adminaut/module/view.phtml:20 view/adminaut/users/view.phtml:9
+#: view/adminaut/users/view.phtml:18
+msgid "Detail"
+msgstr ""
+
+#: view/adminaut/user/forgot-password.phtml:7
+msgid "Forgot password"
+msgstr ""
+
+#: view/adminaut/user/forgot-password.phtml:16
+msgid "Send new password"
+msgstr ""
+
+#: view/adminaut/user/login.phtml:7
+msgid "Sign in to start your session"
+msgstr ""
+
+#: view/adminaut/user/login.phtml:32
+msgid "I forgot my password"
+msgstr ""
+
+#: view/adminaut/user/login.phtml:33
+msgid "Request access"
+msgstr ""
+
+#: view/adminaut/users/add.phtml:8 view/adminaut/users/edit.phtml:8
+#: view/adminaut/users/view.phtml:3
+msgid "Users:"
+msgstr ""
+
+#: view/adminaut/users/add.phtml:12 view/adminaut/users/edit.phtml:13
+#: view/adminaut/users/index.phtml:3 view/adminaut/users/index.phtml:7
+#: view/adminaut/users/view.phtml:8
+msgid "Users"
+msgstr ""
+
+#: view/adminaut/users/add.phtml:13
+msgid "Add"
+msgstr ""
+
+#: view/adminaut/users/add.phtml:23
+msgid "Add new user"
+msgstr ""
+
+#: view/adminaut/users/edit.phtml:14 view/adminaut/users/edit.phtml:24
+msgid "Update"
+msgstr ""
+
+#: view/adminaut/users/index.phtml:17 view/adminaut/users/index.phtml:80
+msgid "Add user"
+msgstr ""
+
+#: view/adminaut/users/index.phtml:30
+msgid "Status"
+msgstr ""
+
+#: view/adminaut/users/index.phtml:46 view/adminaut/users/view.phtml:39
+msgid "Inactive"
+msgstr ""
+
+#: view/layout/layout-admin.phtml:95
+msgid "Toggle navigation"
+msgstr ""
+
+#: view/layout/layout-admin.phtml:121
+msgid "Profile"
+msgstr ""
+
+#: view/layout/layout-admin.phtml:124
+msgid "Sign out"
+msgstr ""
+
+#: view/layout/layout-admin.phtml:150
+msgid "Search..."
+msgstr ""
+
+#: view/layout/layout-admin.phtml:180
+#, php-format
+msgid "Powered by %s."
+msgstr ""
+
+#: view/partial/deleteModal.phtml:6
+msgid "Confirm delete"
+msgstr ""
+
+#: view/partial/deleteModal.phtml:9
+msgid "Are you sure?"
+msgstr ""
+
+#: view/partial/deleteModal.phtml:12
+msgid "No"
+msgstr ""
+
+#: view/partial/deleteModal.phtml:13
+msgid "Yes, delete it"
+msgstr ""
