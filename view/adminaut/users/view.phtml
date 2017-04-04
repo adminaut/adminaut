@@ -4,9 +4,9 @@
         <small><?php echo $this->user->getName() ?></small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="<?php echo $this->url('adminaut/users'); ?>">Users</a></li>
-        <li class="active">Detail</li>
+        <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
+        <li><a href="<?php echo $this->url('adminaut/users'); ?>"><?php echo $this->translate("Users"); ?></a></li>
+        <li class="active"><?php echo $this->translate("Detail"); ?></li>
     </ol>
 </section>
 
@@ -15,7 +15,7 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Detail</h3>
+                    <h3 class="box-title"><?php echo $this->translate("Detail"); ?></h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">

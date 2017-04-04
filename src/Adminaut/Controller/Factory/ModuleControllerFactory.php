@@ -5,6 +5,7 @@ use Adminaut\Controller\ModuleController;
 use Adminaut\Manager\ModuleManager;
 use Adminaut\Manager\FileManager;
 use Adminaut\Service\AccessControlService;
+use Zend\Mvc\I18n\Translator;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -30,6 +31,7 @@ class ModuleControllerFactory implements FactoryInterface
             $parentLocator->get('config'),
             $parentLocator->get(AccessControlService::class),
             $parentLocator->get(\Doctrine\ORM\EntityManager::class),
+            $parentLocator->get(Translator::class),
             $parentLocator->get(ModuleManager::class),
             $parentLocator->get('ViewRenderer'),
             $parentLocator->get(FileManager::class)

@@ -30,9 +30,9 @@ class UsersController extends AdminautBaseController
     protected $userService;
 
 
-    public function __construct($config, $acl, $em, $userMapper, $userService)
+    public function __construct($config, $acl, $em, $translator, $userMapper, $userService)
     {
-        parent::__construct($config, $acl, $em);
+        parent::__construct($config, $acl, $em, $translator);
         $this->setUserMapper($userMapper);
         $this->setUserService($userService);
     }
@@ -105,7 +105,7 @@ class UsersController extends AdminautBaseController
                 try {
                     $userService = $this->getUserService();
                     $user = $userService->add($post, $this->userAuthentication()->getIdentity());
-                    $this->flashMessenger()->addSuccessMessage('User has been successfully created');
+                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully created'));
                     switch($post['submit']) {
                         case 'create-and-continue' :
                             return $this->redirect()->toRoute('adminaut/users/update', ['id' => $user->getId()]);
@@ -114,7 +114,7 @@ class UsersController extends AdminautBaseController
                             return $this->redirect()->toRoute('adminaut/users');
                     }
                 } catch(\Exception $e) {
-                    $this->flashMessenger()->addErrorMessage('Error: '.$e->getMessage());
+                    $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
                     return $this->redirect()->toRoute('adminaut/users/add');
                 }
             }
@@ -163,7 +163,7 @@ class UsersController extends AdminautBaseController
                 try {
                     $userService = $this->getUserService();
                     $userService->update($user, $post, $this->userAuthentication()->getIdentity());
-                    $this->flashMessenger()->addSuccessMessage('User has been successfully updated.');
+                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully updated.'));
 
                     switch($post['submit']) {
                         case 'save-and-continue' :
@@ -173,7 +173,7 @@ class UsersController extends AdminautBaseController
                         return $this->redirect()->toRoute('adminaut/users');
                     }
                 } catch(\Exception $e) {
-                    $this->flashMessenger()->addErrorMessage('Error: '.$e->getMessage());
+                    $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
                 }
             }
         }
@@ -201,9 +201,9 @@ class UsersController extends AdminautBaseController
                 try {
                     $userService = $this->getUserService();
                     $userService->delete($user, $this->userAuthentication()->getIdentity());
-                    $this->flashMessenger()->addSuccessMessage('User has been successfully deleted.');
+                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully deleted.'));
                 } catch(\Exception $e) {
-                    $this->flashMessenger()->addErrorMessage('Error: ' . $e->getMessage());
+                    $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
                 }
             }
         }

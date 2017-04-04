@@ -59,13 +59,14 @@ class ModuleController extends AdminautBaseController
      * @param $config
      * @param $acl
      * @param $em
+     * @param $translator
      * @param $moduleManager
      * @param $viewRenderer
      * @param $filemanager
      */
-    public function __construct($config, $acl, $em, $moduleManager, $viewRenderer, $filemanager)
+    public function __construct($config, $acl, $em, $translator, $moduleManager, $viewRenderer, $filemanager)
     {
-        parent::__construct($config, $acl, $em);
+        parent::__construct($config, $acl, $em, $translator);
         $this->setModuleManagerService($moduleManager);
         $this->setViewRenderer($viewRenderer);
         $this->setFilemanager($filemanager);
@@ -136,7 +137,7 @@ class ModuleController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        if(!$entityId){
+        if (!$entityId) {
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
@@ -180,7 +181,7 @@ class ModuleController extends AdminautBaseController
         $this->getAdminModuleManager($moduleId);
 
         if (!$this->acl()->isAllowed($this->moduleManager->getOptions()->getModuleId(), AccessControlService::WRITE)) {
-            return $this->redirect()->toRoute('adminaut/module/list', ['module_id'=>$moduleId]);
+            return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
         $fm = $this->getFilemanager();
@@ -207,16 +208,17 @@ class ModuleController extends AdminautBaseController
             $form->setData($post);
             if ($form->isValid()) {
                 try {
-                    foreach($files as $key => $file) {
-                        if($file['error'] != 0){
+                    foreach ($files as $key => $file) {
+                        if ($file['error'] != 0) {
                             continue;
                         }
+
                         $fm->upload($form->getElements()[$key], $this->userAuthentication()->getIdentity());
                     }
 
                     $entity = $this->moduleManager->addEntity($form, $this->userAuthentication()->getIdentity());
-                    $this->flashMessenger()->addSuccessMessage('Entity has been successfully created');
-                    switch($post['submit']) {
+                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Entity has been successfully created'));
+                    switch ($post['submit']) {
                         case 'create-and-continue' :
                             return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'entity_id' => $entity->getId(), 'mode' => 'edit']);
                         case 'create-and-new' :
@@ -225,9 +227,9 @@ class ModuleController extends AdminautBaseController
                         default :
                             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
                     }
-                } catch(\Exception $e) {
-                    $this->flashMessenger()->addErrorMessage('Error: '.$e->getMessage());
-                    return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'mode'=>'add']);
+                } catch (\Exception $e) {
+                    $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
+                    return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'mode' => 'add']);
                 }
             }
         }
@@ -250,17 +252,17 @@ class ModuleController extends AdminautBaseController
         }
 
         if (!$this->acl()->isAllowed($this->getAdminModuleManager($moduleId)->getOptions()->getModuleId(), AccessControlService::WRITE)) {
-            return $this->redirect()->toRoute('adminaut/module/list', ['module_id'=>$moduleId]);
+            return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
-        if(!$entityId){
+        if (!$entityId) {
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
         /* @var $entity BaseEntityInterface */
         $entity = $this->getAdminModuleManager($moduleId)->findById($entityId);
-        if(!$entity){
-            $this->flashMessenger()->addErrorMessage('Entity was not found.');
+        if (!$entity) {
+            $this->flashMessenger()->addErrorMessage($this->getTranslator()->translate('Entity was not found.'));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
@@ -281,10 +283,10 @@ class ModuleController extends AdminautBaseController
             $form->setData($post);
             if ($form->isValid()) {
                 try {
-                    foreach($files as $key => $file) {
-                        if($file['error'] != 0 && !isset($post[$key . '-changed'])){
+                    foreach ($files as $key => $file) {
+                        if ($file['error'] != 0 && !isset($post[$key . '-changed'])) {
                             continue;
-                        }elseif(isset($post[$key . '-changed'])) {
+                        } elseif (isset($post[$key . '-changed'])) {
                             $form->getElements()[$key]->setFileObject(null);
                             continue;
                         }
@@ -294,15 +296,15 @@ class ModuleController extends AdminautBaseController
 
                     $this->moduleManager->updateEntity($entity, $form, $this->userAuthentication()->getIdentity());
 
-                    $this->flashMessenger()->addSuccessMessage('Entity has been successfully updated');
-                    if($post['submit'] == 'save-and-continue') {
+                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Entity has been successfully updated'));
+                    if ($post['submit'] == 'save-and-continue') {
                         return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'edit']);
                     } else {
                         return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
                     }
                 } catch (\Exception $e) {
-                    $this->flashMessenger()->addErrorMessage('Error: ' . $e->getMessage());
-                    return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode'=>'edit']);
+                    $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
+                    return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'edit']);
                 }
             }
         }
@@ -320,7 +322,8 @@ class ModuleController extends AdminautBaseController
         ]);
     }
 
-    public function tabAction() {
+    public function tabAction()
+    {
         $moduleId = $this->params()->fromRoute('module_id', false);
         $entityId = (int)$this->params()->fromRoute('entity_id', 0);
         if (!$moduleId) {
@@ -328,17 +331,17 @@ class ModuleController extends AdminautBaseController
         }
 
         if (!$this->acl()->isAllowed($this->getAdminModuleManager($moduleId)->getOptions()->getModuleId(), AccessControlService::WRITE)) {
-            return $this->redirect()->toRoute('adminaut/module/list', ['module_id'=>$moduleId]);
+            return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
-        if(!$entityId){
+        if (!$entityId) {
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
         /* @var $entity BaseEntityInterface */
         $entity = $this->getAdminModuleManager($moduleId)->findById($entityId);
-        if(!$entity){
-            $this->flashMessenger()->addErrorMessage('Entity was not found.');
+        if (!$entity) {
+            $this->flashMessenger()->addErrorMessage($this->getTranslator()->translate('Entity was not found.'));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
@@ -348,9 +351,9 @@ class ModuleController extends AdminautBaseController
         $tabs = $form->getTabs();
         $tabs[$this->params()->fromRoute('tab')]['active'] = true;
 
-        if($tabs[$this->params()->fromRoute('tab')]['action'] == 'cyclicSheetAction'){
+        if ($tabs[$this->params()->fromRoute('tab')]['action'] == 'cyclicSheetAction') {
             return $this->cyclicSheetAction();
-        }else{
+        } else {
             return new ViewModel([
                 'moduleOption' => $this->moduleManager->getOptions(),
                 'tabs' => $tabs,
@@ -363,7 +366,8 @@ class ModuleController extends AdminautBaseController
         }
     }
 
-    public function cyclicSheetAction() {
+    public function cyclicSheetAction()
+    {
         $moduleId = $this->params()->fromRoute('module_id', false);
         $entityId = (int)$this->params()->fromRoute('entity_id', 0);
         $currentTab = $this->params()->fromRoute('tab');
@@ -378,17 +382,17 @@ class ModuleController extends AdminautBaseController
 
         $parentModuleOption = $this->getAdminModuleManager($moduleId)->getOptions();
         if (!$this->acl()->isAllowed($parentModuleOption->getModuleId(), AccessControlService::WRITE)) {
-            return $this->redirect()->toRoute('adminaut/module/list', ['module_id'=>$moduleId]);
+            return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
-        if(!$entityId){
+        if (!$entityId) {
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
         /* @var $entity BaseEntityInterface */
         $entity = $this->getAdminModuleManager($moduleId)->findById($entityId);
-        if(!$entity){
-            $this->flashMessenger()->addErrorMessage('Entity was not found.');
+        if (!$entity) {
+            $this->flashMessenger()->addErrorMessage($this->getTranslator()->translate('Entity was not found.'));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
@@ -427,25 +431,25 @@ class ModuleController extends AdminautBaseController
 
         $form->getElements()['parentId']->setValue($entityId);
 
-        if($action === 'edit') {
+        if ($action === 'edit') {
             $cyclicEntity = $moduleManager->findById($cyclicEntityId);
 
-            if(!$cyclicEntity) {
-                $this->flashMessenger()->addErrorMessage('Entity was not found.');
-                return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode'=>$mode, 'tab' => $currentTab]);
+            if (!$cyclicEntity) {
+                $this->flashMessenger()->addErrorMessage($this->getTranslator()->translate('Entity was not found.'));
+                return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => $mode, 'tab' => $currentTab]);
             }
 
             $form->bind($cyclicEntity);
-        } elseif($action == 'delete') {
+        } elseif ($action == 'delete') {
             try {
                 $cyclicEntity = $moduleManager->findById($cyclicEntityId);
                 $moduleManager->deleteEntity($cyclicEntity, $this->userAuthentication()->getIdentity());
 
-                $this->flashMessenger()->addSuccessMessage('Entity has been deleted');
-                return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode'=>$mode, 'tab' => $currentTab]);
+                $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Entity has been deleted'));
+                return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => $mode, 'tab' => $currentTab]);
             } catch (\Exception $e) {
-                $this->flashMessenger()->addErrorMessage('Error: ' . $e->getMessage());
-                return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode'=>$mode, 'tab' => $currentTab]);
+                $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
+                return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => $mode, 'tab' => $currentTab]);
             }
         }
 
@@ -457,10 +461,10 @@ class ModuleController extends AdminautBaseController
             $form->setData($post);
             if ($form->isValid()) {
                 try {
-                    foreach($files as $key => $file) {
-                        if($file['error'] != 0 && !isset($post[$key . '-changed'])){
+                    foreach ($files as $key => $file) {
+                        if ($file['error'] != 0 && !isset($post[$key . '-changed'])) {
                             continue;
-                        }elseif(isset($post[$key . '-changed'])) {
+                        } elseif (isset($post[$key . '-changed'])) {
                             $form->getElements()[$key]->setFileObject(null);
                             continue;
                         }
@@ -468,21 +472,21 @@ class ModuleController extends AdminautBaseController
                         $fm->upload($form->getElements()[$key], $this->userAuthentication()->getIdentity());
                     }
 
-                    if($action == 'edit') {
+                    if ($action == 'edit') {
                         $entity = $moduleManager->updateEntity($cyclicEntity, $form, $this->userAuthentication()->getIdentity());
                     } else {
                         $entity = $moduleManager->addEntity($form, $this->userAuthentication()->getIdentity());
                     }
 
-                    $this->flashMessenger()->addSuccessMessage('Entity has been successfully updated');
+                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Entity has been successfully updated'));
                     return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'edit', 'tab' => $currentTab]);
                 } catch (\Exception $e) {
-                    $this->flashMessenger()->addErrorMessage('Error: ' . $e->getMessage());
+                    $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
                     return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'edit', 'tab' => $currentTab]);
                 }
             }
         }
-        
+
         $view = new ViewModel([
             'parentModuleOption' => $parentModuleOption,
             'moduleOption' => $this->moduleManager->getOptions(),
@@ -513,27 +517,27 @@ class ModuleController extends AdminautBaseController
         }
 
         if (!$this->acl()->isAllowed($this->getAdminModuleManager($moduleId)->getOptions()->getModuleId(), AccessControlService::FULL)) {
-            return $this->redirect()->toRoute('adminaut/module/list', ['module_id'=>$moduleId]);
+            return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
-        if(!$entityId){
+        if (!$entityId) {
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
         /* @var $entity BaseEntityInterface */
         $entity = $this->getAdminModuleManager($moduleId)->findById($entityId);
-        if(!$entity){
-            $this->flashMessenger()->addErrorMessage('Entity was not found.');
+        if (!$entity) {
+            $this->flashMessenger()->addErrorMessage($this->getTranslator()->translate('Entity was not found.'));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
-        try{
+        try {
             $this->getAdminModuleManager($moduleId)->deleteEntity($entity, $this->userAuthentication()->getIdentity());
 
-            $this->flashMessenger()->addSuccessMessage('Entity has been deleted');
+            $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Entity has been deleted'));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId, 'entity_id' => $entityId]);
         } catch (\Exception $e) {
-            $this->flashMessenger()->addErrorMessage('Error: ' . $e->getMessage());
+            $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId, 'entity_id' => $entityId]);
         }
     }
