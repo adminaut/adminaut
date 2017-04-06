@@ -41,10 +41,10 @@ return [
             \Adminaut\Authentication\Adapter\AdapterChain::class    => \Adminaut\Authentication\Adapter\Factory\AdapterChainFactory::class,
 
             // Controller
-            'UserRedirectCallback'                                  => \Adminaut\Controller\Factory\RedirectCallbackFactory::class,
+            \Adminaut\Controller\RedirectCallback::class            => \Adminaut\Controller\Factory\RedirectCallbackFactory::class,
 
             // Manager
-            \Adminaut\Manager\ModuleManager::class                => \Adminaut\Manager\Factory\ModuleManagerFactory::class,
+            \Adminaut\Manager\ModuleManager::class                  => \Adminaut\Manager\Factory\ModuleManagerFactory::class,
             'AdminModulesManager'                                   => \Adminaut\Manager\Factory\AdminModulesManagerFactory::class,
             \Adminaut\Manager\FileManager::class                    => \Adminaut\Manager\Factory\FileManagerFactory::class,
 
