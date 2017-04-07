@@ -121,9 +121,9 @@ return [
     'router' => [
         'routes' => [
             'adminaut' => [
-                'type' => Literal::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route' => '/admin',
+                    'route' => '/admin[/]',
                     'defaults' => [
                         'controller' => \Adminaut\Controller\IndexController::class,
                         'action' => 'index',
@@ -134,7 +134,7 @@ return [
                     'manifest' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/manifest',
+                            'route' => 'manifest',
                             'defaults' => [
                                 'action' => 'manifest',
                             ],
@@ -143,7 +143,7 @@ return [
                     'install' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/install',
+                            'route' => 'install',
                             'defaults' => [
                                 'controller' => \Adminaut\Controller\InstallController::class,
                                 'action' => 'index',
@@ -153,7 +153,7 @@ return [
                     'dashboard' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/dashboard',
+                            'route' => 'dashboard',
                             'defaults' => [
                                 'controller' => \Adminaut\Controller\DashboardController::class,
                                 'action' => 'index',
@@ -163,7 +163,7 @@ return [
                     'module' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/module',
+                            'route' => 'module',
                             'defaults' => [
                                 'controller' => \Adminaut\Controller\ModuleController::class,
                                 'action' => 'index',
@@ -179,7 +179,7 @@ return [
                                         'action' => 'list',
                                     ],
                                     'constraints' => [
-                                        'module_id' => '[a-z]*',
+                                        'module_id' => '[a-z\-]*',
                                     ],
                                 ],
                             ],
@@ -194,7 +194,7 @@ return [
                                     ],
                                     'constraints' => [
                                         'mode'    => '(view|add|edit)',
-                                        'module_id' => '[a-z]*',
+                                        'module_id' => '[a-z\-]*',
                                         'entity_id' => '[0-9]*',
                                     ],
                                 ],
@@ -209,8 +209,6 @@ return [
                                                 'tab' => 'main'
                                             ],
                                             'constraints' => [
-                                                'module_id' => '[a-z]*',
-                                                'entity_id' => '[0-9]*',
                                                 'cyclic_entity_id' => '[0-9]*',
                                                 'tab' => '[a-z]*'
                                             ]
@@ -225,11 +223,7 @@ return [
                                                         'action' => 'tab'
                                                     ],
                                                     'constraints' => [
-                                                        'module_id' => '[a-z]*',
-                                                        'entity_id' => '[0-9]*',
-                                                        'cyclic_entity_id' => '[0-9]*',
                                                         'entity_action' => '[a-z]*',
-                                                        'tab' => '[a-z]*'
                                                     ]
                                                 ],
                                             ],
@@ -245,7 +239,7 @@ return [
                                         'action' => 'delete',
                                     ],
                                     'constraints' => [
-                                        'module_id' => '[a-z]*',
+                                        'module_id' => '[a-z\-]*',
                                         'entity_id' => '[0-9]*',
                                     ],
                                 ],
@@ -255,7 +249,7 @@ return [
                     'users' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/users',
+                            'route' => 'users',
                             'defaults' => [
                                 'controller' => \Adminaut\Controller\UsersController::class,
                                 'action' => 'index',
@@ -313,7 +307,7 @@ return [
                     'acl' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/acl',
+                            'route' => 'acl',
                             'defaults' => [
                                 'controller' => \Adminaut\Controller\AclController::class,
                                 'action' => 'index',
@@ -371,7 +365,7 @@ return [
                     'settings' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/acl',
+                            'route' => 'acl',
                             'defaults' => [
                                 'controller' => \Adminaut\Controller\AclController::class,
                                 'action' => 'index',
@@ -442,7 +436,7 @@ return [
                         'type' => Literal::class,
                         'priority' => 1000,
                         'options' => [
-                            'route' => '/user',
+                            'route' => 'user',
                             'defaults' => [
                                 'controller' => \Adminaut\Controller\UserController::class,
                                 'action' => 'index',

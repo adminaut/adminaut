@@ -3,6 +3,10 @@ namespace Adminaut\Form\Annotation;
 
 
 use Adminaut\Form\Factory;
+use ArrayObject;
+use Zend\Code\Annotation\AnnotationCollection;
+use Zend\Code\Reflection\ClassReflection;
+use Zend\Stdlib\ArrayUtils;
 
 class AnnotationBuilder extends \Zend\Form\Annotation\AnnotationBuilder
 {

@@ -121,8 +121,8 @@ class ModuleManager
         foreach ($form->getElements() as $element) {
             $elementName = $element->getName();
 
-            if (method_exists($element, 'getInsertedValue')) {
-                $entity->{$elementName} = $element->getInsertedValue();
+            if (method_exists($element, 'getInsertValue')) {
+                $entity->{$elementName} = $element->getInsertValue();
             } else {
                 $entity->{$elementName} = $element->getValue();
             }

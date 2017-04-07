@@ -7,6 +7,9 @@ $container = $this->container;
         <?php if (!$this->navigation()->accept($page)) continue; ?>
         <?php /* @var $page Zend\Navigation\Page\Mvc */ ?>
         <?php $hasChildren = $page->hasPages(); ?>
+        <?php if($page->get('section') === true) { ?>
+            <li class="header"><?php echo $page->getLabel() ?></li>
+        <?php continue; } ?>
         <?php if (!$hasChildren) { ?>
             <li class="treeview<?php if ($page->isActive()) echo ' active'; ?>">
                 <a href="<?php echo $page->getHref(); ?>"
