@@ -14,7 +14,7 @@
             <div class="box">
                 <div class="box-header with-border">
                     <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::WRITE)) { ?>
-                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode'=>'add']); ?>" class="btn btn-primary pull-left"><i class="fa fa-plus"></i> <?php echo $this->moduleOption->getLabels()['add_entity'] ?></a>
+                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode'=>'add']); ?>" class="btn btn-primary pull-left"><i class="fa fa-plus"></i> <?php echo $this->moduleOption->getLabels()['add_record'] ?></a>
                     <?php } ?>
                 </div>
                 <!-- /.box-header -->
@@ -78,7 +78,7 @@
 
                 <div class="box-footer clearfix">
                     <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::WRITE)) { ?>
-                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode'=>'add']); ?>" class="btn btn-primary pull-left"><i class="fa fa-plus"></i> <?php echo $this->moduleOption->getLabels()['add_entity'] ?></a>
+                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode'=>'add']); ?>" class="btn btn-primary pull-left"><i class="fa fa-plus"></i> <?php echo $this->moduleOption->getLabels()['add_record'] ?></a>
                     <?php } ?>
                 </div>
             </div>
