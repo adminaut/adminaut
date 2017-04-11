@@ -11,7 +11,7 @@
     <ol class="breadcrumb">
         <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
         <li><a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->moduleOption->getModuleName() ?></a></li>
-        <li class="active"><?php echo $this->moduleOption->getLabels()['update_entity'] ?></li>
+        <li class="active"><?php echo $this->moduleOption->getLabels()['update_record'] ?></li>
     </ol>
 </section>
 
@@ -24,7 +24,7 @@
                     <?php echo $this->partial('partial/tabs.phtml', ['url_params' => $this->url_params, 'tabs' => $this->tabs]); ?>
                 <?php } else { ?>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><?php echo $this->moduleOption->getLabels()['update_entity'] ?></h3>
+                        <h3 class="box-title"><?php echo $this->moduleOption->getLabels()['update_record'] ?></h3>
                     </div>
                 <?php } ?>
                 <div class="tab-content">

@@ -6,9 +6,9 @@
         <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
         <li><a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->parentModuleOption->getModuleName() ?></a></li>
         <?php if($this->url_params['mode'] == 'detail') { ?>
-            <li><a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'mode' => $this->url_params['mode']]) ?>"><?php echo $this->parentModuleOption->getLabels()['entity_detail'] ?></a></li>
+            <li><a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'mode' => $this->url_params['mode']]) ?>"><?php echo $this->parentModuleOption->getLabels()['record_detail'] ?></a></li>
         <?php } else { ?>
-            <li><a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'mode' => $this->url_params['mode']]) ?>"><?php echo $this->parentModuleOption->getLabels()['update_entity'] ?></a></li>
+            <li><a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'mode' => $this->url_params['mode']]) ?>"><?php echo $this->parentModuleOption->getLabels()['update_record'] ?></a></li>
         <?php } ?>
         <li class="active"><?php echo $this->tabs[$this->currentTab]['label'] ?></li>
     </ol>

@@ -18,11 +18,15 @@ return [
         ],
     ],
     'manifest' => [
+        // Name of adminaut instance. Used on lot of places (page titles, web app, etc.)
         'name' => 'Adminaut',
         'show_name' => 'Adminaut',
         'description' => 'Adminaut - universal automatic administration system',
         'display' => 'standalone',
         'theme_color' => '#3c8dbc',
+        // background_color (default #3c8dbc)
+        // Used as background color for web appendName.
+        // More information here: https://developer.mozilla.org/en-US/docs/Web/Manifest
         'background_color' => '#3c8dbc',
         "icons" => [
             [

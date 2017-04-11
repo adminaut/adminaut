@@ -39,9 +39,9 @@ class ModuleOptions extends AbstractOptions
      * @var array
      */
     protected $labels = [
-        'add_entity' => 'Add entity',
-        'update_entity' => 'Update entity',
-        'entity_detail' => 'Entity detail'
+        'add_record' => 'Add record',
+        'update_record' => 'Update record',
+        'record_detail' => 'Record detail'
     ];
 
     /**
