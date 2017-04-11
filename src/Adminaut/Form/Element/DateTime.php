@@ -74,9 +74,9 @@ class DateTime extends MfccAdminFormElement implements InputProviderInterface
     /**
      * @return PhpDateTime
      */
-    public function getInsertedValue()
+    public function getInsertValue()
     {
-        return new \DateTime(parent::getInsertedValue());
+        return new \DateTime(parent::getInsertValue());
     }
 
     /**
