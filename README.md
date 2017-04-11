@@ -1,5 +1,7 @@
 # Adminaut
 
+[![Crowdin](https://d322cqt584bo4o.cloudfront.net/adminaut/localized.svg)](https://crowdin.com/project/adminaut)
+
 
 ## Description
 
