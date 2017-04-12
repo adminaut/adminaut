@@ -29,7 +29,7 @@ class File extends \Zend\Form\Element\File
     /**
      * @return \Adminaut\Entity\File
      */
-    public function getInsertedValue() {
+    public function getInsertValue() {
         return $this->getFileObject();
     }
 

@@ -217,7 +217,7 @@ class ModuleController extends AdminautBaseController
                     }
 
                     $entity = $this->moduleManager->addEntity($form, $this->userAuthentication()->getIdentity());
-                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Entity has been successfully created'));
+                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Record has been successfully created.'));
                     switch ($post['submit']) {
                         case 'create-and-continue' :
                             return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'entity_id' => $entity->getId(), 'mode' => 'edit']);
@@ -262,7 +262,7 @@ class ModuleController extends AdminautBaseController
         /* @var $entity BaseEntityInterface */
         $entity = $this->getAdminModuleManager($moduleId)->findById($entityId);
         if (!$entity) {
-            $this->flashMessenger()->addErrorMessage($this->getTranslator()->translate('Entity was not found.'));
+            $this->flashMessenger()->addErrorMessage($this->getTranslator()->translate('Record was not found.'));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
@@ -296,7 +296,7 @@ class ModuleController extends AdminautBaseController
 
                     $this->moduleManager->updateEntity($entity, $form, $this->userAuthentication()->getIdentity());
 
-                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Entity has been successfully updated'));
+                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Record has been successfully updated.'));
                     if ($post['submit'] == 'save-and-continue') {
                         return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'edit']);
                     } else {
@@ -341,7 +341,7 @@ class ModuleController extends AdminautBaseController
         /* @var $entity BaseEntityInterface */
         $entity = $this->getAdminModuleManager($moduleId)->findById($entityId);
         if (!$entity) {
-            $this->flashMessenger()->addErrorMessage($this->getTranslator()->translate('Entity was not found.'));
+            $this->flashMessenger()->addErrorMessage($this->getTranslator()->translate('Record was not found.'));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
@@ -392,7 +392,7 @@ class ModuleController extends AdminautBaseController
         /* @var $entity BaseEntityInterface */
         $entity = $this->getAdminModuleManager($moduleId)->findById($entityId);
         if (!$entity) {
-            $this->flashMessenger()->addErrorMessage($this->getTranslator()->translate('Entity was not found.'));
+            $this->flashMessenger()->addErrorMessage($this->getTranslator()->translate('Record was not found.'));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
@@ -435,7 +435,7 @@ class ModuleController extends AdminautBaseController
             $cyclicEntity = $moduleManager->findById($cyclicEntityId);
 
             if (!$cyclicEntity) {
-                $this->flashMessenger()->addErrorMessage($this->getTranslator()->translate('Entity was not found.'));
+                $this->flashMessenger()->addErrorMessage($this->getTranslator()->translate('Record was not found.'));
                 return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => $mode, 'tab' => $currentTab]);
             }
 
@@ -445,7 +445,7 @@ class ModuleController extends AdminautBaseController
                 $cyclicEntity = $moduleManager->findById($cyclicEntityId);
                 $moduleManager->deleteEntity($cyclicEntity, $this->userAuthentication()->getIdentity());
 
-                $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Entity has been deleted'));
+                $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Record has been deleted.'));
                 return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => $mode, 'tab' => $currentTab]);
             } catch (\Exception $e) {
                 $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
@@ -478,7 +478,7 @@ class ModuleController extends AdminautBaseController
                         $entity = $moduleManager->addEntity($form, $this->userAuthentication()->getIdentity());
                     }
 
-                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Entity has been successfully updated'));
+                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Record has been successfully updated.'));
                     return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'edit', 'tab' => $currentTab]);
                 } catch (\Exception $e) {
                     $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
@@ -527,14 +527,14 @@ class ModuleController extends AdminautBaseController
         /* @var $entity BaseEntityInterface */
         $entity = $this->getAdminModuleManager($moduleId)->findById($entityId);
         if (!$entity) {
-            $this->flashMessenger()->addErrorMessage($this->getTranslator()->translate('Entity was not found.'));
+            $this->flashMessenger()->addErrorMessage($this->getTranslator()->translate('Record was not found.'));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
         try {
             $this->getAdminModuleManager($moduleId)->deleteEntity($entity, $this->userAuthentication()->getIdentity());
 
-            $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Entity has been deleted'));
+            $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Record has been deleted.'));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId, 'entity_id' => $entityId]);
         } catch (\Exception $e) {
             $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));

@@ -14,7 +14,7 @@
             <div class="box">
                 <div class="box-header with-border">
                     <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::WRITE)) { ?>
-                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode'=>'add']); ?>" class="btn btn-primary pull-left"><i class="fa fa-plus"></i> <?php echo $this->moduleOption->getLabels()['add_entity'] ?></a>
+                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode'=>'add']); ?>" class="btn btn-primary pull-left"><i class="fa fa-plus"></i> <?php echo $this->moduleOption->getLabels()['add_record'] ?></a>
                     <?php } ?>
                 </div>
                 <!-- /.box-header -->
@@ -37,12 +37,20 @@
                                 <tr rel="<?php echo $entity->getId(); ?>">
                                     <td><?php echo $entity->getId(); ?></td>
                                     <?php foreach($this->listedElements as $listedElement) { ?>
-                                        <?php $listedElement->setValue($entity->{$listedElement->getName()}) ?>
-                                        <?php if(method_exists($listedElement, 'getListedValue')) { ?>
-                                            <td><?php echo $listedElement->getListedValue(); ?></td>
-                                        <?php } else { ?>
-                                            <td><?php echo $listedElement->getValue(); ?></td>
-                                        <?php } ?>
+                                        <td>
+                                            <?php if($listedElement->isPrimary()) { ?>
+                                            <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $entity->getId()]); ?>" class="primary">
+                                            <?php } ?>
+                                            <?php $listedElement->setValue($entity->{$listedElement->getName()}) ?>
+                                            <?php if(method_exists($listedElement, 'getListedValue')) { ?>
+                                                <?php echo $listedElement->getListedValue(); ?>
+                                            <?php } else { ?>
+                                                <?php echo $listedElement->getValue(); ?>
+                                            <?php } ?>
+                                            <?php if($listedElement->isPrimary()) { ?>
+                                            </a>
+                                            <?php } ?>
+                                        </td>
                                     <?php } ?>
                                     <td>
                                         <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
@@ -78,7 +86,7 @@
 
                 <div class="box-footer clearfix">
                     <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::WRITE)) { ?>
-                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode'=>'add']); ?>" class="btn btn-primary pull-left"><i class="fa fa-plus"></i> <?php echo $this->moduleOption->getLabels()['add_entity'] ?></a>
+                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode'=>'add']); ?>" class="btn btn-primary pull-left"><i class="fa fa-plus"></i> <?php echo $this->moduleOption->getLabels()['add_record'] ?></a>
                     <?php } ?>
                 </div>
             </div>

@@ -38,6 +38,13 @@ class Navigation extends DefaultNavigationFactory
         ];
 
         foreach ($modules as $key => $item) {
+            if ($item['type'] == 'section') {
+                $pages[] = [
+                    'label' => $item['label'],
+                    'uri' => '#',
+                    'section' => true
+                ];
+            }
             if ($item['type'] == 'module') {
                 if ($accessControl->isAllowed($key, AccessControlService::READ)) {
                     if (isset($item['module_icon'])) {
@@ -67,6 +74,11 @@ class Navigation extends DefaultNavigationFactory
         }
 
         if ($accessControl->isAllowed('users', AccessControlService::READ)) {
+            $pages[] = [
+                'label' => 'Systém',
+                'uri' => '#',
+                'section' => true
+            ];
             $subPage = [];
             if ($accessControl->isAllowed('users', AccessControlService::READ)) {
                 $subPage[] = [

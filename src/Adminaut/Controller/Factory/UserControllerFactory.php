@@ -2,6 +2,7 @@
 namespace Adminaut\Controller\Factory;
 
 
+use Adminaut\Controller\RedirectCallback;
 use Adminaut\Controller\UserController;
 use Adminaut\Options\UserOptions;
 use Adminaut\Service\UserService;
@@ -24,7 +25,7 @@ class UserControllerFactory implements FactoryInterface
         $parentLocator = $serviceLocator->getServiceLocator();
 
         return new UserController(
-            $parentLocator->get('UserRedirectCallback'),
+            $parentLocator->get(RedirectCallback::class),
             $parentLocator->get(UserService::class),
             $parentLocator->get(UserOptions::class)
         );

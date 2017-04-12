@@ -1,5 +1,17 @@
+.logo-image {
+    font-size: 0 !important;
+}
+
+.logo-image img {
+    max-height: 40px;
+}
+
 .checkbox label, .radio label {
-    padding-left: 30px !important;
+    padding-left: 20px !important;
+}
+
+.checkbox .icheckbox_flat, .radio .iradio_flat {
+    margin-top: -2px!important;
 }
 
 .checkbox label div, .radio label div {
@@ -9,4 +21,8 @@
 
 .view-value {
     padding-top: 7px;
+}
+
+.primary {
+    font-weight: bold;
 }

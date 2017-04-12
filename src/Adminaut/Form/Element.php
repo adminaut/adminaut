@@ -20,7 +20,7 @@ class Element extends ZendFormElement implements ElementInterface
     /**
      * @return mixed
      */
-    public function getInsertedValue()
+    public function getInsertValue()
     {
         return $this->getValue();
     }
