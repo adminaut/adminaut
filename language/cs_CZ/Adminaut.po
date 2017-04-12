@@ -1,27 +1,29 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Adminaut\n"
+"Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-04-12 16:16+0200\n"
-"PO-Revision-Date: 2017-04-12 16:17+0200\n"
-"Last-Translator: \n"
-"Language-Team: Adminaut\n"
-"Language: en_US\n"
+"PO-Revision-Date: 2017-04-12 11:48-0400\n"
+"Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
+"Language-Team: Czech\n"
+"Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.1\n"
+"X-Generator: crowdin.com\n"
 "X-Poedit-Basepath: ../..\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-KeywordsList: translate;translatePlural:1,2;translateContext:1c,2;"
-"translateContextPlural:1c,2,3\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Poedit-KeywordsList: translate;translatePlural:1,2;translateContext:1c,2;translateContextPlural:1c,2,3\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Crowdin-Project: adminaut\n"
+"X-Crowdin-Language: cs\n"
+"X-Crowdin-File: /develop/language/source/Adminaut.po\n"
 
 #: src/Adminaut/Controller/InstallController.php:57
 #: src/Adminaut/Controller/UsersController.php:108
 msgid "User has been successfully created."
-msgstr ""
+msgstr "Uživatel byl úspěšně vytvořen."
 
 #: src/Adminaut/Controller/InstallController.php:60
 #: src/Adminaut/Controller/ModuleController.php:231
@@ -34,11 +36,11 @@ msgstr ""
 #: src/Adminaut/Controller/UsersController.php:206
 #, php-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Chyba: %s"
 
 #: src/Adminaut/Controller/ModuleController.php:220
 msgid "Record has been successfully created."
-msgstr ""
+msgstr "Záznam byl úspěšně vytvořen."
 
 #: src/Adminaut/Controller/ModuleController.php:265
 #: src/Adminaut/Controller/ModuleController.php:344
@@ -46,110 +48,110 @@ msgstr ""
 #: src/Adminaut/Controller/ModuleController.php:438
 #: src/Adminaut/Controller/ModuleController.php:530
 msgid "Record was not found."
-msgstr ""
+msgstr "Záznam nebyl nalezen."
 
 #: src/Adminaut/Controller/ModuleController.php:299
 #: src/Adminaut/Controller/ModuleController.php:481
 msgid "Record has been successfully updated."
-msgstr ""
+msgstr "Záznam byl úspěšně aktualizován."
 
 #: src/Adminaut/Controller/ModuleController.php:448
 #: src/Adminaut/Controller/ModuleController.php:537
 msgid "Record has been deleted."
-msgstr ""
+msgstr "Záznam byl odstraněn."
 
 #: src/Adminaut/Controller/UsersController.php:166
 msgid "User has been successfully updated."
-msgstr ""
+msgstr "Uživatel byl úspěšně aktualizován."
 
 #: src/Adminaut/Controller/UsersController.php:204
 msgid "User has been successfully deleted."
-msgstr ""
+msgstr "Uživatel byl úspěšně odstraněn."
 
 #: src/Adminaut/Form/Role.php:34 src/Adminaut/Form/Role.php:37
 #: src/Adminaut/Form/User.php:47 src/Adminaut/Form/User.php:50
 #: view/adminaut/acl/index.phtml:15 view/adminaut/users/index.phtml:27
 #: view/adminaut/users/view.phtml:22
 msgid "Name"
-msgstr ""
+msgstr "Jméno"
 
 #: src/Adminaut/Form/User.php:58 src/Adminaut/Form/User.php:61
 #: src/Adminaut/Form/UserLogin.php:30 src/Adminaut/Form/UserLogin.php:34
 #: view/adminaut/users/index.phtml:28 view/adminaut/users/view.phtml:28
 msgid "Email"
-msgstr ""
+msgstr "E-mail"
 
 #: src/Adminaut/Form/User.php:69 src/Adminaut/Form/User.php:72
 #: src/Adminaut/Form/UserLogin.php:42 src/Adminaut/Form/UserLogin.php:46
 msgid "Password"
-msgstr ""
+msgstr "Heslo"
 
 #: src/Adminaut/Form/User.php:81 src/Adminaut/Form/User.php:84
 #: view/adminaut/acl/show-role.phtml:3 view/adminaut/users/index.phtml:29
 msgid "Role"
-msgstr ""
+msgstr "Role"
 
 #: src/Adminaut/Form/User.php:85
 msgid "Select role"
-msgstr ""
+msgstr "Vybrat roli"
 
 #: src/Adminaut/Form/User.php:93 view/adminaut/users/index.phtml:44
 #: view/adminaut/users/view.phtml:34 view/adminaut/users/view.phtml:37
 msgid "Active"
-msgstr ""
+msgstr "Aktivní"
 
 #: src/Adminaut/Form/UserLogin.php:55
 msgid "Sing in"
-msgstr ""
+msgstr "Přihlásit se"
 
 #: view/adminaut/acl/add-role.phtml:3 view/adminaut/acl/index.phtml:48
 msgid "Add new role"
-msgstr ""
+msgstr "Přidat novou roli"
 
 #: view/adminaut/acl/add-role.phtml:20 view/adminaut/acl/show-role.phtml:74
 #: view/adminaut/acl/update-role.phtml:50
 #: view/adminaut/user/forgot-password.phtml:17
 msgid "Back"
-msgstr ""
+msgstr "Zpět"
 
 #: view/adminaut/acl/index.phtml:3
 msgid "Roles"
-msgstr ""
+msgstr "Role"
 
 #: view/adminaut/acl/index.phtml:16 view/adminaut/module/cyclicTab.phtml:33
 #: view/adminaut/module/list.phtml:31 view/adminaut/users/index.phtml:31
 msgid "Actions"
-msgstr ""
+msgstr "Akce"
 
 #: view/adminaut/acl/show-role.phtml:11 view/adminaut/acl/update-role.phtml:21
 msgid "Permission"
-msgstr ""
+msgstr "Oprávnění"
 
 #: view/adminaut/acl/show-role.phtml:18 view/adminaut/acl/show-role.phtml:28
 #: view/adminaut/acl/show-role.phtml:33 view/adminaut/acl/show-role.phtml:35
 msgid "Read"
-msgstr ""
+msgstr "Čtení"
 
 #: view/adminaut/acl/show-role.phtml:29 view/adminaut/acl/show-role.phtml:36
 msgid "Write"
-msgstr ""
+msgstr "Zápis"
 
 #: view/adminaut/acl/show-role.phtml:38 view/adminaut/acl/show-role.phtml:41
 msgid "None"
-msgstr ""
+msgstr "Žádný"
 
 #: view/adminaut/acl/show-role.phtml:55
 msgid "Users assigned to role"
-msgstr ""
+msgstr "Uživatelé přiřazení k roli"
 
 #: view/adminaut/acl/show-role.phtml:77 view/adminaut/module/cyclicTab.phtml:82
 #: view/adminaut/module/view.phtml:43 view/adminaut/users/view.phtml:46
 msgid "Edit"
-msgstr ""
+msgstr "Upravit"
 
 #: view/adminaut/acl/update-role.phtml:3
 msgid "Update role"
-msgstr ""
+msgstr "Aktualizovat roli"
 
 #: view/adminaut/dashboard/index.phtml:3 view/adminaut/dashboard/index.phtml:6
 #: view/adminaut/module/add.phtml:13 view/adminaut/module/cyclicTab.phtml:6
@@ -159,35 +161,35 @@ msgstr ""
 #: view/adminaut/users/edit.phtml:12 view/adminaut/users/index.phtml:6
 #: view/adminaut/users/view.phtml:7
 msgid "Dashboard"
-msgstr ""
+msgstr "Panel"
 
 #: view/adminaut/install/index.phtml:13
 msgid "Register first user"
-msgstr ""
+msgstr "Registrovat prvního uživatele"
 
 #: view/adminaut/module/add.phtml:36 view/adminaut/module/cyclicTab.phtml:117
 #: view/adminaut/users/add.phtml:33
 msgid "Create"
-msgstr ""
+msgstr "Vytvořit"
 
 #: view/adminaut/module/add.phtml:37 view/adminaut/users/add.phtml:34
 msgid "Create and continue"
-msgstr ""
+msgstr "Vytvořit a pokračovat"
 
 #: view/adminaut/module/add.phtml:38
 msgid "Create and new"
-msgstr ""
+msgstr "Vytvořit + nový záznam"
 
 #: view/adminaut/module/add.phtml:39 view/adminaut/module/cyclicTab.phtml:84
 #: view/adminaut/module/edit.phtml:39 view/adminaut/module/view.phtml:45
 #: view/adminaut/users/add.phtml:35 view/adminaut/users/edit.phtml:36
 #: view/adminaut/users/view.phtml:48
 msgid "Back to list"
-msgstr ""
+msgstr "Zpět na seznam"
 
 #: view/adminaut/module/cyclicTab.phtml:102
 msgid "Add new"
-msgstr ""
+msgstr "Přidat"
 
 #: view/adminaut/module/cyclicTab.phtml:115
 msgid "Close update"
@@ -195,113 +197,113 @@ msgstr ""
 
 #: view/adminaut/module/edit.phtml:37 view/adminaut/users/edit.phtml:34
 msgid "Save"
-msgstr ""
+msgstr "Uložit"
 
 #: view/adminaut/module/edit.phtml:38 view/adminaut/users/edit.phtml:35
 msgid "Save and continue"
-msgstr ""
+msgstr "Uložit a pokračovat"
 
 #: view/adminaut/module/edit.phtml:40 view/adminaut/module/view.phtml:46
 msgid "Delete"
-msgstr ""
+msgstr "Odstranit"
 
 #: view/adminaut/module/index.phtml:3 view/adminaut/module/index.phtml:7
 msgid "Module"
-msgstr ""
+msgstr "Modul"
 
 #: view/adminaut/module/view.phtml:20 view/adminaut/users/view.phtml:9
 #: view/adminaut/users/view.phtml:18
 msgid "Detail"
-msgstr ""
+msgstr "Detail"
 
 #: view/adminaut/user/forgot-password.phtml:7
 msgid "Forgot password"
-msgstr ""
+msgstr "Zapomenuté heslo"
 
 #: view/adminaut/user/forgot-password.phtml:16
 msgid "Send new password"
-msgstr ""
+msgstr "Poslat nové heslo"
 
 #: view/adminaut/user/login.phtml:7
 msgid "Sign in to start your session"
-msgstr ""
+msgstr "Přihlašte se"
 
 #: view/adminaut/user/login.phtml:32
 msgid "I forgot my password"
-msgstr ""
+msgstr "Zapomenuté heslo"
 
 #: view/adminaut/user/login.phtml:33
 msgid "Request access"
-msgstr ""
+msgstr "Vyžádat přístup"
 
 #: view/adminaut/users/add.phtml:8 view/adminaut/users/edit.phtml:8
 #: view/adminaut/users/view.phtml:3
 msgid "Users:"
-msgstr ""
+msgstr "Uživatelé:"
 
 #: view/adminaut/users/add.phtml:12 view/adminaut/users/edit.phtml:13
 #: view/adminaut/users/index.phtml:3 view/adminaut/users/index.phtml:7
 #: view/adminaut/users/view.phtml:8
 msgid "Users"
-msgstr ""
+msgstr "Uživatelé"
 
 #: view/adminaut/users/add.phtml:13
 msgid "Add"
-msgstr ""
+msgstr "Přidat"
 
 #: view/adminaut/users/add.phtml:23
 msgid "Add new user"
-msgstr ""
+msgstr "Přidat nového uživatele"
 
 #: view/adminaut/users/edit.phtml:14 view/adminaut/users/edit.phtml:24
 msgid "Update"
-msgstr ""
+msgstr "Aktualizovat"
 
 #: view/adminaut/users/index.phtml:17 view/adminaut/users/index.phtml:80
 msgid "Add user"
-msgstr ""
+msgstr "Přidat uživatele"
 
 #: view/adminaut/users/index.phtml:30
 msgid "Status"
-msgstr ""
+msgstr "Stav"
 
 #: view/adminaut/users/index.phtml:46 view/adminaut/users/view.phtml:39
 msgid "Inactive"
-msgstr ""
+msgstr "Neaktivní"
 
 #: view/layout/layout-admin.phtml:108
 msgid "Toggle navigation"
-msgstr ""
+msgstr "Přepnout navigaci"
 
 #: view/layout/layout-admin.phtml:134
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 #: view/layout/layout-admin.phtml:137
 msgid "Sign out"
-msgstr ""
+msgstr "Odhlásit se"
 
 #: view/layout/layout-admin.phtml:163
 msgid "Search..."
-msgstr ""
+msgstr "Hledat..."
 
 #: view/layout/layout-admin.phtml:193
 #, php-format
 msgid "Powered by %s."
-msgstr ""
+msgstr "Powered by %s."
 
 #: view/partial/deleteModal.phtml:6
 msgid "Confirm delete"
-msgstr ""
+msgstr "Potvrdit odstranění"
 
 #: view/partial/deleteModal.phtml:9
 msgid "Are you sure?"
-msgstr ""
+msgstr "Opravdu?"
 
 #: view/partial/deleteModal.phtml:12
 msgid "No"
-msgstr ""
+msgstr "Ne"
 
 #: view/partial/deleteModal.phtml:13
 msgid "Yes, delete it"
-msgstr ""
+msgstr "Ano, odstranit"

@@ -122,7 +122,7 @@ class UsersController extends AdminautBaseController
                 try {
                     $userService = $this->getUserService();
                     $user = $userService->add($post, $this->userAuthentication()->getIdentity());
-                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully created'));
+                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully created.'));
                     switch($post['submit']) {
                         case 'create-and-continue' :
                             return $this->redirect()->toRoute('adminaut/users/update', ['id' => $user->getId()]);
