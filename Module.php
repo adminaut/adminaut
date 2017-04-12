@@ -26,7 +26,8 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, In
             'DoctrineModule',
             'DoctrineORMModule',
             'TwbBundle',
-            'BsbFlysystem'
+            'BsbFlysystem',
+            'Adminaut\Datatype'
         ];
 
         $loadedModules = $manager->getLoadedModules(false);

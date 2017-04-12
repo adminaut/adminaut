@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="nav-tabs-custom">
-                <?php echo $this->partial('partial/tabs.phtml', ['url_params' => $this->url_params, 'tabs' => $this->tabs]); ?>
+                <?php echo $this->partial('partial/tabs.phtml', ['route' => 'adminaut/module/action', 'url_params' => $this->url_params, 'tabs' => $this->tabs]); ?>
                 <div class="tab-content">
                     <?php echo $this->partial('partial/flashMessanger.phtml', ['flashMessenger' => $this->flashMessenger()]); ?>
 
@@ -111,10 +111,10 @@
                 <!-- /.box-body -->
 
                 <div class="box-footer clearfix">
-                    <?php if($this->action == "update") { ?>
-                        <a href="<?php echo $this->url('adminaut/module/action/tab', ['module_id' => $this->url_params['module_id'], 'mode' => $this->url_params['mode'], 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId()]); ?>" class="btn btn-sm btn-primary btn-flat pull-left"><i class="fa fa-chevron-left"></i> <?php echo $this->translate('Close update'); ?></a>
-                    <?php } ?>
                     <button type="submit" name="submit" class="btn btn-primary" value=""><?php echo $this->translate("Create"); ?></button>
+                    <?php if($this->action == "edit") { ?>
+                        <a href="<?php echo $this->url('adminaut/module/action/tab', ['module_id' => $this->url_params['module_id'], 'mode' => $this->url_params['mode'], 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId()]); ?>" class="btn btn-default"><?php echo $this->translate('Close update'); ?></a>
+                    <?php } ?>
                 </div>
             </div>
             <!-- /.box -->

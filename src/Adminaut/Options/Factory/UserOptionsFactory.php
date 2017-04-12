@@ -20,6 +20,6 @@ class UserOptionsFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $config = $serviceLocator->get('config');
-        return new \Adminaut\Options\UserOptions(isset($config['user']) ? $config['user'] : []);
+        return new \Adminaut\Options\UserOptions(isset($config['adminaut']['users']) ? $config['adminaut']['users'] : []);
     }
 }

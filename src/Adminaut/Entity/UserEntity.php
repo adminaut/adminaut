@@ -4,9 +4,11 @@ namespace Adminaut\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Zend\Form\Annotation;
 
 /**
  * Class UserEntity
+ * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\Entity(repositoryClass="\Adminaut\Repository\UserRepository")
  * @ORM\Table(name="mfcc_admin_user")
  * @property integer $id
@@ -16,24 +18,36 @@ class UserEntity extends Base implements UserInterface
 {
     /**
      * @ORM\Column(type="string", length=128);
+     * @Annotation\Options({"label":"Name", "listed":true});
+     * @Annotation\Flags({"priority":5});
+     * @Annotation\Type("Adminaut\Datatype\Text");
      * @var string
      */
     protected $name;
 
     /**
      * @ORM\Column(type="string", length=128, unique=true);
+     * @Annotation\Options({"label":"Email", "listed":true, "primary":true});
+     * @Annotation\Flags({"priority":10});
+     * @Annotation\Type("Zend\Form\Element\Email");
      * @var string
      */
     protected $email;
 
     /**
      * @ORM\Column(type="string", length=128);
+     * @Annotation\Options({"label":"Password"});
+     * @Annotation\Flags({"priority":15});
+     * @Annotation\Type("Zend\Form\Element\Password");
      * @var string
      */
     protected $password;
 
     /**
      * @ORM\Column(type="string", length=128);
+     * @Annotation\Options({"label":"Role", "empty_option":"Select role", "listed":true});
+     * @Annotation\Flags({"priority":20});
+     * @Annotation\Type("Zend\Form\Element\Select");
      */
     protected $role;
 
@@ -41,7 +55,7 @@ class UserEntity extends Base implements UserInterface
      * @ORM\Column(type="smallint", nullable=true);
      * @var int
      */
-    protected $status;
+//    protected $status;
 
     /**
      * User constructor.
@@ -163,7 +177,6 @@ class UserEntity extends Base implements UserInterface
             'name' => $this->name,
             'email' => $this->email,
             'role' => $this->role,
-            'status' => $this->status,
             'active' => $this->active,
         ];
     }

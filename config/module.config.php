@@ -75,7 +75,7 @@ return [
             'formDate'                                              => \Adminaut\Form\View\Helper\FormDate::class,
             'formDateTime'                                          => \Adminaut\Form\View\Helper\FormDateTime::class,
             'formFile'                                              => \Adminaut\Form\View\Helper\FormFile::class,
-            'formCheckbox'                                          => \Adminaut\Form\View\Helper\FormCheckbox::class,
+//            'formCheckbox'                                          => \Adminaut\Form\View\Helper\FormCheckbox::class,
 //            'formCheckbox'                                          => \Adminaut\Form\View\Helper\Checkbox::class,
         ],
 
@@ -84,7 +84,6 @@ return [
             'userIdentity'                                          => \Adminaut\View\Helper\Factory\UserIdentityViewHelperFactory::class,
             'isAllowed'                                             => \Adminaut\View\Helper\Factory\IsAllowedViewHelperFactory::class,
             'config'                                                => \Adminaut\View\Helper\Factory\ConfigViewHelperFactory::class,
-//            'getFileById'                                           => 'MfccAdminModule\Factory\Vie'
         ]
     ],
 
@@ -284,9 +283,26 @@ return [
                                     'route' => '/edit/:id',
                                     'defaults' => [
                                         'action' => 'edit',
+                                        'tab' => 'main'
                                     ],
                                     'constraints' => [
                                         'id' => '[0-9]*',
+                                    ],
+                                ],
+                                'may_terminate' => true,
+                                'child_routes' => [
+                                    'tab' => [
+                                        'type' => Segment::class,
+                                        'options' => [
+                                            'route' => '/:tab',
+                                            'defaults' => [
+                                                'action' => 'tab',
+                                                'tab' => 'main'
+                                            ],
+                                            'constraints' => [
+                                                'tab' => '[a-z]*'
+                                            ]
+                                        ],
                                     ],
                                 ],
                             ],

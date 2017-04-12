@@ -160,7 +160,7 @@ class UserService extends EventProvider
     /**
      * @return AccessControlService
      */
-    public function getAccessControlService(): AccessControlService
+    public function getAccessControlService()
     {
         return $this->accessControlService;
     }
@@ -176,7 +176,7 @@ class UserService extends EventProvider
     /**
      * @return RoleMapper
      */
-    public function getRoleMapper(): RoleMapper
+    public function getRoleMapper()
     {
         return $this->roleMapper;
     }
@@ -192,7 +192,7 @@ class UserService extends EventProvider
     /**
      * @return UserMapper
      */
-    public function getUserMapper(): UserMapper
+    public function getUserMapper()
     {
         return $this->userMapper;
     }
@@ -208,7 +208,7 @@ class UserService extends EventProvider
     /**
      * @return AuthenticationService
      */
-    public function getUserAuthService(): AuthenticationService
+    public function getUserAuthService()
     {
         return $this->userAuthService;
     }
@@ -224,7 +224,7 @@ class UserService extends EventProvider
     /**
      * @return UserOptions
      */
-    public function getUserOptions(): UserOptions
+    public function getUserOptions()
     {
         return $this->userOptions;
     }

@@ -14,7 +14,7 @@
         <div class="col-xs-12 col-sm-8">
             <div class="nav-tabs-custom">
                 <?php if(sizeof($this->tabs) > 1) { ?>
-                    <?php echo $this->partial('partial/tabs.phtml', ['url_params' => $this->url_params, 'tabs' => $this->tabs]); ?>
+                    <?php echo $this->partial('partial/tabs.phtml', ['route' => 'adminaut/module/action', 'url_params' => $this->url_params, 'tabs' => $this->tabs]); ?>
                 <?php } else { ?>
                     <div class="box-header with-border">
                         <h3 class="box-title"><?php echo $this->translate("Detail"); ?></h3>

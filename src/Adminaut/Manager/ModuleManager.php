@@ -2,6 +2,7 @@
 
 namespace Adminaut\Manager;
 
+use Adminaut\Datatype\Reference;
 use Adminaut\Form\Element\CyclicSheet;
 use Doctrine\ORM\EntityManager;
 use DoctrineModule\Form\Element\ObjectMultiCheckbox;
@@ -15,7 +16,9 @@ use Adminaut\Mapper\ModuleMapper;
 use Adminaut\Options\ModuleOptions;
 use Adminaut\Form\Form;
 use Adminaut\Form\Annotation\AnnotationBuilder;
+use Zend\Form\Element\Collection;
 use Zend\Form\Element\Radio;
+use Zend\Form\Fieldset;
 
 /**
  * Class ModuleManager
@@ -171,11 +174,15 @@ class ModuleManager
         $form = $builder->createForm(new $entityClass());
         $form->setHydrator(new DoctrineObject($this->getEntityManager()));
 
+        /** @var Fieldset[] $fieldsets */
+        $fieldsets = array();
+
         /** @var ObjectSelect|ObjectRadio|ObjectMultiCheckbox|CyclicSheet $element */
         foreach($form->getElements() as $element){
             if($element instanceof ObjectSelect ||
             $element instanceof ObjectRadio ||
-            $element instanceof ObjectMultiCheckbox) {
+            $element instanceof ObjectMultiCheckbox ||
+            $element instanceof Reference) {
                 $element->setOption('object_manager', $this->getEntityManager());
             } elseif($element instanceof CyclicSheet) {
                 $form->addTab($element->getName(), [
@@ -187,6 +194,24 @@ class ModuleManager
 
                 $form->remove($element->getName());
             }
+
+            /*if($tab = $element->getOption("tab")) {
+                if($tab != "General") {
+                    $filter = new \Zend\Filter\StripTags();
+                    $tabName = $filter->filter($tab);
+
+                    if(!isset($fieldsets[$tab])) {
+                        $fieldsets[$tab] = new Fieldset($tab);
+                    }
+
+                    $fieldsets[$tab]->add($element);
+                    $form->addTab($tab, [
+                        'label' => $tab,
+                        'action' => 'formTab'
+                    ]);
+                    $form->remove($element->getName());
+                }
+            }*/
         }
 
         return $form;
