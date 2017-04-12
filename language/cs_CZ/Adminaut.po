@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
-"POT-Creation-Date: 2017-04-03 14:21+0200\n"
-"PO-Revision-Date: 2017-04-12 10:58-0400\n"
+"POT-Creation-Date: 2017-04-12 16:16+0200\n"
+"PO-Revision-Date: 2017-04-12 11:48-0400\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: Czech\n"
 "Language: cs_CZ\n"
@@ -21,15 +21,16 @@ msgstr ""
 "X-Crowdin-File: /develop/language/source/Adminaut.po\n"
 
 #: src/Adminaut/Controller/InstallController.php:57
-msgid "User has been successfully added"
-msgstr "Uživatel byl úspěšně přidán"
+#: src/Adminaut/Controller/UsersController.php:108
+msgid "User has been successfully created."
+msgstr "Uživatel byl úspěšně vytvořen."
 
 #: src/Adminaut/Controller/InstallController.php:60
-#: src/Adminaut/Controller/ModuleController.php:221
-#: src/Adminaut/Controller/ModuleController.php:296
-#: src/Adminaut/Controller/ModuleController.php:441
-#: src/Adminaut/Controller/ModuleController.php:474
-#: src/Adminaut/Controller/ModuleController.php:530
+#: src/Adminaut/Controller/ModuleController.php:231
+#: src/Adminaut/Controller/ModuleController.php:306
+#: src/Adminaut/Controller/ModuleController.php:451
+#: src/Adminaut/Controller/ModuleController.php:484
+#: src/Adminaut/Controller/ModuleController.php:540
 #: src/Adminaut/Controller/UsersController.php:117
 #: src/Adminaut/Controller/UsersController.php:176
 #: src/Adminaut/Controller/UsersController.php:206
@@ -37,31 +38,27 @@ msgstr "Uživatel byl úspěšně přidán"
 msgid "Error: %s"
 msgstr "Chyba: %s"
 
-#: src/Adminaut/Controller/ModuleController.php:210
-msgid "Entity has been successfully created"
-msgstr "Záznam byl úspěšně vytvořen"
+#: src/Adminaut/Controller/ModuleController.php:220
+msgid "Record has been successfully created."
+msgstr "Záznam byl úspěšně vytvořen."
 
-#: src/Adminaut/Controller/ModuleController.php:255
-#: src/Adminaut/Controller/ModuleController.php:334
-#: src/Adminaut/Controller/ModuleController.php:385
-#: src/Adminaut/Controller/ModuleController.php:428
-#: src/Adminaut/Controller/ModuleController.php:520
-msgid "Entity was not found."
+#: src/Adminaut/Controller/ModuleController.php:265
+#: src/Adminaut/Controller/ModuleController.php:344
+#: src/Adminaut/Controller/ModuleController.php:395
+#: src/Adminaut/Controller/ModuleController.php:438
+#: src/Adminaut/Controller/ModuleController.php:530
+msgid "Record was not found."
 msgstr "Záznam nebyl nalezen."
 
-#: src/Adminaut/Controller/ModuleController.php:289
-#: src/Adminaut/Controller/ModuleController.php:471
-msgid "Entity has been successfully updated"
-msgstr "Záznam byl úspěšně aktualizován"
+#: src/Adminaut/Controller/ModuleController.php:299
+#: src/Adminaut/Controller/ModuleController.php:481
+msgid "Record has been successfully updated."
+msgstr "Záznam byl úspěšně aktualizován."
 
-#: src/Adminaut/Controller/ModuleController.php:438
-#: src/Adminaut/Controller/ModuleController.php:527
-msgid "Entity has been deleted"
-msgstr "Záznam byl odstraněn"
-
-#: src/Adminaut/Controller/UsersController.php:108
-msgid "User has been successfully created"
-msgstr "Uživatel byl úspěšně vytvořen"
+#: src/Adminaut/Controller/ModuleController.php:448
+#: src/Adminaut/Controller/ModuleController.php:537
+msgid "Record has been deleted."
+msgstr "Záznam byl odstraněn."
 
 #: src/Adminaut/Controller/UsersController.php:166
 msgid "User has been successfully updated."
@@ -274,23 +271,23 @@ msgstr "Stav"
 msgid "Inactive"
 msgstr "Neaktivní"
 
-#: view/layout/layout-admin.phtml:95
+#: view/layout/layout-admin.phtml:108
 msgid "Toggle navigation"
 msgstr "Přepnout navigaci"
 
-#: view/layout/layout-admin.phtml:121
+#: view/layout/layout-admin.phtml:134
 msgid "Profile"
 msgstr "Profil"
 
-#: view/layout/layout-admin.phtml:124
+#: view/layout/layout-admin.phtml:137
 msgid "Sign out"
 msgstr "Odhlásit se"
 
-#: view/layout/layout-admin.phtml:150
+#: view/layout/layout-admin.phtml:163
 msgid "Search..."
 msgstr "Hledat..."
 
-#: view/layout/layout-admin.phtml:180
+#: view/layout/layout-admin.phtml:193
 #, php-format
 msgid "Powered by %s."
 msgstr "Powered by %s."
