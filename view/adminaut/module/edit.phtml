@@ -6,12 +6,13 @@
 
 <section class="content-header">
     <h1>
-        <?php echo $this->moduleOption->getModuleName() ?>
+        <?php echo $this->moduleOption->getModuleName() ?> <small><?php echo $this->entity->{'get'.ucfirst($this->primary)}(); ?></small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
         <li><a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->moduleOption->getModuleName() ?></a></li>
-        <li class="active"><?php echo $this->moduleOption->getLabels()['update_record'] ?></li>
+                <li><a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $this->entity->getId()]); ?>"><?php echo $this->entity->{'get'.ucfirst($this->primary)}() ?></a></li>
+        <li class="active"><?php echo $this->translate("Edit") ?></li>
     </ol>
 </section>
 

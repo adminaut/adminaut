@@ -2,6 +2,7 @@
 
 namespace Adminaut\Manager;
 
+use Adminaut\Datatype\MultiReference;
 use Adminaut\Datatype\Reference;
 use Adminaut\Form\Element\CyclicSheet;
 use Doctrine\ORM\EntityManager;
@@ -182,7 +183,8 @@ class ModuleManager
             if($element instanceof ObjectSelect ||
             $element instanceof ObjectRadio ||
             $element instanceof ObjectMultiCheckbox ||
-            $element instanceof Reference) {
+            $element instanceof Reference ||
+            $element instanceof MultiReference) {
                 $element->setOption('object_manager', $this->getEntityManager());
             } elseif($element instanceof CyclicSheet) {
                 $form->addTab($element->getName(), [

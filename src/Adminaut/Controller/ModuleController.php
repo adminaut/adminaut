@@ -145,7 +145,12 @@ class ModuleController extends AdminautBaseController
         $entity = $this->moduleManager->findById($entityId);
 
         $elements = [];
+        $primaryField = "";
         foreach ($form->getElements() as $key => $element) {
+            if(method_exists($element, 'isPrimary') && $element->isPrimary()) {
+                $primaryField = $element->getName();
+            }
+
             if ($this->getAcl()->isAllowed($moduleId, AccessControlService::READ, $key)) {
                 $elements[] = $element;
             }
@@ -161,6 +166,7 @@ class ModuleController extends AdminautBaseController
                 'mode' => 'view'
             ],
             'entity' => $entity,
+            'primary' => $primaryField,
             'elements' => $elements,
             'tabs' => $tabs,
             'moduleOption' => $this->moduleManager->getOptions()
@@ -274,6 +280,13 @@ class ModuleController extends AdminautBaseController
         $tabs[$this->params()->fromRoute('tab')]['active'] = true;
         $form->bind($entity);
 
+        $primaryField = "";
+        foreach($form->getElements() as $key => $element) {
+            if(method_exists($element, 'isPrimary') && $element->isPrimary()) {
+                $primaryField = $element->getName();
+            }
+        }
+
         if ($this->getRequest()->isPost()) {
             $postData = $this->getRequest()->getPost()->toArray();
             $files = $this->getRequest()->getFiles()->toArray();
@@ -313,6 +326,7 @@ class ModuleController extends AdminautBaseController
             'form' => $form,
             'tabs' => $tabs,
             'entity' => $entity,
+            'primary' => $primaryField,
             'moduleOption' => $this->moduleManager->getOptions(),
             'url_params' => [
                 'module_id' => $moduleId,
