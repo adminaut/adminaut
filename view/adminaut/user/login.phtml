@@ -4,6 +4,9 @@
     </div>
     <!-- /.login-logo -->
     <div class="box login-box-body box-success">
+
+        <?php echo $this->partial('partial/flashMessanger.phtml', ['flashMessenger' => $this->flashMessenger()]); ?>
+
         <p class="login-box-msg"><?php echo $this->translate("Sign in to start your session"); ?></p>
 
         <?php

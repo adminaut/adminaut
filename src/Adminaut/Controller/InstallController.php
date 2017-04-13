@@ -5,7 +5,7 @@ namespace Adminaut\Controller;
 use Adminaut\Form\User as UserForm;
 use Adminaut\Form\InputFilter\User as UserInputFilter;
 use Adminaut\Service\UserService;
-use Zend\I18n\Translator\Translator;
+use Zend\Mvc\I18n\Translator;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -29,9 +29,10 @@ class InstallController extends AbstractActionController
      * InstallController constructor.
      * @param $userService
      */
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, $translator)
     {
         $this->setUserService($userService);
+        $this->setTranslator($translator);
     }
 
     /**
