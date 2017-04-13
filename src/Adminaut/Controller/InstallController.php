@@ -53,8 +53,7 @@ class InstallController extends AbstractActionController
             $form->setData($post);
             if ($form->isValid()) {
                 try {
-                    $userService = $this->getUserService();
-                    $userService->createSuperuser($post);
+                    $this->getUserService()->createSuperuser($post);
                     $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully created.'));
                     return $this->redirect()->toRoute('adminaut/user/login');
                 } catch(\Exception $e) {
@@ -63,14 +62,13 @@ class InstallController extends AbstractActionController
                 }
             }
         }
-
         $this->layout()->setVariables([
             'bodyClasses' => ['login-page']
         ]);
         $this->layout('layout/admin-blank');
-        return [
+        return new ViewModel([
             'form' => $form
-        ];
+        ]);
     }
 
     /**

@@ -119,7 +119,7 @@ class UserController extends AbstractActionController
 
         if (!$request->isPost()) {
             return [
-                'loginForm' => $form,
+                'form' => $form,
                 'redirect'  => $redirect,
             ];
         }
