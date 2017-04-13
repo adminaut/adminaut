@@ -5,7 +5,7 @@ namespace Adminaut\Controller;
 use Adminaut\Form\User as UserForm;
 use Adminaut\Form\InputFilter\User as UserInputFilter;
 use Adminaut\Service\UserService;
-use Zend\I18n\Translator\Translator;
+use Zend\Mvc\I18n\Translator;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -29,9 +29,10 @@ class InstallController extends AbstractActionController
      * InstallController constructor.
      * @param $userService
      */
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, $translator)
     {
         $this->setUserService($userService);
+        $this->setTranslator($translator);
     }
 
     /**
@@ -52,8 +53,7 @@ class InstallController extends AbstractActionController
             $form->setData($post);
             if ($form->isValid()) {
                 try {
-                    $userService = $this->getUserService();
-                    $userService->createSuperuser($post);
+                    $this->getUserService()->createSuperuser($post);
                     $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully created.'));
                     return $this->redirect()->toRoute('adminaut/user/login');
                 } catch(\Exception $e) {
@@ -62,14 +62,13 @@ class InstallController extends AbstractActionController
                 }
             }
         }
-
         $this->layout()->setVariables([
             'bodyClasses' => ['login-page']
         ]);
         $this->layout('layout/admin-blank');
-        return [
+        return new ViewModel([
             'form' => $form
-        ];
+        ]);
     }
 
     /**
