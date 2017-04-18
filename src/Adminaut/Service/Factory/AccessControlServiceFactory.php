@@ -23,7 +23,8 @@ class AccessControlServiceFactory implements FactoryInterface
         );*/
 
         $config = $serviceLocator->get('config');
-        return new AccessControlService($config["adminaut"]['roles']);
+        $roles = isset($config["adminaut"]['roles']) ? $config["adminaut"]['roles'] : [];
+        return new AccessControlService($roles);
     }
 
 }
