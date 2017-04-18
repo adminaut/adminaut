@@ -80,7 +80,8 @@ class AdminautBaseController extends AbstractActionController
 
         $this->layout('layout/admin');
         $this->layout()->setVariable('acl', $acl);
-        $appearance = array_merge($this->defaultAppearance, $this->config['adminaut']['appearance']);
+        $appearanceConfig = $this->config['adminaut']['appearance'] ?? [];
+        $appearance = array_merge($this->defaultAppearance, $appearanceConfig);
         $this->layout()->setVariable('appearance', $appearance);
         return $this;
     }
