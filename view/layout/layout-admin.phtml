@@ -94,6 +94,11 @@
 
             </script>
         <?php } ?>
+        <?php if(isset($this->config()['adminaut']['google-api'])) { ?>
+            <script>
+                var google_api = "<?php echo $this->config()['adminaut']['google-api'] ?>";
+            </script>
+        <?php } ?>
         <div class="wrapper">
             <header class="main-header">
                 <!-- Logo -->
