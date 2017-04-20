@@ -1,3 +1,10 @@
+<?php
+    /** @var array $elements */
+    /** @var array $ignoreFields */
+    $ignoredFields = [];
+?>
+
+
 <section class="content-header">
     <h1>
         <?php echo $this->moduleOption->getModuleName() ?> <small><?php echo $this->entity->{'get'.ucfirst($this->primary)}(); ?></small>
@@ -22,16 +29,23 @@
                 <?php } ?>
                 <div class="tab-content">
                     <fieldset class="form-horizontal">
-                    <?php foreach ($this->elements as $element) { ?>
+                    <?php foreach ($elements as $fieldName => $field) { ?>
+                        <?php
+                            if(in_array($fieldName, $ignoredFields)) { continue; }
+
+                            if($field instanceof \Adminaut\Datatype\GoogleMap) {
+                                if($field->getLongitudeVariable()) {
+                                    if(isset($elements[$field->getLongitudeVariable()])) {
+                                        $field->setConnectedElement($elements[$field->getLongitudeVariable()]);
+                                        $ignoredFields[] = $field->getLongitudeVariable();
+                                    }
+                                }
+                            }
+                        ?>
                         <div class="form-group">
-                            <?php $element->setValue($this->entity->{$element->getName()}); ?>
-                            <label class="col-sm-2 control-label"><?php echo $element->getLabel() ?></label>
+                            <label class="col-sm-2 control-label"><?php echo $field->getLabel() ?></label>
                             <div class="col-sm-10 view-value">
-                            <?php if(method_exists($element, 'getListedValue')) { ?>
-                                <?php echo $element->getListedValue(); ?>
-                            <?php } else { ?>
-                                <?php echo $element->getValue(); ?>
-                            <?php } ?>
+                            <?php echo $this->datatypeDetail($field) ?>
                             </div>
                         </div>
                     <?php } ?>

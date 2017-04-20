@@ -28,14 +28,20 @@
                                 <?php foreach($this->listedElements as $listedElement) { ?>
                                     <th><?php echo $listedElement->getOption('label'); ?></th>
                                 <?php } ?>
-                                <th><?php echo $this->translate('Actions'); ?></th>
+                                <?php /*<th><?php echo $this->translate('Actions'); ?></th> */ ?>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($this->list as $entity) { ?>
                                 <?php /* @var $entity Adminaut\Entity\Base */ ?>
                                 <tr rel="<?php echo $entity->getId(); ?>">
-                                    <td><?php echo $entity->getId(); ?></td>
+                                    <td>
+                                        <?php if(!$this->hasPrimary) { ?>
+                                            <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $entity->getId()]); ?>" class="primary"><?php echo $entity->getId(); ?></a>
+                                        <?php } else { ?>
+                                            <?php echo $entity->getId(); ?>
+                                        <?php } ?>
+                                    </td>
                                     <?php foreach($this->listedElements as $listedElement) { ?>
                                         <td>
                                             <?php if($listedElement->isPrimary()) { ?>
@@ -52,7 +58,7 @@
                                             <?php } ?>
                                         </td>
                                     <?php } ?>
-                                    <td>
+                                    <?php /*<td>
                                         <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
                                             <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $entity->getId()]); ?>" type="button" class="btn btn-success"
                                                data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="fa fa-eye"></i></a>
@@ -64,7 +70,7 @@
                                                    data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><i class="fa fa-trash"></i></a>
                                             <?php } ?>
                                         </div>
-                                    </td>
+                                    </td> */ ?>
                                 </tr>
                             <?php } ?>
                         </tbody>

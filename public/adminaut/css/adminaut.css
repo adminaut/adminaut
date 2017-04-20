@@ -26,3 +26,15 @@
 .primary {
     font-weight: bold;
 }
+
+.no-gutter {
+    padding: 0;
+}
+
+.no-gutter-left {
+    padding-left: 0;
+}
+
+.no-gutter-right {
+    padding-right: 0;
+}

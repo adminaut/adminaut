@@ -2,6 +2,7 @@
 
 namespace Adminaut\Manager;
 
+use Adminaut\Datatype\GoogleMap;
 use Adminaut\Datatype\MultiReference;
 use Adminaut\Datatype\Reference;
 use Adminaut\Form\Element\CyclicSheet;

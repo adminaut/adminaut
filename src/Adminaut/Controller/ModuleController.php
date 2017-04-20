@@ -107,9 +107,19 @@ class ModuleController extends AdminautBaseController
 
         /* @var $element \Zend\Form\Element */
         $listedElements = [];
+        $primaryElement = null;
         foreach ($form->getElements() as $key => $element) {
-            if ($element->getOption('listed') && $this->getAcl()->isAllowed($module_id, AccessControlService::READ, $key)) {
-                $listedElements[] = $element;
+            if ($element->getOption('listed')
+                && $this->getAcl()->isAllowed($module_id, AccessControlService::READ, $key)
+                || (method_exists($element, 'isPrimary')
+                    && $element->isPrimary()
+                    || $element->getOption('primary'))
+            ) {
+                $listedElements[$key] = $element;
+            }
+
+            if(method_exists($element, 'isPrimary') && $element->isPrimary() || $element->getOption('primary')) {
+                $primaryElement = $key;
             }
         }
 
@@ -118,6 +128,7 @@ class ModuleController extends AdminautBaseController
         return new ViewModel([
             'list' => $list,
             'listedElements' => $listedElements,
+            'hasPrimary' => ($primaryElement !== null),
             'moduleOption' => $this->moduleManager->getOptions()
         ]);
     }
@@ -143,6 +154,7 @@ class ModuleController extends AdminautBaseController
 
         $form = $this->moduleManager->getForm();
         $entity = $this->moduleManager->findById($entityId);
+        $form->bind($entity);
 
         $elements = [];
         $primaryField = "";
@@ -152,7 +164,7 @@ class ModuleController extends AdminautBaseController
             }
 
             if ($this->getAcl()->isAllowed($moduleId, AccessControlService::READ, $key)) {
-                $elements[] = $element;
+                $elements[$element->getName()] = $element;
             }
         }
 
