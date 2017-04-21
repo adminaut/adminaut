@@ -216,7 +216,13 @@ class Base implements BaseEntityInterface
      */
     public function __set($name, $value)
     {
-        $this->$name = $value;
+        $setter = 'set' . ucfirst($name);
+        if(method_exists($this, $setter)) {
+            $this->$setter($value);
+        } else {
+            $this->$name = $value;
+        }
+
         return $this;
     }
 

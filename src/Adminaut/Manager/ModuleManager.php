@@ -196,7 +196,18 @@ class ModuleManager
                 ]);
 
                 $form->remove($element->getName());
+                continue;
             }
+
+            if(method_exists($element, 'isPrimary')) {
+                if($element->isPrimary()) {
+                    $form->setPrimaryField($element->getName());
+                }
+            } elseif($element->getOption('primary') === true) {
+                $form->setPrimaryField($element->getName());
+            }
+
+
 
             /*if($tab = $element->getOption("tab")) {
                 if($tab != "General") {

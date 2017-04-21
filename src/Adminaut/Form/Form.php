@@ -23,6 +23,11 @@ class Form extends \Zend\Form\Form
     ];
 
     /**
+     * @var string
+     */
+    protected $primaryField;
+
+    /**
      * @return array
      */
     public function getTabs()
@@ -72,5 +77,36 @@ class Form extends \Zend\Form\Form
             }
         }
         return parent::prepare();
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrimaryField()
+    {
+        if($this->primaryField === null) {
+            foreach ($this->getElements() as $element) {
+                if(method_exists($element, 'isPrimary')) {
+                    if($element->isPrimary()) {
+                        $this->setPrimaryField($element->getName());
+                    }
+                } elseif($element->getOption('primary') === true) {
+                    $this->setPrimaryField($element->getName());
+                }
+            }
+
+            if($this->primaryField === null) {
+                $this->setPrimaryField('id');
+            }
+        }
+        return $this->primaryField;
+    }
+
+    /**
+     * @param string $primaryField
+     */
+    public function setPrimaryField($primaryField)
+    {
+        $this->primaryField = $primaryField;
     }
 }

@@ -107,7 +107,6 @@ class ModuleController extends AdminautBaseController
 
         /* @var $element \Zend\Form\Element */
         $listedElements = [];
-        $primaryElement = null;
         foreach ($form->getElements() as $key => $element) {
             if ($element->getOption('listed')
                 && $this->getAcl()->isAllowed($module_id, AccessControlService::READ, $key)
@@ -117,10 +116,6 @@ class ModuleController extends AdminautBaseController
             ) {
                 $listedElements[$key] = $element;
             }
-
-            if(method_exists($element, 'isPrimary') && $element->isPrimary() || $element->getOption('primary')) {
-                $primaryElement = $key;
-            }
         }
 
         $list = $this->moduleManager->getList();
@@ -128,7 +123,7 @@ class ModuleController extends AdminautBaseController
         return new ViewModel([
             'list' => $list,
             'listedElements' => $listedElements,
-            'hasPrimary' => ($primaryElement !== null),
+            'hasPrimary' => ($form->getPrimaryField() !== null),
             'moduleOption' => $this->moduleManager->getOptions()
         ]);
     }
@@ -157,12 +152,7 @@ class ModuleController extends AdminautBaseController
         $form->bind($entity);
 
         $elements = [];
-        $primaryField = "";
         foreach ($form->getElements() as $key => $element) {
-            if(method_exists($element, 'isPrimary') && $element->isPrimary()) {
-                $primaryField = $element->getName();
-            }
-
             if ($this->getAcl()->isAllowed($moduleId, AccessControlService::READ, $key)) {
                 $elements[$element->getName()] = $element;
             }
@@ -178,7 +168,7 @@ class ModuleController extends AdminautBaseController
                 'mode' => 'view'
             ],
             'entity' => $entity,
-            'primary' => $primaryField,
+            'primary' => $form->getPrimaryField(),
             'elements' => $elements,
             'tabs' => $tabs,
             'moduleOption' => $this->moduleManager->getOptions()
@@ -235,7 +225,8 @@ class ModuleController extends AdminautBaseController
                     }
 
                     $entity = $this->moduleManager->addEntity($form, $this->userAuthentication()->getIdentity());
-                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Record has been successfully created.'));
+                    $primaryFieldValue = $entity->{'get' . ucfirst($form->getPrimaryField())}();
+                    $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been successfully created.'), $primaryFieldValue));
                     switch ($post['submit']) {
                         case 'create-and-continue' :
                             return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'entity_id' => $entity->getId(), 'mode' => 'edit']);
@@ -292,13 +283,6 @@ class ModuleController extends AdminautBaseController
         $tabs[$this->params()->fromRoute('tab')]['active'] = true;
         $form->bind($entity);
 
-        $primaryField = "";
-        foreach($form->getElements() as $key => $element) {
-            if(method_exists($element, 'isPrimary') && $element->isPrimary()) {
-                $primaryField = $element->getName();
-            }
-        }
-
         if ($this->getRequest()->isPost()) {
             $postData = $this->getRequest()->getPost()->toArray();
             $files = $this->getRequest()->getFiles()->toArray();
@@ -321,7 +305,8 @@ class ModuleController extends AdminautBaseController
 
                     $this->moduleManager->updateEntity($entity, $form, $this->userAuthentication()->getIdentity());
 
-                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Record has been successfully updated.'));
+                    $primaryFieldValue = $entity->{'get' . ucfirst($form->getPrimaryField())}();
+                    $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been successfully updated.'), $primaryFieldValue));
                     if ($post['submit'] == 'save-and-continue') {
                         return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'edit']);
                     } else {
@@ -338,7 +323,7 @@ class ModuleController extends AdminautBaseController
             'form' => $form,
             'tabs' => $tabs,
             'entity' => $entity,
-            'primary' => $primaryField,
+            'primary' => $form->getPrimaryField(),
             'moduleOption' => $this->moduleManager->getOptions(),
             'url_params' => [
                 'module_id' => $moduleId,
