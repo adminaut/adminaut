@@ -3,6 +3,7 @@
 namespace Adminaut\Controller;
 
 use Adminaut\Controller\Plugin\Acl;
+use Adminaut\Form\Form;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
@@ -441,6 +442,7 @@ class ModuleController extends AdminautBaseController
         $list = $list->matching($criteria);
 
         $form->getElements()['parentId']->setValue($entityId);
+        $primaryField = $form->getPrimaryField();
 
         if ($action === 'edit') {
             $cyclicEntity = $moduleManager->findById($cyclicEntityId);
@@ -456,7 +458,8 @@ class ModuleController extends AdminautBaseController
                 $cyclicEntity = $moduleManager->findById($cyclicEntityId);
                 $moduleManager->deleteEntity($cyclicEntity, $this->userAuthentication()->getIdentity());
 
-                $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Record has been deleted.'));
+                $primaryFieldValue = $cyclicEntity->{'get' . ucfirst($primaryField)}();
+                $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been deleted.'), $primaryFieldValue));
                 return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => $mode, 'tab' => $currentTab]);
             } catch (\Exception $e) {
                 $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
@@ -483,13 +486,15 @@ class ModuleController extends AdminautBaseController
                         $fm->upload($form->getElements()[$key], $this->userAuthentication()->getIdentity());
                     }
 
+                    $primaryFieldValue = $entity->{'get' . ucfirst($primaryField)}();
                     if ($action == 'edit') {
                         $entity = $moduleManager->updateEntity($cyclicEntity, $form, $this->userAuthentication()->getIdentity());
+                        $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been successfully updated.'), $primaryFieldValue));
                     } else {
                         $entity = $moduleManager->addEntity($form, $this->userAuthentication()->getIdentity());
+                        $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been successfully created.'), $primaryFieldValue));
                     }
 
-                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Record has been successfully updated.'));
                     return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'edit', 'tab' => $currentTab]);
                 } catch (\Exception $e) {
                     $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
@@ -535,6 +540,10 @@ class ModuleController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
+        /** @var Form $form */
+        $form = $this->getAdminModuleManager($moduleId)->getForm();
+        $primaryField = $form->getPrimaryField();
+
         /* @var $entity BaseEntityInterface */
         $entity = $this->getAdminModuleManager($moduleId)->findById($entityId);
         if (!$entity) {
@@ -544,8 +553,8 @@ class ModuleController extends AdminautBaseController
 
         try {
             $this->getAdminModuleManager($moduleId)->deleteEntity($entity, $this->userAuthentication()->getIdentity());
-
-            $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('Record has been deleted.'));
+            $primaryFieldValue = $entity->{'get' . ucfirst($primaryField)}();
+            $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been deleted.'), $primaryFieldValue));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId, 'entity_id' => $entityId]);
         } catch (\Exception $e) {
             $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));

@@ -153,7 +153,7 @@ class FileManager
      * @param array $option
      * @return File
      */
-    public function upload($element, \Adminaut\Entity\User $user = null, array $option = [])
+    public function upload($element, \Adminaut\Entity\UserEntity $user = null, array $option = [])
     {
         $_file = $element->getValue();
         if($_file['error'] != 0){
