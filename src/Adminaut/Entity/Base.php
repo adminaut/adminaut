@@ -66,7 +66,7 @@ class Base implements BaseEntityInterface
 
     /**
      * @ORM\Column(name="active", type="boolean");
-     * @Annotation\Options({"label":"Status", "listed":false, "checkbox_label":"Active"});
+     * @Annotation\Options({"label":"Status", "listed":false, "checkbox_label":"Active", "listed_checked_value":"Active", "listed_unchecked_value":"Inactive"});
      * @Annotation\Type("Adminaut\Datatype\Checkbox");
      * @var boolean
      */
@@ -190,6 +190,14 @@ class Base implements BaseEntityInterface
     public function isActive()
     {
         return $this->active;
+    }
+
+    /**
+     * Alias for isActive
+     * @return bool
+     */
+    public function getActive() {
+        return $this->isActive();
     }
 
     /**
