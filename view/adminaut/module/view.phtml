@@ -40,6 +40,13 @@
                                         $ignoredFields[] = $field->getLongitudeVariable();
                                     }
                                 }
+                            } elseif ($field instanceof \Adminaut\Datatype\Location) {
+                                if($field->getLongitudeProperty()) {
+                                    if(isset($elements[$field->getLongitudeProperty()])) {
+                                        $field->setLongitudeElement($elements[$field->getLongitudeProperty()]);
+                                        $ignoredFields[] = $field->getLongitudeProperty();
+                                    }
+                                }
                             }
                         ?>
                         <div class="form-group">
