@@ -74,6 +74,10 @@ class ModuleManager
         return $this->getMapper()->findById($entityId);
     }
 
+    public function getEntityClass() {
+        return $this->options->getEntityClass();
+    }
+
     /**
      * @param $form
      * @param UserInterface $user

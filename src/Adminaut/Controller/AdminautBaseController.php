@@ -67,7 +67,7 @@ class AdminautBaseController extends AbstractActionController
 
     /**
      * @param MvcEvent $e
-     * @return $this
+     * @return $this|\Zend\Http\Response
      */
     public function onDispatch(MvcEvent $e)
     {

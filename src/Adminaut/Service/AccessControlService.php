@@ -25,6 +25,10 @@ class AccessControlService
     }
 
     public function isAllowed($module, $permissionLevel, $element = null, $entity = null) {
+        if(!$this->user) {
+            return false;
+        }
+
         if($this->user->getRole() == "admin") {
             return true;
         }
@@ -71,7 +75,7 @@ class AccessControlService
     /**
      * @param \Adminaut\Entity\UserEntity $user
      */
-    public function setUser(\Adminaut\Entity\UserEntity $user)
+    public function setUser($user)
     {
         $this->user = $user;
     }

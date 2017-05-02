@@ -193,8 +193,10 @@ class ModuleController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
+        $entityClass = $this->moduleManager->getEntityClass();
         $fm = $this->getFilemanager();
         $form = $this->moduleManager->getForm();
+        $form->bind(new $entityClass());
 
         /* @var Element $element */
         foreach ($form->getElements() as $element) {
