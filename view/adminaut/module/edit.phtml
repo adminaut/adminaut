@@ -2,16 +2,17 @@
     $form = $this->form;
 //    $form->setAttribute('action', $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode' => 'update']));
     $form->prepare();
+    $primaryFieldValue = method_exists($form->getElements()[$primary], 'getListedValue') ? $form->getElements()[$primary]->getListedValue() : $form->getElements()[$primary]->getValue();
 ?>
 
 <section class="content-header">
     <h1>
-        <?php echo $this->moduleOption->getModuleName() ?> <small><?php echo $this->entity->{'get'.ucfirst($this->primary)}(); ?></small>
+        <?php echo $this->moduleOption->getModuleName() ?> <small><?php echo $primaryFieldValue; ?></small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
         <li><a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->moduleOption->getModuleName() ?></a></li>
-                <li><a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $this->entity->getId()]); ?>"><?php echo $this->entity->{'get'.ucfirst($this->primary)}() ?></a></li>
+        <li><a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $this->entity->getId()]); ?>"><?php echo $primaryFieldValue ?></a></li>
         <li class="active"><?php echo $this->translate("Edit") ?></li>
     </ol>
 </section>
