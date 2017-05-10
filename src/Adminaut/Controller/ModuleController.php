@@ -20,6 +20,7 @@ use Adminaut\Options\ModuleOptions;
 use Adminaut\Service\AccessControlService;
 use ReflectionClass;
 use Webmozart\Assert\Assert;
+use Zend\EventManager\EventManager;
 use Zend\Form\Annotation\AnnotationBuilder;
 use Zend\Http\Response;
 use Zend\Mvc\Service\ViewPhpRendererFactory;
@@ -33,7 +34,6 @@ use Zend\View\View;
  */
 class ModuleController extends AdminautBaseController
 {
-
     /**
      * @var ModuleManager
      */
@@ -232,7 +232,10 @@ class ModuleController extends AdminautBaseController
                     }
 
                     $entity = $this->moduleManager->addEntity($form, $this->userAuthentication()->getIdentity());
-                    $primaryFieldValue = method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') && $form->getElements()[$form->getPrimaryField()]->getListedValue() || $form->getElements()[$form->getPrimaryField()]->getValue();
+                    $this->getEventManager()->trigger($moduleId . '.createRecord', $this, [
+                        'entity' => $entity
+                    ]);
+                    $primaryFieldValue = method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue();
                     $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been successfully created.'), $primaryFieldValue));
                     switch ($post['submit']) {
                         case 'create-and-continue' :
@@ -312,8 +315,11 @@ class ModuleController extends AdminautBaseController
 
                     $this->moduleManager->updateEntity($entity, $form, $this->userAuthentication()->getIdentity());
 
-                    $primaryFieldValue = method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') && $form->getElements()[$form->getPrimaryField()]->getListedValue() || $form->getElements()[$form->getPrimaryField()]->getValue();
+                    $primaryFieldValue = method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue();
                     $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been successfully updated.'), $primaryFieldValue));
+                    $this->getEventManager()->trigger($moduleId . '.updateRecord', $this, [
+                        'entity' => $entity
+                    ]);
                     if ($post['submit'] == 'save-and-continue') {
                         return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'edit']);
                     } else {
@@ -517,6 +523,10 @@ class ModuleController extends AdminautBaseController
                 $form->bind($cyclicEntity);
                 $primaryFieldValue = method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue();
                 $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been deleted.'), $primaryFieldValue));
+                $this->getEventManager()->trigger($moduleId . '.deleteCyclicRecord', $this, [
+                    'entity' => $entity,
+                    'cyclicEntity' => $cyclicEntity
+                ]);
                 return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => $mode, 'tab' => $currentTab]);
             } catch (\Exception $e) {
                 $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
@@ -545,10 +555,18 @@ class ModuleController extends AdminautBaseController
 
                     $primaryFieldValue = method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue();
                     if ($action == 'edit') {
-                        $entity = $moduleManager->updateEntity($cyclicEntity, $form, $this->userAuthentication()->getIdentity(), $entity);
+                        $cyclicEntity = $moduleManager->updateEntity($cyclicEntity, $form, $this->userAuthentication()->getIdentity(), $entity);
+                        $this->getEventManager()->trigger($moduleId . '.updateCyclicRecord', $this, [
+                            'entity' => $entity,
+                            'cyclicEntity' => $cyclicEntity
+                        ]);
                         $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been successfully updated.'), $primaryFieldValue));
                     } else {
-                        $entity = $moduleManager->addEntity($form, $this->userAuthentication()->getIdentity(), $entity);
+                        $cyclicEntity = $moduleManager->addEntity($form, $this->userAuthentication()->getIdentity(), $entity);
+                        $this->getEventManager()->trigger($moduleId . '.createCyclicRecord', $this, [
+                            'entity' => $entity,
+                            'cyclicEntity' => $cyclicEntity
+                        ]);
                         $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been successfully created.'), $primaryFieldValue));
                     }
 

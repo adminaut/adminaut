@@ -5,6 +5,7 @@ namespace Adminaut\Controller;
 use Adminaut\Service\AccessControlService;
 use Doctrine\ORM\EntityManager;
 use Adminaut\Controller\Plugin\UserAuthentication;
+use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\I18n\Translator;
