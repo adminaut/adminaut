@@ -16,7 +16,7 @@ class Form extends \Zend\Form\Form
      */
     protected $tabs = [
         'main' => [
-            'label' => "Main sheet",
+            'label' => "General",
             'action' => 'updateAction',
             'active' => false
         ]

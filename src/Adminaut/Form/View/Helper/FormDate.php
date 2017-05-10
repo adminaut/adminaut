@@ -74,7 +74,7 @@ class FormDate extends ZendFormDateTime
 	public function render(ElementInterface $element)
     {
         $render = parent::render($element);
-        $render .= '<script type="text/javascript">console.log("'.$this->convertPHPToMomentFormat($element->getOption('format')).'"); $(\'#'.$element->getAttribute('id').'\').datetimepicker({format: \'YYYY-MM-DD\'});</script>';
+        $render .= '<script type="text/javascript">$(\'#'.$element->getAttribute('id').'\').datetimepicker({format: \''. $this->convertPHPToMomentFormat($element->getOption('format')) .'\'});</script>';
         return $render;
     }
 

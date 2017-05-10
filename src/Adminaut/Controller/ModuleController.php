@@ -435,6 +435,7 @@ class ModuleController extends AdminautBaseController
         $list = $moduleManager->getList([$referencedProperty => $entity]);
         $fm = $this->getFilemanager();
         $form = $moduleManager->getForm();
+        $form->bind(new $moduleOptions->entityClass);
 
         /* @var $element \Zend\Form\Element */
         $listedElements = [];
@@ -490,10 +491,6 @@ class ModuleController extends AdminautBaseController
             }
         }
 
-        /*$criteria = Criteria::create();
-        $criteria->where(Criteria::expr()->eq($referencedProperty, $entityId));
-        $list = $list->matching($criteria);*/
-
         if(!isset($form->getElements()['reference_property'])) {
             $form->add([
                 'name' => 'reference_property',
@@ -517,8 +514,8 @@ class ModuleController extends AdminautBaseController
             try {
                 $cyclicEntity = $moduleManager->findById($cyclicEntityId);
                 $moduleManager->deleteEntity($cyclicEntity, $this->userAuthentication()->getIdentity());
-
-                $primaryFieldValue = $cyclicEntity->{'get' . ucfirst($primaryField)}();
+                $form->bind($cyclicEntity);
+                $primaryFieldValue = method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue();
                 $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been deleted.'), $primaryFieldValue));
                 return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => $mode, 'tab' => $currentTab]);
             } catch (\Exception $e) {
@@ -546,9 +543,9 @@ class ModuleController extends AdminautBaseController
                         $fm->upload($form->getElements()[$key], $this->userAuthentication()->getIdentity());
                     }
 
-                    $primaryFieldValue = method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') && $form->getElements()[$form->getPrimaryField()]->getListedValue() || $form->getElements()[$form->getPrimaryField()]->getValue();
+                    $primaryFieldValue = method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue();
                     if ($action == 'edit') {
-                        $entity = $moduleManager->updateEntity($cyclicEntity, $form, $this->userAuthentication()->getIdentity());
+                        $entity = $moduleManager->updateEntity($cyclicEntity, $form, $this->userAuthentication()->getIdentity(), $entity);
                         $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been successfully updated.'), $primaryFieldValue));
                     } else {
                         $entity = $moduleManager->addEntity($form, $this->userAuthentication()->getIdentity(), $entity);

@@ -100,10 +100,10 @@ class ModuleManager
      * @param $user
      * @return mixed
      */
-    public function updateEntity(BaseEntityInterface $entity, Form $form, UserInterface $user)
+    public function updateEntity(BaseEntityInterface $entity, Form $form, UserInterface $user, BaseEntityInterface $parentEntity = null)
     {
         $entity->setUpdatedBy($user->getId());
-        $entity = $this->bind($entity, $form);
+        $entity = $this->bind($entity, $form, $parentEntity);
         return $this->getMapper()->update($entity);
     }
 
@@ -183,6 +183,12 @@ class ModuleManager
          */
         $form = $builder->createForm(new $entityClass());
         $form->setHydrator(new DoctrineObject($this->getEntityManager()));
+
+        if(isset($this->getOptions()->getLabels()['general_tab'])) {
+            $tabs = $form->getTabs();
+            $tabs['main']['label'] = $this->getOptions()->getLabels()['general_tab'];
+            $form->setTabs($tabs);
+        }
 
         /** @var Fieldset[] $fieldsets */
         $fieldsets = array();
