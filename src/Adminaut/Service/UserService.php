@@ -82,7 +82,7 @@ class UserService extends EventProvider
     {
         $entity->setUpdatedBy($user->getId());
         $entity = $this->populateData($entity, $data);
-        if ($data['credential']) {
+        if ($data['password']) {
             $bcrypt = new Bcrypt;
             $bcrypt->setCost($this->getUserOptions()->getPasswordCost());
             $entity->setPassword($bcrypt->create($data['password']));
