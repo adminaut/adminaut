@@ -49,7 +49,7 @@
                                             <?php } ?>
                                             <?php $listedElement->setValue($entity->{$listedElement->getName()}) ?>
                                             <?php if(method_exists($listedElement, 'getListedValue')) { ?>
-                                                <?php echo $listedElement->getListedValue(); ?>
+                                                <?php echo ($listedElement->isPrimary() && empty($listedElement->getListedValue()) ? 'undefined' : $listedElement->getListedValue()); ?>
                                             <?php } else { ?>
                                                 <?php echo $listedElement->getValue(); ?>
                                             <?php } ?>
