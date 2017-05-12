@@ -48,7 +48,7 @@
                                     <?php } ?>
                                 <?php } ?>
                                 <?php if($this->mode == "edit") { ?>
-                                <td>
+                                <td  style="min-width: 70px;">
                                     <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
                                         <?php if ($this->isAllowed($this->parentModuleOption->getModuleId(), 2)) { ?>
                                             <a href="<?php echo $this->url('adminaut/module/action/tab/action', ['module_id' => $this->url_params['module_id'], 'mode' => 'edit', 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId(), 'entity_action' => 'edit']); ?>" type="button" class="btn btn-info"
