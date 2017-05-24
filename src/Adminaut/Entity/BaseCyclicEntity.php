@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Josef
- * Date: 18.8.2016
- * Time: 14:37
- */
-
 namespace Adminaut\Entity;
 
 use Doctrine\ORM\Mapping as ORM;

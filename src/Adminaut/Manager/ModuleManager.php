@@ -60,9 +60,9 @@ class ModuleManager
     /**
      * @return array
      */
-    public function getList()
+    public function getList($criteria = null)
     {
-        return $this->getMapper()->getList();
+        return $this->getMapper()->getList($criteria);
     }
 
     /**
@@ -83,14 +83,14 @@ class ModuleManager
      * @param UserInterface $user
      * @return mixed
      */
-    public function addEntity($form, UserInterface $user)
+    public function addEntity($form, UserInterface $user, BaseEntityInterface $parentEntity = null)
     {
         $entityClass = $this->options->getEntityClass();
         /* @var $entity BaseEntityInterface */
         $entity = new $entityClass();
         $entity->setInsertedBy($user->getId());
         $entity->setUpdatedBy($user->getId());
-        $entity = $this->bind($entity, $form);
+        $entity = $this->bind($entity, $form, $parentEntity);
         return $this->getMapper()->insert($entity);
     }
 
@@ -100,10 +100,10 @@ class ModuleManager
      * @param $user
      * @return mixed
      */
-    public function updateEntity(BaseEntityInterface $entity, Form $form, UserInterface $user)
+    public function updateEntity(BaseEntityInterface $entity, Form $form, UserInterface $user, BaseEntityInterface $parentEntity = null)
     {
         $entity->setUpdatedBy($user->getId());
-        $entity = $this->bind($entity, $form);
+        $entity = $this->bind($entity, $form, $parentEntity);
         return $this->getMapper()->update($entity);
     }
 
@@ -124,11 +124,15 @@ class ModuleManager
      * @param Form $form
      * @return BaseEntityInterface
      */
-    public function bind(BaseEntityInterface $entity, Form $form)
+    public function bind(BaseEntityInterface $entity, Form $form, BaseEntityInterface $parentEntity = null)
     {
         /* @var $element Element */
         foreach ($form->getElements() as $element) {
             $elementName = $element->getName();
+            if($elementName === 'reference_property') {
+                $entity->{$element->getValue()} = $parentEntity;
+                continue;
+            }
 
             if (method_exists($element, 'getInsertValue')) {
                 $entity->{$elementName} = $element->getInsertValue();
@@ -180,6 +184,12 @@ class ModuleManager
         $form = $builder->createForm(new $entityClass());
         $form->setHydrator(new DoctrineObject($this->getEntityManager()));
 
+        if(isset($this->getOptions()->getLabels()['general_tab'])) {
+            $tabs = $form->getTabs();
+            $tabs['main']['label'] = $this->getOptions()->getLabels()['general_tab'];
+            $form->setTabs($tabs);
+        }
+
         /** @var Fieldset[] $fieldsets */
         $fieldsets = array();
 
@@ -195,7 +205,8 @@ class ModuleManager
                 $form->addTab($element->getName(), [
                     'label' => $element->getLabel(),
                     'action' => 'cyclicSheetAction',
-                    'entity' => $element->getOption('target_class'),
+                    'entity' => $element->getTargetClass(),
+                    'referencedProperty' => $element->getReferencedProperty(),
                     'active' => false
                 ]);
 

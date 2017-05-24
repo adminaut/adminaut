@@ -1,18 +1,20 @@
 <?php
     /** @var array $elements */
     /** @var array $ignoreFields */
+    /** @var string $primary */
     $ignoredFields = [];
+    $primaryFieldValue = method_exists($elements[$primary], 'getListedValue') ? $elements[$primary]->getListedValue() : $elements[$primary]->getValue();
 ?>
 
 
 <section class="content-header">
     <h1>
-        <?php echo $this->moduleOption->getModuleName() ?> <small><?php echo $this->entity->{'get'.ucfirst($this->primary)}(); ?></small>
+        <?php echo $this->moduleOption->getModuleName() ?> <small><?php echo $primaryFieldValue ?></small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
         <li><a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->moduleOption->getModuleName() ?></a></li>
-        <li class="active"><?php echo $this->entity->{'get'.ucfirst($this->primary)}() ?></li>
+        <li class="active"><?php echo $primaryFieldValue ?></li>
     </ol>
 </section>
 
@@ -70,7 +72,7 @@
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-4">
+        <?php /*<div class="col-xs-12 col-sm-4">
             <div class="box">
                 <div class="box-header with-border">
                     <i class="fa fa-fw fa-facebook"></i>
@@ -84,6 +86,6 @@
                     <div class="fb-page" data-href="https://www.facebook.com/restaurace.dvorce" data-tabs="timeline, messages, events" data-small-header="false" data-width="1000" data-hide-cover="false" data-show-facepile="true" style="width: 100%;"><blockquote cite="https://www.facebook.com/restaurace.dvorce" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/restaurace.dvorce">Pivovarská restaurace Dvorce</a></blockquote></div>
                 </div>
             </div>
-        </div>
+        </div> */ ?>
     </div>
 </section>

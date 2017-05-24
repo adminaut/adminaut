@@ -65,7 +65,7 @@ class UserService extends EventProvider
         $entity = $this->populateData($entity, $data);
         $bcrypt = new Bcrypt;
         $bcrypt->setCost($this->getUserOptions()->getPasswordCost());
-        $entity->setPassword($bcrypt->create($data['credential']));
+        $entity->setPassword($bcrypt->create($data['password']));
         if ($this->getUserOptions()->isEnableUserStatus()) {
             $entity->setStatus($this->getUserOptions()->getDefaultUserStatus());
         }
@@ -82,10 +82,10 @@ class UserService extends EventProvider
     {
         $entity->setUpdatedBy($user->getId());
         $entity = $this->populateData($entity, $data);
-        if ($data['credential']) {
+        if ($data['password']) {
             $bcrypt = new Bcrypt;
             $bcrypt->setCost($this->getUserOptions()->getPasswordCost());
-            $entity->setPassword($bcrypt->create($data['credential']));
+            $entity->setPassword($bcrypt->create($data['password']));
         }
         return $this->getUserMapper()->update($entity);
     }
@@ -128,7 +128,7 @@ class UserService extends EventProvider
         $entity = $this->populateData($entity, $data);
         $bcrypt = new Bcrypt;
         $bcrypt->setCost($this->getUserOptions()->getPasswordCost());
-        $entity->setPassword($bcrypt->create($data['credential']));
+        $entity->setPassword($bcrypt->create($data['password']));
         if ($this->getUserOptions()->isEnableUserStatus()) {
             $entity->setStatus($this->getUserOptions()->getDefaultUserStatus());
         }

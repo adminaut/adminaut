@@ -72,7 +72,7 @@
 
         ?>
     </head>
-    <body class="hold-transition skin-<?php echo $skin ?> sidebar-mini<?php echo (isset($_COOKIE['sidebar-collapsed']) ? ' sidebar-collapse' : '') ?> fixed <?php echo $this->config()['adminaut']['environment'] ?>">
+    <body class="hold-transition skin-<?php echo $skin ?> sidebar-mini<?php echo (isset($_COOKIE['sidebar-collapsed']) ? ' sidebar-collapse' : '') ?> fixed <?php echo (isset($this->config()['adminaut']['environment'])) ? $this->config()['adminaut']['environment'] : 'develop' ?>">
         <div id="fb-root"></div>
         <script>(function(d, s, id) {
                 var js, fjs = d.getElementsByTagName(s)[0];

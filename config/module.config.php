@@ -73,7 +73,7 @@ return [
     'view_helpers' => [
         'invokables' => [
             'formDate'                                              => \Adminaut\Form\View\Helper\FormDate::class,
-            'formDateTime'                                          => \Adminaut\Form\View\Helper\FormDateTime::class,
+            'formDateTime'                                          => \Adminaut\Form\View\Helper\FormViewHelper::class,
             'formFile'                                              => \Adminaut\Form\View\Helper\FormFile::class,
 //            'formCheckbox'                                          => \Adminaut\Form\View\Helper\FormCheckbox::class,
 //            'formCheckbox'                                          => \Adminaut\Form\View\Helper\Checkbox::class,

@@ -3,9 +3,12 @@
 namespace Adminaut\Controller;
 
 use Adminaut\Controller\Plugin\Acl;
+use Adminaut\Datatype\Reference;
 use Adminaut\Form\Form;
+use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Query\Expr\Andx;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use Adminaut\Entity\BaseEntityInterface;
 use Adminaut\Form\Element;
@@ -15,7 +18,9 @@ use Adminaut\Mapper\ModuleMapper;
 use Adminaut\Options\ModuleOptions;
 
 use Adminaut\Service\AccessControlService;
+use ReflectionClass;
 use Webmozart\Assert\Assert;
+use Zend\EventManager\EventManager;
 use Zend\Form\Annotation\AnnotationBuilder;
 use Zend\Http\Response;
 use Zend\Mvc\Service\ViewPhpRendererFactory;
@@ -29,7 +34,6 @@ use Zend\View\View;
  */
 class ModuleController extends AdminautBaseController
 {
-
     /**
      * @var ModuleManager
      */
@@ -232,7 +236,10 @@ class ModuleController extends AdminautBaseController
                     }
 
                     $entity = $this->moduleManager->addEntity($form, $this->userAuthentication()->getIdentity());
-                    $primaryFieldValue = $entity->{'get' . ucfirst($form->getPrimaryField())}();
+                    $this->getEventManager()->trigger($moduleId . '.createRecord', $this, [
+                        'entity' => $entity
+                    ]);
+                    $primaryFieldValue = method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue();
                     $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been successfully created.'), $primaryFieldValue));
                     switch ($post['submit']) {
                         case 'create-and-continue' :
@@ -312,8 +319,11 @@ class ModuleController extends AdminautBaseController
 
                     $this->moduleManager->updateEntity($entity, $form, $this->userAuthentication()->getIdentity());
 
-                    $primaryFieldValue = $entity->{'get' . ucfirst($form->getPrimaryField())}();
+                    $primaryFieldValue = method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue();
                     $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been successfully updated.'), $primaryFieldValue));
+                    $this->getEventManager()->trigger($moduleId . '.updateRecord', $this, [
+                        'entity' => $entity
+                    ]);
                     if ($post['submit'] == 'save-and-continue') {
                         return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'edit']);
                     } else {
@@ -423,6 +433,7 @@ class ModuleController extends AdminautBaseController
         $options = [
             'entity_class' => $tabs[$currentTab]['entity']
         ];
+        $referencedProperty = $tabs[$currentTab]['referencedProperty'];
 
         $moduleManager = $this->getModuleManagerService();
         $moduleOptions = new ModuleOptions($options);
@@ -431,9 +442,10 @@ class ModuleController extends AdminautBaseController
         $moduleMapper = new ModuleMapper($this->getEntityManager(), $moduleOptions);
         $moduleManager->setMapper($moduleMapper);
 
-        $list = new ArrayCollection($moduleManager->getList());
+        $list = $moduleManager->getList([$referencedProperty => $entity]);
         $fm = $this->getFilemanager();
         $form = $moduleManager->getForm();
+        $form->bind(new $moduleOptions->entityClass);
 
         /* @var $element \Zend\Form\Element */
         $listedElements = [];
@@ -441,14 +453,63 @@ class ModuleController extends AdminautBaseController
             if ($element->getOption('listed')) {
                 $listedElements[] = clone $element;
             }
+
+            if($element instanceof Reference) {
+                // parent Entity
+                $pAR = new AnnotationReader();
+                $pRO = new \ReflectionObject($entity);//new $options['entity_class']
+                $isSubEntityReference = false;
+                $subRefenrecedProperty = null;
+
+                foreach($pRO->getProperties() as $property) {
+                    $cyclicSheet = null;
+                    foreach($pAR->getPropertyAnnotations($property) as $annotation) {
+                        if($annotation instanceof \Zend\Form\Annotation\Type) {
+                            if($annotation->getType() === \Adminaut\Form\Element\CyclicSheet::class) {
+                                $cyclicSheet = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if($cyclicSheet) {
+                        foreach($pAR->getPropertyAnnotations($property) as $annotation) {
+                            if($annotation instanceof \Zend\Form\Annotation\Options) {
+                                $_options = $annotation->getOptions();
+                                if($_options['target_class'] === $element->getOptions()['target_class']) {
+                                    $isSubEntityReference = true;
+                                    $subRefenrecedProperty = $_options['referenced_property'];
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if($isSubEntityReference) {break;}
+                }
+
+                if($isSubEntityReference) {
+                    $rep = $this->getEntityManager()->getRepository($element->getOptions()['target_class']);
+                    $qb = $rep->createQueryBuilder('e');
+                    $qb->andWhere('e.deleted = 0')
+                        ->andWhere('e.' . $subRefenrecedProperty . ' = :' . $subRefenrecedProperty)
+                        ->setParameter($subRefenrecedProperty, $entity);
+                    $data = $qb->getQuery()->getResult();
+                    $element->getProxy()->setObjects($data);
+                    $element->getProxy()->setLoaded(true);
+                }
+            }
         }
 
-        $criteria = Criteria::create();
-        $criteria->where(Criteria::expr()->eq('parentId', $entityId));
-        $list = $list->matching($criteria);
-
-        $form->getElements()['parentId']->setValue($entityId);
-        $primaryField = $form->getPrimaryField();
+        if(!isset($form->getElements()['reference_property'])) {
+            $form->add([
+                'name' => 'reference_property',
+                'attributes' => [
+                    'type' => 'hidden'
+                ]
+            ]);
+        }
+        $form->getElements()['reference_property']->setValue($referencedProperty);
 
         if ($action === 'edit') {
             $cyclicEntity = $moduleManager->findById($cyclicEntityId);
@@ -463,9 +524,13 @@ class ModuleController extends AdminautBaseController
             try {
                 $cyclicEntity = $moduleManager->findById($cyclicEntityId);
                 $moduleManager->deleteEntity($cyclicEntity, $this->userAuthentication()->getIdentity());
-
-                $primaryFieldValue = $cyclicEntity->{'get' . ucfirst($primaryField)}();
+                $form->bind($cyclicEntity);
+                $primaryFieldValue = method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue();
                 $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been deleted.'), $primaryFieldValue));
+                $this->getEventManager()->trigger($moduleId . '.deleteCyclicRecord', $this, [
+                    'entity' => $entity,
+                    'cyclicEntity' => $cyclicEntity
+                ]);
                 return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => $mode, 'tab' => $currentTab]);
             } catch (\Exception $e) {
                 $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
@@ -492,12 +557,20 @@ class ModuleController extends AdminautBaseController
                         $fm->upload($form->getElements()[$key], $this->userAuthentication()->getIdentity());
                     }
 
-                    $primaryFieldValue = $entity->{'get' . ucfirst($primaryField)}();
+                    $primaryFieldValue = method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue();
                     if ($action == 'edit') {
-                        $entity = $moduleManager->updateEntity($cyclicEntity, $form, $this->userAuthentication()->getIdentity());
+                        $cyclicEntity = $moduleManager->updateEntity($cyclicEntity, $form, $this->userAuthentication()->getIdentity(), $entity);
+                        $this->getEventManager()->trigger($moduleId . '.updateCyclicRecord', $this, [
+                            'entity' => $entity,
+                            'cyclicEntity' => $cyclicEntity
+                        ]);
                         $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been successfully updated.'), $primaryFieldValue));
                     } else {
-                        $entity = $moduleManager->addEntity($form, $this->userAuthentication()->getIdentity());
+                        $cyclicEntity = $moduleManager->addEntity($form, $this->userAuthentication()->getIdentity(), $entity);
+                        $this->getEventManager()->trigger($moduleId . '.createCyclicRecord', $this, [
+                            'entity' => $entity,
+                            'cyclicEntity' => $cyclicEntity
+                        ]);
                         $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been successfully created.'), $primaryFieldValue));
                     }
 

@@ -37,13 +37,19 @@ class ModuleMapper
     /**
      * @return array
      */
-    public function getList()
+    public function getList($criteria = null)
     {
         $qb = $this->em->createQueryBuilder();
         $qb->select('e')
             ->from($this->options->getEntityClass(), 'e')
             ->where('e.deleted = 0')
             ->orderBy('e.id', 'ASC');
+        if($criteria) {
+            foreach(array_keys($criteria) as $property) {
+                $qb->andWhere('e.' . $property. ' = :' . $property);
+                $qb->setParameter($property, $criteria[$property]);
+            }
+        }
         return $qb->getQuery()->getResult();
     }
 
