@@ -83,8 +83,11 @@
                                 "searching": true,
                                 "ordering": true,
                                 "info": true,
-                                "autoWidth": false
-                            });
+                                "autoWidth": false,
+                                "pageLength": Cookies.get('<?php echo $this->moduleOption->getModuleId() ?>.dt.length') || 10
+                            }).on( 'length.dt', function ( e, settings, len ) {
+                                Cookies.set('<?php echo $this->moduleOption->getModuleId() ?>.dt.length', len);
+                            } );
                         })(jQuery);
                     </script>
                 </div>
