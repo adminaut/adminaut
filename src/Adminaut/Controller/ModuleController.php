@@ -81,8 +81,12 @@ class ModuleController extends AdminautBaseController
         $mode = $this->params()->fromRoute('mode', false);
         if ($mode) {
             $view = $this->{$mode . "Action"}();
-            $view->setTemplate('adminaut/module/' . $mode . ".phtml");
-            return $view;
+            if($view instanceof ViewModel) {
+                $view->setTemplate('adminaut/module/' . $mode . ".phtml");
+                return $view;
+            } else {
+                return $view;
+            }
         } else {
             return new ViewModel;
         }
