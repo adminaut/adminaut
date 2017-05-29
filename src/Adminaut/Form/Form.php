@@ -25,7 +25,7 @@ class Form extends \Zend\Form\Form
     /**
      * @var string
      */
-    protected $primaryField;
+    protected $primaryField = "id";
 
     /**
      * @return array

@@ -130,7 +130,11 @@ class ModuleManager
         foreach ($form->getElements() as $element) {
             $elementName = $element->getName();
             if($elementName === 'reference_property') {
-                $entity->{$element->getValue()} = $parentEntity;
+                if($element->getValue() === 'parentId') {
+                    $entity->{$element->getValue()} = $parentEntity->getId();
+                } else {
+                    $entity->{$element->getValue()} = $parentEntity;
+                }
                 continue;
             }
 

@@ -478,7 +478,7 @@ class ModuleController extends AdminautBaseController
                                 $_options = $annotation->getOptions();
                                 if($_options['target_class'] === $element->getOptions()['target_class']) {
                                     $isSubEntityReference = true;
-                                    $subRefenrecedProperty = $_options['referenced_property'];
+                                    $subRefenrecedProperty = isset($_options['referenced_property']) ? $_options['referenced_property'] : 'parentId';
                                     break;
                                 }
                             }
@@ -557,9 +557,9 @@ class ModuleController extends AdminautBaseController
                         $fm->upload($form->getElements()[$key], $this->userAuthentication()->getIdentity());
                     }
 
-                    $primaryFieldValue = method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue();
                     if ($action == 'edit') {
                         $cyclicEntity = $moduleManager->updateEntity($cyclicEntity, $form, $this->userAuthentication()->getIdentity(), $entity);
+			$primaryFieldValue = isset($form->getElements()[$form->getPrimaryField()]) ? (method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue()) : $cyclicEntity->getId();
                         $this->getEventManager()->trigger($moduleId . '.updateCyclicRecord', $this, [
                             'entity' => $entity,
                             'cyclicEntity' => $cyclicEntity
@@ -567,6 +567,7 @@ class ModuleController extends AdminautBaseController
                         $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been successfully updated.'), $primaryFieldValue));
                     } else {
                         $cyclicEntity = $moduleManager->addEntity($form, $this->userAuthentication()->getIdentity(), $entity);
+			$primaryFieldValue = isset($form->getElements()[$form->getPrimaryField()]) ? (method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue()) : $cyclicEntity->getId();
                         $this->getEventManager()->trigger($moduleId . '.createCyclicRecord', $this, [
                             'entity' => $entity,
                             'cyclicEntity' => $cyclicEntity
