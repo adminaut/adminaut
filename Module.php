@@ -88,4 +88,9 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, In
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
     }
+
+    function onDispatchError(MvcEvent $e) {
+        $vm = $e->getViewModel();
+        $vm->setTemplate('layout/admin-blank');
+    }
 }

@@ -2,7 +2,7 @@
     $form = $this->form;
 //    $form->setAttribute('action', $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode' => 'update']));
     $form->prepare();
-    $primaryFieldValue = method_exists($form->getElements()[$primary], 'getListedValue') ? $form->getElements()[$primary]->getListedValue() : $form->getElements()[$primary]->getValue();
+    $primaryFieldValue = isset($elements[$primary]) ? (method_exists($form->getElements()[$primary], 'getListedValue') ? $form->getElements()[$primary]->getListedValue() : $form->getElements()[$primary]->getValue()) : $entity->getId();
 ?>
 
 <section class="content-header">

@@ -132,7 +132,7 @@ class ModuleController extends AdminautBaseController
         return new ViewModel([
             'list' => $list,
             'listedElements' => $listedElements,
-            'hasPrimary' => ($form->getPrimaryField() !== null),
+            'hasPrimary' => ($form->getPrimaryField() !== 'id'),
             'moduleOption' => $this->moduleManager->getOptions()
         ]);
     }
@@ -239,7 +239,7 @@ class ModuleController extends AdminautBaseController
                     $this->getEventManager()->trigger($moduleId . '.createRecord', $this, [
                         'entity' => $entity
                     ]);
-                    $primaryFieldValue = method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue();
+                    $primaryFieldValue = isset($form->getElements()[$form->getPrimaryField()]) ? (method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue()) : $entity->getId();
                     $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been successfully created.'), $primaryFieldValue));
                     switch ($post['submit']) {
                         case 'create-and-continue' :
@@ -307,10 +307,10 @@ class ModuleController extends AdminautBaseController
             if ($form->isValid()) {
                 try {
                     foreach ($files as $key => $file) {
-                        if ($file['error'] != 0 && !isset($post[$key . '-changed'])) {
-                            continue;
-                        } elseif (isset($post[$key . '-changed'])) {
-                            $form->getElements()[$key]->setFileObject(null);
+                        if ($file['error'] != UPLOAD_ERR_OK) {
+                            if($file['error'] == UPLOAD_ERR_NO_FILE) {
+                                $form->getElements()[$key]->setFileObject(null);
+                            }
                             continue;
                         }
 
@@ -547,10 +547,10 @@ class ModuleController extends AdminautBaseController
             if ($form->isValid()) {
                 try {
                     foreach ($files as $key => $file) {
-                        if ($file['error'] != 0 && !isset($post[$key . '-changed'])) {
-                            continue;
-                        } elseif (isset($post[$key . '-changed'])) {
-                            $form->getElements()[$key]->setFileObject(null);
+                        if ($file['error'] != UPLOAD_ERR_OK) {
+                            if($file['error'] == UPLOAD_ERR_NO_FILE) {
+                                $form->getElements()[$key]->setFileObject(null);
+                            }
                             continue;
                         }
 

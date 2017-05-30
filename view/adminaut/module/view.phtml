@@ -2,8 +2,9 @@
     /** @var array $elements */
     /** @var array $ignoreFields */
     /** @var string $primary */
+    /** @var \Adminaut\Entity\Base $ignoredFields */
     $ignoredFields = [];
-    $primaryFieldValue = method_exists($elements[$primary], 'getListedValue') ? $elements[$primary]->getListedValue() : $elements[$primary]->getValue();
+    $primaryFieldValue = isset($elements[$primary]) ? (method_exists($elements[$primary], 'getListedValue') ? $elements[$primary]->getListedValue() : $elements[$primary]->getValue()) : $entity->getId();
 ?>
 
 
