@@ -224,7 +224,7 @@ class FileManager
 
         $fsAdapter = $this->getCacheFilesystem()->getAdapter();
 
-        return str_replace($_SERVER['DOCUMENT_ROOT'], '', str_replace('\\', '/', realpath($fsAdapter->getPathPrefix() . $resultImage)));
+        return str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', str_replace('\\', '/', realpath($fsAdapter->getPathPrefix() . $resultImage)));
     }
 
     /**
