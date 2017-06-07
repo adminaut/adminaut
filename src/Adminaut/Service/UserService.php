@@ -59,7 +59,8 @@ class UserService extends EventProvider
      */
     public function add(array $data, UserEntity $user)
     {
-        $entity = new UserEntity();
+        $userEntityClass = $this->getUserOptions()->getUserEntityClass();
+        $entity = new $userEntityClass();
         $entity->setInsertedBy($user->getId());
         $entity->setUpdatedBy($user->getId());
         $entity = $this->populateData($entity, $data);
@@ -120,7 +121,8 @@ class UserService extends EventProvider
      */
     public function createSuperuser(array $data)
     {
-        $entity = new UserEntity();
+        $userEntityClass = $this->getUserOptions()->getUserEntityClass();
+        $entity = new $userEntityClass();
         $entity->setInsertedBy(1);
         $entity->setUpdatedBy(1);
         $data['active'] = true;
