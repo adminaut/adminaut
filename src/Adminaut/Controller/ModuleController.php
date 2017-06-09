@@ -319,7 +319,7 @@ class ModuleController extends AdminautBaseController
 
                     $this->moduleManager->updateEntity($entity, $form, $this->userAuthentication()->getIdentity());
 
-                    $primaryFieldValue = method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue();
+                    $primaryFieldValue = isset($form->getElements()[$form->getPrimaryField()]) ? (method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue()) : $entity->getId();
                     $this->flashMessenger()->addSuccessMessage(sprintf($this->getTranslator()->translate('Record "%s" has been successfully updated.'), $primaryFieldValue));
                     $this->getEventManager()->trigger($moduleId . '.updateRecord', $this, [
                         'entity' => $entity
