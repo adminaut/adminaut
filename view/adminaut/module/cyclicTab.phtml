@@ -29,7 +29,7 @@
                             <?php foreach($this->listedElements as $listedElement) { ?>
                                 <th><?php echo $listedElement->getOption('label'); ?></th>
                             <?php } ?>
-                            <?php if($this->mode == "update") { ?>
+                            <?php if($this->mode == "edit") { ?>
                                 <th><?php echo $this->translate('Actions'); ?></th>
                             <?php } ?>
                         </tr>
