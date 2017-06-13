@@ -248,7 +248,7 @@ class ModuleController extends AdminautBaseController
                             return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'mode' => 'add']);
                         case 'create' :
                         default :
-                            return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
+                            return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'entity_id' => $entity->getId(), 'mode' => 'view']);
                     }
                 } catch (\Exception $e) {
                     $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
@@ -327,7 +327,7 @@ class ModuleController extends AdminautBaseController
                     if ($post['submit'] == 'save-and-continue') {
                         return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'edit']);
                     } else {
-                        return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
+                        return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'view']);
                     }
                 } catch (\Exception $e) {
                     $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
