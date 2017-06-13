@@ -38,14 +38,28 @@
                         <?php foreach ($this->list as $entity) { ?>
                             <?php /* @var $entity Adminaut\Entity\Base */ ?>
                             <tr rel="<?php echo $entity->getId(); ?>">
-                                <td><?php echo $entity->getId(); ?></td>
-                                <?php foreach($this->listedElements as $listedElement) { ?>
-                                    <?php $listedElement->setValue($entity->{$listedElement->getName()}) ?>
-                                    <?php if(method_exists($listedElement, 'getListedValue')) { ?>
-                                        <td><?php echo $listedElement->getListedValue(); ?></td>
+                                <td>
+                                    <?php if(!$this->hasPrimary) { ?>
+                                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $entity->getId()]); ?>" class="primary"><?php echo $entity->getId(); ?></a>
                                     <?php } else { ?>
-                                        <td><?php echo $listedElement->getValue(); ?></td>
+                                        <?php echo $entity->getId(); ?>
                                     <?php } ?>
+                                </td>
+                                <?php foreach($this->listedElements as $listedElement) { ?>
+                                    <td>
+                                        <?php if($listedElement->isPrimary()) { ?>
+                                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $entity->getId()]); ?>" class="primary">
+                                            <?php } ?>
+                                            <?php $listedElement->setValue($entity->{$listedElement->getName()}) ?>
+                                            <?php if(method_exists($listedElement, 'getListedValue')) { ?>
+                                                <?php echo ($listedElement->isPrimary() && empty($listedElement->getListedValue()) ? 'undefined' : $listedElement->getListedValue()); ?>
+                                            <?php } else { ?>
+                                                <?php echo $listedElement->getValue(); ?>
+                                            <?php } ?>
+                                            <?php if($listedElement->isPrimary()) { ?>
+                                        </a>
+                                    <?php } ?>
+                                    </td>
                                 <?php } ?>
                                 <?php if($this->mode == "edit") { ?>
                                 <td  style="min-width: 70px;">
