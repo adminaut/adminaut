@@ -1,6 +1,8 @@
 <?php
+
 namespace Adminaut\Options\Factory;
 
+use Adminaut\Options\UserOptions;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -10,16 +12,13 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 class UserOptionsFactory implements FactoryInterface
 {
-
     /**
-     * Create service
-     *
      * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @return UserOptions
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $config = $serviceLocator->get('config');
-        return new \Adminaut\Options\UserOptions(isset($config['adminaut']['users']) ? $config['adminaut']['users'] : []);
+        return new UserOptions(isset($config['adminaut']['users']) ? $config['adminaut']['users'] : []);
     }
 }

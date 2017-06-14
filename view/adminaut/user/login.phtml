@@ -11,9 +11,16 @@
         <p class="login-box-msg"><?php echo $this->translate("Sign in to start your session"); ?></p>
 
         <?php
+
         /** @var Adminaut\Form\UserLogin $form */
         $form = $this->form;
-        $form->setAttribute('action', $this->url('adminaut/user/login'));
+
+        if ($this->redirect) {
+            $url = $this->url('adminaut/user/login', [], ['query' => ['redirect' => $this->redirect]]);
+        } else {
+            $url = $this->url('adminaut/user/login');
+        }
+        $form->setAttribute('action', $url);
         $form->prepare();
 
         echo $this->form(null, null)->openTag($form);
