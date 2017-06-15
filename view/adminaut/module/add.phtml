@@ -2,6 +2,7 @@
     /** @var \Zend\Form\Form $form */
     $form = $this->form;
     $form->setAttribute('action', $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode'=>'add']));
+    $form->setAttribute('data-doubleClick', true);
     $form->prepare();
 ?>
 
