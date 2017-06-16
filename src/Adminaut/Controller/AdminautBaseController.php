@@ -5,8 +5,9 @@ namespace Adminaut\Controller;
 use Adminaut\Service\AccessControlService;
 use Doctrine\ORM\EntityManager;
 use Adminaut\Controller\Plugin\UserAuthentication;
-use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerInterface;
+use Zend\Http\PhpEnvironment\Request;
+use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\I18n\Translator;
 use Zend\Mvc\MvcEvent;
@@ -49,7 +50,7 @@ class AdminautBaseController extends AbstractActionController
             'large' => 'adminaut/img/adminaut-logo.svg',
             'small' => 'adminaut/img/adminaut-logo-mini.svg',
         ],
-        'footer' => ''
+        'footer' => '',
     ];
 
     /**
@@ -57,6 +58,7 @@ class AdminautBaseController extends AbstractActionController
      * @param $config
      * @param $acl
      * @param $em
+     * @param $translator
      */
     public function __construct($config, $acl, $em, $translator)
     {
@@ -68,13 +70,21 @@ class AdminautBaseController extends AbstractActionController
 
     /**
      * @param MvcEvent $e
-     * @return $this|\Zend\Http\Response
+     * @return AdminautBaseController|Response
      */
     public function onDispatch(MvcEvent $e)
     {
         parent::onDispatch($e);
         if (!$this->userAuthentication()->hasIdentity()) {
-            return $this->redirect()->toRoute('adminaut/user/login');
+
+            /** @var Request $request */
+            $request = $this->getRequest();
+
+            return $this->redirect()->toRoute('adminaut/user/login', [], [
+                'query' => [
+                    'redirect' => rawurlencode($request->getUriString()),
+                ],
+            ]);
         }
         $acl = $this->getAcl();
         $acl->setUser($this->userAuthentication()->getIdentity());
