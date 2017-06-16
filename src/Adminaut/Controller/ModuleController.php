@@ -477,7 +477,7 @@ class ModuleController extends AdminautBaseController
                             if($annotation instanceof \Zend\Form\Annotation\Options) {
                                 $_options = $annotation->getOptions();
                                 if($_options['target_class'] === $element->getOptions()['target_class']) {
-                                    $isSubEntityReference = true;
+                                    $element->setSubEntityReference(true);
                                     $subRefenrecedProperty = isset($_options['referenced_property']) ? $_options['referenced_property'] : 'parentId';
                                     break;
                                 }
@@ -485,10 +485,10 @@ class ModuleController extends AdminautBaseController
                         }
                     }
 
-                    if($isSubEntityReference) {break;}
+                    if($element->isSubEntityReference()) {break;}
                 }
 
-                if($isSubEntityReference) {
+                if($element->isSubEntityReference()) {
                     $rep = $this->getEntityManager()->getRepository($element->getOptions()['target_class']);
                     $qb = $rep->createQueryBuilder('e');
                     $qb->andWhere('e.deleted = 0')

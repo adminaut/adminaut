@@ -45,7 +45,7 @@ return [
 
             // Manager
             \Adminaut\Manager\ModuleManager::class                  => \Adminaut\Manager\Factory\ModuleManagerFactory::class,
-            'AdminModulesManager'                                   => \Adminaut\Manager\Factory\AdminModulesManagerFactory::class,
+            \Adminaut\Manager\AdminModulesManager::class            => \Adminaut\Manager\Factory\AdminModulesManagerFactory::class,
             \Adminaut\Manager\FileManager::class                    => \Adminaut\Manager\Factory\FileManagerFactory::class,
 
             // Mapper

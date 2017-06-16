@@ -9,7 +9,7 @@ use Zend\ServiceManager\ServiceManager;
  * Class AdminModulesManager
  * @package Adminaut\Manager
  */
-class AdminModulesManager implements ServiceManagerAwareInterface
+class AdminModulesManager
 {
     /**
      * @var array
@@ -17,16 +17,16 @@ class AdminModulesManager implements ServiceManagerAwareInterface
     protected $modules = [];
 
     /**
-     * @var ServiceManager
+     * @var array
      */
-    protected $serviceManager;
+    protected $entities = [];
 
     /**
      * AdminModulesManager constructor.
      */
     public function __construct($modules)
     {
-        array_unshift(
+       array_unshift(
             $modules,
             [
                 'label' => 'Dashboard',
@@ -34,32 +34,48 @@ class AdminModulesManager implements ServiceManagerAwareInterface
                 'icon' => 'fa fa-fw fa-dashboard',
             ]
         );
+       $this->modules = $modules;
 
+        foreach($this->modules as $moduleId => $module) {
+            if(isset($module['entity_class'])) {
+                $this->entities[$moduleId] = $module['entity_class'];
+            }
+        }
     }
 
     /**
      * @return array
      */
-    public function getList()
+    public function getEntities()
     {
-        //return $this->getMapper()->getList();
+        return $this->entities;
     }
 
     /**
-     * @return ServiceManager
+     * @param array $entities
      */
-    public function getServiceManager()
+    public function setEntities($entities)
     {
-        return $this->serviceManager;
+        $this->entities = $entities;
     }
 
     /**
-     * @param ServiceManager $serviceManager
-     * @return $this
+     * @param string $moduleId
+     * @return string|false
      */
-    public function setServiceManager(ServiceManager $serviceManager)
-    {
-        $this->serviceManager = $serviceManager;
-        return $this;
+    public function getModuleEntity($moduleId) {
+        if(isset($this->entities[$moduleId])) {
+            return $this->entities[$moduleId];
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param string $entityClass
+     * @return string|false
+     */
+    public function getModuleByEntityClass($entityClass) {
+        return array_search($entityClass, $this->entities);
     }
 }
