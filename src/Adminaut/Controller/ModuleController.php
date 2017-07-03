@@ -438,6 +438,7 @@ class ModuleController extends AdminautBaseController
             'entity_class' => $tabs[$currentTab]['entity'],
         ];
         $referencedProperty = $tabs[$currentTab]['referencedProperty'];
+        $readonly = $tabs[$currentTab]['readonly'];
 
         $moduleManager = $this->getModuleManagerService();
         $moduleOptions = new ModuleOptions($options);
@@ -544,7 +545,7 @@ class ModuleController extends AdminautBaseController
             }
         }
 
-        if ($this->getRequest()->isPost()) {
+        if ($this->getRequest()->isPost() && !$readonly) {
             $postData = $this->getRequest()->getPost()->toArray();
             $files = $this->getRequest()->getFiles()->toArray();
             $post = array_merge_recursive($postData, $files);
@@ -601,6 +602,7 @@ class ModuleController extends AdminautBaseController
             'list' => $list,
             'form' => $form,
             'action' => $action,
+            'readonly' => $readonly,
             'url_params' => [
                 'module_id' => $moduleId,
                 'entity_id' => $entityId,

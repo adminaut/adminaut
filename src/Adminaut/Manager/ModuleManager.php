@@ -211,6 +211,7 @@ class ModuleManager
                     'action' => 'cyclicSheetAction',
                     'entity' => $element->getTargetClass(),
                     'referencedProperty' => $element->getReferencedProperty(),
+                    'readonly' => $element->isReadonly(),
                     'active' => false
                 ]);
 
