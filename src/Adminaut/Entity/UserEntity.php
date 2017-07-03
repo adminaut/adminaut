@@ -3,6 +3,7 @@
 namespace Adminaut\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Zend\Form\Annotation;
 
@@ -58,11 +59,18 @@ class UserEntity extends Base implements UserInterface
 //    protected $status;
 
     /**
-     * User constructor.
+     * Inverse side.
+     * @ORM\OneToMany(targetEntity="UserFailedLoginEntity", mappedBy="user")
+     * @var Collection
+     */
+    protected $failedLogins;
+
+    /**
+     * UserEntity constructor.
      */
     public function __construct()
     {
-
+        $this->failedLogins = new ArrayCollection();
     }
 
     /**
@@ -161,10 +169,14 @@ class UserEntity extends Base implements UserInterface
         $this->status = $status;
     }
 
-    public function getGravatarHash() {
-        $email = trim( $this->getEmail() );
-        $email = strtolower( $email );
-        return md5( $email );
+    /**
+     * @return string
+     */
+    public function getGravatarHash()
+    {
+        $email = trim($this->getEmail());
+        $email = strtolower($email);
+        return md5($email);
     }
 
     /**
