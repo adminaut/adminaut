@@ -58,3 +58,20 @@
 .form-control::-ms-input-placeholder { /* Microsoft Edge */
     color: #b8b8b8;
 }
+
+.textarea-detail ol {
+    counter-reset: item;
+}
+
+.textarea-detail ol > li {
+    counter-increment: item;
+}
+
+.textarea-detail ol ol > li {
+    display: block;
+}
+
+.textarea-detail ol ol > li:before {
+    content: counters(item, ".") ". ";
+    margin-left: -20px;
+}
