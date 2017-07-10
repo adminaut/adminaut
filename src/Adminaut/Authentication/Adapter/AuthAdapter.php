@@ -153,7 +153,7 @@ class AuthAdapter implements AdapterInterface
             return new Result(Result::FAILURE_CREDENTIAL_INVALID, null, [_('Invalid credentials.')]);
         }
 
-        return new Result(Result::SUCCESS, $this->userEmail, [_('Authenticated successfully.')]);
+        return new Result(Result::SUCCESS, $user, [_('Authenticated successfully.')]);
     }
 
     //-------------------------------------------------------------------------
