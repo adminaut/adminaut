@@ -5,13 +5,13 @@ namespace Adminaut\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class UserFailedLoginEntity
+ * Class UserActiveLoginEntity
  * @package Adminaut\Entity
- * @ORM\Entity(repositoryClass="Adminaut\Repository\UserFailedLoginRepository")
- * @ORM\Table(name="adminaut_user_failed_login")
+ * @ORM\Entity(repositoryClass="Adminaut\Repository\UserActiveLoginRepository")
+ * @ORM\Table(name="adminaut_user_active_login")
  * @ORM\HasLifecycleCallbacks()
  */
-class UserFailedLoginEntity extends Base
+class UserActiveLoginEntity extends Base
 {
     /**
      * @ORM\Column(type="integer", name="user_id")
@@ -48,29 +48,11 @@ class UserFailedLoginEntity extends Base
     //-------------------------------------------------------------------------
 
     /**
-     * @ORM\Column(type="string", name="access_token_hash", unique=true)
-     * @var string
-     */
-    protected $accessTokenHash;
-
-    /**
-     * @return string
-     */
-    public function getAccessTokenHash()
-    {
-        return $this->accessTokenHash;
-    }
-
-    //-------------------------------------------------------------------------
-
-    /**
-     * UserFailedLoginEntity constructor.
+     * UserActiveLoginEntity constructor.
      * @param UserEntity $user
-     * @param string $accessTokenHash
      */
-    public function __construct(UserEntity $user, $accessTokenHash)
+    public function __construct(UserEntity $user)
     {
         $this->user = $user;
-        $this->accessTokenHash = (string)$accessTokenHash;
     }
 }
