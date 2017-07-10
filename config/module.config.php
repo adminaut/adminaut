@@ -36,6 +36,7 @@ return [
             // Authentication
             Adminaut\Authentication\Adapter\Db::class => Adminaut\Authentication\Adapter\Factory\DbFactory::class,
             Adminaut\Authentication\Storage\Db::class => Adminaut\Authentication\Storage\Factory\DbFactory::class,
+            Adminaut\Authentication\Storage\CookieStorage::class => Adminaut\Authentication\Storage\Factory\CookieStorageFactory::class,
             'UserAuthService' => Adminaut\Authentication\Factory\AuthenticationServiceFactory::class,
             \Adminaut\Authentication\Adapter\AdapterChain::class => \Adminaut\Authentication\Adapter\Factory\AdapterChainFactory::class,
 
