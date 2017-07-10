@@ -1,32 +1,31 @@
 <?php
 
-use DoctrineModule\Persistence\ObjectManagerAwareInterface;
+namespace Adminaut;
+
 use Zend\Mvc\Router\Http\Literal;
 use Zend\Mvc\Router\Http\Segment;
 
 return [
     'controllers' => [
         'factories' => [
-            Adminaut\Controller\AclController::class => \Adminaut\Controller\Factory\AclControllerFactory::class,
-            Adminaut\Controller\InstallController::class => \Adminaut\Controller\Factory\InstallControllerFactory::class,
-            Adminaut\Controller\ModuleController::class => \Adminaut\Controller\Factory\ModuleControllerFactory::class,
-            Adminaut\Controller\UsersController::class => \Adminaut\Controller\Factory\UsersControllerFactory::class,
-            Adminaut\Controller\UserController::class => \Adminaut\Controller\Factory\UserControllerFactory::class,
+            Controller\AclController::class => Controller\Factory\AclControllerFactory::class,
+            Controller\InstallController::class => Controller\Factory\InstallControllerFactory::class,
+            Controller\ModuleController::class => Controller\Factory\ModuleControllerFactory::class,
+            Controller\UsersController::class => Controller\Factory\UsersControllerFactory::class,
+            Controller\UserController::class => Controller\Factory\UserControllerFactory::class,
         ],
 
         'abstract_factories' => [
-            \Adminaut\Controller\Factory\AdminautControllerAbstractFactory::class,
+            Controller\Factory\AdminautControllerAbstractFactory::class,
         ],
     ],
-
 
     'controller_plugins' => [
         'factories' => [
-            'userAuthentication' => \Adminaut\Controller\Plugin\Factory\UserAuthenticationControllerPluginFactory::class,
-            'acl' => \Adminaut\Controller\Plugin\Factory\AclControllerPluginFactory::class,
+            'userAuthentication' => Controller\Plugin\Factory\UserAuthenticationControllerPluginFactory::class,
+            'acl' => Controller\Plugin\Factory\AclControllerPluginFactory::class,
         ],
     ],
-
 
     'service_manager' => [
         'alias' => [
@@ -34,68 +33,65 @@ return [
         ],
         'factories' => [
             // Authentication
-            Adminaut\Authentication\Adapter\Db::class => Adminaut\Authentication\Adapter\Factory\DbFactory::class,
-            Adminaut\Authentication\Storage\Db::class => Adminaut\Authentication\Storage\Factory\DbFactory::class,
-            Adminaut\Authentication\Storage\CookieStorage::class => Adminaut\Authentication\Storage\Factory\CookieStorageFactory::class,
-            'UserAuthService' => Adminaut\Authentication\Factory\AuthenticationServiceFactory::class,
-            \Adminaut\Authentication\Adapter\AdapterChain::class => \Adminaut\Authentication\Adapter\Factory\AdapterChainFactory::class,
+            Authentication\Adapter\Db::class => Authentication\Adapter\Factory\DbFactory::class,
+            Authentication\Adapter\AuthAdapter::class => Authentication\Adapter\Factory\AuthAdapterFactory::class,
+            Authentication\Storage\Db::class => Authentication\Storage\Factory\DbFactory::class,
+            Authentication\Storage\CookieStorage::class => Authentication\Storage\Factory\CookieStorageFactory::class,
+            'UserAuthService' => Authentication\Factory\AuthenticationServiceFactory::class,
+            Authentication\Adapter\AdapterChain::class => Authentication\Adapter\Factory\AdapterChainFactory::class,
 
             // Controller
-            //\Adminaut\Controller\RedirectCallback::class            => \Adminaut\Controller\Factory\RedirectCallbackFactory::class,
+            //Controller\RedirectCallback::class            => Controller\Factory\RedirectCallbackFactory::class,
 
             // Manager
-            \Adminaut\Manager\ModuleManager::class => \Adminaut\Manager\Factory\ModuleManagerFactory::class,
-            \Adminaut\Manager\AdminModulesManager::class => \Adminaut\Manager\Factory\AdminModulesManagerFactory::class,
-            \Adminaut\Manager\FileManager::class => \Adminaut\Manager\Factory\FileManagerFactory::class,
+            Manager\ModuleManager::class => Manager\Factory\ModuleManagerFactory::class,
+            Manager\AdminModulesManager::class => Manager\Factory\AdminModulesManagerFactory::class,
+            Manager\FileManager::class => Manager\Factory\FileManagerFactory::class,
 
             // Mapper
-            \Adminaut\Mapper\UserMapper::class => \Adminaut\Mapper\Factory\UserMapperFactory::class,
-            \Adminaut\Mapper\RoleMapper::class => \Adminaut\Mapper\Factory\RoleMapperFactory::class,
-            'ResourceMapper' => 'MfccAdminModule\Factory\Mapper\ResourceMapperFactory',
+            Mapper\UserMapper::class => Mapper\Factory\UserMapperFactory::class,
+            Mapper\RoleMapper::class => Mapper\Factory\RoleMapperFactory::class,
 
             //Navigation
-            \Adminaut\Navigation\Navigation::class => \Adminaut\Navigation\NavigationFactory::class,
+            Navigation\Navigation::class => Navigation\NavigationFactory::class,
 
             // Options
-            \Adminaut\Options\UserOptions::class => \Adminaut\Options\Factory\UserOptionsFactory::class,
-            \Adminaut\Options\FileManagerOptions::class => \Adminaut\Options\Factory\FileManagerOptionsFactory::class,
+            Options\UserOptions::class => Options\Factory\UserOptionsFactory::class,
+            Options\FileManagerOptions::class => Options\Factory\FileManagerOptionsFactory::class,
 
             // Service
-            \Adminaut\Service\AccessControlService::class => \Adminaut\Service\Factory\AccessControlServiceFactory::class,
-            \Adminaut\Service\UserService::class => \Adminaut\Service\Factory\UserServiceFactory::class,
+            Service\AccessControlService::class => Service\Factory\AccessControlServiceFactory::class,
+            Service\UserService::class => Service\Factory\UserServiceFactory::class,
 
             \Zend\Mvc\I18n\Translator::class => \Zend\Mvc\Service\TranslatorServiceFactory::class,
         ],
     ],
 
-
     'view_helpers' => [
         'invokables' => [
-            'formDate' => \Adminaut\Form\View\Helper\FormDate::class,
-            'formDateTime' => \Adminaut\Form\View\Helper\FormViewHelper::class,
-            'formFile' => \Adminaut\Form\View\Helper\FormFile::class,
-            //'formCheckbox'                                          => \Adminaut\Form\View\Helper\FormCheckbox::class,
-            //'formCheckbox'                                          => \Adminaut\Form\View\Helper\Checkbox::class,
+            'formDate' => Form\View\Helper\FormDate::class,
+            'formDateTime' => Form\View\Helper\FormViewHelper::class,
+            'formFile' => Form\View\Helper\FormFile::class,
+            //'formCheckbox'                                          => Form\View\Helper\FormCheckbox::class,
+            //'formCheckbox'                                          => Form\View\Helper\Checkbox::class,
         ],
 
         'factories' => [
-            'formElement' => \Adminaut\Form\View\Helper\Factory\FormElementFactory::class,
-            'userIdentity' => \Adminaut\View\Helper\Factory\UserIdentityViewHelperFactory::class,
-            'isAllowed' => \Adminaut\View\Helper\Factory\IsAllowedViewHelperFactory::class,
-            'config' => \Adminaut\View\Helper\Factory\ConfigViewHelperFactory::class,
+            'formElement' => Form\View\Helper\Factory\FormElementFactory::class,
+            'userIdentity' => View\Helper\Factory\UserIdentityViewHelperFactory::class,
+            'isAllowed' => View\Helper\Factory\IsAllowedViewHelperFactory::class,
+            'config' => View\Helper\Factory\ConfigViewHelperFactory::class,
         ],
     ],
-
 
     'form_elements' => [
         'invokables' => [
 //            'Image'                                              => 'MfccAdminModule\Form\Element\Image'
         ],
         'initializers' => [
-            'ObjectManager' => \Adminaut\Initializer\ObjectManagerInitializer::class,
+            'ObjectManager' => Initializer\ObjectManagerInitializer::class,
         ],
     ],
-
 
     'doctrine' => [
         'driver' => [
@@ -112,7 +108,6 @@ return [
         ],
     ],
 
-
     'router' => [
         'routes' => [
             'adminaut' => [
@@ -120,7 +115,7 @@ return [
                 'options' => [
                     'route' => '/admin[/]',
                     'defaults' => [
-                        'controller' => \Adminaut\Controller\IndexController::class,
+                        'controller' => Controller\IndexController::class,
                         'action' => 'index',
                     ],
                 ],
@@ -140,7 +135,7 @@ return [
                         'options' => [
                             'route' => 'install',
                             'defaults' => [
-                                'controller' => \Adminaut\Controller\InstallController::class,
+                                'controller' => Controller\InstallController::class,
                                 'action' => 'index',
                             ],
                         ],
@@ -150,7 +145,7 @@ return [
                         'options' => [
                             'route' => 'dashboard',
                             'defaults' => [
-                                'controller' => \Adminaut\Controller\DashboardController::class,
+                                'controller' => Controller\DashboardController::class,
                                 'action' => 'index',
                             ],
                         ],
@@ -160,7 +155,7 @@ return [
                         'options' => [
                             'route' => 'module',
                             'defaults' => [
-                                'controller' => \Adminaut\Controller\ModuleController::class,
+                                'controller' => Controller\ModuleController::class,
                                 'action' => 'index',
                             ],
                         ],
@@ -246,7 +241,7 @@ return [
                         'options' => [
                             'route' => 'users',
                             'defaults' => [
-                                'controller' => \Adminaut\Controller\UsersController::class,
+                                'controller' => Controller\UsersController::class,
                                 'action' => 'index',
                             ],
                         ],
@@ -321,7 +316,7 @@ return [
                         'options' => [
                             'route' => 'acl',
                             'defaults' => [
-                                'controller' => \Adminaut\Controller\AclController::class,
+                                'controller' => Controller\AclController::class,
                                 'action' => 'index',
                             ],
                         ],
@@ -379,7 +374,7 @@ return [
                         'options' => [
                             'route' => 'acl',
                             'defaults' => [
-                                'controller' => \Adminaut\Controller\AclController::class,
+                                'controller' => Controller\AclController::class,
                                 'action' => 'index',
                             ],
                         ],
@@ -450,7 +445,7 @@ return [
                         'options' => [
                             'route' => 'user',
                             'defaults' => [
-                                'controller' => \Adminaut\Controller\UserController::class,
+                                'controller' => Controller\UserController::class,
                                 'action' => 'index',
                             ],
                         ],
@@ -461,7 +456,7 @@ return [
                                 'options' => [
                                     'route' => '/login',
                                     'defaults' => [
-                                        'controller' => \Adminaut\Controller\UserController::class,
+                                        'controller' => Controller\UserController::class,
                                         'action' => 'login',
                                     ],
                                 ],
@@ -471,7 +466,7 @@ return [
                                 'options' => [
                                     'route' => '/forgot-password',
                                     'defaults' => [
-                                        'controller' => \Adminaut\Controller\UserController::class,
+                                        'controller' => Controller\UserController::class,
                                         'action' => 'forgotPassword',
                                     ],
                                 ],
@@ -481,7 +476,7 @@ return [
                                 'options' => [
                                     'route' => '/authenticate',
                                     'defaults' => [
-                                        'controller' => \Adminaut\Controller\UserController::class,
+                                        'controller' => Controller\UserController::class,
                                         'action' => 'authenticate',
                                     ],
                                 ],
@@ -491,7 +486,7 @@ return [
                                 'options' => [
                                     'route' => '/logout',
                                     'defaults' => [
-                                        'controller' => \Adminaut\Controller\UserController::class,
+                                        'controller' => Controller\UserController::class,
                                         'action' => 'logout',
                                     ],
                                 ],
@@ -502,7 +497,6 @@ return [
             ],
         ],
     ],
-
 
     'view_manager' => [
         'template_map' => [
