@@ -2,7 +2,7 @@
 
 namespace Adminaut\Authentication\Helper;
 
-use Zend\Crypt\Password\BcryptSha;
+use Zend\Crypt\Password\Bcrypt;
 
 /**
  * Class PasswordHelper
@@ -17,7 +17,7 @@ class PasswordHelper
      */
     public static function hash($password, $cost = 10)
     {
-        return (new BcryptSha())->setCost((int)$cost)->create((string)$password);
+        return (new Bcrypt())->setCost((int)$cost)->create((string)$password);
     }
 
     /**
@@ -27,6 +27,6 @@ class PasswordHelper
      */
     public static function verify($password, $passwordHash)
     {
-        return (new BcryptSha())->verify((string)$password, (string)$passwordHash);
+        return (new Bcrypt())->verify((string)$password, (string)$passwordHash);
     }
 }
