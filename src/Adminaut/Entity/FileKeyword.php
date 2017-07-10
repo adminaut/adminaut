@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class FileKeyword
  * @ORM\Entity
- * @ORM\Table(name="mfcc_admin_file_manager_keyword")
+ * @ORM\Table(name="adminaut_file_manager_keyword")
  * @property int $id
  * @property int $fileid
  * @property string $value

@@ -11,7 +11,7 @@ use Zend\Form\Annotation;
  * Class UserEntity
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\Entity(repositoryClass="\Adminaut\Repository\UserRepository")
- * @ORM\Table(name="mfcc_admin_user")
+ * @ORM\Table(name="adminaut_user")
  * @property integer $id
  * @package Adminaut\Entity
  */

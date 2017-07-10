@@ -1,4 +1,5 @@
 <?php
+
 namespace Adminaut\Form;
 
 use Adminaut\Datatype\Checkbox;
@@ -18,8 +19,8 @@ class Form extends \Zend\Form\Form
         'main' => [
             'label' => "General",
             'action' => 'updateAction',
-            'active' => false
-        ]
+            'active' => false,
+        ],
     ];
 
     /**
@@ -75,6 +76,10 @@ class Form extends \Zend\Form\Form
             if ($elementOrFieldset instanceof Radio) {
                 $elementOrFieldset->setOption('column-size', 'sm-10 radio');
             }
+
+            if (method_exists($elementOrFieldset, 'setForm')) {
+                $elementOrFieldset->setForm($this);
+            }
         }
         return parent::prepare();
     }
@@ -84,18 +89,18 @@ class Form extends \Zend\Form\Form
      */
     public function getPrimaryField()
     {
-        if($this->primaryField === null) {
+        if ($this->primaryField === null) {
             foreach ($this->getElements() as $element) {
-                if(method_exists($element, 'isPrimary')) {
-                    if($element->isPrimary()) {
+                if (method_exists($element, 'isPrimary')) {
+                    if ($element->isPrimary()) {
                         $this->setPrimaryField($element->getName());
                     }
-                } elseif($element->getOption('primary') === true) {
+                } else if ($element->getOption('primary') === true) {
                     $this->setPrimaryField($element->getName());
                 }
             }
 
-            if($this->primaryField === null) {
+            if ($this->primaryField === null) {
                 $this->setPrimaryField('id');
             }
         }

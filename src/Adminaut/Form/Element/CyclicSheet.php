@@ -6,9 +6,20 @@ use Adminaut\Form\Element;
 
 class CyclicSheet extends Element
 {
+    /**
+     * @var Object
+     */
     protected $target_class;
 
+    /**
+     * @var string
+     */
     protected $referencedProperty = "parentId";
+
+    /**
+     * @var bool
+     */
+    protected $readonly = false;
 
 
     public function setOptions($options)
@@ -21,6 +32,10 @@ class CyclicSheet extends Element
 
         if (isset($this->options['referenced_property'])) {
             $this->setReferencedProperty($this->options['referenced_property']);
+        }
+
+        if (isset($this->options['readonly'])) {
+            $this->setReadonly($this->options['readonly']);
         }
     }
 
@@ -54,5 +69,21 @@ class CyclicSheet extends Element
     public function setReferencedProperty($referencedProperty)
     {
         $this->referencedProperty = $referencedProperty;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReadonly()
+    {
+        return $this->readonly;
+    }
+
+    /**
+     * @param bool $readonly
+     */
+    public function setReadonly($readonly)
+    {
+        $this->readonly = $readonly;
     }
 }

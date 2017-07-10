@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class Role
  * @ORM\Entity()
- * @ORM\Table(name="mfcc_admin_resource")
+ * @ORM\Table(name="adminaut_resource")
  * @property integer $id
  * @package Adminaut\Entity
  */
