@@ -48,11 +48,29 @@ class UserActiveLoginEntity extends Base
     //-------------------------------------------------------------------------
 
     /**
+     * @ORM\Column(type="string", name="access_token_hash", unique=true)
+     * @var string
+     */
+    protected $accessTokenHash;
+
+    /**
+     * @return string
+     */
+    public function getAccessTokenHash()
+    {
+        return $this->accessTokenHash;
+    }
+
+    //-------------------------------------------------------------------------
+
+    /**
      * UserActiveLoginEntity constructor.
      * @param UserEntity $user
+     * @param string $accessTokenHash
      */
-    public function __construct(UserEntity $user)
+    public function __construct(UserEntity $user, $accessTokenHash)
     {
         $this->user = $user;
+        $this->accessTokenHash = (string)$accessTokenHash;
     }
 }
