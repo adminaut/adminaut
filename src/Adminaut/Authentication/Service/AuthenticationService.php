@@ -2,7 +2,7 @@
 
 namespace Adminaut\Authentication\Service;
 
-use Adminaut\Authentication\Adapter\AuthAdapter;
+use Adminaut\Authentication\Adapter\AuthAdapterInterface;
 use Adminaut\Authentication\Helper\AccessTokenHelper;
 use Adminaut\Entity\UserActiveLoginEntity;
 use Adminaut\Entity\UserEntity;
@@ -26,7 +26,7 @@ class AuthenticationService implements AuthenticationServiceInterface
     private $entityManager;
 
     /**
-     * @var AuthAdapter
+     * @var AuthAdapterInterface
      */
     private $adapter;
 
@@ -38,12 +38,12 @@ class AuthenticationService implements AuthenticationServiceInterface
     /**
      * @var string
      */
-    private $userEmail;
+    private $email;
 
     /**
      * @var string
      */
-    private $userPassword;
+    private $password;
 
     /**
      * @var UserEntity
@@ -55,10 +55,10 @@ class AuthenticationService implements AuthenticationServiceInterface
     /**
      * AuthenticationService constructor.
      * @param EntityManager $entityManager
-     * @param AuthAdapter $adapter
+     * @param AuthAdapterInterface $adapter
      * @param StorageInterface $storage
      */
-    public function __construct(EntityManager $entityManager, AuthAdapter $adapter, StorageInterface $storage)
+    public function __construct(EntityManager $entityManager, AuthAdapterInterface $adapter, StorageInterface $storage)
     {
         $this->entityManager = $entityManager;
         $this->adapter = $adapter;
@@ -68,7 +68,7 @@ class AuthenticationService implements AuthenticationServiceInterface
     //-------------------------------------------------------------------------
 
     /**
-     * @return AuthAdapter
+     * @return AuthAdapterInterface
      */
     public function getAdapter()
     {
@@ -76,7 +76,7 @@ class AuthenticationService implements AuthenticationServiceInterface
     }
 
     /**
-     * @param AuthAdapter $adapter
+     * @param AuthAdapterInterface $adapter
      */
     public function setAdapter($adapter)
     {
@@ -102,33 +102,33 @@ class AuthenticationService implements AuthenticationServiceInterface
     /**
      * @return string
      */
-    public function getUserEmail()
+    public function getEmail()
     {
-        return $this->userEmail;
+        return $this->email;
     }
 
     /**
-     * @param string $userEmail
+     * @param string $email
      */
-    public function setUserEmail($userEmail)
+    public function setEmail($email)
     {
-        $this->userEmail = $userEmail;
+        $this->email = $email;
     }
 
     /**
      * @return string
      */
-    public function getUserPassword()
+    public function getPassword()
     {
-        return $this->userPassword;
+        return $this->password;
     }
 
     /**
-     * @param string $userPassword
+     * @param string $password
      */
-    public function setUserPassword($userPassword)
+    public function setPassword($password)
     {
-        $this->userPassword = $userPassword;
+        $this->password = $password;
     }
 
     //-------------------------------------------------------------------------
@@ -142,8 +142,8 @@ class AuthenticationService implements AuthenticationServiceInterface
     {
         //return $this->adapter->authenticate();
 
-        $this->adapter->setUserEmail($this->userEmail);
-        $this->adapter->setUserPassword($this->userPassword);
+        $this->adapter->setEmail($this->email);
+        $this->adapter->setPassword($this->password);
 
         $result = $this->adapter->authenticate();
 

@@ -11,14 +11,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Zend\Authentication\Adapter\AdapterInterface;
 use Zend\Authentication\Result;
 
 /**
  * Class AuthAdapter
  * @package Adminaut\Authentication\Adapter
  */
-class AuthAdapter implements AdapterInterface
+class AuthAdapter implements AuthAdapterInterface
 {
     /**
      * @var EntityManager
@@ -38,12 +37,12 @@ class AuthAdapter implements AdapterInterface
     /**
      * @var string
      */
-    private $userEmail;
+    private $email;
 
     /**
      * @var string
      */
-    private $userPassword;
+    private $password;
 
     //-------------------------------------------------------------------------
 
@@ -62,34 +61,36 @@ class AuthAdapter implements AdapterInterface
     /**
      * @return string
      */
-    public function getUserEmail()
+    public function getEmail()
     {
-        return $this->userEmail;
+        return $this->email;
     }
 
     /**
-     * @param string $userEmail
+     * @param string $email
      */
-    public function setUserEmail($userEmail)
+    public function setEmail($email)
     {
-        $this->userEmail = (string)$userEmail;
+        $this->email = $email;
     }
 
     /**
      * @return string
      */
-    public function getUserPassword()
+    public function getPassword()
     {
-        return $this->userPassword;
+        return $this->password;
     }
 
     /**
-     * @param string $userPassword
+     * @param string $password
      */
-    public function setUserPassword($userPassword)
+    public function setPassword($password)
     {
-        $this->userPassword = (string)$userPassword;
+        $this->password = $password;
     }
+
+    //-------------------------------------------------------------------------
 
     /**
      * Performs an authentication attempt
@@ -99,14 +100,14 @@ class AuthAdapter implements AdapterInterface
      */
     public function authenticate()
     {
-        if (null === $this->userEmail || null === $this->userPassword) {
+        if (null === $this->email || null === $this->password) {
             return new Result(Result::FAILURE_IDENTITY_NOT_FOUND, null, [_('Missing credentials.')]);
         }
 
 
         /** @var UserEntity $user */
         $user = $this->getUserRepository()->findOneBy([
-            'email' => $this->userEmail,
+            'email' => $this->email,
             'deleted' => false,
             'active' => true,
         ]);
@@ -139,7 +140,7 @@ class AuthAdapter implements AdapterInterface
             }
         }
 
-        if (true !== PasswordHelper::verify($this->userPassword, $user->getPassword())) {
+        if (true !== PasswordHelper::verify($this->password, $user->getPassword())) {
 
             $failedLogin = new UserFailedLoginEntity($user);
 
