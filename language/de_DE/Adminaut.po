@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-04-12 16:16+0200\n"
-"PO-Revision-Date: 2017-07-12 07:21-0400\n"
+"PO-Revision-Date: 2017-07-12 07:31-0400\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -66,7 +66,7 @@ msgstr ""
 
 #: src/Adminaut/Controller/UsersController.php:204
 msgid "User has been successfully deleted."
-msgstr ""
+msgstr "Benutzer wurde erfolgreich gelöscht."
 
 #: src/Adminaut/Form/Role.php:34 src/Adminaut/Form/Role.php:37
 #: src/Adminaut/Form/User.php:47 src/Adminaut/Form/User.php:50
@@ -84,7 +84,7 @@ msgstr ""
 #: src/Adminaut/Form/User.php:69 src/Adminaut/Form/User.php:72
 #: src/Adminaut/Form/UserLogin.php:42 src/Adminaut/Form/UserLogin.php:46
 msgid "Password"
-msgstr ""
+msgstr "Passwort"
 
 #: src/Adminaut/Form/User.php:81 src/Adminaut/Form/User.php:84
 #: view/adminaut/acl/show-role.phtml:3 view/adminaut/users/index.phtml:29
