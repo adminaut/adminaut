@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-04-12 16:16+0200\n"
-"PO-Revision-Date: 2017-04-13 10:31-0400\n"
+"PO-Revision-Date: 2017-07-12 06:21-0400\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -73,7 +73,7 @@ msgstr ""
 #: view/adminaut/acl/index.phtml:15 view/adminaut/users/index.phtml:27
 #: view/adminaut/users/view.phtml:22
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #: src/Adminaut/Form/User.php:58 src/Adminaut/Form/User.php:61
 #: src/Adminaut/Form/UserLogin.php:30 src/Adminaut/Form/UserLogin.php:34
