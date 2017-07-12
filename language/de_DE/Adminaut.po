@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-04-12 16:16+0200\n"
-"PO-Revision-Date: 2017-07-12 07:31-0400\n"
+"PO-Revision-Date: 2017-07-12 15:50-0400\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -89,7 +89,7 @@ msgstr "Passwort"
 #: src/Adminaut/Form/User.php:81 src/Adminaut/Form/User.php:84
 #: view/adminaut/acl/show-role.phtml:3 view/adminaut/users/index.phtml:29
 msgid "Role"
-msgstr ""
+msgstr "Rolle"
 
 #: src/Adminaut/Form/User.php:85
 msgid "Select role"
@@ -98,7 +98,7 @@ msgstr ""
 #: src/Adminaut/Form/User.php:93 view/adminaut/users/index.phtml:44
 #: view/adminaut/users/view.phtml:34 view/adminaut/users/view.phtml:37
 msgid "Active"
-msgstr ""
+msgstr "Aktiv"
 
 #: src/Adminaut/Form/UserLogin.php:55
 msgid "Sing in"
@@ -112,20 +112,20 @@ msgstr ""
 #: view/adminaut/acl/update-role.phtml:50
 #: view/adminaut/user/forgot-password.phtml:17
 msgid "Back"
-msgstr ""
+msgstr "Zurück"
 
 #: view/adminaut/acl/index.phtml:3
 msgid "Roles"
-msgstr ""
+msgstr "Rollen"
 
 #: view/adminaut/acl/index.phtml:16 view/adminaut/module/cyclicTab.phtml:33
 #: view/adminaut/module/list.phtml:31 view/adminaut/users/index.phtml:31
 msgid "Actions"
-msgstr ""
+msgstr "Aktionen"
 
 #: view/adminaut/acl/show-role.phtml:11 view/adminaut/acl/update-role.phtml:21
 msgid "Permission"
-msgstr ""
+msgstr "Berechtigung"
 
 #: view/adminaut/acl/show-role.phtml:18 view/adminaut/acl/show-role.phtml:28
 #: view/adminaut/acl/show-role.phtml:33 view/adminaut/acl/show-role.phtml:35
@@ -138,7 +138,7 @@ msgstr ""
 
 #: view/adminaut/acl/show-role.phtml:38 view/adminaut/acl/show-role.phtml:41
 msgid "None"
-msgstr ""
+msgstr "Keine"
 
 #: view/adminaut/acl/show-role.phtml:55
 msgid "Users assigned to role"
@@ -205,20 +205,20 @@ msgstr ""
 
 #: view/adminaut/module/edit.phtml:40 view/adminaut/module/view.phtml:46
 msgid "Delete"
-msgstr ""
+msgstr "Löschen"
 
 #: view/adminaut/module/index.phtml:3 view/adminaut/module/index.phtml:7
 msgid "Module"
-msgstr ""
+msgstr "Modul"
 
 #: view/adminaut/module/view.phtml:20 view/adminaut/users/view.phtml:9
 #: view/adminaut/users/view.phtml:18
 msgid "Detail"
-msgstr ""
+msgstr "Detail"
 
 #: view/adminaut/user/forgot-password.phtml:7
 msgid "Forgot password"
-msgstr ""
+msgstr "Passwort vergessen"
 
 #: view/adminaut/user/forgot-password.phtml:16
 msgid "Send new password"
@@ -249,7 +249,7 @@ msgstr ""
 
 #: view/adminaut/users/add.phtml:13
 msgid "Add"
-msgstr ""
+msgstr "Hinzufügen"
 
 #: view/adminaut/users/add.phtml:23
 msgid "Add new user"
@@ -265,11 +265,11 @@ msgstr ""
 
 #: view/adminaut/users/index.phtml:30
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: view/adminaut/users/index.phtml:46 view/adminaut/users/view.phtml:39
 msgid "Inactive"
-msgstr ""
+msgstr "Inaktiv"
 
 #: view/layout/layout-admin.phtml:108
 msgid "Toggle navigation"
@@ -277,7 +277,7 @@ msgstr ""
 
 #: view/layout/layout-admin.phtml:134
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 #: view/layout/layout-admin.phtml:137
 msgid "Sign out"
@@ -302,8 +302,8 @@ msgstr ""
 
 #: view/partial/deleteModal.phtml:12
 msgid "No"
-msgstr ""
+msgstr "Nein"
 
 #: view/partial/deleteModal.phtml:13
 msgid "Yes, delete it"
-msgstr ""
+msgstr "Ja, löschen"
