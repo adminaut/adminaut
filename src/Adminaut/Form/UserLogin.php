@@ -2,8 +2,10 @@
 
 namespace Adminaut\Form;
 
+use Zend\Form\Element\Button;
+use Zend\Form\Element\Email;
+use Zend\Form\Element\Password;
 use Zend\Form\Form;
-use Zend\Form\Element;
 
 /**
  * Class UserLogin
@@ -24,7 +26,7 @@ class UserLogin extends Form
         ]);
 
         $this->add([
-            'type' => 'Zend\Form\Element\Email',
+            'type' => Email::class,
             'name' => 'identity',
             'options' => [
                 'label' => _('Email'),
@@ -36,7 +38,7 @@ class UserLogin extends Form
         ]);
 
         $this->add([
-            'type' => 'Zend\Form\Element\Password',
+            'type' => Password::class,
             'name' => 'credential',
             'options' => [
                 'label' => _('Password'),
@@ -49,17 +51,17 @@ class UserLogin extends Form
         ]);
 
         $this->add([
-            'type' => 'Zend\Form\Element\Button',
+            'type' => Button::class,
             'name' => 'submit',
             'options' => [
                 'label' => '<i class="fa fa-unlock"></i> ' . _('Sing in'),
-                'label_options' => array(
+                'label_options' => [
                     'disable_html_escape' => true,
-                )
+                ],
             ],
             'attributes' => [
                 'type' => 'submit',
-                'class' => 'btn btn-primary btn-flat pull-right'
+                'class' => 'btn btn-primary btn-flat pull-right',
             ],
         ]);
     }

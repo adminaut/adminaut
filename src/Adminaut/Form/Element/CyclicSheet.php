@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Josef
- * Date: 17.8.2016
- * Time: 10:55
- */
-
 namespace Adminaut\Form\Element;
 
 
@@ -13,7 +6,20 @@ use Adminaut\Form\Element;
 
 class CyclicSheet extends Element
 {
+    /**
+     * @var Object
+     */
     protected $target_class;
+
+    /**
+     * @var string
+     */
+    protected $referencedProperty = "parentId";
+
+    /**
+     * @var bool
+     */
+    protected $readonly = false;
 
 
     public function setOptions($options)
@@ -22,6 +28,14 @@ class CyclicSheet extends Element
 
         if (isset($this->options['target_class'])) {
             $this->setTargetClass($this->options['target_class']);
+        }
+
+        if (isset($this->options['referenced_property'])) {
+            $this->setReferencedProperty($this->options['referenced_property']);
+        }
+
+        if (isset($this->options['readonly'])) {
+            $this->setReadonly($this->options['readonly']);
         }
     }
 
@@ -39,5 +53,37 @@ class CyclicSheet extends Element
     public function setTargetClass($target_class)
     {
         $this->target_class = $target_class;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReferencedProperty()
+    {
+        return $this->referencedProperty;
+    }
+
+    /**
+     * @param string $referencedProperty
+     */
+    public function setReferencedProperty($referencedProperty)
+    {
+        $this->referencedProperty = $referencedProperty;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReadonly()
+    {
+        return $this->readonly;
+    }
+
+    /**
+     * @param bool $readonly
+     */
+    public function setReadonly($readonly)
+    {
+        $this->readonly = $readonly;
     }
 }

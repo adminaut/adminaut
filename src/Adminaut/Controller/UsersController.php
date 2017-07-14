@@ -6,7 +6,11 @@ use Adminaut\Controller\Plugin\Acl;
 use Adminaut\Entity\UserEntity;
 use Adminaut\Form\User as UserForm;
 use Adminaut\Form\InputFilter\User as UserInputFilter;
+use Adminaut\Manager\AdminModulesManager;
+use Adminaut\Manager\ModuleManager;
+use Adminaut\Mapper\ModuleMapper;
 use Adminaut\Mapper\UserMapper;
+use Adminaut\Options\ModuleOptions;
 use Adminaut\Repository\UserRepository;
 use Adminaut\Service\AccessControlService;
 use Adminaut\Service\UserService;
@@ -29,12 +33,23 @@ class UsersController extends AdminautBaseController
      */
     protected $userService;
 
+    /**
+     * @var ModuleManager
+     */
+    protected $adminModuleManager;
 
-    public function __construct($config, $acl, $em, $translator, $userMapper, $userService)
+    /**
+     * @var ModuleManager
+     */
+    protected $moduleManagerService;
+
+
+    public function __construct($config, $acl, $em, $translator, $userMapper, $userService, $moduleManager)
     {
         parent::__construct($config, $acl, $em, $translator);
         $this->setUserMapper($userMapper);
         $this->setUserService($userService);
+        $this->setModuleManagerService($moduleManager);
     }
 
     /**
@@ -88,8 +103,10 @@ class UsersController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        $form = new UserForm(UserForm::STATUS_ADD);
-        $form->setInputFilter(new UserInputFilter());
+//        $form = new UserForm(UserForm::STATUS_ADD);
+
+        $form = $this->getAdminModuleManager()->getForm();
+//        $form->setInputFilter(new UserInputFilter());
 
         $roles = $this->config['adminaut']['roles'];
         $rolesData = ['admin' => 'Admin'];
@@ -144,8 +161,14 @@ class UsersController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/users');
         }
 
-        $form = new UserForm(UserForm::STATUS_UPDATE);
+//        $form = new UserForm(UserForm::STATUS_UPDATE);
+
+        /* @var $form \Adminaut\Form\Form */
+        $form = $this->getAdminModuleManager()->getForm();
         $form->setInputFilter(new UserInputFilter());
+
+        $tabs = $form->getTabs();
+        $tabs[$this->params()->fromRoute('tab')]['active'] = true;
 
         $roles = $this->config['adminaut']['roles'];
         $rolesData = ['admin' => 'Admin'];
@@ -180,7 +203,11 @@ class UsersController extends AdminautBaseController
 
         return new ViewModel([
             'form' => $form,
+            'tabs' => $tabs,
             'user' => $user,
+            'url_params' => [
+                'id' => $user->getId()
+            ]
         ]);
     }
 
@@ -243,5 +270,49 @@ class UsersController extends AdminautBaseController
     public function setUserService($userService)
     {
         $this->userService = $userService;
+    }
+
+    /**
+     * @return ModuleManager
+     */
+    protected function getAdminModuleManager()
+    {
+        if (!$this->adminModuleManager instanceof ModuleManager) {
+            $moduleManager = $this->getModuleManagerService();
+
+            $config = $this->getConfig();
+
+            $adminModuleOption = new ModuleOptions([
+                'type' => 'module',
+                'module_name' => 'Users',
+                'module_icon' => 'fa-users',
+                'entity_class' => isset($config['adminaut']['users']['user_entity_class']) ? $config['adminaut']['users']['user_entity_class'] : UserEntity::class
+            ]);
+            $adminModuleOption->setModuleId('users');
+            $moduleManager->setOptions($adminModuleOption);
+            $moduleMapper = new moduleMapper($this->getEntityManager(), $adminModuleOption);
+            $moduleManager->setMapper($moduleMapper);
+
+            $this->adminModuleManager = $moduleManager;
+            return $this->adminModuleManager;
+        } else {
+            return $this->adminModuleManager;
+        }
+    }
+
+    /**
+     * @return ModuleManager
+     */
+    public function getModuleManagerService()
+    {
+        return $this->moduleManagerService;
+    }
+
+    /**
+     * @param ModuleManager $moduleManagerService
+     */
+    public function setModuleManagerService(ModuleManager $moduleManagerService)
+    {
+        $this->moduleManagerService = $moduleManagerService;
     }
 }

@@ -26,7 +26,8 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, In
             'DoctrineModule',
             'DoctrineORMModule',
             'TwbBundle',
-            'BsbFlysystem'
+            'BsbFlysystem',
+            'Adminaut\Datatype'
         ];
 
         $loadedModules = $manager->getLoadedModules(false);
@@ -86,5 +87,10 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, In
         $eventManager = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+    }
+
+    function onDispatchError(MvcEvent $e) {
+        $vm = $e->getViewModel();
+        $vm->setTemplate('layout/admin-blank');
     }
 }

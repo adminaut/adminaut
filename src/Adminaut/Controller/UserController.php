@@ -2,26 +2,28 @@
 
 namespace Adminaut\Controller;
 
+use Adminaut\Controller\Plugin\UserAuthentication;
 use Adminaut\Form\UserLogin as UserLoginForm;
 use Adminaut\Form\InputFilter\UserLogin as UserLoginInputFilter;
 use Adminaut\Options\UserOptions;
 use Adminaut\Service\UserService;
 use Zend\Form\Form;
+use Zend\Http\PhpEnvironment\Request;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Stdlib\ResponseInterface as Response;
-use Zend\Stdlib\Parameters;
 use Zend\View\Model\ViewModel;
 
 /**
  * Class UserController
  * @package Adminaut\Controller
+ * @method UserAuthentication userAuthentication()
  */
 class UserController extends AbstractActionController
 {
     const ROUTE_CHANGEPASSWD = 'adminaut/user/changepassword';
     const ROUTE_LOGIN = 'adminaut/user/login';
     const ROUTE_REGISTER = 'adminaut/user/register';
-    const ROUTE_CHANGEEMAIL  = 'adminaut/user/changeemail';
+    const ROUTE_CHANGEEMAIL = 'adminaut/user/changeemail';
     const CONTROLLER_NAME = self::class;
 
     /**
@@ -61,19 +63,11 @@ class UserController extends AbstractActionController
     protected $userOptions;
 
     /**
-     * @var callable $redirectCallback
+     * @param $userService
+     * @param $userOptions
      */
-    protected $redirectCallback;
-
-    /**
-     * @param callable $redirectCallback
-     */
-    public function __construct($redirectCallback, $userService, $userOptions)
+    public function __construct($userService, $userOptions)
     {
-        if (!is_callable($redirectCallback)) {
-            throw new \InvalidArgumentException('You must supply a callable redirectCallback');
-        }
-        $this->redirectCallback = $redirectCallback;
         $this->setUserService($userService);
         $this->setUserOptions($userOptions);
     }
@@ -100,46 +94,60 @@ class UserController extends AbstractActionController
         }
 
         // check superuser, if not exist, create
-        if (!$this->getUserService()->checkSuperuser()){
+        if (!$this->getUserService()->checkSuperuser()) {
             return $this->redirect()->toRoute('adminaut/install');
         }
 
+        /** @var Request $request */
         $request = $this->getRequest();
         $form = $this->getLoginForm();
-        if ($this->getUserOptions()->isUseRedirectParameterIfPresent() && $request->getQuery()->get('redirect')) {
-            $redirect = $request->getQuery()->get('redirect');
-        } else {
-            $redirect = false;
+
+        $redirectUrl = false;
+
+        if ($this->getUserOptions()->isUseRedirectParameterIfPresent() && $request->getQuery()->offsetExists('redirect')) {
+            $redirectUrl = $request->getQuery()->get('redirect');
         }
 
         $this->layout()->setVariables([
-            'bodyClasses' => ['login-page']
+            'bodyClasses' => ['login-page'],
         ]);
         $this->layout('layout/admin-blank');
 
         if (!$request->isPost()) {
             return [
-                'loginForm' => $form,
-                'redirect'  => $redirect,
+                'form' => $form,
+                'redirect' => $redirectUrl,
             ];
         }
+
         $form->setData($request->getPost());
+
         if (!$form->isValid()) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
-            return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN).($redirect ? '?redirect='. rawurlencode($redirect) : ''));
+
+            if ($redirectUrl) {
+                return $this->redirect()->toRoute(static::ROUTE_LOGIN, [], ['query' => ['redirect' => $redirectUrl]]);
+            }
+            return $this->redirect()->toRoute(static::ROUTE_LOGIN);
         }
+
         $this->userAuthentication()->getAuthAdapter()->resetAdapters();
         $this->userAuthentication()->getAuthService()->clearIdentity();
+
         return $this->forward()->dispatch(static::CONTROLLER_NAME, ['action' => 'authenticate']);
     }
 
-    public function forgotPasswordAction() {
+    /**
+     * @return \Zend\Http\Response|ViewModel
+     */
+    public function forgotPasswordAction()
+    {
         if ($this->userAuthentication()->hasIdentity()) {
             return $this->redirect()->toRoute($this->getUserOptions()->getLoginRedirectRoute());
         }
 
         $this->layout()->setVariables([
-            'bodyClasses' => ['login-page']
+            'bodyClasses' => ['login-page'],
         ]);
         $this->layout('layout/admin-blank');
 
@@ -147,42 +155,51 @@ class UserController extends AbstractActionController
     }
 
     /**
-     * @return mixed
+     * @return \Zend\Http\Response
      */
     public function logoutAction()
     {
         $this->userAuthentication()->getAuthAdapter()->resetAdapters();
         $this->userAuthentication()->getAuthAdapter()->logoutAdapters();
         $this->userAuthentication()->getAuthService()->clearIdentity();
-        $redirect = $this->redirectCallback;
-        return $redirect();
+        return $this->redirect()->toRoute($this->getUserOptions()->getLogoutRedirectRoute());
     }
 
     /**
-     * @return \Zend\Http\Response
+     * @return bool|\Zend\Http\Response|Response
      */
     public function authenticateAction()
     {
         if ($this->userAuthentication()->hasIdentity()) {
-            return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+            return $this->redirect()->toRoute($this->getUserOptions()->getLoginRedirectRoute());
         }
+
         $adapter = $this->userAuthentication()->getAuthAdapter();
-        $redirect = $this->params()->fromPost('redirect', $this->params()->fromQuery('redirect', false));
+
+        $redirectUrl = $this->params()->fromQuery('redirect', false);
+
         $result = $adapter->prepareForAuthentication($this->getRequest());
+
         if ($result instanceof Response) {
             return $result;
         }
+
         $auth = $this->userAuthentication()->getAuthService()->authenticate($adapter);
+
         if (!$auth->isValid()) {
             $this->flashMessenger()->addErrorMessage($this->failedLoginMessage);
             $adapter->resetAdapters();
-            return $this->redirect()->toUrl(
-                $this->url()->fromRoute(static::ROUTE_LOGIN) .
-                ($redirect ? '?redirect='. rawurlencode($redirect) : '')
-            );
+
+            if ($redirectUrl) {
+                return $this->redirect()->toRoute(static::ROUTE_LOGIN, [], ['query' => ['redirect' => $redirectUrl]]);
+            }
+            return $this->redirect()->toRoute(static::ROUTE_LOGIN);
         }
-        $redirect = $this->redirectCallback;
-        return $redirect();
+
+        if ($redirectUrl) {
+            return $this->redirect()->toUrl(rawurldecode($redirectUrl));
+        }
+        return $this->redirect()->toRoute($this->getUserOptions()->getLoginRedirectRoute());
     }
 
     /**
@@ -209,8 +226,8 @@ class UserController extends AbstractActionController
         if (isset($fm[0])) {
             $this->loginForm->setMessages([
                 'identity' => [
-                    $fm[0]
-                ]
+                    $fm[0],
+                ],
             ]);
         }
         return $this;

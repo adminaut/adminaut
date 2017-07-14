@@ -15,28 +15,33 @@
 </section>
 
 <section class="content">
-    <?php echo $this->form(null, null)->openTag($form); ?>
+    <?php echo $this->form()->openTag($form); ?>
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-xs-12 col-sm-8">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><?php echo $this->translate("Add new user"); ?></h3>
+                    <h3 class="box-title">Add new user</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <?php echo $this->partial('partial/flashMessanger.phtml', ['flashMessenger' => $this->flashMessenger()]); ?>
-
-                    <?php echo $this->formCollection($form); ?>
+                    <?php
+                    echo $this->formCollection($form);
+                    ?>
                 </div>
-                <!-- /.tab-content -->
+                <!-- /.box-body -->
+
                 <div class="box-footer clearfix">
-                    <button type="submit" name="submit" class="btn btn-primary" value=""><?php echo $this->translate("Create"); ?></button>
-                    <button type="submit" name="submit" class="btn btn-default" value=""><?php echo $this->translate("Create and continue"); ?></button>
+                    <button type="submit" name="submit" class="btn btn-primary" value="create"><?php echo $this->translate("Create"); ?></button>
+                    <button type="submit" name="submit" class="btn btn-default" value="create-and-continue"><?php echo $this->translate("Create and continue"); ?></button>
+                    <button type="submit" name="submit" class="btn btn-default" value="create-and-new"><?php echo $this->translate("Create and new"); ?></button>
                     <a href="<?php echo $this->url('adminaut/users'); ?>" class="btn btn-link"><?php echo $this->translate('Back to list'); ?></a>
                 </div>
-                <!-- /.box-footer -->
             </div>
+            <!-- /.box -->
         </div>
+        <!-- /.col -->
     </div>
+    <!-- /.row -->
     <?php echo $this->form()->closeTag(); ?>
 </section>

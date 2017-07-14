@@ -153,7 +153,7 @@ class FileManager
      * @param array $option
      * @return File
      */
-    public function upload($element, \Adminaut\Entity\User $user = null, array $option = [])
+    public function upload($element, \Adminaut\Entity\UserEntity $user = null, array $option = [])
     {
         $_file = $element->getValue();
         if($_file['error'] != 0){
@@ -208,23 +208,62 @@ class FileManager
 
         if (!$this->getCacheFilesystem()->has($resultImage)) {
             try {
-                $_file = $this->getFilesystem()->read($sourceImage);
-                $image = WideImage::load($_file);
-                $image_data = $image->resize($width, $height, 'outside')
-                                    ->crop('center', 'center', $width, $height)
-                                    ->asString($file->getFileExtension());
+                $exif = exif_read_data($this->getFilesystem()->getAdapter()->applyPathPrefix($sourceImage));
+                $ort = isset($exif['Orientation']) ? $exif['Orientation'] : 1;
+                $_file      = $this->getFilesystem()->read($sourceImage);
+                $image      = WideImage::load($_file);
+                $image_data = $image->exifOrient($ort)->resize($width, $height, 'outside')
+                    ->crop('center', 'center', $width, $height)
+                    ->asString($file->getFileExtension());
 
                 $this->getCacheFilesystem()->write($resultImage, $image_data);
             } catch (\Exception $e) {
-                throw new Exception\RuntimeException(
-                    'File cannot be saved.', 0, $e
+                throw new \Exception(
+                    'Thumbnail cannot be saved.', 0, $e
                 );
             }
         }
 
         $fsAdapter = $this->getCacheFilesystem()->getAdapter();
 
-        return str_replace($_SERVER['DOCUMENT_ROOT'], '', str_replace('\\', '/', $fsAdapter->getPathPrefix() . $resultImage));
+        return str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', str_replace('\\', '/', realpath($fsAdapter->getPathPrefix() . $resultImage)));
+    }
+
+    /**
+     * @param File $file
+     * @param int $maxWidth
+     * @param int $maxHeight
+     * @return mixed
+     */
+    public function getImage(File $file, $maxWidth = 1200, $maxHeight = 1200)
+    {
+
+        $sourceImage = $file->getSavePath();
+
+        // todo: upraviť name súborov, podľa veľkosti originálu dopočítať novú veľkosť
+        //$resultImage = $file->getSavePath() . '-' . $maxWidth . '-' . $maxHeight . '.' . $file->getFileExtension();
+        $resultImage = $file->getSavePath() . '-' . 'resized' . '.' . $file->getFileExtension();
+
+        if (!$this->getCacheFilesystem()->has($resultImage)) {
+            try {
+                $exif = exif_read_data($this->getFilesystem()->getAdapter()->applyPathPrefix($sourceImage));
+                $ort = isset($exif['Orientation']) ? $exif['Orientation'] : 1;
+                $_file = $this->getFilesystem()->read($sourceImage);
+                $image = WideImage::load($_file);
+
+                $image_data = $image->exifOrient($ort)->resize($maxWidth, $maxHeight, 'inside', 'down')->asString($file->getFileExtension());
+
+                $this->getCacheFilesystem()->write($resultImage, $image_data);
+            } catch (\Exception $e) {
+                throw new \Exception(
+                    'Resized original cannot be saved.', 0, $e
+                );
+            }
+        }
+
+        $fsAdapter = $this->getCacheFilesystem()->getAdapter();
+
+        return str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', str_replace('\\', '/', realpath($fsAdapter->getPathPrefix() . $resultImage)));
     }
 
     /**

@@ -2,6 +2,10 @@
 return [
     'adminaut' => [
         'modules' => [
+            'example-section' => [
+                'type' => 'section',
+                'label' => 'Example section'
+            ],
             'example' => [
                 'type' => 'module',
                 'module_name' => 'Example module',
@@ -13,30 +17,51 @@ return [
         'roles' => [],
 
         'appearance' => [
-            'theme' => 'adminlte',
-            'footer' => 'Custom footer text.'
+            'skin' => 'blue',
+            'title' => 'Adminaut',
+            'logo' => [
+                'type' => 'image',
+                'large' => 'adminaut/img/admin-logo-lg.svg',
+                'small' => 'adminaut/img/admin-logo-mini.png',
+            ],
+            'footer' => ''
+        ],
+
+        'manifest' => [
+            // Name of adminaut instance. Used on lot of places (page titles, web app, etc.)
+            'name' => 'Adminaut',
+            'show_name' => 'Adminaut',
+            'description' => 'Adminaut - universal automatic administration system',
+            'display' => 'standalone',
+            'theme_color' => '#3c8dbc',
+            // background_color (default #3c8dbc)
+            // Used as background color for web appendName.
+            // More information here: https://developer.mozilla.org/en-US/docs/Web/Manifest
+            'background_color' => '#3c8dbc',
+            "icons" => [
+                [
+                    "src" => "/static/favicons/android-chrome-36x36.png",
+                    "sizes" => "36x36",
+                    "type" => "image/png",
+                    "density" => "0.75"
+                ]
+            ],
+
+            'GA' => '',
+            'google-api' => '',
+            'environment' => 'production',
         ],
     ],
-    'manifest' => [
-        // Name of adminaut instance. Used on lot of places (page titles, web app, etc.)
-        'name' => 'Adminaut',
-        'show_name' => 'Adminaut',
-        'description' => 'Adminaut - universal automatic administration system',
-        'display' => 'standalone',
-        'theme_color' => '#3c8dbc',
-        // background_color (default #3c8dbc)
-        // Used as background color for web appendName.
-        // More information here: https://developer.mozilla.org/en-US/docs/Web/Manifest
-        'background_color' => '#3c8dbc',
-        "icons" => [
-            [
-                "src" => "/static/favicons/android-chrome-36x36.png",
-                "sizes" => "36x36",
-                "type" => "image/png",
-                "density" => "0.75"
-            ]
+
+    /*'router' => [
+        'routes' => [
+            'adminaut' => [
+                'options' => [
+                    'route' => '/admin'
+                ]
+            ],
         ]
-    ],
+    ],*/
 
     'bsb_flysystem' => [
         'adapters' => [

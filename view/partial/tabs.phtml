@@ -1,10 +1,10 @@
 <ul class="nav nav-tabs" role="tablist">
     <?php foreach($this->tabs as $tabName => $tab) { ?>
-        <li role="presentation"<?php if($tab['active']) { ?> class="active"<?php } ?>>
+        <li role="presentation"<?php if(isset($tab['active']) && $tab['active']) { ?> class="active"<?php } ?>>
             <?php if($tabName == 'main') { ?>
-                <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'mode' => $this->url_params['mode']]) ?>" aria-controls="<?php echo $tabName ?>" role="tab"><?php echo $tab['label'] ?></a>
+                <a href="<?php echo $this->url($this->route, $this->url_params) ?>" aria-controls="<?php echo $tabName ?>" role="tab"><?php echo $tab['label'] ?></a>
             <?php } else { ?>
-                <a href="<?php echo $this->url('adminaut/module/action/tab', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'tab' => $tabName, 'mode' => $this->url_params['mode']]) ?>" aria-controls="<?php echo $tabName ?>" role="tab"><?php echo $tab['label'] ?></a>
+                <a href="<?php echo $this->url($this->route . '/tab', array_merge($this->url_params, ['tab' => $tabName])) ?>" aria-controls="<?php echo $tabName ?>" role="tab"><?php echo $tab['label'] ?></a>
             <?php } ?>
         </li>
     <?php } ?>

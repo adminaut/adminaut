@@ -1,14 +1,26 @@
 <div class="login-box">
+
     <div class="login-logo">
         <a href="<?php echo $this->url('adminaut/user/login') ?>">Adminaut</a>
     </div>
-    <!-- /.login-logo -->
+
     <div class="box login-box-body box-success">
+
+        <?php echo $this->partial('partial/flashMessanger.phtml', ['flashMessenger' => $this->flashMessenger()]); ?>
+
         <p class="login-box-msg"><?php echo $this->translate("Sign in to start your session"); ?></p>
 
         <?php
-        $form = $this->loginForm;
-        $form->setAttribute('action', $this->url('adminaut/user/login'));
+
+        /** @var Adminaut\Form\UserLogin $form */
+        $form = $this->form;
+
+        if ($this->redirect) {
+            $url = $this->url('adminaut/user/login', [], ['query' => ['redirect' => $this->redirect]]);
+        } else {
+            $url = $this->url('adminaut/user/login');
+        }
+        $form->setAttribute('action', $url);
         $form->prepare();
 
         echo $this->form(null, null)->openTag($form);
@@ -16,23 +28,9 @@
         echo $this->form()->closeTag();
         ?>
 
-        <!--<form action="<?php echo $this->url('adminaut/user/login') ?>" method="post">
-            <div class="form-group has-feedback">
-                <input type="email" class="form-control" placeholder="Email">
-                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-            </div>
-            <div class="form-group has-feedback">
-                <input type="password" class="form-control" placeholder="Password">
-                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-            </div>
-            <div class="row">
-            </div>
-        </form>-->
-
         <a href="<?php echo $this->url('adminaut/user/forgot-password'); ?>"><?php echo $this->translate("I forgot my password"); ?></a><br>
         <a href="#"><?php echo $this->translate("Request access"); ?></a>
 
     </div>
-    <!-- /.login-box-body -->
+
 </div>
-<!-- /.login-box -->

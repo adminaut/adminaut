@@ -35,7 +35,13 @@
                             <?php foreach ($this->list as $entity) { ?>
                                 <?php /* @var $entity Adminaut\Entity\Base */ ?>
                                 <tr rel="<?php echo $entity->getId(); ?>">
-                                    <td><?php echo $entity->getId(); ?></td>
+                                    <td>
+                                        <?php if(!$this->hasPrimary) { ?>
+                                            <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $entity->getId()]); ?>" class="primary"><?php echo $entity->getId(); ?></a>
+                                        <?php } else { ?>
+                                            <?php echo $entity->getId(); ?>
+                                        <?php } ?>
+                                    </td>
                                     <?php foreach($this->listedElements as $listedElement) { ?>
                                         <td>
                                             <?php if($listedElement->isPrimary()) { ?>
@@ -43,7 +49,7 @@
                                             <?php } ?>
                                             <?php $listedElement->setValue($entity->{$listedElement->getName()}) ?>
                                             <?php if(method_exists($listedElement, 'getListedValue')) { ?>
-                                                <?php echo $listedElement->getListedValue(); ?>
+                                                <?php echo ($listedElement->isPrimary() && empty($listedElement->getListedValue()) ? 'undefined' : $listedElement->getListedValue()); ?>
                                             <?php } else { ?>
                                                 <?php echo $listedElement->getValue(); ?>
                                             <?php } ?>
@@ -77,8 +83,11 @@
                                 "searching": true,
                                 "ordering": true,
                                 "info": true,
-                                "autoWidth": false
-                            });
+                                "autoWidth": false,
+                                "pageLength": Cookies.get('<?php echo $this->moduleOption->getModuleId() ?>.dt.length') || 10
+                            }).on( 'length.dt', function ( e, settings, len ) {
+                                Cookies.set('<?php echo $this->moduleOption->getModuleId() ?>.dt.length', len);
+                            } );
                         })(jQuery);
                     </script>
                 </div>

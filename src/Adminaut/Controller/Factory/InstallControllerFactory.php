@@ -23,7 +23,8 @@ class InstallControllerFactory implements FactoryInterface
         $sm = $serviceLocator->getServiceLocator();
 
         return new InstallController(
-            $sm->get(UserService::class)
+            $sm->get(UserService::class),
+            $sm->get('translator')
         );
     }
 

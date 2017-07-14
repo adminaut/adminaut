@@ -2,6 +2,9 @@
 
 namespace Adminaut\Manager;
 
+use Adminaut\Datatype\GoogleMap;
+use Adminaut\Datatype\MultiReference;
+use Adminaut\Datatype\Reference;
 use Adminaut\Form\Element\CyclicSheet;
 use Doctrine\ORM\EntityManager;
 use DoctrineModule\Form\Element\ObjectMultiCheckbox;
@@ -15,7 +18,9 @@ use Adminaut\Mapper\ModuleMapper;
 use Adminaut\Options\ModuleOptions;
 use Adminaut\Form\Form;
 use Adminaut\Form\Annotation\AnnotationBuilder;
+use Zend\Form\Element\Collection;
 use Zend\Form\Element\Radio;
+use Zend\Form\Fieldset;
 
 /**
  * Class ModuleManager
@@ -55,9 +60,9 @@ class ModuleManager
     /**
      * @return array
      */
-    public function getList()
+    public function getList($criteria = null)
     {
-        return $this->getMapper()->getList();
+        return $this->getMapper()->getList($criteria);
     }
 
     /**
@@ -69,19 +74,23 @@ class ModuleManager
         return $this->getMapper()->findById($entityId);
     }
 
+    public function getEntityClass() {
+        return $this->options->getEntityClass();
+    }
+
     /**
      * @param $form
      * @param UserInterface $user
      * @return mixed
      */
-    public function addEntity($form, UserInterface $user)
+    public function addEntity($form, UserInterface $user, BaseEntityInterface $parentEntity = null)
     {
         $entityClass = $this->options->getEntityClass();
         /* @var $entity BaseEntityInterface */
         $entity = new $entityClass();
         $entity->setInsertedBy($user->getId());
         $entity->setUpdatedBy($user->getId());
-        $entity = $this->bind($entity, $form);
+        $entity = $this->bind($entity, $form, $parentEntity);
         return $this->getMapper()->insert($entity);
     }
 
@@ -91,10 +100,10 @@ class ModuleManager
      * @param $user
      * @return mixed
      */
-    public function updateEntity(BaseEntityInterface $entity, Form $form, UserInterface $user)
+    public function updateEntity(BaseEntityInterface $entity, Form $form, UserInterface $user, BaseEntityInterface $parentEntity = null)
     {
         $entity->setUpdatedBy($user->getId());
-        $entity = $this->bind($entity, $form);
+        $entity = $this->bind($entity, $form, $parentEntity);
         return $this->getMapper()->update($entity);
     }
 
@@ -115,11 +124,19 @@ class ModuleManager
      * @param Form $form
      * @return BaseEntityInterface
      */
-    public function bind(BaseEntityInterface $entity, Form $form)
+    public function bind(BaseEntityInterface $entity, Form $form, BaseEntityInterface $parentEntity = null)
     {
         /* @var $element Element */
         foreach ($form->getElements() as $element) {
             $elementName = $element->getName();
+            if($elementName === 'reference_property') {
+                if($element->getValue() === 'parentId') {
+                    $entity->{$element->getValue()} = $parentEntity->getId();
+                } else {
+                    $entity->{$element->getValue()} = $parentEntity;
+                }
+                continue;
+            }
 
             if (method_exists($element, 'getInsertValue')) {
                 $entity->{$elementName} = $element->getInsertValue();
@@ -171,22 +188,64 @@ class ModuleManager
         $form = $builder->createForm(new $entityClass());
         $form->setHydrator(new DoctrineObject($this->getEntityManager()));
 
+        if(isset($this->getOptions()->getLabels()['general_tab'])) {
+            $tabs = $form->getTabs();
+            $tabs['main']['label'] = $this->getOptions()->getLabels()['general_tab'];
+            $form->setTabs($tabs);
+        }
+
+        /** @var Fieldset[] $fieldsets */
+        $fieldsets = array();
+
         /** @var ObjectSelect|ObjectRadio|ObjectMultiCheckbox|CyclicSheet $element */
         foreach($form->getElements() as $element){
             if($element instanceof ObjectSelect ||
             $element instanceof ObjectRadio ||
-            $element instanceof ObjectMultiCheckbox) {
+            $element instanceof ObjectMultiCheckbox ||
+            $element instanceof Reference ||
+            $element instanceof MultiReference) {
                 $element->setOption('object_manager', $this->getEntityManager());
             } elseif($element instanceof CyclicSheet) {
                 $form->addTab($element->getName(), [
                     'label' => $element->getLabel(),
                     'action' => 'cyclicSheetAction',
-                    'entity' => $element->getOption('target_class'),
+                    'entity' => $element->getTargetClass(),
+                    'referencedProperty' => $element->getReferencedProperty(),
+                    'readonly' => $element->isReadonly(),
                     'active' => false
                 ]);
 
                 $form->remove($element->getName());
+                continue;
             }
+
+            if(method_exists($element, 'isPrimary')) {
+                if($element->isPrimary()) {
+                    $form->setPrimaryField($element->getName());
+                }
+            } elseif($element->getOption('primary') === true) {
+                $form->setPrimaryField($element->getName());
+            }
+
+
+
+            /*if($tab = $element->getOption("tab")) {
+                if($tab != "General") {
+                    $filter = new \Zend\Filter\StripTags();
+                    $tabName = $filter->filter($tab);
+
+                    if(!isset($fieldsets[$tab])) {
+                        $fieldsets[$tab] = new Fieldset($tab);
+                    }
+
+                    $fieldsets[$tab]->add($element);
+                    $form->addTab($tab, [
+                        'label' => $tab,
+                        'action' => 'formTab'
+                    ]);
+                    $form->remove($element->getName());
+                }
+            }*/
         }
 
         return $form;

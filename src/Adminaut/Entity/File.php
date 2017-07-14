@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Class File
  *
  * @ORM\Entity
- * @ORM\Table(name="mfcc_admin_file_manager")
+ * @ORM\Table(name="adminaut_file_manager")
  * @property int $id
  * @property string $name
  * @property int $size

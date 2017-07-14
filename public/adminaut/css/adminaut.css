@@ -11,7 +11,7 @@
 }
 
 .checkbox .icheckbox_flat, .radio .iradio_flat {
-    margin-top: -2px!important;
+    margin-top: -2px !important;
 }
 
 .checkbox label div, .radio label div {
@@ -25,4 +25,53 @@
 
 .primary {
     font-weight: bold;
+}
+
+.no-gutter {
+    padding: 0;
+}
+
+.no-gutter-left {
+    padding-left: 0;
+}
+
+.no-gutter-right {
+    padding-right: 0;
+}
+
+.form-control::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: #b8b8b8;
+}
+
+.form-control:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #b8b8b8;
+}
+
+.form-control::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #b8b8b8;
+}
+
+.form-control:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #b8b8b8;
+}
+
+.form-control::-ms-input-placeholder { /* Microsoft Edge */
+    color: #b8b8b8;
+}
+
+.textarea-detail ol {
+    counter-reset: item;
+}
+
+.textarea-detail ol > li {
+    counter-increment: item;
+}
+
+.textarea-detail ol ol > li {
+    display: block;
+}
+
+.textarea-detail ol ol > li:before {
+    content: counters(item, ".") ". ";
+    margin-left: -20px;
 }

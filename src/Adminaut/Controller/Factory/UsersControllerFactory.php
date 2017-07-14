@@ -2,6 +2,7 @@
 namespace Adminaut\Controller\Factory;
 
 use Adminaut\Controller\UsersController;
+use Adminaut\Manager\ModuleManager;
 use Adminaut\Mapper\UserMapper;
 use Adminaut\Service\AccessControlService;
 use Adminaut\Service\UserService;
@@ -33,7 +34,8 @@ class UsersControllerFactory implements FactoryInterface
             $parentLocator->get(\Doctrine\ORM\EntityManager::class),
             $parentLocator->get(Translator::class),
             $parentLocator->get(UserMapper::class),
-            $parentLocator->get(UserService::class)
+            $parentLocator->get(UserService::class),
+            $parentLocator->get(ModuleManager::class)
         );
     }
 }

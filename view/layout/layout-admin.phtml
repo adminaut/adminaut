@@ -44,6 +44,7 @@
             ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/skins/skin-'.$skin.'.min.css'))
             ->appendStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/flat.css'))
             ->appendStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/blue.css'))
+            ->appendStylesheet($this->basePath('adminaut/themes/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css'))
             ->appendStylesheet($this->basePath('adminaut/css/adminaut.css'))
             ->headLink(['rel' => 'manifest', 'href' => $this->url('adminaut/manifest')], 'APPEND')
             ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '114x114', 'href' => $this->basePath('adminaut/img/adminaut-icon-114x114.png')], 'APPEND')
@@ -58,21 +59,27 @@
             ->appendFile($this->basePath('adminaut/js/html5shiv.min.js'), 'text/javascript', ['conditional' => 'lt IE 9'])
             ->appendFile($this->basePath('adminaut/js/respond.min.js'), 'text/javascript', ['conditional' => 'lt IE 9'])
             ->appendFile('//code.jquery.com/jquery-1.11.1.min.js')
-            ->appendFile('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
-            ->appendFile('https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js')
+            ->appendFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+            ->appendFile('//gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js')
             ->appendFile($this->basePath('adminaut/js/moment.min.js'))
             ->appendFile($this->basePath('adminaut/js/bootstrap-datetimepicker.min.js'))
             ->appendFile($this->basePath('adminaut/js/jquery.dataTables.min.js'))
+            ->appendFile($this->basePath('adminaut/js/jquery.doubleClick.js'))
             ->appendFile($this->basePath('adminaut/js/dataTables.bootstrap.min.js'))
-            ->appendFile($this->basePath('adminaut/themes/adminlte/dist/js/app.js'))
+            ->appendFile($this->basePath('adminaut/themes/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js'))
+            ->appendFile($this->basePath('adminaut/themes/adminlte/plugins/ckeditor/ckeditor.js'))
+            ->appendFile($this->basePath('adminaut/themes/adminlte/plugins/ckeditor/config.js'))
+            ->appendFile($this->basePath('adminaut/themes/adminlte/plugins/tinymce/js/tinymce/tinymce.min.js'))
+            ->appendFile($this->basePath('adminaut/themes/adminlte/plugins/autosize/autosize.min.js'))
             ->appendFile($this->basePath('adminaut/themes/adminlte/plugins/iCheck/icheck.min.js'))
             ->appendFile($this->basePath('adminaut/themes/adminlte/plugins/slimScroll/jquery.slimscroll.min.js'))
+            ->appendFile($this->basePath('adminaut/themes/adminlte/dist/js/app.js'))
             ->appendFile($this->basePath('adminaut/js/js.cookie.js'))
             ->appendFile($this->basePath('adminaut/js/adminaut.js'));
 
         ?>
     </head>
-    <body class="hold-transition skin-<?php echo $skin ?> sidebar-mini<?php echo (isset($_COOKIE['sidebar-collapsed']) ? ' sidebar-collapse' : '') ?> fixed">
+    <body class="hold-transition skin-<?php echo $skin ?> sidebar-mini<?php echo (isset($_COOKIE['sidebar-collapsed']) ? ' sidebar-collapse' : '') ?> fixed <?php echo (isset($this->config()['adminaut']['environment'])) ? $this->config()['adminaut']['environment'] : 'develop' ?>">
         <div id="fb-root"></div>
         <script>(function(d, s, id) {
                 var js, fjs = d.getElementsByTagName(s)[0];
@@ -92,6 +99,11 @@
                 ga('create', '<?php echo $this->config()['adminaut']['GA'] ?>', 'auto');
                 ga('send', 'pageview');
 
+            </script>
+        <?php } ?>
+        <?php if(isset($this->config()['adminaut']['google-api'])) { ?>
+            <script>
+                var google_api = "<?php echo $this->config()['adminaut']['google-api'] ?>";
             </script>
         <?php } ?>
         <div class="wrapper">

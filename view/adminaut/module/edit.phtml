@@ -2,16 +2,18 @@
     $form = $this->form;
 //    $form->setAttribute('action', $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode' => 'update']));
     $form->prepare();
+    $primaryFieldValue = isset($elements[$primary]) ? (method_exists($form->getElements()[$primary], 'getListedValue') ? $form->getElements()[$primary]->getListedValue() : $form->getElements()[$primary]->getValue()) : $entity->getId();
 ?>
 
 <section class="content-header">
     <h1>
-        <?php echo $this->moduleOption->getModuleName() ?>
+        <?php echo $this->moduleOption->getModuleName() ?> <small><?php echo $primaryFieldValue; ?></small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
         <li><a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->moduleOption->getModuleName() ?></a></li>
-        <li class="active"><?php echo $this->moduleOption->getLabels()['update_record'] ?></li>
+        <li><a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $this->entity->getId()]); ?>"><?php echo $primaryFieldValue ?></a></li>
+        <li class="active"><?php echo $this->translate("Edit") ?></li>
     </ol>
 </section>
 
@@ -21,7 +23,7 @@
         <div class="col-xs-12 col-sm-8">
             <div class="nav-tabs-custom">
                 <?php if(sizeof($this->tabs) > 1) { ?>
-                    <?php echo $this->partial('partial/tabs.phtml', ['url_params' => $this->url_params, 'tabs' => $this->tabs]); ?>
+                    <?php echo $this->partial('partial/tabs.phtml', ['route' => 'adminaut/module/action', 'url_params' => $this->url_params, 'tabs' => $this->tabs]); ?>
                 <?php } else { ?>
                     <div class="box-header with-border">
                         <h3 class="box-title"><?php echo $this->moduleOption->getLabels()['update_record'] ?></h3>
