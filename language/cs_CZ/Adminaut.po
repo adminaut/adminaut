@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-07-14 17:26+0200\n"
-"PO-Revision-Date: 2017-07-14 11:30-0400\n"
+"PO-Revision-Date: 2017-07-14 11:40-0400\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: Czech\n"
 "Language: cs_CZ\n"
@@ -42,7 +42,7 @@ msgstr "Chyba: %s"
 #: src/Adminaut/Controller/ModuleController.php:582
 #, php-format
 msgid "Record \"%s\" has been successfully created."
-msgstr ""
+msgstr "Záznam \"%s\" byl úspěšně vytvořen."
 
 #: src/Adminaut/Controller/ModuleController.php:283
 #: src/Adminaut/Controller/ModuleController.php:373
@@ -56,7 +56,7 @@ msgstr "Záznam nebyl nalezen."
 #: src/Adminaut/Controller/ModuleController.php:574
 #, php-format
 msgid "Record \"%s\" has been successfully updated."
-msgstr ""
+msgstr "Záznam \"%s\" byl úspěšně aktualizován."
 
 #: src/Adminaut/Controller/ModuleController.php:536
 #: src/Adminaut/Controller/ModuleController.php:649
@@ -198,7 +198,7 @@ msgstr "Zpět na seznam"
 
 #: view/adminaut/module/cyclicTab.phtml:120
 msgid "View"
-msgstr ""
+msgstr "Zobrazit"
 
 #: view/adminaut/module/cyclicTab.phtml:120
 msgid "Add new"
