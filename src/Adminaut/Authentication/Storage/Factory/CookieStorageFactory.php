@@ -41,6 +41,9 @@ class CookieStorageFactory implements FactoryInterface
             $cookieOptions = $config[self::CONFIG_ADMINAUT][self::CONFIG_ACCESS_TOKEN];
         }
 
+        $cookieOptions['secure'] = false; // todo: remove
+        $cookieOptions['httpOnly'] = false; // todo: remove
+
         return new CookieStorage($request, $response, $cookieOptions);
     }
 }

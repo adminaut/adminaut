@@ -2,7 +2,6 @@
 
 namespace Adminaut\Authentication\Storage;
 
-use Zend\Authentication\Storage\StorageInterface;
 use Zend\Http\Header\SetCookie;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\PhpEnvironment\Response;
@@ -124,6 +123,7 @@ class CookieStorage implements StorageInterface
         $cookie = new SetCookie();
         $cookie->setName($this->cookieName);
         $cookie->setValue($contents);
+        $cookie->setPath('/');
         $cookie->setSecure($this->cookieSecure);
         $cookie->setHttponly($this->cookieHttpOnly);
         $cookie->setExpires(new \DateTime('+1 month'));

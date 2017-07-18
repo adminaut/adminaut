@@ -67,6 +67,16 @@ class UserOptions extends AbstractOptions
     protected $enableDefaultEntities = true;
 
     /**
+     * @var int
+     */
+    protected $failedLoginsCountUntilLock = 3;
+
+    /**
+     * @var int
+     */
+    protected $failedLoginsLockTime = 30; // in seconds
+
+    /**
      * @return boolean
      */
     public function isUseRedirectParameterIfPresent()
@@ -243,5 +253,37 @@ class UserOptions extends AbstractOptions
     public function getEnableDefaultEntities()
     {
         return $this->enableDefaultEntities;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFailedLoginsCountUntilLock()
+    {
+        return $this->failedLoginsCountUntilLock;
+    }
+
+    /**
+     * @param int $failedLoginsCountUntilLock
+     */
+    public function setFailedLoginsCountUntilLock($failedLoginsCountUntilLock)
+    {
+        $this->failedLoginsCountUntilLock = $failedLoginsCountUntilLock;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFailedLoginsLockTime()
+    {
+        return $this->failedLoginsLockTime;
+    }
+
+    /**
+     * @param int $failedLoginsLockTime
+     */
+    public function setFailedLoginsLockTime($failedLoginsLockTime)
+    {
+        $this->failedLoginsLockTime = $failedLoginsLockTime;
     }
 }

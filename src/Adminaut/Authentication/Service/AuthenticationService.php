@@ -2,17 +2,13 @@
 
 namespace Adminaut\Authentication\Service;
 
+use Adminaut\Authentication\Adapter\AuthAdapter;
 use Adminaut\Authentication\Adapter\AuthAdapterInterface;
-use Adminaut\Authentication\Helper\AccessTokenHelper;
-use Adminaut\Entity\UserActiveLoginEntity;
+use Adminaut\Authentication\Exception\Exception;
+use Adminaut\Authentication\Storage\StorageInterface;
 use Adminaut\Entity\UserEntity;
-use Adminaut\Repository\UserActiveLoginRepository;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
-use Exception;
 use Zend\Authentication\AuthenticationServiceInterface;
 use Zend\Authentication\Result;
-use Zend\Authentication\Storage\StorageInterface;
 
 /**
  * Class AuthenticationService
@@ -20,11 +16,6 @@ use Zend\Authentication\Storage\StorageInterface;
  */
 class AuthenticationService implements AuthenticationServiceInterface
 {
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
-
     /**
      * @var AuthAdapterInterface
      */
@@ -35,32 +26,15 @@ class AuthenticationService implements AuthenticationServiceInterface
      */
     private $storage;
 
-    /**
-     * @var string
-     */
-    private $email;
-
-    /**
-     * @var string
-     */
-    private $password;
-
-    /**
-     * @var UserEntity
-     */
-    private $resolvedIdentity;
-
     //-------------------------------------------------------------------------
 
     /**
      * AuthenticationService constructor.
-     * @param EntityManager $entityManager
-     * @param AuthAdapterInterface $adapter
+     * @param AuthAdapter $adapter
      * @param StorageInterface $storage
      */
-    public function __construct(EntityManager $entityManager, AuthAdapterInterface $adapter, StorageInterface $storage)
+    public function __construct(AuthAdapter $adapter, StorageInterface $storage)
     {
-        $this->entityManager = $entityManager;
         $this->adapter = $adapter;
         $this->storage = $storage;
     }
@@ -99,38 +73,6 @@ class AuthenticationService implements AuthenticationServiceInterface
         $this->storage = $storage;
     }
 
-    /**
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * @param string $password
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-    }
-
     //-------------------------------------------------------------------------
 
     /**
@@ -140,27 +82,11 @@ class AuthenticationService implements AuthenticationServiceInterface
      */
     public function authenticate()
     {
-        //return $this->adapter->authenticate();
-
-        $this->adapter->setEmail($this->email);
-        $this->adapter->setPassword($this->password);
-
         $result = $this->adapter->authenticate();
 
-        if ($result->getCode() !== Result::SUCCESS || true !== $result->getIdentity() instanceof UserEntity) {
-            return $result;
+        if ($result->getCode() === Result::SUCCESS && true === $result->getIdentity() instanceof UserEntity) {
+            $this->storage->write($result->getIdentity());
         }
-
-        $accessToken = AccessTokenHelper::generate();
-
-        $this->getStorage()->write($accessToken);
-
-        $accessTokenHash = AccessTokenHelper::hash($accessToken);
-
-        $activeLogin = new UserActiveLoginEntity($result->getIdentity(), $accessTokenHash);
-
-        $this->entityManager->persist($activeLogin);
-        $this->entityManager->flush();
 
         return $result;
     }
@@ -172,39 +98,21 @@ class AuthenticationService implements AuthenticationServiceInterface
      */
     public function hasIdentity()
     {
-        if (false !== $this->storage->isEmpty()) {
+        if (true === $this->storage->isEmpty()){
             return false;
         }
-
-        if (null === $this->resolvedIdentity) {
-            $accessToken = $this->storage->read();
-
-            $accessTokenHash = AccessTokenHelper::hash($accessToken);
-
-            $login = $this->getUserActiveLoginRepository()->findOneByAccessTokenHash($accessTokenHash);
-
-            if (null !== $login && true === $login instanceof UserActiveLoginEntity) {
-                $this->resolvedIdentity = $login->getUser();
-            }
-        }
-
-        if (null === $this->resolvedIdentity || true !== $this->resolvedIdentity->isActive()) {
-            $this->storage->clear();
-            return false;
-        }
-
         return true;
     }
 
     /**
      * Returns the authenticated identity or null if no identity is available
      *
-     * @return mixed|null
+     * @return UserEntity|null
      */
     public function getIdentity()
     {
-        if (true === $this->hasIdentity()) {
-            return $this->resolvedIdentity;
+        if (false === $this->storage->isEmpty()) {
+            return $this->storage->read();
         }
 
         return null;
@@ -217,30 +125,8 @@ class AuthenticationService implements AuthenticationServiceInterface
      */
     public function clearIdentity()
     {
-
-        if (true !== $this->hasIdentity()) {
-            return;
+        if (false === $this->storage->isEmpty()) {
+            $this->storage->clear();
         }
-
-        $accessToken = $this->storage->read();
-        $accessTokenHash = AccessTokenHelper::hash($accessToken);
-
-        $activeLogin = $this->getUserActiveLoginRepository()->findOneByAccessTokenHash($accessTokenHash);
-
-        $this->entityManager->remove($activeLogin);
-
-        $this->entityManager->flush();
-
-        $this->storage->clear();
-    }
-
-    //-------------------------------------------------------------------------
-
-    /**
-     * @return EntityRepository|UserActiveLoginRepository
-     */
-    private function getUserActiveLoginRepository()
-    {
-        return $this->entityManager->getRepository(UserActiveLoginEntity::class);
     }
 }

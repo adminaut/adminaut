@@ -74,7 +74,6 @@ class AdminautBaseController extends AbstractActionController
      */
     public function onDispatch(MvcEvent $e)
     {
-        parent::onDispatch($e);
         if (!$this->userAuthentication()->hasIdentity()) {
 
             /** @var Request $request */
@@ -91,9 +90,12 @@ class AdminautBaseController extends AbstractActionController
 
         $this->layout('layout/admin');
         $this->layout()->setVariable('acl', $acl);
-        $appearanceConfig = $this->config['adminaut']['appearance'] ?? [];
+        $appearanceConfig = isset($this->config['adminaut']['appearance']) ? $this->config['adminaut']['appearance'] : [];
         $appearance = array_merge($this->defaultAppearance, $appearanceConfig);
         $this->layout()->setVariable('appearance', $appearance);
+
+        parent::onDispatch($e);
+
         return $this;
     }
 

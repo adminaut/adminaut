@@ -27,10 +27,10 @@ class UserLogin extends Form
 
         $this->add([
             'type' => Email::class,
-            'name' => 'identity',
+            'name' => 'email',
             'options' => [
                 'label' => _('Email'),
-                'add-on-append' => '<i class="fa fa-user"></i>'
+                'add-on-append' => '<i class="fa fa-user"></i>',
             ],
             'attributes' => [
                 'placeholder' => _('Email'),
@@ -39,10 +39,10 @@ class UserLogin extends Form
 
         $this->add([
             'type' => Password::class,
-            'name' => 'credential',
+            'name' => 'password',
             'options' => [
                 'label' => _('Password'),
-                'add-on-append' => '<i class="fa fa-key"></i>'
+                'add-on-append' => '<i class="fa fa-key"></i>',
             ],
             'attributes' => [
                 'placeholder' => _('Password'),

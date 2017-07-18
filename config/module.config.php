@@ -2,8 +2,11 @@
 
 namespace Adminaut;
 
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Zend\Mvc\I18n\Translator;
 use Zend\Mvc\Router\Http\Literal;
 use Zend\Mvc\Router\Http\Segment;
+use Zend\Mvc\Service\TranslatorServiceFactory;
 
 return [
     'controllers' => [
@@ -13,6 +16,7 @@ return [
             Controller\ModuleController::class => Controller\Factory\ModuleControllerFactory::class,
             Controller\UsersController::class => Controller\Factory\UsersControllerFactory::class,
             Controller\UserController::class => Controller\Factory\UserControllerFactory::class,
+            Controller\LoginController::class => Controller\Factory\LoginControllerFactory::class,
         ],
 
         'abstract_factories' => [
@@ -22,26 +26,23 @@ return [
 
     'controller_plugins' => [
         'factories' => [
-            'userAuthentication' => Controller\Plugin\Factory\UserAuthenticationControllerPluginFactory::class,
-            'acl' => Controller\Plugin\Factory\AclControllerPluginFactory::class,
+            Controller\Plugin\UserAuthentication::class => Controller\Plugin\Factory\UserAuthenticationFactory::class,
+            Controller\Plugin\Acl::class => Controller\Plugin\Factory\AclFactory::class,
+        ],
+        'aliases' => [
+            'userAuthentication' => Controller\Plugin\UserAuthentication::class,
+            'acl' => Controller\Plugin\Acl::class,
         ],
     ],
 
     'service_manager' => [
-        'alias' => [
-            //'UserAuthService' => \Zend\Authentication\AuthenticationService::class
-        ],
         'factories' => [
             // Authentication
-            Authentication\Adapter\Db::class => Authentication\Adapter\Factory\DbFactory::class,
             Authentication\Adapter\AuthAdapter::class => Authentication\Adapter\Factory\AuthAdapterFactory::class,
-            Authentication\Storage\Db::class => Authentication\Storage\Factory\DbFactory::class,
             Authentication\Storage\CookieStorage::class => Authentication\Storage\Factory\CookieStorageFactory::class,
-            'UserAuthService' => Authentication\Factory\AuthenticationServiceFactory::class,
+            Authentication\Storage\ActiveLoginStorage::class => Authentication\Storage\Factory\ActiveLoginStorageFactory::class,
+            Authentication\Service\AuthenticationService::class => Authentication\Service\Factory\AuthenticationServiceFactory::class,
             Authentication\Adapter\AdapterChain::class => Authentication\Adapter\Factory\AdapterChainFactory::class,
-
-            // Controller
-            //Controller\RedirectCallback::class            => Controller\Factory\RedirectCallbackFactory::class,
 
             // Manager
             Manager\ModuleManager::class => Manager\Factory\ModuleManagerFactory::class,
@@ -50,6 +51,7 @@ return [
 
             // Mapper
             Mapper\UserMapper::class => Mapper\Factory\UserMapperFactory::class,
+            Mapper\UserFailedLoginMapper::class => Mapper\Factory\UserFailedLoginMapperFactory::class,
             Mapper\RoleMapper::class => Mapper\Factory\RoleMapperFactory::class,
 
             //Navigation
@@ -63,14 +65,15 @@ return [
             Service\AccessControlService::class => Service\Factory\AccessControlServiceFactory::class,
             Service\UserService::class => Service\Factory\UserServiceFactory::class,
 
-            \Zend\Mvc\I18n\Translator::class => \Zend\Mvc\Service\TranslatorServiceFactory::class,
+            // Translator service
+            Translator::class => TranslatorServiceFactory::class,
         ],
     ],
 
     'view_helpers' => [
         'invokables' => [
             'formDate' => Form\View\Helper\FormDate::class,
-            'formDateTime' => Form\View\Helper\FormViewHelper::class,
+            'formDateTime' => Form\View\Helper\FormDateTime::class,
             'formFile' => Form\View\Helper\FormFile::class,
             //'formCheckbox'                                          => Form\View\Helper\FormCheckbox::class,
             //'formCheckbox'                                          => Form\View\Helper\Checkbox::class,
@@ -78,9 +81,13 @@ return [
 
         'factories' => [
             'formElement' => Form\View\Helper\Factory\FormElementFactory::class,
-            'userIdentity' => View\Helper\Factory\UserIdentityViewHelperFactory::class,
+            View\Helper\UserIdentity::class => View\Helper\Factory\UserIdentityFactory::class,
             'isAllowed' => View\Helper\Factory\IsAllowedViewHelperFactory::class,
             'config' => View\Helper\Factory\ConfigViewHelperFactory::class,
+        ],
+
+        'aliases' => [
+            'userIdentity' => View\Helper\UserIdentity::class,
         ],
     ],
 
@@ -96,7 +103,7 @@ return [
     'doctrine' => [
         'driver' => [
             'adminaut_driver' => [
-                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'class' => AnnotationDriver::class,
                 'cache' => 'array',
                 'paths' => [__DIR__ . '/../src/Adminaut/Entity'],
             ],
@@ -456,7 +463,8 @@ return [
                                 'options' => [
                                     'route' => '/login',
                                     'defaults' => [
-                                        'controller' => Controller\UserController::class,
+//                                        'controller' => Controller\UserController::class,
+                                        'controller' => Controller\LoginController::class,
                                         'action' => 'login',
                                     ],
                                 ],
@@ -486,7 +494,8 @@ return [
                                 'options' => [
                                     'route' => '/logout',
                                     'defaults' => [
-                                        'controller' => Controller\UserController::class,
+//                                        'controller' => Controller\UserController::class,
+                                        'controller' => Controller\LoginController::class,
                                         'action' => 'logout',
                                     ],
                                 ],

@@ -2,13 +2,14 @@
 
 namespace Adminaut\Authentication\Storage\Factory;
 
-
-use Adminaut\Mapper\UserMapper;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use \Adminaut\Authentication\Storage\Db as StorageDb;
 
-class DbFactory implements FactoryInterface
+/**
+ * Class SessionStorageFactory
+ * @package Adminaut\Authentication\Storage\Factory
+ */
+class SessionStorageFactory implements FactoryInterface
 {
 
     /**
@@ -19,8 +20,6 @@ class DbFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return new StorageDb(
-            $serviceLocator->get(UserMapper::class)
-        );
+        // TODO: Implement createService() method.
     }
 }

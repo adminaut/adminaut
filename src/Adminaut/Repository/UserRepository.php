@@ -23,4 +23,17 @@ class UserRepository extends EntityRepository
             ->orderBy('user.id', 'ASC');
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * @param $email
+     * @param array|null $orderBy
+     * @return null|object|UserEntity
+     */
+    public function findOneByEmail($email, array $orderBy = null)
+    {
+        return $this->findOneBy([
+            'email' => $email,
+            'deleted' => false,
+        ], $orderBy);
+    }
 }

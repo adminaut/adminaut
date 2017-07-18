@@ -37,12 +37,12 @@ class AuthAdapter implements AuthAdapterInterface
     /**
      * @var string
      */
-    private $email;
+    private $email = '';
 
     /**
      * @var string
      */
-    private $password;
+    private $password = '';
 
     //-------------------------------------------------------------------------
 
@@ -54,6 +54,7 @@ class AuthAdapter implements AuthAdapterInterface
     public function __construct(EntityManager $entityManager, array $options = [])
     {
         $this->entityManager = $entityManager;
+        // todo: add options
     }
 
     //-------------------------------------------------------------------------
@@ -71,7 +72,7 @@ class AuthAdapter implements AuthAdapterInterface
      */
     public function setEmail($email)
     {
-        $this->email = $email;
+        $this->email = (string)$email;
     }
 
     /**
@@ -87,7 +88,7 @@ class AuthAdapter implements AuthAdapterInterface
      */
     public function setPassword($password)
     {
-        $this->password = $password;
+        $this->password = (string)$password;
     }
 
     //-------------------------------------------------------------------------
@@ -95,28 +96,24 @@ class AuthAdapter implements AuthAdapterInterface
     /**
      * Performs an authentication attempt
      *
-     * @return \Zend\Authentication\Result
-     * @throws \Zend\Authentication\Adapter\Exception\ExceptionInterface If authentication cannot be performed
+     * @return Result
      */
     public function authenticate()
     {
-        if (null === $this->email || null === $this->password) {
-            return new Result(Result::FAILURE_IDENTITY_NOT_FOUND, null, [_('Missing credentials.')]);
-        }
+        // Get user by email
+        $user = $this->getUserRepository()->findOneByEmail($this->email);
 
-
-        /** @var UserEntity $user */
-        $user = $this->getUserRepository()->findOneBy([
-            'email' => $this->email,
-            'deleted' => false,
-            'active' => true,
-        ]);
-
+        // If user is null...
         if (null === $user) {
             return new Result(Result::FAILURE_IDENTITY_NOT_FOUND, null, [_('Account does not exist.')]);
         }
 
+        // If use is not active...
+        if (!$user->isActive()) {
+            return new Result(Result::FAILURE, null, [_('Account is not active.')]);
+        }
 
+        //
         $since = new \DateTime('-' . $this->failedLoginTimeout . ' seconds');
 
         $criteria = Criteria::create();
@@ -128,7 +125,7 @@ class AuthAdapter implements AuthAdapterInterface
         $failedLogins = $this->getUserFailedLoginRepository()->matching($criteria);
         $failedLoginsCount = $failedLogins->count();
 
-        if (0 !== $failedLoginsCount) {
+        if (0 <> $failedLoginsCount) {
 
             /** @var UserFailedLoginEntity $lastFailedLogin */
             $lastFailedLogin = $failedLogins->last();
@@ -136,7 +133,7 @@ class AuthAdapter implements AuthAdapterInterface
             $timeToWait = $lastFailedLogin->getInserted()->diff($since);
 
             if ($this->failedLoginCount <= $failedLoginsCount && $this->failedLoginTimeout >= $timeToWait->s) {
-                return new Result(Result::FAILURE_CREDENTIAL_INVALID, null, [printf(_('You have to wait for %s seconds.'), $timeToWait->s)]);
+                return new Result(Result::FAILURE_CREDENTIAL_INVALID, null, [sprintf(_('You have to wait for %s seconds.'), $timeToWait->s)]);
             }
         }
 
@@ -147,14 +144,18 @@ class AuthAdapter implements AuthAdapterInterface
             $this->entityManager->persist($failedLogin);
             $this->entityManager->flush();
 
-            if ($this->failedLoginCount <= $this->getUserFailedLoginRepository()->matching($criteria)->count()) {
-                return new Result(Result::FAILURE_CREDENTIAL_INVALID, null, [printf(_('Invalid credentials. And you have to wait for %s seconds.'), $this->failedLoginTimeout)]);
+            if ($this->failedLoginCount <= $failedLoginsCount) {
+                return new Result(Result::FAILURE_CREDENTIAL_INVALID, null, [sprintf(_('Invalid password and you have to wait for %s seconds.'), $this->failedLoginTimeout)]);
             }
 
-            return new Result(Result::FAILURE_CREDENTIAL_INVALID, null, [_('Invalid credentials.')]);
+            return new Result(Result::FAILURE_CREDENTIAL_INVALID, null, [_('Invalid password.')]);
         }
 
-        return new Result(Result::SUCCESS, $user, [_('Authenticated successfully.')]);
+        return new Result(
+            Result::SUCCESS,
+            $user,
+            [_('Authenticated successfully.')]
+        );
     }
 
     //-------------------------------------------------------------------------

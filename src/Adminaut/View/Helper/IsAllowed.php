@@ -2,10 +2,8 @@
 
 namespace Adminaut\View\Helper;
 
-use Adminaut\Service\AccessControl;
-
+use Adminaut\Service\AccessControlService;
 use Zend\View\Helper\AbstractHelper;
-use Zend\Authentication\AuthenticationService;
 
 /**
  * Class IsAllowed
@@ -14,56 +12,28 @@ use Zend\Authentication\AuthenticationService;
 class IsAllowed extends AbstractHelper
 {
     /**
-     * @var AuthenticationService
+     * @var AccessControlService
      */
-    protected $authService;
+    private $accessControlService;
 
     /**
-     * @var AccessControl
+     * IsAllowed constructor.
+     * @param AccessControlService $accessControlService
      */
-    protected $aclService;
+    public function __construct(AccessControlService $accessControlService)
+    {
+        $this->accessControlService = $accessControlService;
+    }
 
     /**
-     * @param $resource
+     * @param $module
      * @param $permission
+     * @param null $element
+     * @param null $entity
      * @return bool
      */
     public function __invoke($module, $permission, $element = null, $entity = null)
     {
-        return $this->getAclService()->isAllowed($module, $permission, $element, $entity);
-    }
-
-    /**
-     * @return AccessControl
-     */
-    public function getAclService()
-    {
-        return $this->aclService;
-    }
-
-    /**
-     * @param AccessControl $aclService
-     */
-    public function setAclService($aclService)
-    {
-        $this->aclService = $aclService;
-    }
-
-    /**
-     * @return AuthenticationService
-     */
-    public function getAuthService()
-    {
-        return $this->authService;
-    }
-
-    /**
-     * @param AuthenticationService $authService
-     * @return $this
-     */
-    public function setAuthService(AuthenticationService $authService)
-    {
-        $this->authService = $authService;
-        return $this;
+        return $this->accessControlService->isAllowed($module, $permission, $element, $entity);
     }
 }

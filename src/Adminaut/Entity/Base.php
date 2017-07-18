@@ -23,39 +23,40 @@ class Base implements BaseEntityInterface
     protected $id;
 
     /**
-     * @ORM\Column(name="inserted", type="datetime");
+     * @ORM\Column(name="inserted", type="datetime", options={"default":0});
      * @Annotation\Exclude();
      * @var \DateTime
      */
     protected $inserted;
 
     /**
-     * @ORM\Column(name="inserted_by", type="integer");
+     * @ORM\Column(name="inserted_by", type="integer", options={"default":0});
      * @Annotation\Exclude();
      * @var int
      */
-    protected $insertedBy;
+    protected $insertedBy = 0;
 
     /**
-     * @ORM\Column(name="updated", type="datetime");
+     * @ORM\Column(name="updated", type="datetime", options={"default":0});
      * @Annotation\Exclude();
      * @var \DateTime
      */
     protected $updated;
 
     /**
-     * @ORM\Column(name="updated_by", type="integer");
+     * @ORM\Column(name="updated_by", type="integer", options={"default":0});
      * @Annotation\Exclude();
      * @var int
      */
-    protected $updatedBy;
+    protected $updatedBy = 0;
 
     /**
+     * todo: change to boolean!!!
      * @ORM\Column(name="deleted", type="integer");
      * @Annotation\Exclude();
      * @var int
      */
-    protected $deleted = 0;
+    protected $deleted = 0; // todo: change to boolean!!!
 
     /**
      * @ORM\Column(name="deleted_by", type="integer");
@@ -196,7 +197,8 @@ class Base implements BaseEntityInterface
      * Alias for isActive
      * @return bool
      */
-    public function getActive() {
+    public function getActive()
+    {
         return $this->isActive();
     }
 
@@ -214,7 +216,7 @@ class Base implements BaseEntityInterface
      */
     public function __get($name)
     {
-       return $this->$name;
+        return $this->$name;
     }
 
     /**
@@ -225,7 +227,7 @@ class Base implements BaseEntityInterface
     public function __set($name, $value)
     {
         $setter = 'set' . ucfirst($name);
-        if(method_exists($this, $setter)) {
+        if (method_exists($this, $setter)) {
             $this->$setter($value);
         } else {
             $this->$name = $value;

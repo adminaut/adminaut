@@ -2,6 +2,7 @@
 
 namespace Adminaut\Controller;
 
+use Adminaut\Authentication\Service\AuthenticationService;
 use Adminaut\Controller\Plugin\UserAuthentication;
 use Adminaut\Form\UserLogin as UserLoginForm;
 use Adminaut\Form\InputFilter\UserLogin as UserLoginInputFilter;
@@ -236,7 +237,7 @@ class UserController extends AbstractActionController
     /**
      * @return UserService
      */
-    public function getUserService(): UserService
+    public function getUserService()
     {
         return $this->userService;
     }
@@ -252,7 +253,7 @@ class UserController extends AbstractActionController
     /**
      * @return UserOptions
      */
-    public function getUserOptions(): UserOptions
+    public function getUserOptions()
     {
         return $this->userOptions;
     }

@@ -2,12 +2,8 @@
 
 namespace Adminaut\Mapper;
 
-use Doctrine\ORM\EntityManagerInterface;
-
 use Adminaut\Options\UserOptions;
-
 use Zend\Stdlib\Hydrator\HydratorInterface;
-
 
 /**
  * Class UserMapper
@@ -65,13 +61,14 @@ class UserMapper extends AbstractDbMapper
         $er = $this->em->getRepository($this->options->getUserEntityClass());
         return $er->findOneBy([
             'id' => $id,
-            'deleted' => 0
+            'deleted' => 0,
         ]);
     }
 
-    public function findFirst(){
+    public function findFirst()
+    {
         $er = $this->em->getRepository($this->options->getUserEntityClass());
-        return (isset($er->findAll()[0])) ? $er->findAll()[0] : array();
+        return (isset($er->findAll()[0])) ? $er->findAll()[0] : [];
     }
 
     /**

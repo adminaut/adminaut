@@ -1,10 +1,15 @@
 <?php
+
 namespace Adminaut\View\Helper\Factory;
 
-
+use Adminaut\View\Helper\ConfigViewHelper;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
+/**
+ * Class ConfigViewHelperFactory
+ * @package Adminaut\View\Helper\Factory
+ */
 class ConfigViewHelperFactory implements FactoryInterface
 {
     /**
@@ -19,7 +24,7 @@ class ConfigViewHelperFactory implements FactoryInterface
         $parentLocator = $serviceLocator->getServiceLocator();
 
         $config = $parentLocator->get('config');
-        $viewHelper = new \Adminaut\View\Helper\ConfigViewHelper($config);
+        $viewHelper = new ConfigViewHelper($config);
         return $viewHelper;
     }
 }
