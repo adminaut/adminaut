@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-07-14 17:26+0200\n"
-"PO-Revision-Date: 2017-07-14 11:40-0400\n"
+"PO-Revision-Date: 2017-07-18 12:30-0400\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: Slovak\n"
 "Language: sk_SK\n"
@@ -50,7 +50,7 @@ msgstr ""
 #: src/Adminaut/Controller/ModuleController.php:525
 #: src/Adminaut/Controller/ModuleController.php:642
 msgid "Record was not found."
-msgstr ""
+msgstr "Záznam nebol nájdený."
 
 #: src/Adminaut/Controller/ModuleController.php:318
 #: src/Adminaut/Controller/ModuleController.php:574
@@ -66,11 +66,11 @@ msgstr ""
 
 #: src/Adminaut/Controller/UsersController.php:189
 msgid "User has been successfully updated."
-msgstr ""
+msgstr "Užívateľ bol úspešne aktualizovaný."
 
 #: src/Adminaut/Controller/UsersController.php:231
 msgid "User has been successfully deleted."
-msgstr ""
+msgstr "Užívateľ bol úspešne vymazaný."
 
 #: src/Adminaut/Form/Role.php:34 src/Adminaut/Form/Role.php:37
 #: src/Adminaut/Form/User.php:47 src/Adminaut/Form/User.php:50
@@ -97,7 +97,7 @@ msgstr "Rola"
 
 #: src/Adminaut/Form/User.php:85
 msgid "Select role"
-msgstr ""
+msgstr "Vybrať rolu"
 
 #: src/Adminaut/Form/User.php:93 view/adminaut/users/index.phtml:44
 #: view/adminaut/users/view.phtml:34 view/adminaut/users/view.phtml:37
@@ -120,7 +120,7 @@ msgstr "Späť"
 
 #: view/adminaut/acl/index.phtml:3
 msgid "Roles"
-msgstr ""
+msgstr "Role"
 
 #: view/adminaut/acl/index.phtml:16 view/adminaut/module/cyclicTab.phtml:33
 #: view/adminaut/module/list.phtml:31 view/adminaut/users/index.phtml:31
@@ -129,7 +129,7 @@ msgstr "Akcie"
 
 #: view/adminaut/acl/show-role.phtml:11 view/adminaut/acl/update-role.phtml:21
 msgid "Permission"
-msgstr ""
+msgstr "Oprávnenie"
 
 #: view/adminaut/acl/show-role.phtml:18 view/adminaut/acl/show-role.phtml:28
 #: view/adminaut/acl/show-role.phtml:33 view/adminaut/acl/show-role.phtml:35
@@ -156,7 +156,7 @@ msgstr "Upraviť"
 
 #: view/adminaut/acl/update-role.phtml:3
 msgid "Update role"
-msgstr ""
+msgstr "Aktualizovať rolu"
 
 #: view/adminaut/dashboard/index.phtml:3 view/adminaut/dashboard/index.phtml:6
 #: view/adminaut/module/add.phtml:14 view/adminaut/module/cyclicTab.phtml:6
@@ -170,7 +170,7 @@ msgstr "Panel"
 
 #: view/adminaut/install/index.phtml:13
 msgid "Register first user"
-msgstr ""
+msgstr "Zaregistrovať prvého užívateľa"
 
 #: view/adminaut/module/add.phtml:16 view/adminaut/users/add.phtml:13
 msgid "Add"
@@ -183,11 +183,11 @@ msgstr "Vytvoriť"
 
 #: view/adminaut/module/add.phtml:39 view/adminaut/users/add.phtml:36
 msgid "Create and continue"
-msgstr ""
+msgstr "Vytvoriť a pokračovať"
 
 #: view/adminaut/module/add.phtml:40 view/adminaut/users/add.phtml:37
 msgid "Create and new"
-msgstr ""
+msgstr "Vytvoriť a znovu"
 
 #: view/adminaut/module/add.phtml:41 view/adminaut/module/cyclicTab.phtml:101
 #: view/adminaut/module/edit.phtml:41 view/adminaut/module/view.phtml:69
@@ -198,7 +198,7 @@ msgstr "Späť na zoznam"
 
 #: view/adminaut/module/cyclicTab.phtml:120
 msgid "View"
-msgstr ""
+msgstr "Zobraziť"
 
 #: view/adminaut/module/cyclicTab.phtml:120
 msgid "Add new"
@@ -211,7 +211,7 @@ msgstr "Uložiť"
 
 #: view/adminaut/module/cyclicTab.phtml:135
 msgid "Close update"
-msgstr ""
+msgstr "Zavrieť aktualizáciu"
 
 #: view/adminaut/module/edit.phtml:40 view/adminaut/users/edit.phtml:38
 msgid "Save and continue"
@@ -245,11 +245,11 @@ msgstr ""
 
 #: view/adminaut/user/login.phtml:31
 msgid "I forgot my password"
-msgstr ""
+msgstr "Zabudol som svoje heslo"
 
 #: view/adminaut/user/login.phtml:32
 msgid "Request access"
-msgstr ""
+msgstr "Požiadať prístup"
 
 #: view/adminaut/users/add.phtml:8 view/adminaut/users/edit.phtml:8
 #: view/adminaut/users/view.phtml:3
@@ -313,4 +313,4 @@ msgstr "Nie"
 
 #: view/partial/deleteModal.phtml:13
 msgid "Yes, delete it"
-msgstr ""
+msgstr "Áno, zmazať"
