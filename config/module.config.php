@@ -39,10 +39,9 @@ return [
         'factories' => [
             // Authentication
             Authentication\Adapter\AuthAdapter::class => Authentication\Adapter\Factory\AuthAdapterFactory::class,
+            Authentication\Storage\AuthStorage::class => Authentication\Storage\Factory\AuthStorageFactory::class,
             Authentication\Storage\CookieStorage::class => Authentication\Storage\Factory\CookieStorageFactory::class,
-            Authentication\Storage\ActiveLoginStorage::class => Authentication\Storage\Factory\ActiveLoginStorageFactory::class,
             Authentication\Service\AuthenticationService::class => Authentication\Service\Factory\AuthenticationServiceFactory::class,
-            Authentication\Adapter\AdapterChain::class => Authentication\Adapter\Factory\AdapterChainFactory::class,
 
             // Manager
             Manager\ModuleManager::class => Manager\Factory\ModuleManagerFactory::class,

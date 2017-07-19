@@ -2,6 +2,7 @@
 
 namespace Adminaut\Authentication\Storage;
 
+use Zend\Authentication\Storage\StorageInterface;
 use Zend\Http\Header\SetCookie;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\PhpEnvironment\Response;

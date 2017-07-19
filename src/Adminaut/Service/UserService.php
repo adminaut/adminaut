@@ -9,7 +9,7 @@ use Adminaut\Mapper\RoleMapper as RoleMapper;
 use Adminaut\Mapper\UserMapper;
 use Adminaut\Options\UserOptions;
 
-use Zend\Authentication\AuthenticationService;
+use Adminaut\Authentication\Service\AuthenticationService;
 use Zend\Crypt\Password\Bcrypt;
 
 /**

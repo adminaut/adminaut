@@ -15,14 +15,15 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class CookieStorageFactory implements FactoryInterface
 {
 
+    /**
+     * Constants.
+     */
     const CONFIG_ADMINAUT = 'adminaut';
     const CONFIG_ACCESS_TOKEN = 'access-token';
 
     /**
-     * Create service
-     *
      * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @return CookieStorage
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {

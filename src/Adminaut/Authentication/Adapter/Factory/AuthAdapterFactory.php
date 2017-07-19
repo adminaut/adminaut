@@ -15,10 +15,8 @@ class AuthAdapterFactory implements FactoryInterface
 {
 
     /**
-     * Create service
-     *
      * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @return AuthAdapter
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {

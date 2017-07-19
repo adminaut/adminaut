@@ -4,7 +4,7 @@ namespace Adminaut\Authentication\Service\Factory;
 
 use Adminaut\Authentication\Adapter\AuthAdapter;
 use Adminaut\Authentication\Service\AuthenticationService;
-use Adminaut\Authentication\Storage\ActiveLoginStorage;
+use Adminaut\Authentication\Storage\AuthStorage;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -16,18 +16,16 @@ class AuthenticationServiceFactory implements FactoryInterface
 {
 
     /**
-     * Create service
-     *
      * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @return AuthenticationService
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /** @var AuthAdapter $adapter */
         $adapter = $serviceLocator->get(AuthAdapter::class);
 
-        /** @var ActiveLoginStorage $storage */
-        $storage = $serviceLocator->get(ActiveLoginStorage::class);
+        /** @var AuthStorage $storage */
+        $storage = $serviceLocator->get(AuthStorage::class);
 
         return new AuthenticationService($adapter, $storage);
     }

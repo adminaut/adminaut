@@ -5,14 +5,20 @@ namespace Adminaut\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class UserFailedLoginEntity
+ * Class UserLoginEntity
  * @package Adminaut\Entity
- * @ORM\Entity(repositoryClass="Adminaut\Repository\UserFailedLoginRepository")
- * @ORM\Table(name="adminaut_user_failed_login")
+ * @ORM\Entity(repositoryClass="Adminaut\Repository\UserLoginRepository")
+ * @ORM\Table(name="adminaut_user_login")
  * @ORM\HasLifecycleCallbacks()
  */
-class UserFailedLoginEntity extends Base
+class UserLoginEntity extends Base
 {
+    /**
+     * Types.
+     */
+    const TYPE_FAILED = 0;
+    const TYPE_SUCCESSFUL = 1;
+
     /**
      * @ORM\Column(type="integer", name="user_id")
      * @var int
@@ -31,7 +37,7 @@ class UserFailedLoginEntity extends Base
 
     /**
      * Owning side.
-     * @ORM\ManyToOne(targetEntity="UserEntity", inversedBy="failedLogins")
+     * @ORM\ManyToOne(targetEntity="UserEntity", inversedBy="logins")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * @var UserEntity
      */
@@ -45,14 +51,27 @@ class UserFailedLoginEntity extends Base
         return $this->user;
     }
 
+    /**
+     * @ORM\Column(type="integer", name="type", options={"default":0})
+     * @var int
+     */
+    protected $type;
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
     //-------------------------------------------------------------------------
 
     /**
-     * UserFailedLoginEntity constructor.
+     * UserLoginEntity constructor.
      * @param UserEntity $user
+     * @param int $type
      */
-    public function __construct(UserEntity $user)
+    public function __construct(UserEntity $user, $type)
     {
         $this->user = $user;
+        $this->type = $type;
     }
 }

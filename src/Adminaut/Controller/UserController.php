@@ -2,7 +2,6 @@
 
 namespace Adminaut\Controller;
 
-use Adminaut\Authentication\Service\AuthenticationService;
 use Adminaut\Controller\Plugin\UserAuthentication;
 use Adminaut\Form\UserLogin as UserLoginForm;
 use Adminaut\Form\InputFilter\UserLogin as UserLoginInputFilter;

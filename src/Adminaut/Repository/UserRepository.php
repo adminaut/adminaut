@@ -12,16 +12,24 @@ use Doctrine\ORM\EntityRepository;
 class UserRepository extends EntityRepository
 {
     /**
-     * @return array
+     * @return UserEntity[]|array
+     * @deprecated Use findAll() instead.
      */
     public function getList()
     {
-        $qb = $this->_em->createQueryBuilder();
-        $qb->select(['user'])
-            ->from(UserEntity::class, 'user')
-            ->where('user.deleted = 0')
-            ->orderBy('user.id', 'ASC');
-        return $qb->getQuery()->getResult();
+        return $this->findAll();
+    }
+
+    /**
+     * @return UserEntity[]|array
+     */
+    public function findAll()
+    {
+        return $this->findBy([
+            'deleted' => false,
+        ], [
+            'id' => 'ASC',
+        ]);
     }
 
     /**

@@ -53,11 +53,11 @@ class UsersController extends AdminautBaseController
     }
 
     /**
-     * @return ViewModel
+     * @return \Zend\Http\Response|ViewModel
      */
     public function indexAction()
     {
-        if (!$this->acl()->isAllowed('users', AccessControlService::READ)) {
+        if (false === $this->acl()->isAllowed('users', AccessControlService::READ)) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
@@ -78,7 +78,7 @@ class UsersController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        $id = (int) $this->params()->fromRoute('id', 0);
+        $id = (int)$this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('adminaut/users');
         }
@@ -90,7 +90,7 @@ class UsersController extends AdminautBaseController
         }
 
         return new ViewModel([
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
@@ -123,14 +123,14 @@ class UsersController extends AdminautBaseController
                     $userService = $this->getUserService();
                     $user = $userService->add($post, $this->userAuthentication()->getIdentity());
                     $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully created.'));
-                    switch($post['submit']) {
+                    switch ($post['submit']) {
                         case 'create-and-continue' :
                             return $this->redirect()->toRoute('adminaut/users/update', ['id' => $user->getId()]);
                         case 'create' :
                         default :
                             return $this->redirect()->toRoute('adminaut/users');
                     }
-                } catch(\Exception $e) {
+                } catch (\Exception $e) {
                     $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
                     return $this->redirect()->toRoute('adminaut/users/add');
                 }
@@ -150,7 +150,7 @@ class UsersController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        $id = (int) $this->params()->fromRoute('id', 0);
+        $id = (int)$this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('adminaut/users');
         }
@@ -188,14 +188,14 @@ class UsersController extends AdminautBaseController
                     $userService->update($user, $post, $this->userAuthentication()->getIdentity());
                     $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully updated.'));
 
-                    switch($post['submit']) {
+                    switch ($post['submit']) {
                         case 'save-and-continue' :
                             return $this->redirect()->toRoute('adminaut/users/edit', ['id' => $id]);
                         case 'save' :
                         default :
-                        return $this->redirect()->toRoute('adminaut/users');
+                            return $this->redirect()->toRoute('adminaut/users');
                     }
-                } catch(\Exception $e) {
+                } catch (\Exception $e) {
                     $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
                 }
             }
@@ -206,8 +206,8 @@ class UsersController extends AdminautBaseController
             'tabs' => $tabs,
             'user' => $user,
             'url_params' => [
-                'id' => $user->getId()
-            ]
+                'id' => $user->getId(),
+            ],
         ]);
     }
 
@@ -220,7 +220,7 @@ class UsersController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        $id = (int) $this->params()->fromRoute('id', 0);
+        $id = (int)$this->params()->fromRoute('id', 0);
         if ($id) {
             $userRepository = $this->getEntityManager()->getRepository(UserEntity::class);
             $user = $userRepository->find($id);
@@ -229,15 +229,13 @@ class UsersController extends AdminautBaseController
                     $userService = $this->getUserService();
                     $userService->delete($user, $this->userAuthentication()->getIdentity());
                     $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully deleted.'));
-                } catch(\Exception $e) {
+                } catch (\Exception $e) {
                     $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
                 }
             }
         }
         return $this->redirect()->toRoute('adminaut/users');
     }
-
-
 
 
     /**
@@ -286,7 +284,7 @@ class UsersController extends AdminautBaseController
                 'type' => 'module',
                 'module_name' => 'Users',
                 'module_icon' => 'fa-users',
-                'entity_class' => isset($config['adminaut']['users']['user_entity_class']) ? $config['adminaut']['users']['user_entity_class'] : UserEntity::class
+                'entity_class' => isset($config['adminaut']['users']['user_entity_class']) ? $config['adminaut']['users']['user_entity_class'] : UserEntity::class,
             ]);
             $adminModuleOption->setModuleId('users');
             $moduleManager->setOptions($adminModuleOption);

@@ -2,24 +2,22 @@
 
 namespace Adminaut\Authentication\Storage\Factory;
 
-use Adminaut\Authentication\Storage\ActiveLoginStorage;
+use Adminaut\Authentication\Storage\AuthStorage;
 use Adminaut\Authentication\Storage\CookieStorage;
 use Doctrine\ORM\EntityManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * Class ActiveLoginStorageFactory
+ * Class AuthStorageFactory
  * @package Adminaut\Authentication\Storage\Factory
  */
-class ActiveLoginStorageFactory implements FactoryInterface
+class AuthStorageFactory implements FactoryInterface
 {
 
     /**
-     * Create service
-     *
      * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @return AuthStorage
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
@@ -29,6 +27,6 @@ class ActiveLoginStorageFactory implements FactoryInterface
         /** @var CookieStorage $cookieStorage */
         $cookieStorage = $serviceLocator->get(CookieStorage::class);
 
-        return new ActiveLoginStorage($entityManager, $cookieStorage);
+        return new AuthStorage($entityManager, $cookieStorage);
     }
 }

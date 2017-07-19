@@ -20,12 +20,11 @@ class UserServiceFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         return new UserService(
-            $serviceLocator->get((string)AccessControlService::class),
+            $serviceLocator->get(AccessControlService::class),
             $serviceLocator->get(RoleMapper::class),
             $serviceLocator->get(UserMapper::class),
             $serviceLocator->get(AuthenticationService::class),
             $serviceLocator->get(UserOptions::class)
         );
     }
-
 }

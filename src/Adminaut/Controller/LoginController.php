@@ -57,6 +57,8 @@ class LoginController extends AbstractActionController
         $form = new UserLoginForm();
         $form->setInputFilter(new UserLoginInputFilter());
 
+        $redirect = $this->params()->fromQuery('redirect', null);
+
         /** @var Request $request */
         $request = $this->getRequest();
 
@@ -67,12 +69,12 @@ class LoginController extends AbstractActionController
 
                 $formData = $form->getData();
 
-                $this->authenticationService->getAdapter()->setEmail($formData['email']);
-                $this->authenticationService->getAdapter()->setPassword($formData['password']);
-
-                $result = $this->authenticationService->authenticate();
+                $result = $this->authenticationService->authenticate($formData['email'], $formData['password']);
 
                 if (true === $result->isValid()) {
+                    if (null !== $redirect) {
+                        return $this->redirect()->toUrl(rawurldecode($redirect));
+                    }
                     return $this->redirect()->toRoute('adminaut/dashboard');
                 }
 
@@ -89,7 +91,7 @@ class LoginController extends AbstractActionController
 
         return new ViewModel([
             'form' => $form,
-            'redirect' => '', // todo: add redirect
+            'redirect' => $redirect,
         ]);
     }
 

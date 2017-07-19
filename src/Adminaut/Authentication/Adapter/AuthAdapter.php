@@ -4,20 +4,19 @@ namespace Adminaut\Authentication\Adapter;
 
 use Adminaut\Authentication\Helper\PasswordHelper;
 use Adminaut\Entity\UserEntity;
-use Adminaut\Entity\UserFailedLoginEntity;
-use Adminaut\Repository\UserFailedLoginRepository;
+use Adminaut\Entity\UserLoginEntity;
+use Adminaut\Repository\UserLoginRepository;
 use Adminaut\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Zend\Authentication\Adapter\AdapterInterface;
 use Zend\Authentication\Result;
 
 /**
  * Class AuthAdapter
  * @package Adminaut\Authentication\Adapter
  */
-class AuthAdapter implements AuthAdapterInterface
+class AuthAdapter implements AdapterInterface
 {
     /**
      * @var EntityManager
@@ -33,16 +32,6 @@ class AuthAdapter implements AuthAdapterInterface
      * @var int
      */
     private $failedLoginTimeout = 30; // 30 seconds
-
-    /**
-     * @var string
-     */
-    private $email = '';
-
-    /**
-     * @var string
-     */
-    private $password = '';
 
     //-------------------------------------------------------------------------
 
@@ -60,102 +49,52 @@ class AuthAdapter implements AuthAdapterInterface
     //-------------------------------------------------------------------------
 
     /**
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = (string)$email;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * @param string $password
-     */
-    public function setPassword($password)
-    {
-        $this->password = (string)$password;
-    }
-
-    //-------------------------------------------------------------------------
-
-    /**
      * Performs an authentication attempt
      *
+     * @param string $email
+     * @param string $password
      * @return Result
      */
-    public function authenticate()
+    public function authenticate($email = null, $password = null)
     {
         // Get user by email
-        $user = $this->getUserRepository()->findOneByEmail($this->email);
+        $user = $this->getUserByEmail($email);
 
         // If user is null...
         if (null === $user) {
-            return new Result(Result::FAILURE_IDENTITY_NOT_FOUND, null, [_('Account does not exist.')]);
+            return $this->getResult(Result::FAILURE_IDENTITY_NOT_FOUND, _('Account does not exist.'));
         }
 
         // If use is not active...
-        if (!$user->isActive()) {
-            return new Result(Result::FAILURE, null, [_('Account is not active.')]);
+        if (false === $user->isActive()) {
+            return $this->getResult(Result::FAILURE, _('Account is not active.'));
         }
 
-        //
-        $since = new \DateTime('-' . $this->failedLoginTimeout . ' seconds');
+        $failedLogins = $this->getFailedLoginsByUser($user);
 
-        $criteria = Criteria::create();
-        $criteria->where(Criteria::expr()->gte('inserted', $since));
-        $criteria->andWhere(Criteria::expr()->eq('userId', $user->getId()));
-        $criteria->orderBy(['id' => 'asc']);
+        if ($this->failedLoginCount <= count($failedLogins)) {
 
-        /** @var ArrayCollection $failedLogins */
-        $failedLogins = $this->getUserFailedLoginRepository()->matching($criteria);
-        $failedLoginsCount = $failedLogins->count();
+            /** @var UserLoginEntity $lastFailedLogin */
+            $lastFailedLogin = end($failedLogins);
 
-        if (0 <> $failedLoginsCount) {
+            $since = new \DateTime();
+            $since->sub(new \DateInterval(sprintf('PT%sS', $this->failedLoginTimeout)));
 
-            /** @var UserFailedLoginEntity $lastFailedLogin */
-            $lastFailedLogin = $failedLogins->last();
-
-            $timeToWait = $lastFailedLogin->getInserted()->diff($since);
-
-            if ($this->failedLoginCount <= $failedLoginsCount && $this->failedLoginTimeout >= $timeToWait->s) {
-                return new Result(Result::FAILURE_CREDENTIAL_INVALID, null, [sprintf(_('You have to wait for %s seconds.'), $timeToWait->s)]);
+            if ($lastFailedLogin->getInserted()->getTimestamp() > $since->getTimestamp()) {
+                $timeToWait = $lastFailedLogin->getInserted()->diff($since)->s;
+                return $this->getResult(Result::FAILURE, sprintf(_('You have to wait for %s seconds.'), $timeToWait));
             }
         }
 
-        if (true !== PasswordHelper::verify($this->password, $user->getPassword())) {
-
-            $failedLogin = new UserFailedLoginEntity($user);
-
-            $this->entityManager->persist($failedLogin);
-            $this->entityManager->flush();
-
-            if ($this->failedLoginCount <= $failedLoginsCount) {
-                return new Result(Result::FAILURE_CREDENTIAL_INVALID, null, [sprintf(_('Invalid password and you have to wait for %s seconds.'), $this->failedLoginTimeout)]);
-            }
-
-            return new Result(Result::FAILURE_CREDENTIAL_INVALID, null, [_('Invalid password.')]);
+        if (true !== PasswordHelper::verify($password, $user->getPassword())) {
+            $this->addFailedLogin($user);
+            return $this->getResult(Result::FAILURE_CREDENTIAL_INVALID, _('Invalid password.'));
         }
 
-        return new Result(
-            Result::SUCCESS,
-            $user,
-            [_('Authenticated successfully.')]
-        );
+        $this->addSuccessfulLogin($user);
+        $this->deactivateFailedLoginsByUser($user);
+
+        return $this->getResult(Result::SUCCESS, _('Authenticated successfully.'), $user);
     }
 
     //-------------------------------------------------------------------------
@@ -169,10 +108,74 @@ class AuthAdapter implements AuthAdapterInterface
     }
 
     /**
-     * @return EntityRepository|UserFailedLoginRepository
+     * @return EntityRepository|UserLoginRepository
      */
-    private function getUserFailedLoginRepository()
+    private function getUserLoginRepository()
     {
-        return $this->entityManager->getRepository(UserFailedLoginEntity::class);
+        return $this->entityManager->getRepository(UserLoginEntity::class);
+    }
+
+    /**
+     * @param UserEntity $userEntity
+     * @return UserLoginEntity[]|array
+     */
+    private function getFailedLoginsByUser(UserEntity $userEntity)
+    {
+        return $this->getUserLoginRepository()->findActiveFailedByUser($userEntity);
+    }
+
+    /**
+     * @param string $email
+     * @return UserEntity|null|object
+     */
+    private function getUserByEmail($email)
+    {
+        return $this->getUserRepository()->findOneByEmail($email);
+    }
+
+    /**
+     * @param UserEntity $userEntity
+     */
+    private function addFailedLogin(UserEntity $userEntity)
+    {
+        $login = new UserLoginEntity($userEntity, UserLoginEntity::TYPE_FAILED);
+
+        $this->entityManager->persist($login);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @param UserEntity $userEntity
+     */
+    private function addSuccessfulLogin(UserEntity $userEntity)
+    {
+        $login = new UserLoginEntity($userEntity, UserLoginEntity::TYPE_SUCCESSFUL);
+
+        $this->entityManager->persist($login);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @param UserEntity $userEntity
+     */
+    private function deactivateFailedLoginsByUser(UserEntity $userEntity)
+    {
+        foreach ($this->getFailedLoginsByUser($userEntity) as $failedLogin) {
+            $failedLogin->setActive(false);
+        }
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @param int $code
+     * @param string $message
+     * @param UserEntity|null $identity
+     * @return Result
+     */
+    private function getResult($code, $message, UserEntity $identity = null)
+    {
+        $messages = [];
+        $messages[] = $message;
+        return new Result($code, $identity, $messages);
     }
 }

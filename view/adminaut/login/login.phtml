@@ -1,25 +1,21 @@
 <div class="login-box">
-
-    <div class="login-logo">
-        <a href="<?php echo $this->url('adminaut/user/login') ?>">Adminaut</a>
-    </div>
-
     <div class="box login-box-body">
 
         <?php echo $this->partial('partial/messages.phtml'); ?>
 
-        <p class="login-box-msg"><?php echo $this->translate("Sign in to start your session"); ?></p>
+        <p class="login-box-msg"><?php echo $this->translate('Sign in to start your session'); ?></p>
 
         <?php
 
         /** @var Adminaut\Form\UserLogin $form */
         $form = $this->form;
 
-        if ($this->redirect) {
+        if (isset($this->redirect) && null !== $this->redirect) {
             $url = $this->url('adminaut/user/login', [], ['query' => ['redirect' => $this->redirect]]);
         } else {
             $url = $this->url('adminaut/user/login');
         }
+
         $form->setAttribute('action', $url);
         $form->prepare();
 
@@ -29,8 +25,6 @@
         ?>
 
         <a href="<?php echo $this->url('adminaut/user/forgot-password'); ?>"><?php echo $this->translate("I forgot my password"); ?></a><br>
-        <a href="#"><?php echo $this->translate("Request access"); ?></a>
-
+        <!--<a href="#"><?php echo $this->translate("Request access"); ?></a>-->
     </div>
-
 </div>

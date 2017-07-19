@@ -3,9 +3,7 @@
 namespace Adminaut\Authentication\Service;
 
 use Adminaut\Authentication\Adapter\AuthAdapter;
-use Adminaut\Authentication\Adapter\AuthAdapterInterface;
-use Adminaut\Authentication\Exception\Exception;
-use Adminaut\Authentication\Storage\StorageInterface;
+use Adminaut\Authentication\Storage\AuthStorage;
 use Adminaut\Entity\UserEntity;
 use Zend\Authentication\AuthenticationServiceInterface;
 use Zend\Authentication\Result;
@@ -17,12 +15,12 @@ use Zend\Authentication\Result;
 class AuthenticationService implements AuthenticationServiceInterface
 {
     /**
-     * @var AuthAdapterInterface
+     * @var AuthAdapter
      */
     private $adapter;
 
     /**
-     * @var StorageInterface
+     * @var AuthStorage
      */
     private $storage;
 
@@ -31,9 +29,9 @@ class AuthenticationService implements AuthenticationServiceInterface
     /**
      * AuthenticationService constructor.
      * @param AuthAdapter $adapter
-     * @param StorageInterface $storage
+     * @param AuthStorage $storage
      */
-    public function __construct(AuthAdapter $adapter, StorageInterface $storage)
+    public function __construct(AuthAdapter $adapter, AuthStorage $storage)
     {
         $this->adapter = $adapter;
         $this->storage = $storage;
@@ -42,7 +40,7 @@ class AuthenticationService implements AuthenticationServiceInterface
     //-------------------------------------------------------------------------
 
     /**
-     * @return AuthAdapterInterface
+     * @return AuthAdapter
      */
     public function getAdapter()
     {
@@ -50,15 +48,15 @@ class AuthenticationService implements AuthenticationServiceInterface
     }
 
     /**
-     * @param AuthAdapterInterface $adapter
+     * @param AuthAdapter $adapter
      */
-    public function setAdapter($adapter)
+    public function setAdapter(AuthAdapter $adapter)
     {
         $this->adapter = $adapter;
     }
 
     /**
-     * @return StorageInterface
+     * @return AuthStorage
      */
     public function getStorage()
     {
@@ -66,9 +64,9 @@ class AuthenticationService implements AuthenticationServiceInterface
     }
 
     /**
-     * @param StorageInterface $storage
+     * @param AuthStorage $storage
      */
-    public function setStorage($storage)
+    public function setStorage(AuthStorage $storage)
     {
         $this->storage = $storage;
     }
@@ -77,12 +75,13 @@ class AuthenticationService implements AuthenticationServiceInterface
 
     /**
      * Authenticates and provides an authentication result
+     * @param string $email
+     * @param string $password
      * @return Result
-     * @throws Exception
      */
-    public function authenticate()
+    public function authenticate($email = null, $password = null)
     {
-        $result = $this->adapter->authenticate();
+        $result = $this->adapter->authenticate($email, $password);
 
         if ($result->getCode() === Result::SUCCESS && true === $result->getIdentity() instanceof UserEntity) {
             $this->storage->write($result->getIdentity());
@@ -98,7 +97,7 @@ class AuthenticationService implements AuthenticationServiceInterface
      */
     public function hasIdentity()
     {
-        if (true === $this->storage->isEmpty()){
+        if (true === $this->storage->isEmpty()) {
             return false;
         }
         return true;

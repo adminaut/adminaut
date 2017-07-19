@@ -5,13 +5,13 @@ namespace Adminaut\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class UserActiveLoginEntity
+ * Class UserAccessTokenEntity
  * @package Adminaut\Entity
- * @ORM\Entity(repositoryClass="Adminaut\Repository\UserActiveLoginRepository")
- * @ORM\Table(name="adminaut_user_active_login")
+ * @ORM\Entity(repositoryClass="Adminaut\Repository\UserAccessTokenRepository")
+ * @ORM\Table(name="adminaut_user_access_token")
  * @ORM\HasLifecycleCallbacks()
  */
-class UserActiveLoginEntity extends Base
+class UserAccessTokenEntity extends Base
 {
     /**
      * @ORM\Column(type="integer", name="user_id")
@@ -31,7 +31,7 @@ class UserActiveLoginEntity extends Base
 
     /**
      * Owning side.
-     * @ORM\ManyToOne(targetEntity="UserEntity", inversedBy="failedLogins")
+     * @ORM\ManyToOne(targetEntity="UserEntity", inversedBy="accessTokens")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * @var UserEntity
      */
@@ -48,29 +48,29 @@ class UserActiveLoginEntity extends Base
     //-------------------------------------------------------------------------
 
     /**
-     * @ORM\Column(type="string", name="access_token_hash", unique=true)
+     * @ORM\Column(type="string", name="hash", unique=true)
      * @var string
      */
-    protected $accessTokenHash;
+    protected $hash;
 
     /**
      * @return string
      */
-    public function getAccessTokenHash()
+    public function getHash()
     {
-        return $this->accessTokenHash;
+        return $this->hash;
     }
 
     //-------------------------------------------------------------------------
 
     /**
-     * UserActiveLoginEntity constructor.
+     * UserAccessTokenEntity constructor.
      * @param UserEntity $user
-     * @param string $accessTokenHash
+     * @param string $hash
      */
-    public function __construct(UserEntity $user, $accessTokenHash)
+    public function __construct(UserEntity $user, $hash)
     {
         $this->user = $user;
-        $this->accessTokenHash = (string)$accessTokenHash;
+        $this->hash = (string)$hash;
     }
 }

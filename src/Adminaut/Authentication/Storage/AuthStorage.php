@@ -4,17 +4,17 @@ namespace Adminaut\Authentication\Storage;
 
 use Adminaut\Authentication\Exception\Exception;
 use Adminaut\Authentication\Helper\AccessTokenHelper;
-use Adminaut\Entity\UserActiveLoginEntity;
+use Adminaut\Entity\UserAccessTokenEntity;
 use Adminaut\Entity\UserEntity;
-use Adminaut\Repository\UserActiveLoginRepository;
-use Adminaut\Repository\UserRepository;
+use Adminaut\Repository\UserAccessTokenRepository;
 use Doctrine\ORM\EntityManager;
+use Zend\Authentication\Storage\StorageInterface;
 
 /**
- * Class ActiveLoginStorage
+ * Class AuthStorage
  * @package Adminaut\Authentication\Storage
  */
-class ActiveLoginStorage implements StorageInterface
+class AuthStorage implements StorageInterface
 {
     /**
      * @var EntityManager
@@ -27,17 +27,11 @@ class ActiveLoginStorage implements StorageInterface
     private $accessTokenStorage;
 
     /**
-     * @var UserRepository
+     * @var UserAccessTokenRepository
      */
-    private $userRepository;
+    private $userAccessTokenRepository;
 
     /**
-     * @var UserActiveLoginRepository
-     */
-    private $userActiveLoginRepository;
-
-    /**
-     * For cache purposes.
      * @var UserEntity
      */
     private $resolvedUserEntity;
@@ -45,7 +39,7 @@ class ActiveLoginStorage implements StorageInterface
     //-------------------------------------------------------------------------
 
     /**
-     * ActiveLoginStorage constructor.
+     * AuthStorage constructor.
      * @param EntityManager $entityManager
      * @param StorageInterface $accessTokenStorage
      */
@@ -56,33 +50,14 @@ class ActiveLoginStorage implements StorageInterface
     }
 
     /**
-     * @return StorageInterface
+     * @return UserAccessTokenRepository
      */
-    public function getAccessTokenStorage()
+    public function getUserAccessTokenRepository()
     {
-        return $this->accessTokenStorage;
-    }
-
-    /**
-     * @return UserRepository
-     */
-    public function getUserRepository()
-    {
-        if (null === $this->userRepository) {
-            $this->userRepository = $this->entityManager->getRepository(UserEntity::class);
+        if (null === $this->userAccessTokenRepository) {
+            $this->userAccessTokenRepository = $this->entityManager->getRepository(UserAccessTokenEntity::class);
         }
-        return $this->userRepository;
-    }
-
-    /**
-     * @return UserActiveLoginRepository
-     */
-    public function getUserActiveLoginRepository()
-    {
-        if (null === $this->userActiveLoginRepository) {
-            $this->userActiveLoginRepository = $this->entityManager->getRepository(UserActiveLoginEntity::class);
-        }
-        return $this->userActiveLoginRepository;
+        return $this->userAccessTokenRepository;
     }
 
     //-------------------------------------------------------------------------
@@ -96,7 +71,7 @@ class ActiveLoginStorage implements StorageInterface
     public function isEmpty()
     {
         // If access token storage is empty...
-        if (true === $this->getAccessTokenStorage()->isEmpty()) {
+        if (true === $this->accessTokenStorage->isEmpty()) {
 
             // Set resolved user entity to null.
             $this->resolvedUserEntity = null;
@@ -112,7 +87,7 @@ class ActiveLoginStorage implements StorageInterface
         if (null === $this->resolvedUserEntity || false === $this->resolvedUserEntity->isActive()) {
 
             // Clear access token storage.
-            $this->getAccessTokenStorage()->clear();
+            $this->accessTokenStorage->clear();
 
             // Set resolved user entity to null.
             $this->resolvedUserEntity = null;
@@ -136,14 +111,14 @@ class ActiveLoginStorage implements StorageInterface
     public function read()
     {
         if (null === $this->resolvedUserEntity) {
-            if (false === $this->getAccessTokenStorage()->isEmpty()) {
-                $accessToken = $this->getAccessTokenStorage()->read();
+            if (false === $this->accessTokenStorage->isEmpty()) {
+                $accessToken = $this->accessTokenStorage->read();
 
                 $accessTokenHash = AccessTokenHelper::hash($accessToken);
 
-                $activeLogin = $this->getUserActiveLoginRepository()->findOneByAccessTokenHash($accessTokenHash);
+                $activeLogin = $this->getUserAccessTokenRepository()->findOneByHash($accessTokenHash);
 
-                if ($activeLogin instanceof UserActiveLoginEntity) {
+                if ($activeLogin instanceof UserAccessTokenEntity) {
                     $this->resolvedUserEntity = $activeLogin->getUser();
                 }
             }
@@ -165,12 +140,12 @@ class ActiveLoginStorage implements StorageInterface
             try {
                 $accessToken = AccessTokenHelper::generate();
 
-                $this->getAccessTokenStorage()->clear();
-                $this->getAccessTokenStorage()->write($accessToken);
+                $this->accessTokenStorage->clear();
+                $this->accessTokenStorage->write($accessToken);
 
                 $accessTokenHash = AccessTokenHelper::hash($accessToken);
 
-                $activeLogin = new UserActiveLoginEntity($contents, $accessTokenHash);
+                $activeLogin = new UserAccessTokenEntity($contents, $accessTokenHash);
 
                 $this->entityManager->persist($activeLogin);
                 $this->entityManager->flush();
@@ -190,15 +165,15 @@ class ActiveLoginStorage implements StorageInterface
      */
     public function clear()
     {
-        if (false === $this->getAccessTokenStorage()->isEmpty()) {
+        if (false === $this->accessTokenStorage->isEmpty()) {
 
             $accessToken = $this->accessTokenStorage->read();
 
             $accessTokenHash = AccessTokenHelper::hash($accessToken);
 
-            $activeLogin = $this->getUserActiveLoginRepository()->findOneByAccessTokenHash($accessTokenHash);
+            $activeLogin = $this->getUserAccessTokenRepository()->findOneByHash($accessTokenHash);
 
-            if ($activeLogin && $activeLogin instanceof UserActiveLoginEntity) {
+            if ($activeLogin && $activeLogin instanceof UserAccessTokenEntity) {
                 try {
                     $this->entityManager->remove($activeLogin);
                     $this->entityManager->flush();

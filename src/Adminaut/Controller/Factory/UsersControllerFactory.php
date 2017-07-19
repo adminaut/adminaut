@@ -1,4 +1,5 @@
 <?php
+
 namespace Adminaut\Controller\Factory;
 
 use Adminaut\Controller\UsersController;
@@ -6,6 +7,7 @@ use Adminaut\Manager\ModuleManager;
 use Adminaut\Mapper\UserMapper;
 use Adminaut\Service\AccessControlService;
 use Adminaut\Service\UserService;
+use Doctrine\ORM\EntityManager;
 use Zend\Mvc\I18n\Translator;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -31,7 +33,7 @@ class UsersControllerFactory implements FactoryInterface
         return new UsersController(
             $parentLocator->get('config'),
             $parentLocator->get(AccessControlService::class),
-            $parentLocator->get(\Doctrine\ORM\EntityManager::class),
+            $parentLocator->get(EntityManager::class),
             $parentLocator->get(Translator::class),
             $parentLocator->get(UserMapper::class),
             $parentLocator->get(UserService::class),

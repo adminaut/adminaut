@@ -58,20 +58,33 @@ class UserEntity extends Base implements UserInterface
      */
 //    protected $status;
 
+
     /**
      * Inverse side.
-     * @ORM\OneToMany(targetEntity="UserFailedLoginEntity", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="UserAccessTokenEntity", mappedBy="user")
      * @var Collection
      */
-    protected $failedLogins;
+    protected $accessTokens;
+
+    /**
+     * Inverse side.
+     * @ORM\OneToMany(targetEntity="UserLoginEntity", mappedBy="user")
+     * @var Collection
+     */
+    protected $logins;
+
+    //-------------------------------------------------------------------------
 
     /**
      * UserEntity constructor.
      */
     public function __construct()
     {
-        $this->failedLogins = new ArrayCollection();
+        $this->accessTokens = new ArrayCollection();
+        $this->logins = new ArrayCollection();
     }
+
+    //-------------------------------------------------------------------------
 
     /**
      * @return int
