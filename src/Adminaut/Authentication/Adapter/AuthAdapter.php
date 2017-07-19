@@ -7,6 +7,7 @@ use Adminaut\Entity\UserEntity;
 use Adminaut\Entity\UserLoginEntity;
 use Adminaut\Repository\UserLoginRepository;
 use Adminaut\Repository\UserRepository;
+use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Zend\Authentication\Adapter\AdapterInterface;
@@ -24,26 +25,21 @@ class AuthAdapter implements AdapterInterface
     private $entityManager;
 
     /**
-     * @var int
+     * @var AuthAdapterOptions
      */
-    private $failedLoginCount = 3;
-
-    /**
-     * @var int
-     */
-    private $failedLoginTimeout = 30; // 30 seconds
+    private $options;
 
     //-------------------------------------------------------------------------
 
     /**
      * AuthAdapter constructor.
      * @param EntityManager $entityManager
-     * @param array $options
+     * @param AuthAdapterOptions $options
      */
-    public function __construct(EntityManager $entityManager, array $options = [])
+    public function __construct(EntityManager $entityManager, AuthAdapterOptions $options)
     {
         $this->entityManager = $entityManager;
-        // todo: add options
+        $this->options = $options;
     }
 
     //-------------------------------------------------------------------------
@@ -72,17 +68,16 @@ class AuthAdapter implements AdapterInterface
 
         $failedLogins = $this->getFailedLoginsByUser($user);
 
-        if ($this->failedLoginCount <= count($failedLogins)) {
+        if ($this->options->getFailedLoginsCount() <= count($failedLogins)) {
 
             /** @var UserLoginEntity $lastFailedLogin */
             $lastFailedLogin = end($failedLogins);
 
-            $since = new \DateTime();
-            $since->sub(new \DateInterval(sprintf('PT%sS', $this->failedLoginTimeout)));
+            $nowDT = new DateTime();
+            $unlockDT = $this->getUnlockDateTime($lastFailedLogin);
 
-            if ($lastFailedLogin->getInserted()->getTimestamp() > $since->getTimestamp()) {
-                $timeToWait = $lastFailedLogin->getInserted()->diff($since)->s;
-                return $this->getResult(Result::FAILURE, sprintf(_('You have to wait for %s seconds.'), $timeToWait));
+            if ($nowDT < $unlockDT) {
+                return $this->getResult(Result::FAILURE, sprintf(_('You have to wait until %s.'), $unlockDT->format('Y-m-d H:i:s')));
             }
         }
 
@@ -177,5 +172,19 @@ class AuthAdapter implements AdapterInterface
         $messages = [];
         $messages[] = $message;
         return new Result($code, $identity, $messages);
+    }
+
+    /**
+     * @param UserLoginEntity $loginEntity
+     * @return DateTime
+     */
+    private function getUnlockDateTime(UserLoginEntity $loginEntity)
+    {
+        // cannot just assign datetime from login entity, it will update database record!
+        $unlockDateTime = new DateTime($loginEntity->getInserted()->format('Y-m-d H:i:s'));
+
+        $unlockDateTime->add(new \DateInterval(sprintf('PT%sS', $this->options->getFailedLoginsTimeout())));
+
+        return $unlockDateTime;
     }
 }

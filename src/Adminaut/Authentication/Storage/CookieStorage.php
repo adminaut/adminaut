@@ -14,21 +14,6 @@ use Zend\Http\PhpEnvironment\Response;
 class CookieStorage implements StorageInterface
 {
     /**
-     * Default cookie name
-     */
-    const COOKIE_NAME = 'access-token';
-
-    /**
-     * Default cookie secure
-     */
-    const COOKIE_SECURE = true;
-
-    /**
-     * Default cookie httpOnly
-     */
-    const COOKIE_HTTP_ONLY = true;
-
-    /**
      * Request dependency - so we can read cookies from request headers
      * @var Request
      */
@@ -41,19 +26,10 @@ class CookieStorage implements StorageInterface
     protected $response;
 
     /**
-     * @var string
+     * Options dependency - so we can have some options :)
+     * @var CookieStorageOptions
      */
-    protected $cookieName;
-
-    /**
-     * @var boolean
-     */
-    protected $cookieSecure;
-
-    /**
-     * @var boolean
-     */
-    protected $cookieHttpOnly;
+    protected $options;
 
     //-------------------------------------------------------------------------
 
@@ -61,24 +37,13 @@ class CookieStorage implements StorageInterface
      * CookieStorage constructor.
      * @param Request $request
      * @param Response $response
-     * @param array $cookieOptions
+     * @param CookieStorageOptions $options
      */
-    public function __construct(Request $request, Response $response, array $cookieOptions = [])
+    public function __construct(Request $request, Response $response, CookieStorageOptions $options)
     {
         $this->request = $request;
         $this->response = $response;
-
-        $options = [
-            'name' => self::COOKIE_NAME,
-            'secure' => self::COOKIE_SECURE,
-            'httpOnly' => self::COOKIE_HTTP_ONLY,
-        ];
-
-        $options = array_merge($options, $cookieOptions);
-
-        $this->cookieName = $options['name'];
-        $this->cookieSecure = $options['secure'];
-        $this->cookieHttpOnly = $options['httpOnly'];
+        $this->options = $options;
     }
 
     //-------------------------------------------------------------------------
@@ -93,7 +58,7 @@ class CookieStorage implements StorageInterface
     {
         $cookieHeaders = $this->request->getCookie();
 
-        if ($cookieHeaders && $cookieHeaders->offsetExists($this->cookieName)) {
+        if ($cookieHeaders && $cookieHeaders->offsetExists($this->options->getCookieName())) {
             return false;
         }
         return true;
@@ -109,7 +74,7 @@ class CookieStorage implements StorageInterface
      */
     public function read()
     {
-        return $this->isEmpty() ? null : $this->request->getCookie()->offsetGet($this->cookieName);
+        return $this->isEmpty() ? null : $this->request->getCookie()->offsetGet($this->options->getCookieName());
     }
 
     /**
@@ -122,11 +87,11 @@ class CookieStorage implements StorageInterface
     public function write($contents)
     {
         $cookie = new SetCookie();
-        $cookie->setName($this->cookieName);
+        $cookie->setName($this->options->getCookieName());
         $cookie->setValue($contents);
-        $cookie->setPath('/');
-        $cookie->setSecure($this->cookieSecure);
-        $cookie->setHttponly($this->cookieHttpOnly);
+        $cookie->setPath($this->options->getCookiePath());
+        $cookie->setSecure($this->options->isCookieSecure());
+        $cookie->setHttponly($this->options->isCookieHttpOnly());
         $cookie->setExpires(new \DateTime('+1 month'));
 
         $responseHeaders = $this->response->getHeaders();
@@ -143,10 +108,10 @@ class CookieStorage implements StorageInterface
     {
         if (!$this->isEmpty()) {
             $cookie = new SetCookie();
-            $cookie->setName($this->cookieName);
+            $cookie->setName($this->options->getCookieName());
             $cookie->setValue(null);
-            $cookie->setSecure($this->cookieSecure);
-            $cookie->setHttponly($this->cookieHttpOnly);
+            $cookie->setSecure($this->options->isCookieSecure());
+            $cookie->setHttponly($this->options->isCookieHttpOnly());
             $cookie->setExpires(0);
 
             $responseHeaders = $this->response->getHeaders();
