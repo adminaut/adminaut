@@ -58,17 +58,17 @@ class AuthAdapter implements AdapterInterface
 
         // If user is null...
         if (null === $user) {
-            return $this->getResult(Result::FAILURE_IDENTITY_NOT_FOUND, _('Account does not exist.'));
+            return $this->getResult(Result::FAILURE_IDENTITY_NOT_FOUND, _('Invalid credentials.'));
         }
 
         // If use is not active...
         if (false === $user->isActive()) {
-            return $this->getResult(Result::FAILURE, _('Account is not active.'));
+            return $this->getResult(Result::FAILURE, _('Invalid credentials.'));
         }
 
         $failedLogins = $this->getFailedLoginsByUser($user);
 
-        if ($this->options->getFailedLoginsCount() <= count($failedLogins)) {
+        if ($this->options->getFailedAttemptsToLock() <= count($failedLogins)) {
 
             /** @var UserLoginEntity $lastFailedLogin */
             $lastFailedLogin = end($failedLogins);
@@ -77,13 +77,13 @@ class AuthAdapter implements AdapterInterface
             $unlockDT = $this->getUnlockDateTime($lastFailedLogin);
 
             if ($nowDT < $unlockDT) {
-                return $this->getResult(Result::FAILURE, sprintf(_('You have to wait until %s.'), $unlockDT->format('Y-m-d H:i:s')));
+                return $this->getResult(Result::FAILURE, sprintf(_('Account has been locked until %s.'), $unlockDT->format('Y-m-d H:i:s')));
             }
         }
 
         if (true !== PasswordHelper::verify($password, $user->getPassword())) {
             $this->addFailedLogin($user);
-            return $this->getResult(Result::FAILURE_CREDENTIAL_INVALID, _('Invalid password.'));
+            return $this->getResult(Result::FAILURE_CREDENTIAL_INVALID, _('Invalid credentials.'));
         }
 
         $this->addSuccessfulLogin($user);
@@ -183,7 +183,7 @@ class AuthAdapter implements AdapterInterface
         // cannot just assign datetime from login entity, it will update database record!
         $unlockDateTime = new DateTime($loginEntity->getInserted()->format('Y-m-d H:i:s'));
 
-        $unlockDateTime->add(new \DateInterval(sprintf('PT%sS', $this->options->getFailedLoginsTimeout())));
+        $unlockDateTime->add(new \DateInterval(sprintf('PT%sS', $this->options->getUnlockAfter())));
 
         return $unlockDateTime;
     }

@@ -19,8 +19,8 @@ return [
         ],
 
         'auth-adapter' => [
-            'failedLoginsCount' => 3,
-            'failedLoginsTimeout' => 30, // in seconds
+            'failedAttemptsToLock' => 3,
+            'unlockAfter' => 30, // int in seconds, null for no automatic unlock
         ],
 
         'cookie-storage' => [

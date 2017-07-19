@@ -15,42 +15,43 @@ class AuthAdapterOptions extends AbstractOptions
     /**
      * @var int
      */
-    protected $failedLoginsCount = 3;
+    protected $failedAttemptsToLock = 3;
 
     /**
+     * int in seconds, null for no automatic unlock
      * @var int
      */
-    protected $failedLoginsTimeout = 30; // in seconds
+    protected $unlockAfter = 30;
 
     /**
      * @return int
      */
-    public function getFailedLoginsCount()
+    public function getFailedAttemptsToLock()
     {
-        return $this->failedLoginsCount;
+        return $this->failedAttemptsToLock;
     }
 
     /**
-     * @param int $failedLoginsCount
+     * @param int $failedAttemptsToLock
      */
-    public function setFailedLoginsCount($failedLoginsCount)
+    public function setFailedAttemptsToLock($failedAttemptsToLock)
     {
-        $this->failedLoginsCount = $failedLoginsCount;
+        $this->failedAttemptsToLock = $failedAttemptsToLock;
     }
 
     /**
      * @return int
      */
-    public function getFailedLoginsTimeout()
+    public function getUnlockAfter()
     {
-        return $this->failedLoginsTimeout;
+        return $this->unlockAfter;
     }
 
     /**
-     * @param int $failedLoginsTimeout
+     * @param int $unlockAfter
      */
-    public function setFailedLoginsTimeout($failedLoginsTimeout)
+    public function setUnlockAfter($unlockAfter)
     {
-        $this->failedLoginsTimeout = $failedLoginsTimeout;
+        $this->unlockAfter = $unlockAfter;
     }
 }
