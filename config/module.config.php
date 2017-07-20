@@ -51,7 +51,6 @@ return [
 
             // Mapper
             Mapper\UserMapper::class => Mapper\Factory\UserMapperFactory::class,
-            Mapper\UserFailedLoginMapper::class => Mapper\Factory\UserFailedLoginMapperFactory::class,
             Mapper\RoleMapper::class => Mapper\Factory\RoleMapperFactory::class,
 
             //Navigation
@@ -91,9 +90,6 @@ return [
     ],
 
     'form_elements' => [
-        'invokables' => [
-//            'Image'                                              => 'MfccAdminModule\Form\Element\Image'
-        ],
         'initializers' => [
             'ObjectManager' => Initializer\ObjectManagerInitializer::class,
         ],

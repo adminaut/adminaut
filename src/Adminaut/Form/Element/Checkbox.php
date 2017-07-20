@@ -1,13 +1,15 @@
 <?php
+
 namespace Adminaut\Form\Element;
 
 use Traversable;
-use Adminaut\Form\Element as MfccAdminFormElement;
-use Zend\Form\Element;
 use Zend\Form\Element\Checkbox as ZendCheckbox;
 use Zend\InputFilter\InputProviderInterface;
-use Zend\Validator\InArray as InArrayValidator;
 
+/**
+ * Class Checkbox
+ * @package Adminaut\Form\Element
+ */
 class Checkbox extends ZendCheckbox implements InputProviderInterface
 {
     /**
@@ -16,7 +18,7 @@ class Checkbox extends ZendCheckbox implements InputProviderInterface
      * @var array
      */
     protected $attributes = [
-        'type' => 'single_checkbox'
+        'type' => 'single_checkbox',
     ];
 
     /**
@@ -111,10 +113,10 @@ class Checkbox extends ZendCheckbox implements InputProviderInterface
      */
     public function getListedValue()
     {
-        if($this->isChecked()) {
-            return '<span class="label label-success">'. $this->getListedCheckedValue() .'</span>';
+        if ($this->isChecked()) {
+            return '<span class="label label-success">' . $this->getListedCheckedValue() . '</span>';
         } else {
-            return '<span class="label label-danger">'. $this->getListedUncheckedValue() .'</span>';
+            return '<span class="label label-danger">' . $this->getListedUncheckedValue() . '</span>';
         }
     }
 
@@ -129,7 +131,7 @@ class Checkbox extends ZendCheckbox implements InputProviderInterface
     /**
      * @param string $checkboxLabel
      */
-    public function setCheckboxLabel(string $checkboxLabel)
+    public function setCheckboxLabel($checkboxLabel)
     {
         $this->checkboxLabel = $checkboxLabel;
     }
