@@ -26,10 +26,14 @@ class AuthAdapterOptions extends AbstractOptions
     protected $failedAttemptsToLock = 3;
 
     /**
-     * int in seconds, null for no automatic unlock
-     * @var int
+     * @var int In seconds
      */
-    protected $unlockAfter = 30;
+    protected $secondsToUnlock = 30;
+
+    /**
+     * @var bool
+     */
+    protected $automaticUnlockDisabled = false;
 
     /**
      * @return int
@@ -44,22 +48,38 @@ class AuthAdapterOptions extends AbstractOptions
      */
     public function setFailedAttemptsToLock($failedAttemptsToLock)
     {
-        $this->failedAttemptsToLock = $failedAttemptsToLock;
+        $this->failedAttemptsToLock = (int)$failedAttemptsToLock;
     }
 
     /**
      * @return int
      */
-    public function getUnlockAfter()
+    public function getSecondsToUnlock()
     {
-        return $this->unlockAfter;
+        return $this->secondsToUnlock;
     }
 
     /**
-     * @param int $unlockAfter
+     * @param int $secondsToUnlock
      */
-    public function setUnlockAfter($unlockAfter)
+    public function setSecondsToUnlock($secondsToUnlock)
     {
-        $this->unlockAfter = $unlockAfter;
+        $this->secondsToUnlock = (int)$secondsToUnlock;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAutomaticUnlockDisabled()
+    {
+        return $this->automaticUnlockDisabled;
+    }
+
+    /**
+     * @param bool $automaticUnlockDisabled
+     */
+    public function setAutomaticUnlockDisabled($automaticUnlockDisabled)
+    {
+        $this->automaticUnlockDisabled = (bool)$automaticUnlockDisabled;
     }
 }

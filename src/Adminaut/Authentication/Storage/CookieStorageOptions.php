@@ -53,7 +53,7 @@ class CookieStorageOptions extends AbstractOptions
      */
     public function setCookieName($cookieName)
     {
-        $this->cookieName = $cookieName;
+        $this->cookieName = (string)$cookieName;
     }
 
     /**
@@ -69,7 +69,7 @@ class CookieStorageOptions extends AbstractOptions
      */
     public function setCookiePath($cookiePath)
     {
-        $this->cookiePath = $cookiePath;
+        $this->cookiePath = (string)$cookiePath;
     }
 
     /**
@@ -85,7 +85,7 @@ class CookieStorageOptions extends AbstractOptions
      */
     public function setCookieSecure($cookieSecure)
     {
-        $this->cookieSecure = $cookieSecure;
+        $this->cookieSecure = (bool)$cookieSecure;
     }
 
     /**
@@ -101,6 +101,6 @@ class CookieStorageOptions extends AbstractOptions
      */
     public function setCookieHttpOnly($cookieHttpOnly)
     {
-        $this->cookieHttpOnly = $cookieHttpOnly;
+        $this->cookieHttpOnly = (bool)$cookieHttpOnly;
     }
 }

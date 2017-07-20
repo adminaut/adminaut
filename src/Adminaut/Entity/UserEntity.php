@@ -18,6 +18,15 @@ use Zend\Form\Annotation;
 class UserEntity extends Base implements UserInterface
 {
     /**
+     * Constants
+     */
+    const STATUS_UNKNOWN = 0;
+    const STATUS_NEW = 1;
+    const STATUS_ACTIVE = 2;
+    const STATUS_LOCKED = 3;
+    const STATUS_BANNED = 4;
+
+    /**
      * @ORM\Column(type="string", length=128);
      * @Annotation\Options({"label":"Name", "listed":true});
      * @Annotation\Flags({"priority":5});
@@ -53,11 +62,10 @@ class UserEntity extends Base implements UserInterface
     protected $role;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true);
+     * @ORM\Column(type="integer", name="status", options={"default":0});
      * @var int
      */
-//    protected $status;
-
+    protected $status;
 
     /**
      * Inverse side.
@@ -80,6 +88,7 @@ class UserEntity extends Base implements UserInterface
      */
     public function __construct()
     {
+        $this->status = $this::STATUS_NEW;
         $this->accessTokens = new ArrayCollection();
         $this->logins = new ArrayCollection();
     }
