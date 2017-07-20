@@ -2,15 +2,12 @@
 
 namespace Adminaut\Service;
 
-use Adminaut\Entity\Role as RoleEntity;
+use Adminaut\Authentication\Helper\PasswordHelper;
 use Adminaut\Entity\UserEntity;
 use Adminaut\EventManager\EventProvider;
 use Adminaut\Mapper\RoleMapper as RoleMapper;
 use Adminaut\Mapper\UserMapper;
-use Adminaut\Options\UserOptions;
-
 use Adminaut\Authentication\Service\AuthenticationService;
-use Zend\Crypt\Password\Bcrypt;
 
 /**
  * Class UserService
@@ -39,17 +36,18 @@ class UserService extends EventProvider
     protected $userAuthService;
 
     /**
-     * @var UserOptions
+     * UserService constructor.
+     * @param $accessControl
+     * @param $roleMapper
+     * @param $userMapper
+     * @param $userAuthService
      */
-    protected $userOptions;
-
-    public function __construct($accessControl, $roleMapper, $userMapper, $userAuthService, $userOptions)
+    public function __construct($accessControl, $roleMapper, $userMapper, $userAuthService)
     {
         $this->setAccessControlService($accessControl);
         $this->setUserMapper($userMapper);
         $this->setRoleMapper($roleMapper);
         $this->setUserAuthService($userAuthService);
-        $this->setUserOptions($userOptions);
     }
 
     /**
@@ -59,17 +57,11 @@ class UserService extends EventProvider
      */
     public function add(array $data, UserEntity $user)
     {
-        $userEntityClass = $this->getUserOptions()->getUserEntityClass();
-        $entity = new $userEntityClass();
+        $entity = new UserEntity();
         $entity->setInsertedBy($user->getId());
         $entity->setUpdatedBy($user->getId());
         $entity = $this->populateData($entity, $data);
-        $bcrypt = new Bcrypt;
-        $bcrypt->setCost($this->getUserOptions()->getPasswordCost());
-        $entity->setPassword($bcrypt->create($data['password']));
-        if ($this->getUserOptions()->isEnableUserStatus()) {
-            $entity->setStatus($this->getUserOptions()->getDefaultUserStatus());
-        }
+        $entity->setPassword(PasswordHelper::hash($data['password']));
         return $this->getUserMapper()->insert($entity);
     }
 
@@ -84,9 +76,7 @@ class UserService extends EventProvider
         $entity->setUpdatedBy($user->getId());
         $entity = $this->populateData($entity, $data);
         if ($data['password']) {
-            $bcrypt = new Bcrypt;
-            $bcrypt->setCost($this->getUserOptions()->getPasswordCost());
-            $entity->setPassword($bcrypt->create($data['password']));
+            $entity->setPassword(PasswordHelper::hash($data['password']));
         }
         return $this->getUserMapper()->update($entity);
     }
@@ -121,19 +111,13 @@ class UserService extends EventProvider
      */
     public function createSuperuser(array $data)
     {
-        $userEntityClass = $this->getUserOptions()->getUserEntityClass();
-        $entity = new $userEntityClass();
+        $entity = new UserEntity();
         $entity->setInsertedBy(1);
         $entity->setUpdatedBy(1);
         $data['active'] = true;
         $data['role'] = 'admin';
         $entity = $this->populateData($entity, $data);
-        $bcrypt = new Bcrypt;
-        $bcrypt->setCost($this->getUserOptions()->getPasswordCost());
-        $entity->setPassword($bcrypt->create($data['password']));
-        if ($this->getUserOptions()->isEnableUserStatus()) {
-            $entity->setStatus($this->getUserOptions()->getDefaultUserStatus());
-        }
+        $entity->setPassword(PasswordHelper::hash($data['password']));
         return $this->getUserMapper()->insert($entity);
     }
 
@@ -221,21 +205,5 @@ class UserService extends EventProvider
     public function setUserAuthService(AuthenticationService $userAuthService)
     {
         $this->userAuthService = $userAuthService;
-    }
-
-    /**
-     * @return UserOptions
-     */
-    public function getUserOptions()
-    {
-        return $this->userOptions;
-    }
-
-    /**
-     * @param UserOptions $userOptions
-     */
-    public function setUserOptions(UserOptions $userOptions)
-    {
-        $this->userOptions = $userOptions;
     }
 }

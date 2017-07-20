@@ -1,7 +1,9 @@
 <?php
+
 namespace Adminaut\Mapper\Factory;
 
-use Adminaut\Options\UserOptions;
+use Adminaut\Mapper\UserMapper;
+use Doctrine\ORM\EntityManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -13,16 +15,14 @@ class UserMapperFactory implements FactoryInterface
 {
 
     /**
-     * Create service
-     *
      * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @return UserMapper
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return new \Adminaut\Mapper\UserMapper(
-            $serviceLocator->get(\Doctrine\ORM\EntityManager::class),
-            $serviceLocator->get(UserOptions::class)
-        );
+        /** @var EntityManager $entityManager */
+        $entityManager = $serviceLocator->get(EntityManager::class);
+
+        return new UserMapper($entityManager);
     }
 }
