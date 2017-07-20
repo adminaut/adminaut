@@ -10,7 +10,15 @@ use Zend\Stdlib\AbstractOptions;
  */
 class CookieStorageOptions extends AbstractOptions
 {
+    /**
+     * Constants
+     */
     const CONFIG_KEY = 'cookie-storage';
+
+    /**
+     * @var bool
+     */
+    protected $__strictMode__ = false;
 
     /**
      * @var string

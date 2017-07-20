@@ -6,11 +6,19 @@ use Zend\Stdlib\AbstractOptions;
 
 /**
  * Class AuthAdapterOptions
- * @package Adminaut\Authentication\Options
+ * @package Adminaut\Authentication\Adapter
  */
 class AuthAdapterOptions extends AbstractOptions
 {
+    /**
+     * Constants
+     */
     const CONFIG_KEY = 'auth-adapter';
+
+    /**
+     * @var bool
+     */
+    protected $__strictMode__ = false;
 
     /**
      * @var int
