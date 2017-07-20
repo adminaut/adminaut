@@ -503,12 +503,30 @@ return [
                         ],
                         'may_terminate' => true,
                         'child_routes' => [
-                            'login' => [
+                            'change-password' => [
                                 'type' => Literal::class,
                                 'options' => [
                                     'route' => '/change-password',
                                     'defaults' => [
                                         'action' => 'changePassword',
+                                    ],
+                                ],
+                            ],
+                            'logins' => [
+                                'type' => Literal::class,
+                                'options' => [
+                                    'route' => '/logins',
+                                    'defaults' => [
+                                        'action' => 'logins',
+                                    ],
+                                ],
+                            ],
+                            'access-tokens' => [
+                                'type' => Literal::class,
+                                'options' => [
+                                    'route' => '/access-tokens',
+                                    'defaults' => [
+                                        'action' => 'accessTokens',
                                     ],
                                 ],
                             ],

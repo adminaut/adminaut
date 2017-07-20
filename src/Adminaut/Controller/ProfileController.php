@@ -27,4 +27,20 @@ class ProfileController extends AbstractActionController
     {
         return new ViewModel();
     }
+
+    /**
+     * @return ViewModel
+     */
+    public function loginsAction()
+    {
+        return new ViewModel();
+    }
+
+    /**
+     * @return ViewModel
+     */
+    public function accessTokensAction()
+    {
+        return new ViewModel();
+    }
 }
