@@ -11,9 +11,9 @@
         $form = $this->form;
 
         if (isset($this->redirect) && null !== $this->redirect) {
-            $url = $this->url('adminaut/session/login', [], ['query' => ['redirect' => $this->redirect]]);
+            $url = $this->url('adminaut/auth/login', [], ['query' => ['redirect' => $this->redirect]]);
         } else {
-            $url = $this->url('adminaut/session/login');
+            $url = $this->url('adminaut/auth/login');
         }
 
         $form->setAttribute('action', $url);
@@ -24,7 +24,7 @@
         echo $this->form()->closeTag();
         ?>
 
-        <a href="<?php echo $this->url('adminaut/session/forgotten-password'); ?>"><?php echo $this->translate("I forgot my password"); ?></a><br>
-        <a href="<?php echo $this->url('adminaut/session/request-access'); ?>"><?php echo $this->translate("Request access"); ?></a>
+        <a href="<?php echo $this->url('adminaut/auth/forgotten-password'); ?>"><?php echo $this->translate("I forgot my password"); ?></a><br>
+        <a href="<?php echo $this->url('adminaut/auth/request-access'); ?>"><?php echo $this->translate("Request access"); ?></a>
     </div>
 </div>

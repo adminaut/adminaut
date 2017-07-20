@@ -12,19 +12,19 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 /**
- * Class SessionController
+ * Class AuthController
  * @package Adminaut\Controller
  * @method UserAuthentication userAuthentication()
  */
-class SessionController extends AbstractActionController
+class AuthController extends AbstractActionController
 {
     /**
      * Constants
      */
-    const ROUTE_LOGIN = 'adminaut/session/login';
-    const ROUTE_LOGOUT = 'adminaut/session/logout';
-    const ROUTE_FORGOTTEN_PASSWORD = 'adminaut/session/forgotten-password';
-    const ROUTE_REQUEST_ACCESS = 'adminaut/session/request-access';
+    const ROUTE_LOGIN = 'adminaut/auth/login';
+    const ROUTE_LOGOUT = 'adminaut/auth/logout';
+    const ROUTE_FORGOTTEN_PASSWORD = 'adminaut/auth/forgotten-password';
+    const ROUTE_REQUEST_ACCESS = 'adminaut/auth/request-access';
 
     /**
      * @var AuthenticationService
@@ -32,7 +32,7 @@ class SessionController extends AbstractActionController
     private $authenticationService;
 
     /**
-     * SessionController constructor.
+     * AuthController constructor.
      * @param AuthenticationService $authenticationService
      */
     public function __construct(AuthenticationService $authenticationService)

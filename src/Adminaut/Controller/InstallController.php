@@ -55,7 +55,7 @@ class InstallController extends AbstractActionController
                 try {
                     $this->getUserService()->createSuperuser($post);
                     $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully created.'));
-                    return $this->redirect()->toRoute(SessionController::ROUTE_LOGIN);
+                    return $this->redirect()->toRoute(AuthController::ROUTE_LOGIN);
                 } catch(\Exception $e) {
                     $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
                     return $this->redirect()->toRoute('adminaut/install');

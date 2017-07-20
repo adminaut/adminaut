@@ -15,7 +15,7 @@ return [
             Controller\InstallController::class => Controller\Factory\InstallControllerFactory::class,
             Controller\ModuleController::class => Controller\Factory\ModuleControllerFactory::class,
             Controller\UsersController::class => Controller\Factory\UsersControllerFactory::class,
-            Controller\SessionController::class => Controller\Factory\SessionControllerFactory::class,
+            Controller\AuthController::class => Controller\Factory\AuthControllerFactory::class,
         ],
 
         'abstract_factories' => [
@@ -445,13 +445,13 @@ return [
                             ],
                         ],
                     ],
-                    'session' => [
+                    'auth' => [
                         'type' => Literal::class,
                         'priority' => 1000,
                         'options' => [
-                            'route' => 'session',
+                            'route' => 'auth',
                             'defaults' => [
-                                'controller' => Controller\SessionController::class,
+                                'controller' => Controller\AuthController::class,
                                 'action' => 'index',
                             ],
                         ],
@@ -490,6 +490,29 @@ return [
                                     'route' => '/request-access',
                                     'defaults' => [
                                         'action' => 'requestAccess',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                    'profile' => [
+                        'type' => Literal::class,
+                        'priority' => 1000,
+                        'options' => [
+                            'route' => 'profile',
+                            'defaults' => [
+                                'controller' => Controller\ProfileController::class,
+                                'action' => 'index',
+                            ],
+                        ],
+                        'may_terminate' => true,
+                        'child_routes' => [
+                            'login' => [
+                                'type' => Literal::class,
+                                'options' => [
+                                    'route' => '/change-password',
+                                    'defaults' => [
+                                        'action' => 'changePassword',
                                     ],
                                 ],
                             ],
