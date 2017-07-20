@@ -128,16 +128,16 @@
                             <!-- User Account: style can be found in dropdown.less -->
                             <li class="dropdown user user-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="user-image" alt="<?php echo $this->userIdentity()->getName(); ?>">
-                                    <span class="hidden-xs"><?php echo $this->userIdentity()->getName(); ?></span>
+                                    <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="user-image" alt="<?php echo $this->escapeHtml($this->userIdentity()->getName()); ?>">
+                                    <span class="hidden-xs"><?php echo $this->escapeHtml($this->userIdentity()->getName()); ?></span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <!-- User image -->
                                     <li class="user-header">
-                                        <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="img-circle" alt="<?php echo $this->userIdentity()->getName(); ?>">
+                                        <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="img-circle" alt="<?php echo $this->escapeHtml($this->userIdentity()->getName()); ?>">
 
                                         <p>
-                                            <?php echo $this->userIdentity()->getName(); ?>
+                                            <?php echo $this->escapeHtml($this->userIdentity()->getName()); ?>
                                         </p>
                                     </li>
                                     <!-- Menu Footer-->
@@ -162,10 +162,10 @@
                     <!-- Sidebar user panel -->
                     <div class="user-panel">
                         <div class="pull-left image">
-                            <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="img-circle" alt="<?php echo $this->userIdentity()->getName(); ?>">
+                            <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="img-circle" alt="<?php echo $this->escapeHtml($this->userIdentity()->getName()); ?>">
                         </div>
                         <div class="pull-left info">
-                            <p><?php echo $this->userIdentity()->getName(); ?></p>
+                            <p><?php echo $this->escapeHtml($this->userIdentity()->getName()); ?></p>
                             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                         </div>
                     </div>
@@ -182,7 +182,8 @@
                     <!-- /.search form -->
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <?php
-                    echo $this->navigation(\Adminaut\Navigation\Navigation::class)->menu()
+                    echo $this->navigation(\Adminaut\Navigation\Navigation::class)
+                        ->menu()
                         ->setUlClass('nav')
                         ->setPartial('partial/navigation/navigation.phtml');
                     ?>
