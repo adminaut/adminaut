@@ -79,7 +79,7 @@ class AdminautBaseController extends AbstractActionController
             /** @var Request $request */
             $request = $this->getRequest();
 
-            return $this->redirect()->toRoute('adminaut/user/login', [], [
+            return $this->redirect()->toRoute(SessionController::ROUTE_LOGIN, [], [
                 'query' => [
                     'redirect' => rawurlencode($request->getUriString()),
                 ],

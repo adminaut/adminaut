@@ -3,22 +3,20 @@
 namespace Adminaut\Controller\Factory;
 
 use Adminaut\Authentication\Service\AuthenticationService;
-use Adminaut\Controller\LoginController;
+use Adminaut\Controller\SessionController;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * Class LoginControllerFactory
+ * Class SessionControllerFactory
  * @package Adminaut\Controller\Factory
  */
-class LoginControllerFactory implements FactoryInterface
+class SessionControllerFactory implements FactoryInterface
 {
 
     /**
-     * Create service
-     *
      * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @return SessionController
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
@@ -28,6 +26,6 @@ class LoginControllerFactory implements FactoryInterface
         /** @var AuthenticationService $authenticationService */
         $authenticationService = $parentLocator->get(AuthenticationService::class);
 
-        return new LoginController($authenticationService);
+        return new SessionController($authenticationService);
     }
 }

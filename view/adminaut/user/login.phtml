@@ -1,7 +1,7 @@
 <div class="login-box">
 
     <div class="login-logo">
-        <a href="<?php echo $this->url('adminaut/user/login') ?>">Adminaut</a>
+        <a href="<?php echo $this->url('adminaut/session/login') ?>">Adminaut</a>
     </div>
 
     <div class="box login-box-body box-success">
@@ -16,9 +16,9 @@
         $form = $this->form;
 
         if ($this->redirect) {
-            $url = $this->url('adminaut/user/login', [], ['query' => ['redirect' => $this->redirect]]);
+            $url = $this->url('adminaut/session/login', [], ['query' => ['redirect' => $this->redirect]]);
         } else {
-            $url = $this->url('adminaut/user/login');
+            $url = $this->url('adminaut/session/login');
         }
         $form->setAttribute('action', $url);
         $form->prepare();
@@ -28,7 +28,7 @@
         echo $this->form()->closeTag();
         ?>
 
-        <a href="<?php echo $this->url('adminaut/user/forgot-password'); ?>"><?php echo $this->translate("I forgot my password"); ?></a><br>
+        <a href="#"><?php echo $this->translate("I forgot my password"); ?></a><br>
         <a href="#"><?php echo $this->translate("Request access"); ?></a>
 
     </div>

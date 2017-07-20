@@ -15,8 +15,7 @@ return [
             Controller\InstallController::class => Controller\Factory\InstallControllerFactory::class,
             Controller\ModuleController::class => Controller\Factory\ModuleControllerFactory::class,
             Controller\UsersController::class => Controller\Factory\UsersControllerFactory::class,
-            Controller\UserController::class => Controller\Factory\UserControllerFactory::class,
-            Controller\LoginController::class => Controller\Factory\LoginControllerFactory::class,
+            Controller\SessionController::class => Controller\Factory\SessionControllerFactory::class,
         ],
 
         'abstract_factories' => [
@@ -59,7 +58,6 @@ return [
             Navigation\Navigation::class => Navigation\NavigationFactory::class,
 
             // Options
-            Options\UserOptions::class => Options\Factory\UserOptionsFactory::class,
             Options\FileManagerOptions::class => Options\Factory\FileManagerOptionsFactory::class,
 
             // Service
@@ -447,13 +445,13 @@ return [
                             ],
                         ],
                     ],
-                    'user' => [
+                    'session' => [
                         'type' => Literal::class,
                         'priority' => 1000,
                         'options' => [
-                            'route' => 'user',
+                            'route' => 'session',
                             'defaults' => [
-                                'controller' => Controller\UserController::class,
+                                'controller' => Controller\SessionController::class,
                                 'action' => 'index',
                             ],
                         ],
@@ -464,29 +462,7 @@ return [
                                 'options' => [
                                     'route' => '/login',
                                     'defaults' => [
-//                                        'controller' => Controller\UserController::class,
-                                        'controller' => Controller\LoginController::class,
                                         'action' => 'login',
-                                    ],
-                                ],
-                            ],
-                            'forgot-password' => [
-                                'type' => Literal::class,
-                                'options' => [
-                                    'route' => '/forgot-password',
-                                    'defaults' => [
-                                        'controller' => Controller\UserController::class,
-                                        'action' => 'forgotPassword',
-                                    ],
-                                ],
-                            ],
-                            'authenticate' => [
-                                'type' => Literal::class,
-                                'options' => [
-                                    'route' => '/authenticate',
-                                    'defaults' => [
-                                        'controller' => Controller\UserController::class,
-                                        'action' => 'authenticate',
                                     ],
                                 ],
                             ],
@@ -495,9 +471,25 @@ return [
                                 'options' => [
                                     'route' => '/logout',
                                     'defaults' => [
-//                                        'controller' => Controller\UserController::class,
-                                        'controller' => Controller\LoginController::class,
                                         'action' => 'logout',
+                                    ],
+                                ],
+                            ],
+                            'forgotten-password' => [
+                                'type' => Literal::class,
+                                'options' => [
+                                    'route' => '/forgotten-password',
+                                    'defaults' => [
+                                        'action' => 'forgottenPassword',
+                                    ],
+                                ],
+                            ],
+                            'request-access' => [
+                                'type' => Literal::class,
+                                'options' => [
+                                    'route' => '/request-access',
+                                    'defaults' => [
+                                        'action' => 'requestAccess',
                                     ],
                                 ],
                             ],

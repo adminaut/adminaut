@@ -7,21 +7,24 @@ use Adminaut\Controller\Plugin\UserAuthentication;
 use Adminaut\Form\UserLogin as UserLoginForm;
 use Adminaut\Form\InputFilter\UserLogin as UserLoginInputFilter;
 use Zend\Http\PhpEnvironment\Request;
+use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 /**
- * Class LoginController
+ * Class SessionController
  * @package Adminaut\Controller
  * @method UserAuthentication userAuthentication()
  */
-class LoginController extends AbstractActionController
+class SessionController extends AbstractActionController
 {
     /**
      * Constants
      */
-    const ROUTE_LOGIN = 'adminaut/user/login';
-    const ROUTE_LOGOUT = 'adminaut/user/logout';
+    const ROUTE_LOGIN = 'adminaut/session/login';
+    const ROUTE_LOGOUT = 'adminaut/session/logout';
+    const ROUTE_FORGOTTEN_PASSWORD = 'adminaut/session/forgotten-password';
+    const ROUTE_REQUEST_ACCESS = 'adminaut/session/request-access';
 
     /**
      * @var AuthenticationService
@@ -29,7 +32,7 @@ class LoginController extends AbstractActionController
     private $authenticationService;
 
     /**
-     * LoginController constructor.
+     * SessionController constructor.
      * @param AuthenticationService $authenticationService
      */
     public function __construct(AuthenticationService $authenticationService)
@@ -38,7 +41,7 @@ class LoginController extends AbstractActionController
     }
 
     /**
-     * @return \Zend\Http\Response
+     * @return Response
      */
     public function indexAction()
     {
@@ -46,7 +49,7 @@ class LoginController extends AbstractActionController
     }
 
     /**
-     * @return \Zend\Http\Response|ViewModel
+     * @return Response|ViewModel
      */
     public function loginAction()
     {
@@ -96,7 +99,7 @@ class LoginController extends AbstractActionController
     }
 
     /**
-     * @return \Zend\Http\Response
+     * @return Response
      */
     public function logoutAction()
     {
@@ -105,5 +108,23 @@ class LoginController extends AbstractActionController
         }
 
         return $this->redirect()->toRoute(self::ROUTE_LOGIN);
+    }
+
+    /**
+     * @return Response
+     */
+    public function forgottenPasswordAction()
+    {
+        // todo: implement
+        return $this->indexAction();
+    }
+
+    /**
+     * @return Response
+     */
+    public function requestAccessAction()
+    {
+        // todo: implement
+        return $this->indexAction();
     }
 }

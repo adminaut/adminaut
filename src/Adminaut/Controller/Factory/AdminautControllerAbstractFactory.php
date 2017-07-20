@@ -1,7 +1,9 @@
 <?php
+
 namespace Adminaut\Controller\Factory;
 
 use Adminaut\Service\AccessControlService;
+use Doctrine\ORM\EntityManager;
 use Zend\Mvc\I18n\Translator;
 use Zend\ServiceManager\AbstractFactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -43,7 +45,7 @@ class AdminautControllerAbstractFactory implements AbstractFactoryInterface
             return new $requestedName(
                 $parentLocator->get('config'),
                 $parentLocator->get(AccessControlService::class),
-                $parentLocator->get(\Doctrine\ORM\EntityManager::class),
+                $parentLocator->get(EntityManager::class),
                 $parentLocator->get(Translator::class)
             );
         }
