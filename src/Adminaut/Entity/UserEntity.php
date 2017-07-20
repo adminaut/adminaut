@@ -63,20 +63,23 @@ class UserEntity extends Base implements UserInterface
 
     /**
      * @ORM\Column(type="integer", name="status", options={"default":0});
+     * @Annotation\Exclude();
      * @var int
      */
     protected $status;
 
     /**
      * Inverse side.
-     * @ORM\OneToMany(targetEntity="UserAccessTokenEntity", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="UserAccessTokenEntity", mappedBy="user");
+     * @Annotation\Exclude();
      * @var Collection
      */
     protected $accessTokens;
 
     /**
      * Inverse side.
-     * @ORM\OneToMany(targetEntity="UserLoginEntity", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="UserLoginEntity", mappedBy="user");
+     * @Annotation\Exclude();
      * @var Collection
      */
     protected $logins;
