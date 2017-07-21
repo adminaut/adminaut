@@ -5,8 +5,8 @@ $form->prepare();
 ?>
 <section class="content-header">
     <h1>
-        <?php echo $this->translate('Users:') ?>
-        <small><?php echo $this->user->getName() ?></small>
+        <?php echo $this->translate('Users:'); ?>
+        <small><?php echo $this->escapeHtml($this->user->getName()); ?></small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
@@ -28,7 +28,7 @@ $form->prepare();
                     </div>
                 <?php } ?>
                 <div class="tab-content">
-                    <?php echo $this->partial('partial/flashMessanger.phtml', ['flashMessenger' => $this->flashMessenger()]); ?>
+                    <?php echo $this->partial('partial/messages.phtml'); ?>
 
                     <?php echo $this->formCollection($form); ?>
                 </div>
