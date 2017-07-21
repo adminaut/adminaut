@@ -23,12 +23,12 @@ class AuthAdapterOptions extends AbstractOptions
     /**
      * @var int
      */
-    protected $failedAttemptsToLock = 3;
+    protected $failedAttemptsToLock = 5;
 
     /**
      * @var int In seconds
      */
-    protected $secondsToUnlock = 30;
+    protected $secondsToUnlock = 60;
 
     /**
      * @var bool

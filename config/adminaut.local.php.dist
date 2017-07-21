@@ -19,8 +19,8 @@ return [
         ],
 
         'auth-adapter' => [
-            'failedAttemptsToLock' => 3,
-            'secondsToUnlock' => 30, // int in seconds
+            'failedAttemptsToLock' => 5,
+            'secondsToUnlock' => 60, // int in seconds
             'automaticUnlockDisabled' => false,
         ],
 
