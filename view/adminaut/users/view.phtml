@@ -1,10 +1,10 @@
 <section class="content-header">
     <h1>
-        <?php echo $this->translate('Users:') ?>
-        <small><?php echo $this->user->getName() ?></small>
+        <?php echo $this->translate('Users:'); ?>
+        <small><?php echo $this->escapeHtml($this->user->getName()); ?></small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
+        <li><a href="<?php echo $this->url('adminaut/dashboard'); ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
         <li><a href="<?php echo $this->url('adminaut/users'); ?>"><?php echo $this->translate("Users"); ?></a></li>
         <li class="active"><?php echo $this->translate("Detail"); ?></li>
     </ol>
@@ -21,15 +21,15 @@
                 <div class="box-body">
                     <h4><?php echo $this->translate('Name'); ?></h4>
                     <p>
-                        <?php echo $this->user->getName(); ?>
+                        <?php echo $this->escapeHtml($this->user->getName()); ?>
                     </p>
-                    <hr />
+                    <hr/>
 
                     <h4><?php echo $this->translate('Email'); ?></h4>
                     <p>
-                        <?php echo $this->user->getEmail(); ?>
+                        <?php echo $this->escapeHtml($this->user->getEmail()); ?>
                     </p>
-                    <hr />
+                    <hr/>
 
                     <h4><?php echo $this->translate('Active'); ?></h4>
                     <p>
