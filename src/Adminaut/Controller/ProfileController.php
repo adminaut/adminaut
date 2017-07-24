@@ -2,45 +2,66 @@
 
 namespace Adminaut\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Adminaut\Controller\Plugin\UserAuthentication;
+use Adminaut\Form\UserChangePasswordForm;
+use Zend\Http\Response;
 use Zend\View\Model\ViewModel;
 
 /**
  * Class ProfileController
  * @package Adminaut\Controller
+ * @method UserAuthentication userAuthentication()
  */
-class ProfileController extends AbstractActionController
+class ProfileController extends AdminautBaseController
 {
 
     /**
-     * @return ViewModel
+     * @return Response|ViewModel
      */
     public function indexAction()
     {
-        return new ViewModel();
+        $user = $this->userAuthentication()->getIdentity();
+
+        return new ViewModel([
+            'user' => $user,
+        ]);
     }
 
     /**
-     * @return ViewModel
+     * @return Response|ViewModel
      */
     public function changePasswordAction()
     {
-        return new ViewModel();
+        $form = new UserChangePasswordForm();
+        $user = $this->userAuthentication()->getIdentity();
+
+        return new ViewModel([
+            'form' => $form,
+            'user' => $user,
+        ]);
     }
 
     /**
-     * @return ViewModel
+     * @return Response|ViewModel
      */
     public function loginsAction()
     {
-        return new ViewModel();
+        $user = $this->userAuthentication()->getIdentity();
+
+        return new ViewModel([
+            'user' => $user,
+        ]);
     }
 
     /**
-     * @return ViewModel
+     * @return Response|ViewModel
      */
     public function accessTokensAction()
     {
-        return new ViewModel();
+        $user = $this->userAuthentication()->getIdentity();
+
+        return new ViewModel([
+            'user' => $user,
+        ]);
     }
 }

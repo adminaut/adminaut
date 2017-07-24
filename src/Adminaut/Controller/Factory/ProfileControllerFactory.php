@@ -3,6 +3,10 @@
 namespace Adminaut\Controller\Factory;
 
 use Adminaut\Controller\ProfileController;
+use Adminaut\Service\AccessControlService;
+use Doctrine\ORM\EntityManager;
+use Zend\Mvc\Controller\ControllerManager;
+use Zend\Mvc\I18n\Translator;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -21,6 +25,14 @@ class ProfileControllerFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return new ProfileController();
+        /* @var $serviceLocator ControllerManager */
+        $parentLocator = $serviceLocator->getServiceLocator();
+
+        return new ProfileController(
+            $parentLocator->get('config'),
+            $parentLocator->get(AccessControlService::class),
+            $parentLocator->get(EntityManager::class),
+            $parentLocator->get(Translator::class)
+        );
     }
 }
