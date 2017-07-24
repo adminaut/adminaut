@@ -4,7 +4,7 @@ namespace Adminaut\Controller;
 
 use Adminaut\Authentication\Service\AuthenticationService;
 use Adminaut\Controller\Plugin\UserAuthentication;
-use Adminaut\Form\UserLogin as UserLoginForm;
+use Adminaut\Form\UserLoginForm;
 use Adminaut\Form\InputFilter\UserLogin as UserLoginInputFilter;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\Response;

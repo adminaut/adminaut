@@ -8,22 +8,19 @@ use Zend\Form\Element\Password;
 use Zend\Form\Form;
 
 /**
- * Class UserLogin
+ * Class UserLoginForm
  * @package Adminaut\Form
  */
-class UserLogin extends Form
+class UserLoginForm extends Form
 {
     /**
-     * UserLogin constructor.
+     * UserLoginForm constructor.
      */
     public function __construct()
     {
-        parent::__construct();
+        parent::__construct('UserLogin');
 
-        $this->setName('UserLogin');
-        $this->setAttributes([
-            'method' => 'post',
-        ]);
+        $this->setAttribute('method', 'post');
 
         $this->add([
             'type' => Email::class,
@@ -54,7 +51,7 @@ class UserLogin extends Form
             'type' => Button::class,
             'name' => 'submit',
             'options' => [
-                'label' => '<i class="fa fa-unlock"></i> ' . _('Sing in'),
+                'label' => '<i class="fa fa-unlock"></i> ' . _('Sign in'),
                 'label_options' => [
                     'disable_html_escape' => true,
                 ],
