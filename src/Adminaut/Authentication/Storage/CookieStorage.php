@@ -89,9 +89,10 @@ class CookieStorage implements StorageInterface
         $cookie = new SetCookie();
         $cookie->setName($this->options->getCookieName());
         $cookie->setPath($this->options->getCookiePath());
+        $cookie->setDomain($this->options->getCookieDomain());
         $cookie->setSecure($this->options->isCookieSecure());
         $cookie->setHttponly($this->options->isCookieHttpOnly());
-        $cookie->setExpires(new \DateTime('+1 month'));
+        $cookie->setExpires($this->options->getCookieExpires());
 
         $cookie->setValue($contents);
 
@@ -107,10 +108,11 @@ class CookieStorage implements StorageInterface
      */
     public function clear()
     {
-        if (!$this->isEmpty()) {
+        if (false === $this->isEmpty()) {
             $cookie = new SetCookie();
             $cookie->setName($this->options->getCookieName());
             $cookie->setPath($this->options->getCookiePath());
+            $cookie->setDomain($this->options->getCookieDomain());
             $cookie->setSecure($this->options->isCookieSecure());
             $cookie->setHttponly($this->options->isCookieHttpOnly());
             $cookie->setExpires(0);

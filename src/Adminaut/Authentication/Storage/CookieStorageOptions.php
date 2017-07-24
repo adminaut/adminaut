@@ -2,6 +2,8 @@
 
 namespace Adminaut\Authentication\Storage;
 
+use DateTime;
+use Traversable;
 use Zend\Stdlib\AbstractOptions;
 
 /**
@@ -29,6 +31,16 @@ class CookieStorageOptions extends AbstractOptions
      * @var string
      */
     protected $cookiePath = '/';
+
+    /**
+     * @var string
+     */
+    protected $cookieDomain = '';
+
+    /**
+     * @var string|DateTime
+     */
+    protected $cookieExpires;
 
     /**
      * @var bool
@@ -73,6 +85,38 @@ class CookieStorageOptions extends AbstractOptions
     }
 
     /**
+     * @return string
+     */
+    public function getCookieDomain()
+    {
+        return $this->cookieDomain;
+    }
+
+    /**
+     * @param string $cookieDomain
+     */
+    public function setCookieDomain($cookieDomain)
+    {
+        $this->cookieDomain = (string)$cookieDomain;
+    }
+
+    /**
+     * @return string|DateTime
+     */
+    public function getCookieExpires()
+    {
+        return $this->cookieExpires;
+    }
+
+    /**
+     * @param string|DateTime $cookieExpires
+     */
+    public function setCookieExpires($cookieExpires)
+    {
+        $this->cookieExpires = $cookieExpires;
+    }
+
+    /**
      * @return bool
      */
     public function isCookieSecure()
@@ -102,5 +146,17 @@ class CookieStorageOptions extends AbstractOptions
     public function setCookieHttpOnly($cookieHttpOnly)
     {
         $this->cookieHttpOnly = (bool)$cookieHttpOnly;
+    }
+
+    /**
+     * CookieStorageOptions constructor.
+     * @param array|Traversable|null $options
+     */
+    public function __construct($options = null)
+    {
+        // default cookieExpires value
+        $this->cookieExpires = new DateTime('+1 Month');
+
+        parent::__construct($options);
     }
 }

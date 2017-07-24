@@ -27,8 +27,10 @@ return [
         'cookie-storage' => [
             'cookieName' => 'access-token',
             'cookiePath' => '/',
+            'cookieDomain' => '',
+            'cookieExpires' => '+1 month',
             'cookieHttpOnly' => true,
-            'cookieSecure' => false,
+            'cookieSecure' => true,
         ],
     ],
 ];
