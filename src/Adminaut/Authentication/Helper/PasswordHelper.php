@@ -3,6 +3,7 @@
 namespace Adminaut\Authentication\Helper;
 
 use Zend\Crypt\Password\Bcrypt;
+use Zend\Math\Rand;
 
 /**
  * Class PasswordHelper
@@ -10,6 +11,21 @@ use Zend\Crypt\Password\Bcrypt;
  */
 class PasswordHelper
 {
+    /**
+     * @param int $length
+     * @param bool $specialChars
+     * @return string
+     */
+    public static function generate($length = 8, $specialChars = false)
+    {
+        if (true === $specialChars) {
+            return Rand::getString($length);
+        }
+
+        $charList = implode(array_merge(range('A', 'Z'), range('a', 'z'), range('0', '9')));
+        return Rand::getString($length, $charList);
+    }
+
     /**
      * @param string $password
      * @param int $cost
