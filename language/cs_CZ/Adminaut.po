@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-07-25 14:43+0200\n"
-"PO-Revision-Date: 2017-07-25 08:44-0400\n"
+"PO-Revision-Date: 2017-07-25 08:50-0400\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: Czech\n"
 "Language: cs_CZ\n"
@@ -24,18 +24,18 @@ msgstr ""
 #: src/Adminaut/Authentication/Adapter/AuthAdapter.php:66
 #: src/Adminaut/Authentication/Adapter/AuthAdapter.php:96
 msgid "Invalid credentials."
-msgstr ""
+msgstr "Neplatné přihlašovací údaje."
 
 #: src/Adminaut/Authentication/Adapter/AuthAdapter.php:70
 #: src/Adminaut/Authentication/Adapter/AuthAdapter.php:80
 #, php-format
 msgid "Account has been locked."
-msgstr ""
+msgstr "Účet byl zablokován."
 
 #: src/Adminaut/Authentication/Adapter/AuthAdapter.php:90
 #, php-format
 msgid "Account has been locked until %s."
-msgstr ""
+msgstr "Účet byl zablokován do %s."
 
 #: src/Adminaut/Authentication/Adapter/AuthAdapter.php:102
 msgid "Authenticated successfully."
@@ -87,7 +87,7 @@ msgstr "Záznam \"%s\" byl odstraněn."
 
 #: src/Adminaut/Controller/ProfileController.php:74
 msgid "Password has been changed."
-msgstr ""
+msgstr "Heslo bylo změněno."
 
 #: src/Adminaut/Controller/ProfileController.php:78
 msgid "Password does not match current password."
@@ -140,21 +140,21 @@ msgstr "Aktivní"
 #: src/Adminaut/Form/UserChangePasswordForm.php:28
 #: src/Adminaut/Form/UserChangePasswordForm.php:31
 msgid "Current password"
-msgstr ""
+msgstr "Současné heslo"
 
 #: src/Adminaut/Form/UserChangePasswordForm.php:39
 #: src/Adminaut/Form/UserChangePasswordForm.php:42
 msgid "New password"
-msgstr ""
+msgstr "Nové heslo"
 
 #: src/Adminaut/Form/UserChangePasswordForm.php:50
 #: src/Adminaut/Form/UserChangePasswordForm.php:53
 msgid "New password again"
-msgstr ""
+msgstr "Nové heslo znovu"
 
 #: src/Adminaut/Form/UserLoginForm.php:54
 msgid "Sign in"
-msgstr ""
+msgstr "Přihlásit se"
 
 #: view/adminaut/acl/add-role.phtml:3 view/adminaut/acl/index.phtml:48
 msgid "Add new role"
@@ -311,7 +311,7 @@ msgstr "Detail"
 #: view/adminaut/profile/change-password.phtml:4
 #: view/adminaut/profile/index.phtml:3 view/adminaut/profile/logins.phtml:3
 msgid "Profile:"
-msgstr ""
+msgstr "Profil:"
 
 #: view/adminaut/profile/access-tokens.phtml:8
 #: view/adminaut/profile/change-password.phtml:9
@@ -322,23 +322,23 @@ msgstr "Profil"
 
 #: view/adminaut/profile/access-tokens.phtml:9
 msgid "Access tokens"
-msgstr ""
+msgstr "Přístupové tokeny"
 
 #: view/adminaut/profile/access-tokens.phtml:48
 msgid "Delete all"
-msgstr ""
+msgstr "Odstranit vše"
 
 #: view/adminaut/profile/change-password.phtml:10
 msgid "Change password"
-msgstr ""
+msgstr "Změnit heslo"
 
 #: view/adminaut/profile/change-password.phtml:28
 msgid "Change"
-msgstr ""
+msgstr "Změnit"
 
 #: view/adminaut/profile/index.phtml:9
 msgid "Overview"
-msgstr ""
+msgstr "Přehled"
 
 #: view/adminaut/profile/index.phtml:45 view/adminaut/users/index.phtml:46
 #: view/adminaut/users/view.phtml:39
@@ -347,11 +347,11 @@ msgstr "Neaktivní"
 
 #: view/adminaut/profile/index.phtml:50
 msgid "Created at"
-msgstr ""
+msgstr "Vytvořeno"
 
 #: view/adminaut/profile/logins.phtml:9
 msgid "Logins"
-msgstr ""
+msgstr "Přihlášení"
 
 #: view/adminaut/users/add.phtml:8 view/adminaut/users/edit.phtml:8
 #: view/adminaut/users/view.phtml:3
