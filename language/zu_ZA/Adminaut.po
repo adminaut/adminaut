@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
-"POT-Creation-Date: 2017-04-12 16:16+0200\n"
-"PO-Revision-Date: 2017-04-12 12:40-0400\n"
+"POT-Creation-Date: 2017-07-25 14:43+0200\n"
+"PO-Revision-Date: 2017-07-25 08:51-0400\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: Zulu\n"
 "Language: zu_ZA\n"
@@ -20,74 +20,110 @@ msgstr ""
 "X-Crowdin-Language: zu\n"
 "X-Crowdin-File: /develop/language/source/Adminaut.po\n"
 
+#: src/Adminaut/Authentication/Adapter/AuthAdapter.php:61
+#: src/Adminaut/Authentication/Adapter/AuthAdapter.php:66
+#: src/Adminaut/Authentication/Adapter/AuthAdapter.php:96
+msgid "Invalid credentials."
+msgstr "crwdns143:0crwdne143:0"
+
+#: src/Adminaut/Authentication/Adapter/AuthAdapter.php:70
+#: src/Adminaut/Authentication/Adapter/AuthAdapter.php:80
+#, php-format
+msgid "Account has been locked."
+msgstr "crwdns144:0crwdne144:0"
+
+#: src/Adminaut/Authentication/Adapter/AuthAdapter.php:90
+#, php-format
+msgid "Account has been locked until %s."
+msgstr "crwdns145:0%scrwdne145:0"
+
+#: src/Adminaut/Authentication/Adapter/AuthAdapter.php:102
+msgid "Authenticated successfully."
+msgstr "crwdns146:0crwdne146:0"
+
 #: src/Adminaut/Controller/InstallController.php:57
-#: src/Adminaut/Controller/UsersController.php:108
+#: src/Adminaut/Controller/UsersController.php:123
 msgid "User has been successfully created."
 msgstr "crwdns134:0crwdne134:0"
 
 #: src/Adminaut/Controller/InstallController.php:60
-#: src/Adminaut/Controller/ModuleController.php:231
-#: src/Adminaut/Controller/ModuleController.php:306
-#: src/Adminaut/Controller/ModuleController.php:451
-#: src/Adminaut/Controller/ModuleController.php:484
-#: src/Adminaut/Controller/ModuleController.php:540
-#: src/Adminaut/Controller/UsersController.php:117
-#: src/Adminaut/Controller/UsersController.php:176
-#: src/Adminaut/Controller/UsersController.php:206
+#: src/Adminaut/Controller/ModuleController.php:247
+#: src/Adminaut/Controller/ModuleController.php:329
+#: src/Adminaut/Controller/ModuleController.php:543
+#: src/Adminaut/Controller/ModuleController.php:587
+#: src/Adminaut/Controller/ModuleController.php:652
+#: src/Adminaut/Controller/UsersController.php:132
+#: src/Adminaut/Controller/UsersController.php:197
+#: src/Adminaut/Controller/UsersController.php:231
 #, php-format
 msgid "Error: %s"
 msgstr "crwdns64:0%scrwdne64:0"
 
-#: src/Adminaut/Controller/ModuleController.php:220
-msgid "Record has been successfully created."
-msgstr "crwdns135:0crwdne135:0"
+#: src/Adminaut/Controller/ModuleController.php:236
+#: src/Adminaut/Controller/ModuleController.php:582
+#, php-format
+msgid "Record \"%s\" has been successfully created."
+msgstr "crwdns139:0%scrwdne139:0"
 
-#: src/Adminaut/Controller/ModuleController.php:265
-#: src/Adminaut/Controller/ModuleController.php:344
-#: src/Adminaut/Controller/ModuleController.php:395
-#: src/Adminaut/Controller/ModuleController.php:438
-#: src/Adminaut/Controller/ModuleController.php:530
+#: src/Adminaut/Controller/ModuleController.php:283
+#: src/Adminaut/Controller/ModuleController.php:373
+#: src/Adminaut/Controller/ModuleController.php:427
+#: src/Adminaut/Controller/ModuleController.php:525
+#: src/Adminaut/Controller/ModuleController.php:642
 msgid "Record was not found."
 msgstr "crwdns136:0crwdne136:0"
 
-#: src/Adminaut/Controller/ModuleController.php:299
-#: src/Adminaut/Controller/ModuleController.php:481
-msgid "Record has been successfully updated."
-msgstr "crwdns137:0crwdne137:0"
+#: src/Adminaut/Controller/ModuleController.php:318
+#: src/Adminaut/Controller/ModuleController.php:574
+#, php-format
+msgid "Record \"%s\" has been successfully updated."
+msgstr "crwdns140:0%scrwdne140:0"
 
-#: src/Adminaut/Controller/ModuleController.php:448
-#: src/Adminaut/Controller/ModuleController.php:537
-msgid "Record has been deleted."
-msgstr "crwdns138:0crwdne138:0"
+#: src/Adminaut/Controller/ModuleController.php:536
+#: src/Adminaut/Controller/ModuleController.php:649
+#, php-format
+msgid "Record \"%s\" has been deleted."
+msgstr "crwdns141:0%scrwdne141:0"
 
-#: src/Adminaut/Controller/UsersController.php:166
+#: src/Adminaut/Controller/ProfileController.php:74
+msgid "Password has been changed."
+msgstr "crwdns147:0crwdne147:0"
+
+#: src/Adminaut/Controller/ProfileController.php:78
+msgid "Password does not match current password."
+msgstr "crwdns148:0crwdne148:0"
+
+#: src/Adminaut/Controller/UsersController.php:187
 msgid "User has been successfully updated."
 msgstr "crwdns70:0crwdne70:0"
 
-#: src/Adminaut/Controller/UsersController.php:204
+#: src/Adminaut/Controller/UsersController.php:229
 msgid "User has been successfully deleted."
 msgstr "crwdns71:0crwdne71:0"
 
 #: src/Adminaut/Form/Role.php:34 src/Adminaut/Form/Role.php:37
 #: src/Adminaut/Form/User.php:47 src/Adminaut/Form/User.php:50
-#: view/adminaut/acl/index.phtml:15 view/adminaut/users/index.phtml:27
-#: view/adminaut/users/view.phtml:22
+#: view/adminaut/acl/index.phtml:15 view/adminaut/profile/index.phtml:22
+#: view/adminaut/users/index.phtml:27 view/adminaut/users/view.phtml:22
 msgid "Name"
 msgstr "crwdns72:0crwdne72:0"
 
 #: src/Adminaut/Form/User.php:58 src/Adminaut/Form/User.php:61
-#: src/Adminaut/Form/UserLogin.php:30 src/Adminaut/Form/UserLogin.php:34
+#: src/Adminaut/Form/UserLoginForm.php:29
+#: src/Adminaut/Form/UserLoginForm.php:33 view/adminaut/profile/index.phtml:28
 #: view/adminaut/users/index.phtml:28 view/adminaut/users/view.phtml:28
 msgid "Email"
 msgstr "crwdns73:0crwdne73:0"
 
 #: src/Adminaut/Form/User.php:69 src/Adminaut/Form/User.php:72
-#: src/Adminaut/Form/UserLogin.php:42 src/Adminaut/Form/UserLogin.php:46
+#: src/Adminaut/Form/UserLoginForm.php:41
+#: src/Adminaut/Form/UserLoginForm.php:45
 msgid "Password"
 msgstr "crwdns74:0crwdne74:0"
 
 #: src/Adminaut/Form/User.php:81 src/Adminaut/Form/User.php:84
-#: view/adminaut/acl/show-role.phtml:3 view/adminaut/users/index.phtml:29
+#: view/adminaut/acl/show-role.phtml:3 view/adminaut/profile/index.phtml:34
+#: view/adminaut/users/index.phtml:29
 msgid "Role"
 msgstr "crwdns75:0crwdne75:0"
 
@@ -95,14 +131,30 @@ msgstr "crwdns75:0crwdne75:0"
 msgid "Select role"
 msgstr "crwdns76:0crwdne76:0"
 
-#: src/Adminaut/Form/User.php:93 view/adminaut/users/index.phtml:44
+#: src/Adminaut/Form/User.php:93 view/adminaut/profile/index.phtml:40
+#: view/adminaut/profile/index.phtml:43 view/adminaut/users/index.phtml:44
 #: view/adminaut/users/view.phtml:34 view/adminaut/users/view.phtml:37
 msgid "Active"
 msgstr "crwdns77:0crwdne77:0"
 
-#: src/Adminaut/Form/UserLogin.php:55
-msgid "Sing in"
-msgstr "crwdns78:0crwdne78:0"
+#: src/Adminaut/Form/UserChangePasswordForm.php:28
+#: src/Adminaut/Form/UserChangePasswordForm.php:31
+msgid "Current password"
+msgstr "crwdns149:0crwdne149:0"
+
+#: src/Adminaut/Form/UserChangePasswordForm.php:39
+#: src/Adminaut/Form/UserChangePasswordForm.php:42
+msgid "New password"
+msgstr "crwdns150:0crwdne150:0"
+
+#: src/Adminaut/Form/UserChangePasswordForm.php:50
+#: src/Adminaut/Form/UserChangePasswordForm.php:53
+msgid "New password again"
+msgstr "crwdns151:0crwdne151:0"
+
+#: src/Adminaut/Form/UserLoginForm.php:54
+msgid "Sign in"
+msgstr "crwdns152:0crwdne152:0"
 
 #: view/adminaut/acl/add-role.phtml:3 view/adminaut/acl/index.phtml:48
 msgid "Add new role"
@@ -110,7 +162,8 @@ msgstr "crwdns79:0crwdne79:0"
 
 #: view/adminaut/acl/add-role.phtml:20 view/adminaut/acl/show-role.phtml:74
 #: view/adminaut/acl/update-role.phtml:50
-#: view/adminaut/user/forgot-password.phtml:17
+#: view/adminaut/auth/forgotten-password.phtml:17
+#: view/adminaut/auth/request-access.phtml:17
 msgid "Back"
 msgstr "crwdns80:0crwdne80:0"
 
@@ -144,8 +197,10 @@ msgstr "crwdns86:0crwdne86:0"
 msgid "Users assigned to role"
 msgstr "crwdns87:0crwdne87:0"
 
-#: view/adminaut/acl/show-role.phtml:77 view/adminaut/module/cyclicTab.phtml:82
-#: view/adminaut/module/view.phtml:43 view/adminaut/users/view.phtml:46
+#: view/adminaut/acl/show-role.phtml:77
+#: view/adminaut/module/cyclicTab.phtml:102
+#: view/adminaut/module/cyclicTab.phtml:123 view/adminaut/module/edit.phtml:17
+#: view/adminaut/module/view.phtml:67 view/adminaut/users/view.phtml:46
 msgid "Edit"
 msgstr "crwdns88:0crwdne88:0"
 
@@ -153,13 +208,38 @@ msgstr "crwdns88:0crwdne88:0"
 msgid "Update role"
 msgstr "crwdns89:0crwdne89:0"
 
+#: view/adminaut/auth/forgotten-password.phtml:7
+#: view/adminaut/auth/request-access.phtml:7
+msgid "Forgot password"
+msgstr "crwdns103:0crwdne103:0"
+
+#: view/adminaut/auth/forgotten-password.phtml:16
+#: view/adminaut/auth/request-access.phtml:16
+msgid "Send new password"
+msgstr "crwdns104:0crwdne104:0"
+
+#: view/adminaut/auth/login.phtml:6
+msgid "Sign in to start your session"
+msgstr "crwdns105:0crwdne105:0"
+
+#: view/adminaut/auth/login.phtml:27
+msgid "I forgot my password"
+msgstr "crwdns106:0crwdne106:0"
+
+#: view/adminaut/auth/login.phtml:28
+msgid "Request access"
+msgstr "crwdns107:0crwdne107:0"
+
 #: view/adminaut/dashboard/index.phtml:3 view/adminaut/dashboard/index.phtml:6
-#: view/adminaut/module/add.phtml:13 view/adminaut/module/cyclicTab.phtml:6
-#: view/adminaut/module/edit.phtml:12 view/adminaut/module/index.phtml:6
+#: view/adminaut/module/add.phtml:14 view/adminaut/module/cyclicTab.phtml:6
+#: view/adminaut/module/edit.phtml:14 view/adminaut/module/index.phtml:6
 #: view/adminaut/module/list.phtml:6 view/adminaut/module/tab.phtml:6
-#: view/adminaut/module/view.phtml:6 view/adminaut/users/add.phtml:11
-#: view/adminaut/users/edit.phtml:12 view/adminaut/users/index.phtml:6
-#: view/adminaut/users/view.phtml:7
+#: view/adminaut/module/view.phtml:16
+#: view/adminaut/profile/access-tokens.phtml:7
+#: view/adminaut/profile/change-password.phtml:8
+#: view/adminaut/profile/index.phtml:7 view/adminaut/profile/logins.phtml:7
+#: view/adminaut/users/add.phtml:11 view/adminaut/users/edit.phtml:12
+#: view/adminaut/users/index.phtml:6 view/adminaut/users/view.phtml:7
 msgid "Dashboard"
 msgstr "crwdns90:0crwdne90:0"
 
@@ -167,43 +247,54 @@ msgstr "crwdns90:0crwdne90:0"
 msgid "Register first user"
 msgstr "crwdns91:0crwdne91:0"
 
-#: view/adminaut/module/add.phtml:36 view/adminaut/module/cyclicTab.phtml:117
-#: view/adminaut/users/add.phtml:33
+#: view/adminaut/module/add.phtml:16 view/adminaut/users/add.phtml:13
+msgid "Add"
+msgstr "crwdns110:0crwdne110:0"
+
+#: view/adminaut/module/add.phtml:38 view/adminaut/module/cyclicTab.phtml:140
+#: view/adminaut/users/add.phtml:35
 msgid "Create"
 msgstr "crwdns92:0crwdne92:0"
 
-#: view/adminaut/module/add.phtml:37 view/adminaut/users/add.phtml:34
+#: view/adminaut/module/add.phtml:39 view/adminaut/users/add.phtml:36
 msgid "Create and continue"
 msgstr "crwdns93:0crwdne93:0"
 
-#: view/adminaut/module/add.phtml:38
+#: view/adminaut/module/add.phtml:40 view/adminaut/users/add.phtml:37
 msgid "Create and new"
 msgstr "crwdns94:0crwdne94:0"
 
-#: view/adminaut/module/add.phtml:39 view/adminaut/module/cyclicTab.phtml:84
-#: view/adminaut/module/edit.phtml:39 view/adminaut/module/view.phtml:45
-#: view/adminaut/users/add.phtml:35 view/adminaut/users/edit.phtml:36
+#: view/adminaut/module/add.phtml:41 view/adminaut/module/cyclicTab.phtml:104
+#: view/adminaut/module/edit.phtml:42 view/adminaut/module/view.phtml:69
+#: view/adminaut/users/add.phtml:38 view/adminaut/users/edit.phtml:39
 #: view/adminaut/users/view.phtml:48
 msgid "Back to list"
 msgstr "crwdns95:0crwdne95:0"
 
-#: view/adminaut/module/cyclicTab.phtml:102
+#: view/adminaut/module/cyclicTab.phtml:123
+msgid "View"
+msgstr "crwdns142:0crwdne142:0"
+
+#: view/adminaut/module/cyclicTab.phtml:123
 msgid "Add new"
 msgstr "crwdns96:0crwdne96:0"
 
-#: view/adminaut/module/cyclicTab.phtml:115
-msgid "Close update"
-msgstr "crwdns97:0crwdne97:0"
-
-#: view/adminaut/module/edit.phtml:37 view/adminaut/users/edit.phtml:34
+#: view/adminaut/module/cyclicTab.phtml:137 view/adminaut/module/edit.phtml:40
+#: view/adminaut/users/edit.phtml:37
 msgid "Save"
 msgstr "crwdns98:0crwdne98:0"
 
-#: view/adminaut/module/edit.phtml:38 view/adminaut/users/edit.phtml:35
+#: view/adminaut/module/cyclicTab.phtml:138
+msgid "Close update"
+msgstr "crwdns97:0crwdne97:0"
+
+#: view/adminaut/module/edit.phtml:41 view/adminaut/users/edit.phtml:38
 msgid "Save and continue"
 msgstr "crwdns99:0crwdne99:0"
 
-#: view/adminaut/module/edit.phtml:40 view/adminaut/module/view.phtml:46
+#: view/adminaut/module/edit.phtml:43 view/adminaut/module/view.phtml:70
+#: view/adminaut/profile/access-tokens.phtml:39
+#: view/adminaut/users/edit.phtml:40
 msgid "Delete"
 msgstr "crwdns100:0crwdne100:0"
 
@@ -211,30 +302,56 @@ msgstr "crwdns100:0crwdne100:0"
 msgid "Module"
 msgstr "crwdns101:0crwdne101:0"
 
-#: view/adminaut/module/view.phtml:20 view/adminaut/users/view.phtml:9
+#: view/adminaut/module/view.phtml:30 view/adminaut/users/view.phtml:9
 #: view/adminaut/users/view.phtml:18
 msgid "Detail"
 msgstr "crwdns102:0crwdne102:0"
 
-#: view/adminaut/user/forgot-password.phtml:7
-msgid "Forgot password"
-msgstr "crwdns103:0crwdne103:0"
+#: view/adminaut/profile/access-tokens.phtml:3
+#: view/adminaut/profile/change-password.phtml:4
+#: view/adminaut/profile/index.phtml:3 view/adminaut/profile/logins.phtml:3
+msgid "Profile:"
+msgstr "crwdns153:0crwdne153:0"
 
-#: view/adminaut/user/forgot-password.phtml:16
-msgid "Send new password"
-msgstr "crwdns104:0crwdne104:0"
+#: view/adminaut/profile/access-tokens.phtml:8
+#: view/adminaut/profile/change-password.phtml:9
+#: view/adminaut/profile/index.phtml:8 view/adminaut/profile/logins.phtml:8
+#: view/layout/layout-admin.phtml:146
+msgid "Profile"
+msgstr "crwdns117:0crwdne117:0"
 
-#: view/adminaut/user/login.phtml:7
-msgid "Sign in to start your session"
-msgstr "crwdns105:0crwdne105:0"
+#: view/adminaut/profile/access-tokens.phtml:9
+msgid "Access tokens"
+msgstr "crwdns154:0crwdne154:0"
 
-#: view/adminaut/user/login.phtml:32
-msgid "I forgot my password"
-msgstr "crwdns106:0crwdne106:0"
+#: view/adminaut/profile/access-tokens.phtml:48
+msgid "Delete all"
+msgstr "crwdns155:0crwdne155:0"
 
-#: view/adminaut/user/login.phtml:33
-msgid "Request access"
-msgstr "crwdns107:0crwdne107:0"
+#: view/adminaut/profile/change-password.phtml:10
+msgid "Change password"
+msgstr "crwdns156:0crwdne156:0"
+
+#: view/adminaut/profile/change-password.phtml:28
+msgid "Change"
+msgstr "crwdns157:0crwdne157:0"
+
+#: view/adminaut/profile/index.phtml:9
+msgid "Overview"
+msgstr "crwdns158:0crwdne158:0"
+
+#: view/adminaut/profile/index.phtml:45 view/adminaut/users/index.phtml:46
+#: view/adminaut/users/view.phtml:39
+msgid "Inactive"
+msgstr "crwdns115:0crwdne115:0"
+
+#: view/adminaut/profile/index.phtml:50
+msgid "Created at"
+msgstr "crwdns159:0crwdne159:0"
+
+#: view/adminaut/profile/logins.phtml:9
+msgid "Logins"
+msgstr "crwdns160:0crwdne160:0"
 
 #: view/adminaut/users/add.phtml:8 view/adminaut/users/edit.phtml:8
 #: view/adminaut/users/view.phtml:3
@@ -247,15 +364,7 @@ msgstr "crwdns108:0crwdne108:0"
 msgid "Users"
 msgstr "crwdns109:0crwdne109:0"
 
-#: view/adminaut/users/add.phtml:13
-msgid "Add"
-msgstr "crwdns110:0crwdne110:0"
-
-#: view/adminaut/users/add.phtml:23
-msgid "Add new user"
-msgstr "crwdns111:0crwdne111:0"
-
-#: view/adminaut/users/edit.phtml:14 view/adminaut/users/edit.phtml:24
+#: view/adminaut/users/edit.phtml:14 view/adminaut/users/edit.phtml:27
 msgid "Update"
 msgstr "crwdns112:0crwdne112:0"
 
@@ -267,30 +376,26 @@ msgstr "crwdns113:0crwdne113:0"
 msgid "Status"
 msgstr "crwdns114:0crwdne114:0"
 
-#: view/adminaut/users/index.phtml:46 view/adminaut/users/view.phtml:39
-msgid "Inactive"
-msgstr "crwdns115:0crwdne115:0"
-
-#: view/layout/layout-admin.phtml:108
+#: view/layout/layout-admin.phtml:120
 msgid "Toggle navigation"
 msgstr "crwdns116:0crwdne116:0"
 
-#: view/layout/layout-admin.phtml:134
-msgid "Profile"
-msgstr "crwdns117:0crwdne117:0"
-
-#: view/layout/layout-admin.phtml:137
+#: view/layout/layout-admin.phtml:149
 msgid "Sign out"
 msgstr "crwdns118:0crwdne118:0"
 
-#: view/layout/layout-admin.phtml:163
+#: view/layout/layout-admin.phtml:175
 msgid "Search..."
 msgstr "crwdns119:0crwdne119:0"
 
-#: view/layout/layout-admin.phtml:193
+#: view/layout/layout-admin.phtml:206
 #, php-format
 msgid "Powered by %s."
 msgstr "crwdns120:0%scrwdne120:0"
+
+#: view/partial/changeModal.phtml:19
+msgid "You made some changes. Do you want to leave page?"
+msgstr "crwdns161:0crwdne161:0"
 
 #: view/partial/deleteModal.phtml:6
 msgid "Confirm delete"
