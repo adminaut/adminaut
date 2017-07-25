@@ -4,6 +4,7 @@ namespace Adminaut\Controller\Factory;
 
 use Adminaut\Authentication\Service\AuthenticationService;
 use Adminaut\Controller\AuthController;
+use Adminaut\Service\UserService;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -26,6 +27,9 @@ class AuthControllerFactory implements FactoryInterface
         /** @var AuthenticationService $authenticationService */
         $authenticationService = $parentLocator->get(AuthenticationService::class);
 
-        return new AuthController($authenticationService);
+        /** @var UserService $userService */
+        $userService = $parentLocator->get(UserService::class);
+
+        return new AuthController($authenticationService, $userService);
     }
 }
