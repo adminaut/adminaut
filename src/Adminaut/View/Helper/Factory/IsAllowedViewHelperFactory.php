@@ -1,7 +1,9 @@
 <?php
+
 namespace Adminaut\View\Helper\Factory;
 
 use Adminaut\Service\AccessControlService;
+use Adminaut\View\Helper\IsAllowed;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -23,9 +25,9 @@ class IsAllowedViewHelperFactory implements FactoryInterface
         /* @var $serviceLocator \Zend\Mvc\Controller\ControllerManager */
         $parentLocator = $serviceLocator->getServiceLocator();
 
-        $viewHelper = new \Adminaut\View\Helper\IsAllowed();
-        $viewHelper->setAclService($parentLocator->get(AccessControlService::class));
-        $viewHelper->setAuthService($parentLocator->get('UserAuthService'));
-        return $viewHelper;
+        /** @var AccessControlService $accessControlService */
+        $accessControlService = $parentLocator->get(AccessControlService::class);
+
+        return new IsAllowed($accessControlService);
     }
 }

@@ -81,14 +81,17 @@
                         </tbody>
                     </table>
                     <script>
-                        (function($){
+                        (function ($) {
                             $('#cyclicEntityTable').DataTable({
                                 "paging": true,
                                 "lengthChange": true,
                                 "searching": true,
                                 "ordering": true,
                                 "info": true,
-                                "autoWidth": false
+                                "autoWidth": false,
+                                "pageLength": Cookies.get('cyclicEntityTable.dt.length') || 10
+                            }).on('length.dt', function (e, settings, len) {
+                                Cookies.set('cyclicEntityTable.dt.length', len);
                             });
                         })(jQuery);
                     </script>

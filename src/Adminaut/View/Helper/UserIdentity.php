@@ -2,8 +2,8 @@
 
 namespace Adminaut\View\Helper;
 
+use Adminaut\Authentication\Service\AuthenticationService;
 use Zend\View\Helper\AbstractHelper;
-use Zend\Authentication\AuthenticationService;
 
 /**
  * Class UserIdentity
@@ -14,35 +14,25 @@ class UserIdentity extends AbstractHelper
     /**
      * @var AuthenticationService
      */
-    protected $authService;
+    private $authenticationService;
 
     /**
-     * @return bool|mixed|null
+     * UserIdentity constructor.
+     * @param AuthenticationService $authenticationService
+     */
+    public function __construct(AuthenticationService $authenticationService)
+    {
+        $this->authenticationService = $authenticationService;
+    }
+
+    /**
+     * @return \Adminaut\Entity\UserEntity|bool|null
      */
     public function __invoke()
     {
-        if ($this->getAuthService()->hasIdentity()) {
-            return $this->getAuthService()->getIdentity();
-        } else {
-            return false;
+        if ($this->authenticationService->hasIdentity()) {
+            return $this->authenticationService->getIdentity();
         }
-    }
-
-    /**
-     * @return AuthenticationService
-     */
-    public function getAuthService()
-    {
-        return $this->authService;
-    }
-
-    /**
-     * @param AuthenticationService $authService
-     * @return $this
-     */
-    public function setAuthService(AuthenticationService $authService)
-    {
-        $this->authService = $authService;
-        return $this;
+        return false;
     }
 }

@@ -11,7 +11,7 @@
         ->appendName('robots', 'noindex, nofollow')
         ->appendHttpEquiv('X-UA-Compatible', 'IE=edge');
 
-    echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath('adminaut/img/favicon.ico')))
+    echo $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath('adminaut/img/favicon.ico')])
         ->appendStylesheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
         ->appendStylesheet($this->basePath('adminaut/admin/bootstrap-datetimepicker.min.css'))
         ->appendStylesheet('https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css')
@@ -35,14 +35,14 @@
         ->appendFile($this->basePath('adminaut/js/dataTables.bootstrap.min.js'))
         ->appendFile($this->basePath('adminaut/themes/adminlte/dist/js/app.min.js'))
         ->appendFile($this->basePath('adminaut/themes/adminlte/plugins/iCheck/icheck.min.js'))
-        ->appendFile($this->basePath('adminaut/js/adminaut.js'));
+        ->appendFile($this->basePath('adminaut/js/adminaut.js?v=0.0.3'));
 
     ?>
 
 </head>
-<body class="hold-transition skin-green<?php echo " ".implode($this->bodyClasses) ?>">
+<body class="hold-transition skin-green<?php echo ' ' . implode($this->bodyClasses) ?>">
 
-<?php echo $content ?>
+<?php echo $this->content ?>
 
 <?php echo $this->inlineScript(); ?>
 

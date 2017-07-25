@@ -1,4 +1,5 @@
 <?php
+/** @var \Zend\Form\Form $form */
     $form = $this->form;
 //    $form->setAttribute('action', $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode' => 'update']));
     $form->prepare();
@@ -47,3 +48,5 @@
     </div>
     <?php echo $this->form()->closeTag(); ?>
 </section>
+
+<?php echo $this->partial('partial/changeModal', ['formId' => $form->getName()]) ?>

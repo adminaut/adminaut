@@ -15,8 +15,6 @@ class DashboardController extends AdminautBaseController
      */
     public function indexAction()
     {
-        return new ViewModel([
-
-        ]);
+        return new ViewModel();
     }
 }

@@ -3,6 +3,7 @@
 namespace Adminaut\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Zend\Form\Annotation;
 
@@ -16,6 +17,15 @@ use Zend\Form\Annotation;
  */
 class UserEntity extends Base implements UserInterface
 {
+    /**
+     * Constants
+     */
+    const STATUS_UNKNOWN = 0;
+    const STATUS_NEW = 1;
+    const STATUS_ACTIVE = 2;
+    const STATUS_LOCKED = 3;
+    const STATUS_BANNED = 4;
+
     /**
      * @ORM\Column(type="string", length=128);
      * @Annotation\Options({"label":"Name", "listed":true});
@@ -52,18 +62,41 @@ class UserEntity extends Base implements UserInterface
     protected $role;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true);
+     * @ORM\Column(type="integer", name="status", options={"default":0});
+     * @Annotation\Exclude();
      * @var int
      */
-//    protected $status;
+    protected $status;
 
     /**
-     * User constructor.
+     * Inverse side.
+     * @ORM\OneToMany(targetEntity="UserAccessTokenEntity", mappedBy="user");
+     * @Annotation\Exclude();
+     * @var Collection
+     */
+    protected $accessTokens;
+
+    /**
+     * Inverse side.
+     * @ORM\OneToMany(targetEntity="UserLoginEntity", mappedBy="user");
+     * @Annotation\Exclude();
+     * @var Collection
+     */
+    protected $logins;
+
+    //-------------------------------------------------------------------------
+
+    /**
+     * UserEntity constructor.
      */
     public function __construct()
     {
-
+        $this->status = $this::STATUS_NEW;
+        $this->accessTokens = new ArrayCollection();
+        $this->logins = new ArrayCollection();
     }
+
+    //-------------------------------------------------------------------------
 
     /**
      * @return int
@@ -161,10 +194,14 @@ class UserEntity extends Base implements UserInterface
         $this->status = $status;
     }
 
-    public function getGravatarHash() {
-        $email = trim( $this->getEmail() );
-        $email = strtolower( $email );
-        return md5( $email );
+    /**
+     * @return string
+     */
+    public function getGravatarHash()
+    {
+        $email = trim($this->getEmail());
+        $email = strtolower($email);
+        return md5($email);
     }
 
     /**

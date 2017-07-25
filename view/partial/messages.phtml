@@ -1,0 +1,37 @@
+<?php if ($this->flashMessenger()->hasInfoMessages() || $this->flashMessenger()->hasCurrentInfoMessages()) { ?>
+    <?php foreach (array_merge($this->flashMessenger()->getInfoMessages(), $this->flashMessenger()->getCurrentInfoMessages()) as $msg) { ?>
+        <div class="alert alert-info alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <?php echo $this->escapeHtml($msg) ?>
+        </div>
+    <?php } ?>
+<?php } ?>
+
+<?php if ($this->flashMessenger()->hasSuccessMessages() || $this->flashMessenger()->hasCurrentSuccessMessages()) { ?>
+    <?php foreach (array_merge($this->flashMessenger()->getSuccessMessages(), $this->flashMessenger()->getCurrentSuccessMessages()) as $msg) { ?>
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <?php echo $this->escapeHtml($msg) ?>
+        </div>
+    <?php } ?>
+<?php } ?>
+
+<?php if ($this->flashMessenger()->hasWarningMessages() || $this->flashMessenger()->hasCurrentWarningMessages()) { ?>
+    <?php foreach (array_merge($this->flashMessenger()->getWarningMessages(), $this->flashMessenger()->getCurrentWarningMessages()) as $msg) { ?>
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <?php echo $this->escapeHtml($msg) ?>
+        </div>
+    <?php } ?>
+<?php } ?>
+
+<?php if ($this->flashMessenger()->hasErrorMessages() || $this->flashMessenger()->hasCurrentErrorMessages()) { ?>
+    <?php foreach (array_merge($this->flashMessenger()->getErrorMessages(), $this->flashMessenger()->getCurrentErrorMessages()) as $msg) { ?>
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <?php echo $this->escapeHtml($msg) ?>
+        </div>
+    <?php } ?>
+<?php } ?>
+
+<?php $this->flashMessenger()->clearCurrentMessagesFromContainer() ?>

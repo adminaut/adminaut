@@ -1,10 +1,11 @@
 <?php
+
 namespace Adminaut\Navigation;
 
+use Adminaut\Authentication\Service\AuthenticationService;
 use Adminaut\Service\AccessControlService;
 use Interop\Container\ContainerInterface;
 use Zend\Navigation\Service\DefaultNavigationFactory;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Class Navigation
@@ -20,7 +21,7 @@ class Navigation extends DefaultNavigationFactory
     protected function getPages(ContainerInterface $container)
     {
         /* @var $authService \Zend\Authentication\AuthenticationService */
-        $authService = $container->get('UserAuthService');
+        $authService = $container->get(AuthenticationService::class);
         $accessControl = $container->get(AccessControlService::class);
         $accessControl->setUser($authService->getIdentity());
 
@@ -34,7 +35,7 @@ class Navigation extends DefaultNavigationFactory
         $pages[] = [
             'label' => 'Dashboard',
             'route' => 'adminaut/dashboard',
-            'icon' => 'fa fa-fw fa-dashboard'
+            'icon' => 'fa fa-fw fa-dashboard',
         ];
 
         foreach ($modules as $key => $item) {
@@ -42,7 +43,7 @@ class Navigation extends DefaultNavigationFactory
                 $pages[] = [
                     'label' => $item['label'],
                     'uri' => '#',
-                    'section' => true
+                    'section' => true,
                 ];
             }
             if ($item['type'] == 'module') {
@@ -66,8 +67,8 @@ class Navigation extends DefaultNavigationFactory
                                 'params' => [
                                     'module_id' => $key,
                                 ],
-                            ]
-                        ]
+                            ],
+                        ],
                     ];
                 }
             }
@@ -77,7 +78,7 @@ class Navigation extends DefaultNavigationFactory
             $pages[] = [
                 'label' => 'Systém',
                 'uri' => '#',
-                'section' => true
+                'section' => true,
             ];
             $subPage = [];
             if ($accessControl->isAllowed('users', AccessControlService::READ)) {
@@ -88,17 +89,17 @@ class Navigation extends DefaultNavigationFactory
                     'pages' => [
                         [
                             'label' => 'Add',
-                            'route' => 'adminaut/users/add'
+                            'route' => 'adminaut/users/add',
                         ],
                         [
                             'label' => 'View',
-                            'route' => 'adminaut/users/view'
+                            'route' => 'adminaut/users/view',
                         ],
                         [
                             'label' => 'Edit',
-                            'route' => 'adminaut/users/edit'
-                        ]
-                    ]
+                            'route' => 'adminaut/users/edit',
+                        ],
+                    ],
                 ];
             }
             $pages[] = [

@@ -2,12 +2,9 @@
 
 namespace Adminaut\Mapper;
 
-use Doctrine\ORM\EntityManagerInterface;
-
-use Adminaut\Options\UserOptions;
-
+use Adminaut\Entity\UserEntity;
+use Doctrine\ORM\EntityManager;
 use Zend\Stdlib\Hydrator\HydratorInterface;
-
 
 /**
  * Class UserMapper
@@ -16,24 +13,17 @@ use Zend\Stdlib\Hydrator\HydratorInterface;
 class UserMapper extends AbstractDbMapper
 {
     /**
-     * @var \Doctrine\ORM\EntityManagerInterface
+     * @var EntityManager
      */
-    protected $em;
+    protected $entityManager;
 
     /**
-     * @var UserOptions
+     * UserMapper constructor.
+     * @param $entityManager
      */
-    protected $options;
-
-    /**
-     * User constructor.
-     * @param $em
-     * @param $options
-     */
-    public function __construct($em, $options)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->em = $em;
-        $this->options = $options;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -42,7 +32,7 @@ class UserMapper extends AbstractDbMapper
      */
     public function findByEmail($email)
     {
-        $er = $this->em->getRepository($this->options->getUserEntityClass());
+        $er = $this->entityManager->getRepository(UserEntity::class);
         return $er->findOneBy(['email' => $email]);
     }
 
@@ -52,7 +42,7 @@ class UserMapper extends AbstractDbMapper
      */
     public function findByUsername($username)
     {
-        $er = $this->em->getRepository($this->options->getUserEntityClass());
+        $er = $this->entityManager->getRepository(UserEntity::class);
         return $er->findOneBy(['username' => $username]);
     }
 
@@ -62,16 +52,17 @@ class UserMapper extends AbstractDbMapper
      */
     public function findById($id)
     {
-        $er = $this->em->getRepository($this->options->getUserEntityClass());
+        $er = $this->entityManager->getRepository(UserEntity::class);
         return $er->findOneBy([
             'id' => $id,
-            'deleted' => 0
+            'deleted' => 0,
         ]);
     }
 
-    public function findFirst(){
-        $er = $this->em->getRepository($this->options->getUserEntityClass());
-        return (isset($er->findAll()[0])) ? $er->findAll()[0] : array();
+    public function findFirst()
+    {
+        $er = $this->entityManager->getRepository(UserEntity::class);
+        return (isset($er->findAll()[0])) ? $er->findAll()[0] : [];
     }
 
     /**
@@ -103,8 +94,8 @@ class UserMapper extends AbstractDbMapper
      */
     protected function persist($entity)
     {
-        $this->em->persist($entity);
-        $this->em->flush();
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
         return $entity;
     }
 }

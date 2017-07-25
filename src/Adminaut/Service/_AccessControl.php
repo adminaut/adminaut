@@ -7,8 +7,8 @@ use Adminaut\Entity\Role as RoleEntity;
 use Adminaut\Entity\Resource as ResourceEntity;
 use Adminaut\Form\RolePermission as RolePermission;
 use Adminaut\Mapper\Resource as ResourceMapper;
-use Adminaut\Mapper\Role as RoleMapper;
-use Adminaut\Mapper\User as UserMapper;
+use Adminaut\Mapper\RoleMapper;
+use Adminaut\Mapper\UserMapper;
 
 use Zend\Permissions\Acl\Acl;
 use Zend\Permissions\Acl\Role\GenericRole as Role;
@@ -148,11 +148,10 @@ class _AccessControl
 
     /**
      * @param RoleEntity $entity
-     * @return mixed
      */
     public function deleteRole(RoleEntity $entity)
     {
-        return $this->getRoleMapper()->delete($entity);
+        $this->getRoleMapper()->delete($entity);
     }
 
     /**
@@ -221,7 +220,7 @@ class _AccessControl
     /**
      * @return array
      */
-    public function getConfig(): array
+    public function getConfig()
     {
         return $this->config;
     }
@@ -237,7 +236,7 @@ class _AccessControl
     /**
      * @return EntityManager
      */
-    public function getEntityManager(): EntityManager
+    public function getEntityManager()
     {
         return $this->entityManager;
     }
@@ -253,7 +252,7 @@ class _AccessControl
     /**
      * @return UserMapper
      */
-    public function getUserMapper(): UserMapper
+    public function getUserMapper()
     {
         return $this->userMapper;
     }
@@ -269,7 +268,7 @@ class _AccessControl
     /**
      * @return RoleMapper
      */
-    public function getRoleMapper(): RoleMapper
+    public function getRoleMapper()
     {
         return $this->roleMapper;
     }
@@ -285,7 +284,7 @@ class _AccessControl
     /**
      * @return ResourceMapper
      */
-    public function getResourceMapper(): ResourceMapper
+    public function getResourceMapper()
     {
         return $this->resourceMapper;
     }
