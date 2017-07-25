@@ -75,7 +75,7 @@
             ->appendFile($this->basePath('adminaut/themes/adminlte/plugins/slimScroll/jquery.slimscroll.min.js'))
             ->appendFile($this->basePath('adminaut/themes/adminlte/dist/js/app.js'))
             ->appendFile($this->basePath('adminaut/js/js.cookie.js'))
-            ->appendFile($this->basePath('adminaut/js/adminaut.js'));
+            ->appendFile($this->basePath('adminaut/js/adminaut.js?v=0.0.3'));
 
         ?>
     </head>
@@ -222,6 +222,10 @@
             }
         });
     </script>
-
+        <script>
+            $(document).ready(function () {
+                $('form[data-doubleclick="1"]').doubleClickHandler();
+            });
+        </script>
     </body>
 </html>

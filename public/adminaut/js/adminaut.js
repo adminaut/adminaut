@@ -33,7 +33,3 @@ function appendStyle(filepath) {
         });
     });
 })(jQuery);
-
-$(document).ready(function () {
-    $('form[data-doubleclick="1"]').doubleClickHandler();
-});
