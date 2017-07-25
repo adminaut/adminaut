@@ -5,7 +5,7 @@ namespace Adminaut\Controller;
 use Adminaut\Authentication\Service\AuthenticationService;
 use Adminaut\Controller\Plugin\UserAuthentication;
 use Adminaut\Form\UserLoginForm;
-use Adminaut\Form\InputFilter\UserLogin as UserLoginInputFilter;
+use Adminaut\Form\InputFilter\UserLoginInputFilter;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -21,6 +21,7 @@ class AuthController extends AbstractActionController
     /**
      * Constants
      */
+    const ROUTE_INDEX = 'adminaut/auth';
     const ROUTE_LOGIN = 'adminaut/auth/login';
     const ROUTE_LOGOUT = 'adminaut/auth/logout';
     const ROUTE_FORGOTTEN_PASSWORD = 'adminaut/auth/forgotten-password';
