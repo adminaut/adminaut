@@ -6,6 +6,7 @@ use Adminaut\Authentication\Service\AuthenticationService;
 use Adminaut\Controller\Plugin\UserAuthentication;
 use Adminaut\Form\UserLoginForm;
 use Adminaut\Form\InputFilter\UserLoginInputFilter;
+use Adminaut\Service\UserService;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -33,12 +34,19 @@ class AuthController extends AbstractActionController
     private $authenticationService;
 
     /**
+     * @var UserService
+     */
+    private $userService;
+
+    /**
      * AuthController constructor.
      * @param AuthenticationService $authenticationService
+     * @param UserService $userService
      */
-    public function __construct(AuthenticationService $authenticationService)
+    public function __construct(AuthenticationService $authenticationService, UserService $userService)
     {
         $this->authenticationService = $authenticationService;
+        $this->userService = $userService;
     }
 
     /**
@@ -56,6 +64,10 @@ class AuthController extends AbstractActionController
     {
         if (true === $this->authenticationService->hasIdentity()) {
             return $this->redirect()->toRoute('adminaut/dashboard');
+        }
+
+        if (null === $this->userService->getUserMapper()->findFirst()) {
+            return $this->redirect()->toRoute('adminaut/install');
         }
 
         $form = new UserLoginForm();
