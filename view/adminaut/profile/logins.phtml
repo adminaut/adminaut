@@ -18,8 +18,35 @@
             <li class="active"><a href="<?php echo $this->url('adminaut/profile/logins'); ?>">Logins</a></li>
             <li><a href="<?php echo $this->url('adminaut/profile/access-tokens'); ?>">Access tokens</a></li>
         </ul>
-        <div class="tab-content">
+        <div class="tab-content no-padding">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th style="width: 10px">#</th>
+                    <th>Type</th>
+                    <th>Created</th>
+                    <th>IP Address</th>
+                    <th>User Agent</th>
+                </tr>
 
+                <?php /** @var \Adminaut\Entity\UserLoginEntity $login */ ?>
+                <?php foreach ($this->logins as $login) { ?>
+                    <tr>
+                        <td><?php echo $login->getId(); ?>.</td>
+                        <td>
+                            <?php if (\Adminaut\Entity\UserLoginEntity::TYPE_FAILED === $login->getType()) { ?>
+                                <span class="label label-danger">Failed</span>
+                            <?php } else { ?>
+                                <span class="label label-success">Successful</span>
+                            <?php } ?>
+                        </td>
+                        <td><?php echo $login->getInserted()->format('Y-m-d H:i'); ?></td>
+                        <td><?php echo $login->getIpAddress(); ?></td>
+                        <td><?php echo $login->getUserAgent(); ?></td>
+                    </tr>
+                <?php } ?>
+                </tbody>
+            </table>
         </div>
     </div>
 </section>

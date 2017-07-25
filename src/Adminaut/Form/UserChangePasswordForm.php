@@ -2,8 +2,9 @@
 
 namespace Adminaut\Form;
 
+use Zend\Form\Element\Button;
 use Zend\Form\Element\Password;
-use Zend\Form\Form;
+use Adminaut\Form\Form;
 
 /**
  * Class UserChangePasswordForm
@@ -25,7 +26,6 @@ class UserChangePasswordForm extends Form
             'name' => 'password',
             'options' => [
                 'label' => _('Current password'),
-                'add-on-append' => '<i class="fa fa-key"></i>',
             ],
             'attributes' => [
                 'placeholder' => _('Current password'),
@@ -37,7 +37,6 @@ class UserChangePasswordForm extends Form
             'name' => 'newPassword',
             'options' => [
                 'label' => _('New password'),
-                'add-on-append' => '<i class="fa fa-key"></i>',
             ],
             'attributes' => [
                 'placeholder' => _('New password'),
@@ -49,7 +48,6 @@ class UserChangePasswordForm extends Form
             'name' => 'newPasswordAgain',
             'options' => [
                 'label' => _('New password again'),
-                'add-on-append' => '<i class="fa fa-key"></i>',
             ],
             'attributes' => [
                 'placeholder' => _('New password again'),

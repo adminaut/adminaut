@@ -8,11 +8,12 @@ use Zend\Validator\EmailAddress;
 use Zend\Validator\StringLength;
 
 /**
- * Class UserLogin
+ * Class UserLoginInputFilter
  * @package Adminaut\Form\InputFilter
  */
-class UserLogin extends InputFilter
+class UserLoginInputFilter extends InputFilter
 {
+
     /**
      * UserLogin constructor.
      */

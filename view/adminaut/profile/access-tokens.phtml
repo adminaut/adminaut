@@ -18,8 +18,36 @@
             <li><a href="<?php echo $this->url('adminaut/profile/logins'); ?>">Logins</a></li>
             <li class="active"><a href="<?php echo $this->url('adminaut/profile/access-tokens'); ?>">Access tokens</a></li>
         </ul>
-        <div class="tab-content">
+        <div class="tab-content no-padding">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th style="width: 10px">#</th>
+                    <th>Hash</th>
+                    <th>Created</th>
+                    <th style="width: 40px">Action</th>
+                </tr>
 
+                <?php /** @var \Adminaut\Entity\UserAccessTokenEntity $accessToken */ ?>
+                <?php foreach ($this->accessTokens as $accessToken) { ?>
+                    <tr>
+                        <td><?php echo $accessToken->getId(); ?>.</td>
+                        <td><?php echo $accessToken->getHash(); ?></td>
+                        <td><?php echo $accessToken->getInserted()->format('Y-m-d H:i'); ?></td>
+                        <td>
+                            <a class="btn btn-xs btn-danger" href="<?php echo $this->url('adminaut/profile/access-tokens/delete', ['id' => $accessToken->getId()]); ?>">
+                                <?php echo $this->translate(_('Delete')) ?>
+                            </a>
+                        </td>
+                    </tr>
+                <?php } ?>
+                </tbody>
+            </table>
+            <div class="text-center">
+                <a class="btn btn-danger" href="<?php echo $this->url('adminaut/profile/access-tokens/delete-all'); ?>">
+                    <?php echo $this->translate(_('Delete all')) ?>
+                </a>
+            </div>
         </div>
     </div>
 </section>

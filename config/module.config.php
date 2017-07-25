@@ -529,6 +529,27 @@ return [
                                         'action' => 'accessTokens',
                                     ],
                                 ],
+                                'may_terminate' => true,
+                                'child_routes' => [
+                                    'delete' => [
+                                        'type' => Segment::class,
+                                        'options' => [
+                                            'route' => '/delete/:id',
+                                            'defaults' => [
+                                                'action' => 'deleteAccessToken',
+                                            ],
+                                        ],
+                                    ],
+                                    'delete-all' => [
+                                        'type' => Literal::class,
+                                        'options' => [
+                                            'route' => '/delete-all',
+                                            'defaults' => [
+                                                'action' => 'deleteAllAccessTokens',
+                                            ],
+                                        ],
+                                    ],
+                                ],
                             ],
                         ],
                     ],

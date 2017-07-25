@@ -31,6 +31,12 @@
             </p>
             <hr/>
 
+            <h4><?php echo $this->translate('Role'); ?></h4>
+            <p>
+                <?php echo $this->escapeHtml($this->user->getRole()); ?>
+            </p>
+            <hr/>
+
             <h4><?php echo $this->translate('Active'); ?></h4>
             <p>
                 <?php if ($this->user->isActive()) { ?>
@@ -38,6 +44,12 @@
                 <?php } else { ?>
                     <span class="label label-danger"><?php echo $this->translate('Inactive'); ?></span>
                 <?php } ?>
+            </p>
+            <hr/>
+
+            <h4><?php echo $this->translate('Created at'); ?></h4>
+            <p>
+                <?php echo $this->escapeHtml($this->user->getInserted()->format('Y-m-d H:i')); ?>
             </p>
         </div>
     </div>
