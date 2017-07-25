@@ -2,7 +2,10 @@
 
 namespace Adminaut\Form\InputFilter;
 
+use Zend\Filter\StringTrim;
 use Zend\InputFilter\InputFilter;
+use Zend\Validator\EmailAddress;
+use Zend\Validator\StringLength;
 
 /**
  * Class User
@@ -10,16 +13,19 @@ use Zend\InputFilter\InputFilter;
  */
 class User extends InputFilter
 {
+
     /**
-     * UserLogin constructor.
+     * User constructor.
      */
     public function __construct()
-	{
+    {
         $this->add([
             'name' => 'name',
             'required' => true,
             'filters' => [
-                ['name' => 'StringTrim'],
+                [
+                    'name' => StringTrim::class,
+                ],
             ],
         ]);
 
@@ -28,28 +34,32 @@ class User extends InputFilter
             'required' => true,
             'validators' => [
                 [
-                    'name' => 'EmailAddress',
+                    'name' => EmailAddress::class,
                 ],
             ],
             'filters' => [
-                ['name' => 'StringTrim'],
+                [
+                    'name' => StringTrim::class,
+                ],
             ],
         ]);
 
         $this->add([
-            'name' => 'credential',
+            'name' => 'password',
             'required' => false,
             'validators' => [
                 [
-                    'name' => 'StringLength',
+                    'name' => StringLength::class,
                     'options' => [
                         'min' => 6,
                     ],
                 ],
             ],
             'filters' => [
-                ['name' => 'StringTrim'],
+                [
+                    'name' => StringTrim::class,
+                ],
             ],
         ]);
-	}
+    }
 }

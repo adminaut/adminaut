@@ -5,6 +5,8 @@ namespace Adminaut\Controller;
 use Adminaut\Form\User as UserForm;
 use Adminaut\Form\InputFilter\User as UserInputFilter;
 use Adminaut\Service\UserService;
+use Zend\Http\PhpEnvironment\Request;
+use Zend\Http\Response;
 use Zend\Mvc\I18n\Translator;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -27,7 +29,8 @@ class InstallController extends AbstractActionController
 
     /**
      * InstallController constructor.
-     * @param $userService
+     * @param UserService $userService
+     * @param $translator
      */
     public function __construct(UserService $userService, $translator)
     {
@@ -36,7 +39,7 @@ class InstallController extends AbstractActionController
     }
 
     /**
-     * @return \Zend\Http\Response|ViewModel
+     * @return Response|ViewModel
      */
     public function indexAction()
     {
@@ -48,26 +51,29 @@ class InstallController extends AbstractActionController
         $form = new UserForm(UserForm::STATUS_INSTALL);
         $form->setInputFilter(new UserInputFilter());
 
-        if ($this->getRequest()->isPost()) {
-            $post = $this->getRequest()->getPost()->toArray();
+        /** @var Request $request */
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+            $post = $request->getPost()->toArray();
             $form->setData($post);
             if ($form->isValid()) {
                 try {
                     $this->getUserService()->createSuperuser($post);
                     $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully created.'));
                     return $this->redirect()->toRoute(AuthController::ROUTE_LOGIN);
-                } catch(\Exception $e) {
+                } catch (\Exception $e) {
                     $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
                     return $this->redirect()->toRoute('adminaut/install');
                 }
             }
         }
         $this->layout()->setVariables([
-            'bodyClasses' => ['login-page']
+            'bodyClasses' => ['login-page'],
         ]);
         $this->layout('layout/admin-blank');
         return new ViewModel([
-            'form' => $form
+            'form' => $form,
         ]);
     }
 

@@ -2,8 +2,12 @@
 
 namespace Adminaut\Form;
 
+use Adminaut\Form\Element\Checkbox;
+use Zend\Form\Element\Email;
+use Zend\Form\Element\Password;
+use Zend\Form\Element\Select;
+use Zend\Form\Element\Text;
 use Zend\Form\Form;
-use Zend\Form\Element;
 
 /**
  * Class User
@@ -12,9 +16,8 @@ use Zend\Form\Element;
 class User extends Form
 {
     /**
-     * @var int
+     * Constants.
      */
-
     const STATUS_INSTALL = 0;
     const STATUS_ADD = 1;
     const STATUS_UPDATE = 2;
@@ -41,7 +44,7 @@ class User extends Form
         ]);
 
         $this->add([
-            'type' => 'Zend\Form\Element\Text',
+            'type' => Text::class,
             'name' => 'name',
             'options' => [
                 'label' => _('Name'),
@@ -52,7 +55,7 @@ class User extends Form
         ]);
 
         $this->add([
-            'type' => 'Zend\Form\Element\Email',
+            'type' => Email::class,
             'name' => 'email',
             'options' => [
                 'label' => _('Email'),
@@ -63,8 +66,8 @@ class User extends Form
         ]);
 
         $this->add([
-            'type' => 'Zend\Form\Element\Password',
-            'name' => 'credential',
+            'type' => Password::class,
+            'name' => 'password',
             'options' => [
                 'label' => _('Password'),
             ],
@@ -75,7 +78,7 @@ class User extends Form
 
         if ($status != static::STATUS_INSTALL) {
             $this->add([
-                'type' => 'Zend\Form\Element\Select',
+                'type' => Select::class,
                 'name' => 'role',
                 'attributes' => [
                     'placeholder' => _('Role'),
@@ -87,20 +90,20 @@ class User extends Form
             ]);
 
             $this->add([
-                'type' => 'Adminaut\Form\Element\Checkbox',
+                'type' => Checkbox::class,
                 'name' => 'active',
                 'options' => [
                     'label' => _('Active'),
                     'checked_value' => 1,
-                    'unchecked_value' => 0
+                    'unchecked_value' => 0,
                 ],
                 'attributes' => [
                     'value' => false,
-                ]
+                ],
             ]);
         }
 
-        if($status == static::STATUS_INSTALL) {
+        if ($status == static::STATUS_INSTALL) {
             $this->add([
                 'type' => 'Zend\Form\Element\Button',
                 'name' => 'submit',
@@ -109,7 +112,7 @@ class User extends Form
                 ],
                 'attributes' => [
                     'type' => 'submit',
-                    'class' => 'btn btn-primary pull-right'
+                    'class' => 'btn btn-primary pull-right',
                 ],
             ]);
         }
