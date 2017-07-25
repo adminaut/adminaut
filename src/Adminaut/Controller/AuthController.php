@@ -62,12 +62,12 @@ class AuthController extends AbstractActionController
      */
     public function loginAction()
     {
-        if (true === $this->authenticationService->hasIdentity()) {
-            return $this->redirect()->toRoute('adminaut/dashboard');
-        }
-
         if (null === $this->userService->getUserMapper()->findFirst()) {
             return $this->redirect()->toRoute('adminaut/install');
+        }
+
+        if (true === $this->authenticationService->hasIdentity()) {
+            return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
         $form = new UserLoginForm();
