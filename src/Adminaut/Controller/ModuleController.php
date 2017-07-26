@@ -183,6 +183,7 @@ class ModuleController extends AdminautBaseController
     public function addAction()
     {
         $moduleId = $this->params()->fromRoute('module_id', false);
+        $entityId = (int)$this->params()->fromRoute('entity_id', 0);
 
         if (!$moduleId) {
             return $this->redirect()->toRoute('adminaut/dashboard');
@@ -197,7 +198,12 @@ class ModuleController extends AdminautBaseController
         $entityClass = $this->moduleManager->getEntityClass();
         $fm = $this->getFilemanager();
         $form = $this->moduleManager->getForm();
-        $form->bind(new $entityClass());
+        if ($entityId) {
+            $entity = $this->moduleManager->findById(1);
+            $form->bind($entity);
+        } else {
+            $form->bind(new $entityClass());
+        }
 
         /* @var Element $element */
         foreach ($form->getElements() as $element) {

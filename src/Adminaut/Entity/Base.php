@@ -51,12 +51,11 @@ class Base implements BaseEntityInterface
     protected $updatedBy = 0;
 
     /**
-     * todo: change to boolean!!!
-     * @ORM\Column(name="deleted", type="integer");
+     * @ORM\Column(name="deleted", type="boolean", options={"default":false});
      * @Annotation\Exclude();
-     * @var int
+     * @var bool
      */
-    protected $deleted = 0; // todo: change to boolean!!!
+    protected $deleted = false;
 
     /**
      * @ORM\Column(name="deleted_by", type="integer");
@@ -154,7 +153,16 @@ class Base implements BaseEntityInterface
     }
 
     /**
-     * @return int
+     * @return bool
+     */
+    public function isDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * @return bool
+     * @deprecated
      */
     public function getDeleted()
     {
@@ -162,7 +170,7 @@ class Base implements BaseEntityInterface
     }
 
     /**
-     * @param int $deleted
+     * @param bool $deleted
      */
     public function setDeleted($deleted)
     {

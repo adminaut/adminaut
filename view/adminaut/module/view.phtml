@@ -67,7 +67,10 @@
                         <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode' => 'edit']); ?>" class="btn btn-primary"><?php echo $this->translate('Edit'); ?></a>
                     <?php } ?>
                     <a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>" class="btn btn-link"><?php echo $this->translate('Back to list'); ?></a>
-                    <a href="<?php echo $this->url('adminaut/module/delete', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId()]); ?>" class="btn btn-danger pull-right"><?php echo $this->translate('Delete'); ?></a>
+                    <span class="pull-right">
+                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode'=>'add']); ?>" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="Copy" data-original-title="Copy"><i class="fa fa-clone"></i></a>
+                        <a href="#" data-href="<?php echo $this->url('adminaut/module/delete', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId()]); ?>" class="btn btn-sm btn-danger btn-modal-delete" data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                    </span>
                 </div>
                 <!-- /.box-footer -->
             </div>
@@ -90,3 +93,7 @@
         </div> */ ?>
     </div>
 </section>
+
+<?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::FULL)) { ?>
+    <?php echo $this->partial('partial/deleteModal.phtml'); ?>
+<?php } ?>

@@ -63,12 +63,18 @@ interface BaseEntityInterface
     public function setUpdatedBy($updatedBy);
 
     /**
-     * @return int
+     * @return bool
+     */
+    public function isDeleted();
+
+    /**
+     * @return bool
+     * @deprecated
      */
     public function getDeleted();
 
     /**
-     * @param int $deleted
+     * @param bool $deleted
      */
     public function setDeleted($deleted);
 
