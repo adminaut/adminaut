@@ -135,7 +135,7 @@
                     <?php if(!$readonly) { ?>
                         <?php if($this->action == "edit") { ?>
                             <button type="submit" name="submit" class="btn btn-primary" value=""><?php echo $this->translate("Save"); ?></button>
-                            <a href="<?php echo $this->url('adminaut/module/action/tab', ['module_id' => $this->url_params['module_id'], 'mode' => $this->url_params['mode'], 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId()]); ?>" class="btn btn-default"><?php echo $this->translate('Close update'); ?></a>
+                            <a href="<?php echo $this->url('adminaut/module/action/tab', ['module_id' => $this->url_params['module_id'], 'mode' => $this->url_params['mode'], 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId()]); ?>" class="btn btn-default"><?php echo $this->translate('Cancel'); ?></a>
                         <?php } else { ?>
                             <button type="submit" name="submit" class="btn btn-primary" value=""><?php echo $this->translate("Create"); ?></button>
                         <?php } ?>
