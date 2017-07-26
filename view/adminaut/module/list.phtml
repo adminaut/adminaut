@@ -65,6 +65,8 @@
                                             <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::WRITE)) { ?>
                                                 <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'edit', 'entity_id' => $entity->getId()]); ?>" type="button" class="btn btn-primary"
                                                    data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
+                                                <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $entity->getId(), 'mode'=>'add']); ?>"
+                                                   class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="Copy" data-original-title="Copy"><i class="fa fa-clone"></i></a>
                                             <?php } if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::FULL)) { ?>
                                                 <a href="#" data-href="<?php echo $this->url('adminaut/module/delete', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $entity->getId()]); ?>" type="button" class="btn btn-danger btn-modal-delete"
                                                    data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><i class="fa fa-trash"></i></a>
