@@ -1,7 +1,11 @@
 <?php
+
 namespace Adminaut\Service;
 
-
+/**
+ * Class AccessControlService
+ * @package Adminaut\Service
+ */
 class AccessControlService
 {
     const NONE = 0;
@@ -24,16 +28,17 @@ class AccessControlService
         $this->roles = $roles;
     }
 
-    public function isAllowed($module, $permissionLevel, $element = null, $entity = null) {
-        if(!$this->user) {
+    public function isAllowed($module, $permissionLevel, $element = null, $entity = null)
+    {
+        if (!$this->user) {
             return false;
         }
 
-        if($this->user->getRole() == "admin") {
+        if ($this->user->getRole() == "admin") {
             return true;
         }
 
-        if(!isset($this->roles[$this->user->getRole()])) {
+        if (!isset($this->roles[$this->user->getRole()])) {
             return false;
         }
 
@@ -41,19 +46,19 @@ class AccessControlService
 
         $allowed = false;
 
-        if(!isset($role['modules'][$module])) {
+        if (!isset($role['modules'][$module])) {
             return false;
         }
 
-        if($role['modules'][$module]['global'] >= $permissionLevel) {
+        if ($role['modules'][$module]['global'] >= $permissionLevel) {
             $allowed = true;
         }
 
-        if($element && isset($role['modules'][$module]['elements'][$element])) {
-            if($role['modules'][$module]['elements'][$element]['permission'] > $role['modules'][$module]['global']) {
+        if ($element && isset($role['modules'][$module]['elements'][$element])) {
+            if ($role['modules'][$module]['elements'][$element]['permission'] > $role['modules'][$module]['global']) {
                 throw new \Exception("You cannot set element permission bigger than global permission.");
             } else {
-                if($role['modules'][$module]['elements'][$element] >= $permissionLevel) {
+                if ($role['modules'][$module]['elements'][$element] >= $permissionLevel) {
                     $allowed = true;
                 } else {
                     $allowed = false;

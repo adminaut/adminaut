@@ -15,6 +15,7 @@ use Adminaut\Authentication\Service\AuthenticationService;
  */
 class UserService extends EventProvider
 {
+
     /**
      * @var AccessControlService
      */

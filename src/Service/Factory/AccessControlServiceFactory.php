@@ -1,9 +1,10 @@
 <?php
+
 namespace Adminaut\Service\Factory;
 
 use Adminaut\Service\AccessControlService;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class AccessControlServiceFactory
@@ -11,20 +12,30 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 class AccessControlServiceFactory implements FactoryInterface
 {
-    public function createService(ServiceLocatorInterface $serviceLocator)
+
+    /**
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
+     * @return AccessControlService
+     */
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
+
         /*return new \Adminaut\Service\AccessControl(
-            $serviceLocator->get('config'),
-            $serviceLocator->get('Doctrine\ORM\EntityManager'),
-            $serviceLocator->get('UserMapper'),
-            $serviceLocator->get('RoleMapper'),
-            $serviceLocator->get('ResourceMapper'),
-            $serviceLocator->get('ResourceMapper')
+            $container->get('config'),
+            $container->get('Doctrine\ORM\EntityManager'),
+            $container->get('UserMapper'),
+            $container->get('RoleMapper'),
+            $container->get('ResourceMapper'),
+            $container->get('ResourceMapper')
         );*/
 
-        $config = $serviceLocator->get('config');
+        /** @var array $config */
+        $config = $container->get('config');
+
         $roles = isset($config["adminaut"]['roles']) ? $config["adminaut"]['roles'] : [];
+
         return new AccessControlService($roles);
     }
-
 }
