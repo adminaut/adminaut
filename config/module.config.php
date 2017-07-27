@@ -84,6 +84,9 @@ return [
         'initializers' => [
             'ObjectManager' => Initializer\ObjectManagerInitializer::class,
         ],
+        'factories' => [
+            //'ObjectManager' => Manager\Factory\ObjectManagerFactory::class,
+        ],
     ],
 
     'doctrine' => [
@@ -91,7 +94,7 @@ return [
             'adminaut_driver' => [
                 'class' => AnnotationDriver::class,
                 'cache' => 'array',
-                'paths' => [__DIR__ . '/../src/Adminaut/Entity'],
+                'paths' => [__DIR__ . '/../src/Entity'],
             ],
             'orm_default' => [
                 'drivers' => [
