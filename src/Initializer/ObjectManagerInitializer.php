@@ -2,10 +2,10 @@
 
 namespace Adminaut\Initializer;
 
+use Doctrine\ORM\EntityManager;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
-/**+
+/**
  * Class ObjectManagerInitializer
  * @package Adminaut\Initializer
  */
@@ -13,18 +13,27 @@ class ObjectManagerInitializer
 {
 
     /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    /**
+     * ObjectManagerInitializer constructor.
+     * @param EntityManager $entityManager
+     */
+    public function __construct(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
      * @param $element
      * @param $formElements
-     * todo: can we make it as factory?
      */
     public function __invoke($element, $formElements)
     {
         if ($element instanceof ObjectManagerAwareInterface) {
-            /** @var ServiceLocatorInterface $serviceLocator */
-            $serviceLocator = $formElements->getServiceLocator();
-            $entityManager = $serviceLocator->get('doctrine.entitymanager.orm_default');
-
-            $element->setObjectManager($entityManager);
+            $element->setObjectManager($this->entityManager);
         }
     }
 }

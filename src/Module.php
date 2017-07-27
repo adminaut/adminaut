@@ -2,11 +2,9 @@
 
 namespace Adminaut;
 
-use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
-use Zend\ModuleManager\Feature\FormElementProviderInterface;
 use Zend\ModuleManager\Feature\InitProviderInterface;
 use Zend\ModuleManager\ModuleManagerInterface;
 use Zend\Mvc\ModuleRouteListener;
@@ -16,7 +14,7 @@ use Zend\Mvc\MvcEvent;
  * Class Module
  * @package Adminaut
  */
-class Module implements ConfigProviderInterface, InitProviderInterface, BootstrapListenerInterface, FormElementProviderInterface
+class Module implements ConfigProviderInterface, InitProviderInterface, BootstrapListenerInterface
 {
 
     /**
@@ -73,27 +71,5 @@ class Module implements ConfigProviderInterface, InitProviderInterface, Bootstra
                 $manager->loadModule($adminautModule);
             }
         }
-    }
-
-    /**
-     * Expected to return \Zend\ServiceManager\Config object or array to
-     * seed such an object.
-     *
-     * @return array|\Zend\ServiceManager\Config
-     */
-    public function getFormElementConfig()
-    {
-        return [
-            'initializers' => [
-                'ObjectManagerInitializer' => function ($element, $formElements) {
-                    if ($element instanceof ObjectManagerAwareInterface) {
-                        $services = $formElements->getServiceLocator(); // todo: test this
-                        $entityManager = $services->get('Doctrine\ORM\EntityManager');
-
-                        $element->setObjectManager($entityManager);
-                    }
-                },
-            ],
-        ];
     }
 }

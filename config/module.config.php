@@ -83,9 +83,10 @@ return [
     'form_elements' => [
         'initializers' => [
             'ObjectManager' => Initializer\ObjectManagerInitializer::class,
+            'ObjectManagerInitializer' => Initializer\ObjectManagerInitializer::class,
         ],
         'factories' => [
-            //'ObjectManager' => Manager\Factory\ObjectManagerFactory::class,
+            Initializer\ObjectManagerInitializer::class => Initializer\Factory\ObjectManagerInitializerFactory::class,
         ],
     ],
 
