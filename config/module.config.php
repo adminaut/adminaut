@@ -17,10 +17,6 @@ return [
             Controller\UsersController::class => Controller\Factory\UsersControllerFactory::class,
             Controller\AuthController::class => Controller\Factory\AuthControllerFactory::class,
         ],
-
-        'abstract_factories' => [
-            Controller\Factory\AdminautControllerAbstractFactory::class,
-        ],
     ],
 
     'controller_plugins' => [
