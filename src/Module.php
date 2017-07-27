@@ -3,8 +3,10 @@
 namespace Adminaut;
 
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
-use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\EventManager\EventInterface;
+use Zend\ModuleManager\Feature\BootstrapListenerInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\FormElementProviderInterface;
 use Zend\ModuleManager\Feature\InitProviderInterface;
 use Zend\ModuleManager\ModuleManagerInterface;
 use Zend\Mvc\ModuleRouteListener;
@@ -14,10 +16,47 @@ use Zend\Mvc\MvcEvent;
  * Class Module
  * @package Adminaut
  */
-class Module implements AutoloaderProviderInterface, ConfigProviderInterface, InitProviderInterface
+class Module implements ConfigProviderInterface, InitProviderInterface, BootstrapListenerInterface, FormElementProviderInterface
 {
+
     /**
-     * @param ModuleManagerInterface $manager
+     * @param MvcEvent $e
+     */
+    function onDispatchError(MvcEvent $e)
+    {
+        $vm = $e->getViewModel();
+        $vm->setTemplate('layout/admin-blank');
+    }
+
+    /**
+     * Listen to the bootstrap event
+     *
+     * @param EventInterface|MvcEvent $e
+     * @return array
+     */
+    public function onBootstrap(EventInterface $e)
+    {
+        $eventManager = $e->getApplication()->getEventManager();
+        $moduleRouteListener = new ModuleRouteListener();
+        $moduleRouteListener->attach($eventManager);
+        return [];
+    }
+
+    /**
+     * Returns configuration to merge with application configuration
+     *
+     * @return array|\Traversable
+     */
+    public function getConfig()
+    {
+        return include __DIR__ . '/../config/module.config.php';
+    }
+
+    /**
+     * Initialize workflow
+     *
+     * @param  ModuleManagerInterface $manager
+     * @return void
      */
     public function init(ModuleManagerInterface $manager)
     {
@@ -26,7 +65,6 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, In
             'DoctrineORMModule',
             'TwbBundle',
             'BsbFlysystem',
-            'Adminaut\Datatype',
         ];
 
         $loadedModules = $manager->getLoadedModules(false);
@@ -38,37 +76,18 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, In
     }
 
     /**
-     * @return array
+     * Expected to return \Zend\ServiceManager\Config object or array to
+     * seed such an object.
+     *
+     * @return array|\Zend\ServiceManager\Config
      */
-    public function getAutoloaderConfig()
-    {
-        return [
-            'Zend\Loader\ClassMapAutoloader' => [
-                __DIR__ . '/autoload_classmap.php',
-            ],
-            'Zend\Loader\StandardAutoloader' => [
-                'namespaces' => [
-                    __NAMESPACE__ => __DIR__ . '/src/' . str_replace('\\', '/', __NAMESPACE__),
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
-
     public function getFormElementConfig()
     {
         return [
             'initializers' => [
                 'ObjectManagerInitializer' => function ($element, $formElements) {
                     if ($element instanceof ObjectManagerAwareInterface) {
-                        $services = $formElements->getServiceLocator();
+                        $services = $formElements->getServiceLocator(); // todo: test this
                         $entityManager = $services->get('Doctrine\ORM\EntityManager');
 
                         $element->setObjectManager($entityManager);
@@ -76,21 +95,5 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, In
                 },
             ],
         ];
-    }
-
-    /**
-     * @param MvcEvent $e
-     */
-    public function onBootstrap(MvcEvent $e)
-    {
-        $eventManager = $e->getApplication()->getEventManager();
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->attach($eventManager);
-    }
-
-    function onDispatchError(MvcEvent $e)
-    {
-        $vm = $e->getViewModel();
-        $vm->setTemplate('layout/admin-blank');
     }
 }
