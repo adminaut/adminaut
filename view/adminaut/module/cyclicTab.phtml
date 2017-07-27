@@ -47,18 +47,18 @@
                                 </td>
                                 <?php foreach($this->listedElements as $listedElement) { ?>
                                     <td>
+                                        <?php if ($listedElement->isPrimary()) { ?>
+                                            <a href="<?php echo $this->url('adminaut/module/action/tab/action', ['module_id' => $this->url_params['module_id'], 'mode' => 'edit', 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId(), 'entity_action' => 'edit'], ['fragment' => 'form']); ?>" class="primary">
+                                        <?php } ?>
+                                        <?php $listedElement->setValue($entity->{$listedElement->getName()}) ?>
+                                        <?php if(method_exists($listedElement, 'getListedValue')) { ?>
+                                            <?php echo ($listedElement->isPrimary() && empty($listedElement->getListedValue()) ? 'undefined' : $listedElement->getListedValue()); ?>
+                                        <?php } else { ?>
+                                            <?php echo $listedElement->getValue(); ?>
+                                        <?php } ?>
                                         <?php if($listedElement->isPrimary()) { ?>
-                                        <a href="<?php echo $this->url('adminaut/module/action/tab/action', ['module_id' => $this->url_params['module_id'], 'mode' => 'edit', 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId(), 'entity_action' => 'edit'], ['fragment' => 'form']); ?>" class="primary">
-                                            <?php } ?>
-                                            <?php $listedElement->setValue($entity->{$listedElement->getName()}) ?>
-                                            <?php if(method_exists($listedElement, 'getListedValue')) { ?>
-                                                <?php echo ($listedElement->isPrimary() && empty($listedElement->getListedValue()) ? 'undefined' : $listedElement->getListedValue()); ?>
-                                            <?php } else { ?>
-                                                <?php echo $listedElement->getValue(); ?>
-                                            <?php } ?>
-                                            <?php if($listedElement->isPrimary()) { ?>
-                                        </a>
-                                    <?php } ?>
+                                            </a>
+                                        <?php } ?>
                                     </td>
                                 <?php } ?>
                                 <?php if($this->mode == "edit") { ?>

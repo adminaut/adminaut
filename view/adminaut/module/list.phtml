@@ -44,7 +44,7 @@
                                     </td>
                                     <?php foreach($this->listedElements as $listedElement) { ?>
                                         <td>
-                                            <?php if($listedElement->isPrimary()) { ?>
+                                            <?php if($listedElement->isPrimary()) { // TODO[petrm] check if method exists ?>
                                             <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $entity->getId()]); ?>" class="primary">
                                             <?php } ?>
                                             <?php $listedElement->setValue($entity->{$listedElement->getName()}) ?>
