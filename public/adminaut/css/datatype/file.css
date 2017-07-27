@@ -1,0 +1,12 @@
+.datatype-file {
+    overflow: hidden;
+}
+
+.datatype-file .file-icon {
+    float: left;
+    margin-right: 7px;
+}
+
+.datatype-file .file-info button {
+    display: block;
+}
