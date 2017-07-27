@@ -1,9 +1,11 @@
 <?php
+
 namespace Adminaut\Mapper\Factory;
 
-
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Adminaut\Mapper\Resource as ResourceMapper;
+use Doctrine\ORM\EntityManager;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class ResourceMapperFactory
@@ -13,15 +15,17 @@ class ResourceMapperFactory implements FactoryInterface
 {
 
     /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
+     * @return ResourceMapper
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        return new \Adminaut\Mapper\Resource(
-            $serviceLocator->get(\Doctrine\ORM\EntityManager::class)
-        );
+
+        /** @var EntityManager $entityManager */
+        $entityManager = $container->get(EntityManager::class);
+
+        return new ResourceMapper($entityManager);
     }
 }

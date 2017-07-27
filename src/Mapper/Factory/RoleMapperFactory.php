@@ -1,9 +1,11 @@
 <?php
+
 namespace Adminaut\Mapper\Factory;
 
-
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Adminaut\Mapper\RoleMapper;
+use Doctrine\ORM\EntityManager;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class RoleMapperFactory
@@ -13,15 +15,17 @@ class RoleMapperFactory implements FactoryInterface
 {
 
     /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
+     * @return RoleMapper
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        return new \Adminaut\Mapper\RoleMapper(
-            $serviceLocator->get(\Doctrine\ORM\EntityManager::class)
-        );
+
+        /** @var EntityManager $entityManager */
+        $entityManager = $container->get(EntityManager::class);
+
+        return new RoleMapper($entityManager);
     }
 }
