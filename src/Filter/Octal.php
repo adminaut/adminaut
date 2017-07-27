@@ -4,7 +4,6 @@ namespace Adminaut\Filter;
 
 use Adminaut\Exception;
 use Adminaut\Validator as FileManagerValidator;
-
 use Zend\Filter\AbstractFilter;
 use Zend\Validator as ZendValidator;
 
@@ -14,8 +13,9 @@ use Zend\Validator as ZendValidator;
  */
 class Octal extends AbstractFilter
 {
+
     /**
-     * const
+     * Constants.
      */
     const NOT_DIGITS = 1;
     const NOT_OCTAL = 2;

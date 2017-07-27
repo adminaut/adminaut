@@ -3,14 +3,15 @@
 namespace Adminaut\Datatype\Checkbox;
 
 use TwbBundle\Form\View\Helper\TwbBundleFormCheckbox;
-use Zend\Form\View\Helper\FormRow;
-use Zend\Form\View\Helper\FormCheckbox as ZFFormCheckbox;
 use Zend\Form\ElementInterface;
 use InvalidArgumentException;
 use LogicException;
 use Zend\Form\Element\Checkbox;
-use Zend\Form\View\Helper\FormLabel;
 
+/**
+ * Class FormViewHelper
+ * @package Adminaut\Datatype\Checkbox
+ */
 class FormViewHelper extends TwbBundleFormCheckbox
 {
     /**
@@ -53,7 +54,7 @@ class FormViewHelper extends TwbBundleFormCheckbox
         // Render checkbox label
         $sCheckboxLabelOpen = $sCheckboxLabelClose = '';
         $sCheckboxLabelContent = $this->getCheckboxLabelContent($oElement);
-        if($sCheckboxLabelContent) {
+        if ($sCheckboxLabelContent) {
             $oCheckboxLabelHelper = $this->getLabelHelper();
             $sCheckboxLabelOpen = $oCheckboxLabelHelper->openTag(['class' => 'checkbox-label', 'for' => $sName]);
             $sCheckboxLabelClose = $oCheckboxLabelHelper->closeTag();
@@ -64,29 +65,30 @@ class FormViewHelper extends TwbBundleFormCheckbox
 
         // Add label markup
         $sElementContent .= $sCheckboxLabelOpen
-                    . ($sCheckboxLabelContent ? (' ' . $sCheckboxLabelContent) : '')
-                    . $sCheckboxLabelClose;
+            . ($sCheckboxLabelContent ? (' ' . $sCheckboxLabelContent) : '')
+            . $sCheckboxLabelClose;
 
         //Render hidden input
         if ($oElement->useHiddenElement()) {
             $sElementContent = sprintf(
-                '<input type="hidden" %s%s',
-                $this->createAttributesString(array(
-                    'name' => $aAttributes['name'],
-                    'value' => $oElement->getUncheckedValue(),
-                )),
-                $sClosingBracket
-            ) . $sElementContent;
+                    '<input type="hidden" %s%s',
+                    $this->createAttributesString([
+                        'name' => $aAttributes['name'],
+                        'value' => $oElement->getUncheckedValue(),
+                    ]),
+                    $sClosingBracket
+                ) . $sElementContent;
         }
         return $sElementContent;
     }
-    
+
     /**
      * @param ElementInterface $oElement
      * @return string
      */
-    public function getCheckboxLabelContent(ElementInterface $oElement){
-        $sCheckboxLabelContent = $oElement->getCheckboxLabel() ? : '';
+    public function getCheckboxLabelContent(ElementInterface $oElement)
+    {
+        $sCheckboxLabelContent = $oElement->getCheckboxLabel() ?: '';
         if ($sCheckboxLabelContent) {
             if ($oTranslator = $this->getTranslator()) {
                 $sCheckboxLabelContent = $oTranslator->translate($sCheckboxLabelContent, $this->getTranslatorTextDomain());

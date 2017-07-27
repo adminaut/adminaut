@@ -1,6 +1,6 @@
 <?php
-namespace Adminaut\Form;
 
+namespace Adminaut\Form;
 
 use Adminaut\Form\Form;
 use Adminaut\Datatype\DatatypeManager;
