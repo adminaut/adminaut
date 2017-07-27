@@ -4,9 +4,8 @@ namespace Adminaut\Controller\Plugin\Factory;
 
 use Adminaut\Authentication\Service\AuthenticationService;
 use Adminaut\Controller\Plugin\UserAuthentication;
-use Zend\Mvc\Controller\PluginManager;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class UserAuthenticationFactory
@@ -16,18 +15,16 @@ class UserAuthenticationFactory implements FactoryInterface
 {
 
     /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface|PluginManager $serviceLocator
-     * @return mixed
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
+     * @return UserAuthentication
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        /** @var PluginManager $pluginManager */
-        $pluginManager = $serviceLocator->getServiceLocator();
 
         /** @var AuthenticationService $authenticationService */
-        $authenticationService = $pluginManager->get(AuthenticationService::class);
+        $authenticationService = $container->get(AuthenticationService::class);
 
         return new UserAuthentication($authenticationService);
     }

@@ -5,10 +5,9 @@ namespace Adminaut\Controller\Factory;
 use Adminaut\Controller\ProfileController;
 use Adminaut\Service\AccessControlService;
 use Doctrine\ORM\EntityManager;
-use Zend\Mvc\Controller\ControllerManager;
-use Zend\Mvc\I18n\Translator;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\I18n\Translator\Translator;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class ProfileControllerFactory
@@ -18,21 +17,26 @@ class ProfileControllerFactory implements FactoryInterface
 {
 
     /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
+     * @return ProfileController
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        /* @var $serviceLocator ControllerManager */
-        $parentLocator = $serviceLocator->getServiceLocator();
 
-        return new ProfileController(
-            $parentLocator->get('config'),
-            $parentLocator->get(AccessControlService::class),
-            $parentLocator->get(EntityManager::class),
-            $parentLocator->get(Translator::class)
-        );
+        /** @var array $config */
+        $config = $container->get('Config');
+
+        /** @var AccessControlService $accessControlService */
+        $accessControlService = $container->get(AccessControlService::class);
+
+        /** @var EntityManager $entityManager */
+        $entityManager = $container->get(EntityManager::class);
+
+        /** @var Translator $translator */
+        $translator = $container->get(Translator::class);
+
+        return new ProfileController($config, $accessControlService, $entityManager, $translator);
     }
 }

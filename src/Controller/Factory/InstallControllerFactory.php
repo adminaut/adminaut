@@ -4,8 +4,9 @@ namespace Adminaut\Controller\Factory;
 
 use Adminaut\Controller\InstallController;
 use Adminaut\Service\UserService;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\I18n\Translator\Translator;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class InstallControllerFactory
@@ -15,18 +16,19 @@ class InstallControllerFactory implements FactoryInterface
 {
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
      * @return InstallController
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        /* @var $serviceLocator \Zend\Mvc\Controller\ControllerManager */
-        $sm = $serviceLocator->getServiceLocator();
 
         /** @var UserService $userService */
-        $userService = $sm->get(UserService::class);
+        $userService = $container->get(UserService::class);
 
-        $translator = $sm->get('translator');
+        /** @var Translator $translator */
+        $translator = $container->get(Translator::class);
 
         return new InstallController($userService, $translator);
     }

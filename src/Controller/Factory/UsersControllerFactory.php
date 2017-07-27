@@ -8,9 +8,9 @@ use Adminaut\Mapper\UserMapper;
 use Adminaut\Service\AccessControlService;
 use Adminaut\Service\UserService;
 use Doctrine\ORM\EntityManager;
-use Zend\Mvc\I18n\Translator;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\I18n\Translator\Translator;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class UsersControllerFactory
@@ -20,24 +20,43 @@ class UsersControllerFactory implements FactoryInterface
 {
 
     /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
+     * @return UsersController
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        /* @var $serviceLocator \Zend\Mvc\Controller\ControllerManager */
-        $parentLocator = $serviceLocator->getServiceLocator();
+
+        /** @var array $config */
+        $config = $container->get('Config');
+
+        /** @var AccessControlService $accessControlService */
+        $accessControlService = $container->get(AccessControlService::class);
+
+        /** @var EntityManager $entityManager */
+        $entityManager = $container->get(EntityManager::class);
+
+        /** @var Translator $translator */
+        $translator = $container->get(Translator::class);
+
+        /** @var UserMapper $userMapper */
+        $userMapper = $container->get(UserMapper::class);
+
+        /** @var UserService $userService */
+        $userService = $container->get(UserService::class);
+
+        /** @var ModuleManager $moduleManager */
+        $moduleManager = $container->get(ModuleManager::class);
 
         return new UsersController(
-            $parentLocator->get('config'),
-            $parentLocator->get(AccessControlService::class),
-            $parentLocator->get(EntityManager::class),
-            $parentLocator->get(Translator::class),
-            $parentLocator->get(UserMapper::class),
-            $parentLocator->get(UserService::class),
-            $parentLocator->get(ModuleManager::class)
+            $config,
+            $accessControlService,
+            $entityManager,
+            $translator,
+            $userMapper,
+            $userService,
+            $moduleManager
         );
     }
 }

@@ -1,13 +1,15 @@
 <?php
+
 namespace Adminaut\Controller\Factory;
 
 use Adminaut\Controller\ModuleController;
 use Adminaut\Manager\ModuleManager;
 use Adminaut\Manager\FileManager;
 use Adminaut\Service\AccessControlService;
-use Zend\Mvc\I18n\Translator;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Doctrine\ORM\EntityManager;
+use Interop\Container\ContainerInterface;
+use Zend\I18n\Translator\Translator;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class ModuleControllerFactory
@@ -17,24 +19,43 @@ class ModuleControllerFactory implements FactoryInterface
 {
 
     /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
+     * @return ModuleController
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        /* @var $serviceLocator \Zend\Mvc\Controller\ControllerManager */
-        $parentLocator = $serviceLocator->getServiceLocator();
+
+        /** @var array $config */
+        $config = $container->get('Config');
+
+        /** @var AccessControlService $accessControlService */
+        $accessControlService = $container->get(AccessControlService::class);
+
+        /** @var EntityManager $entityManager */
+        $entityManager = $container->get(EntityManager::class);
+
+        /** @var Translator $translator */
+        $translator = $container->get(Translator::class);
+
+        /** @var ModuleManager $moduleManager */
+        $moduleManager = $container->get(ModuleManager::class);
+
+        // todo: add type hint
+        $viewRenderer = $container->get('ViewRenderer');
+
+        /** @var FileManager $fileManager */
+        $fileManager = $container->get(FileManager::class);
 
         return new ModuleController(
-            $parentLocator->get('config'),
-            $parentLocator->get(AccessControlService::class),
-            $parentLocator->get(\Doctrine\ORM\EntityManager::class),
-            $parentLocator->get(Translator::class),
-            $parentLocator->get(ModuleManager::class),
-            $parentLocator->get('ViewRenderer'),
-            $parentLocator->get(FileManager::class)
+            $config,
+            $accessControlService,
+            $entityManager,
+            $translator,
+            $moduleManager,
+            $viewRenderer,
+            $fileManager
         );
     }
 }
