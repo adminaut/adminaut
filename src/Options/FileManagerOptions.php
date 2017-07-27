@@ -2,15 +2,14 @@
 
 namespace Adminaut\Options;
 
-use Adminaut\Validator;
 use Adminaut\Exception;
-
+use Adminaut\Validator\Chmod;
 use Zend\Stdlib\AbstractOptions;
 use Zend\Filter;
 
 /**
  * Class FileManagerOptions
- * @package Application\Options
+ * @package Adminaut\Options
  */
 class FileManagerOptions extends AbstractOptions
 {
@@ -35,7 +34,7 @@ class FileManagerOptions extends AbstractOptions
     protected $defaultIsActive = true;
 
     /**
-     * @var \Application\Validator\Chmod
+     * @var Chmod
      */
     protected static $chmodValidator = null;
 
@@ -49,7 +48,7 @@ class FileManagerOptions extends AbstractOptions
 
     /**
      * @param $fileManagerFolder
-     * @return \Application\Options\FileManagerOptions
+     * @return $this
      */
     public function setFileManagerFolder($fileManagerFolder)
     {
@@ -83,12 +82,12 @@ class FileManagerOptions extends AbstractOptions
 
     /**
      * @param $chmod
-     * @return \Application\Options\FileManagerOptions
+     * @return $this
      */
     public function setChmod($chmod)
     {
         if (null === static::$chmodValidator) {
-            static::$chmodValidator = new Validator\Chmod();
+            static::$chmodValidator = new Chmod();
         }
         if (!static::$chmodValidator->isValid($chmod)) {
             throw new Exception\InvalidArgumentException(
@@ -109,7 +108,7 @@ class FileManagerOptions extends AbstractOptions
 
     /**
      * @param $defaultIsActive
-     * @return \Application\Options\FileManagerOptions
+     * @return $this
      */
     public function setDefaultIsActive($defaultIsActive)
     {

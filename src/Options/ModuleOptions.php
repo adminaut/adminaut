@@ -42,7 +42,7 @@ class ModuleOptions extends AbstractOptions
         'add_record' => 'Add record',
         'update_record' => 'Update record',
         'record_detail' => 'Record detail',
-        'general_tab' => 'General'
+        'general_tab' => 'General',
     ];
 
     /**

@@ -1,8 +1,10 @@
 <?php
+
 namespace Adminaut\Options\Factory;
 
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Adminaut\Options\FileManagerOptions;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class FileManagerOptionsFactory
@@ -12,15 +14,17 @@ class FileManagerOptionsFactory implements FactoryInterface
 {
 
     /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
+     * @return FileManagerOptions
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $config = $serviceLocator->get('config');
-        return new \Adminaut\Options\FileManagerOptions(
+        /** @var array $config */
+        $config = $container->get('config');
+
+        return new FileManagerOptions(
             $config['file_manager']['params']
         );
     }
