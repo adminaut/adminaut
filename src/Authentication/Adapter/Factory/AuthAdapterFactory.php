@@ -5,8 +5,8 @@ namespace Adminaut\Authentication\Adapter\Factory;
 use Adminaut\Authentication\Adapter\AuthAdapter;
 use Adminaut\Authentication\Adapter\AuthAdapterOptions;
 use Doctrine\ORM\EntityManager;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class AuthAdapterFactory
@@ -16,16 +16,19 @@ class AuthAdapterFactory implements FactoryInterface
 {
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
      * @return AuthAdapter
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
+
         /** @var EntityManager $entityManager */
-        $entityManager = $serviceLocator->get(EntityManager::class);
+        $entityManager = $container->get(EntityManager::class);
 
         /** @var AuthAdapterOptions $options */
-        $options = $serviceLocator->get(AuthAdapterOptions::class);
+        $options = $container->get(AuthAdapterOptions::class);
 
         return new AuthAdapter($entityManager, $options);
     }

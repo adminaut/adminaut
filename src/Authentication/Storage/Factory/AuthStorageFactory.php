@@ -5,8 +5,8 @@ namespace Adminaut\Authentication\Storage\Factory;
 use Adminaut\Authentication\Storage\AuthStorage;
 use Adminaut\Authentication\Storage\CookieStorage;
 use Doctrine\ORM\EntityManager;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class AuthStorageFactory
@@ -16,16 +16,19 @@ class AuthStorageFactory implements FactoryInterface
 {
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
      * @return AuthStorage
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
+
         /** @var EntityManager $entityManager */
-        $entityManager = $serviceLocator->get(EntityManager::class);
+        $entityManager = $container->get(EntityManager::class);
 
         /** @var CookieStorage $cookieStorage */
-        $cookieStorage = $serviceLocator->get(CookieStorage::class);
+        $cookieStorage = $container->get(CookieStorage::class);
 
         return new AuthStorage($entityManager, $cookieStorage);
     }

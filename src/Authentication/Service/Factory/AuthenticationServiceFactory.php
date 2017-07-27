@@ -5,8 +5,8 @@ namespace Adminaut\Authentication\Service\Factory;
 use Adminaut\Authentication\Adapter\AuthAdapter;
 use Adminaut\Authentication\Service\AuthenticationService;
 use Adminaut\Authentication\Storage\AuthStorage;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class AuthenticationServiceFactory
@@ -16,16 +16,19 @@ class AuthenticationServiceFactory implements FactoryInterface
 {
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
      * @return AuthenticationService
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
+
         /** @var AuthAdapter $adapter */
-        $adapter = $serviceLocator->get(AuthAdapter::class);
+        $adapter = $container->get(AuthAdapter::class);
 
         /** @var AuthStorage $storage */
-        $storage = $serviceLocator->get(AuthStorage::class);
+        $storage = $container->get(AuthStorage::class);
 
         return new AuthenticationService($adapter, $storage);
     }

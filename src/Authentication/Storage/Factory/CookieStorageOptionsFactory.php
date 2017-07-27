@@ -3,8 +3,8 @@
 namespace Adminaut\Authentication\Storage\Factory;
 
 use Adminaut\Authentication\Storage\CookieStorageOptions;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class CookieStorageOptionsFactory
@@ -14,13 +14,16 @@ class CookieStorageOptionsFactory implements FactoryInterface
 {
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
      * @return CookieStorageOptions
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
+
         /** @var array $config */
-        $config = $serviceLocator->get('Config');
+        $config = $container->get('Config');
 
         if (
             isset($config['adminaut'][CookieStorageOptions::CONFIG_KEY])

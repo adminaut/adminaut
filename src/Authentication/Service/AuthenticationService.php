@@ -14,6 +14,7 @@ use Zend\Authentication\Result;
  */
 class AuthenticationService implements AuthenticationServiceInterface
 {
+
     /**
      * @var AuthAdapter
      */
