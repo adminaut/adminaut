@@ -4,7 +4,6 @@ namespace Adminaut\Validator;
 
 use Adminaut\Filter;
 use Adminaut\Exception;
-
 use Zend\Validator\AbstractValidator;
 
 /**
@@ -16,11 +15,11 @@ class Chmod extends AbstractValidator
     /**
      * const
      */
-    const NOT_CHMOD     = 'notChmod';
-    const NOT_DIGITS    = 'notDigits';
-    const NOT_OCTAL     = 'notOctal';
-    const STRING_EMPTY  = 'chmodStringEmpty';
-    const INVALID       = 'chmodInvalid';
+    const NOT_CHMOD = 'notChmod';
+    const NOT_DIGITS = 'notDigits';
+    const NOT_OCTAL = 'notOctal';
+    const STRING_EMPTY = 'chmodStringEmpty';
+    const INVALID = 'chmodInvalid';
 
     /**
      * @var \Adminaut\Filter\Octal
@@ -31,11 +30,11 @@ class Chmod extends AbstractValidator
      * @var array
      */
     protected $messageTemplates = [
-        self::NOT_CHMOD     => 'The input is not a valid file mode',
-        self::NOT_DIGITS    => 'The input must contain only digits',
-        self::NOT_OCTAL     => 'The input is not octal or cannot be converted in octal',
-        self::STRING_EMPTY  => 'The input is an empty string',
-        self::INVALID       => 'Invalid type given. String or integer expected'
+        self::NOT_CHMOD => 'The input is not a valid file mode',
+        self::NOT_DIGITS => 'The input must contain only digits',
+        self::NOT_OCTAL => 'The input is not octal or cannot be converted in octal',
+        self::STRING_EMPTY => 'The input is an empty string',
+        self::INVALID => 'Invalid type given. String or integer expected',
     ];
 
     /**
