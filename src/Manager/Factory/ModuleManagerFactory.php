@@ -1,9 +1,11 @@
 <?php
+
 namespace Adminaut\Manager\Factory;
 
 use Adminaut\Manager\ModuleManager;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Doctrine\ORM\EntityManager;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class ModuleManagerFactory
@@ -13,15 +15,17 @@ class ModuleManagerFactory implements FactoryInterface
 {
 
     /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
+     * @return ModuleManager
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        return new ModuleManager(
-            $serviceLocator->get(\Doctrine\ORM\EntityManager::class)
-        );
+
+        /** @var EntityManager $entityManager */
+        $entityManager = $container->get(EntityManager::class);
+
+        return new ModuleManager($entityManager);
     }
 }

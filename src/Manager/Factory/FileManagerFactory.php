@@ -1,28 +1,52 @@
 <?php
+
 namespace Adminaut\Manager\Factory;
 
 use Adminaut\Options\FileManagerOptions;
+use BsbFlysystem\Service\AdapterManager;
+use Doctrine\ORM\EntityManager;
+use Interop\Container\ContainerInterface;
 use League\Flysystem\Filesystem;
 use Adminaut\Manager\FileManager;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
+/**
+ * Class FileManagerFactory
+ * @package Adminaut\Manager\Factory
+ */
 class FileManagerFactory implements FactoryInterface
 {
 
     /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
+     * @return FileManager|null
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
+
+        /** @var EntityManager $entityManager */
+        $entityManager = $container->get(EntityManager::class);
+
+        /** @var FileManagerOptions $fileManagerOptions */
+        $fileManagerOptions = $container->get(FileManagerOptions::class);
+
+        /** @var AdapterManager $adapterManager */
+        $adapterManager = $container->get(AdapterManager::class);
+
+        /** @var Filesystem $fileSystemDefault */
+        $fileSystemDefault = new Filesystem($adapterManager->get('default'));
+
+        /** @var Filesystem $fileSystemCache */
+        $fileSystemCache = new Filesystem($adapterManager->get('cache'));
+
+        // todo: rewrite to constructor DI
         FileManager::setConstructParams(
-            $serviceLocator->get(\Doctrine\ORM\EntityManager::class),
-            $serviceLocator->get(FileManagerOptions::class)->toArray(),
-            new FileSystem($serviceLocator->get(\BsbFlysystem\Service\AdapterManager::class)->get('default')),
-            new Filesystem($serviceLocator->get(\BsbFlysystem\Service\AdapterManager::class)->get('cache'))
+            $entityManager,
+            $fileManagerOptions->toArray(),
+            $fileSystemDefault,
+            $fileSystemCache
         );
         return FileManager::getInstance();
     }

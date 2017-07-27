@@ -1,29 +1,32 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Josef
- * Date: 11.8.2016
- * Time: 14:07
- */
 
 namespace Adminaut\Manager\Factory;
 
+use Adminaut\Manager\AdminModulesManager;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-
+/**
+ * Class AdminModulesManagerFactory
+ * @package Adminaut\Manager\Factory
+ */
 class AdminModulesManagerFactory implements FactoryInterface
 {
 
     /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
+     * @return AdminModulesManager
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $modules = $serviceLocator->get('Config')['adminaut']['modules'];
-        return new \Adminaut\Manager\AdminModulesManager($modules);
+
+        /** @var array $config */
+        $config = $container->get('Config');
+
+        $modules = isset($config['adminaut']['modules']) ? $config['adminaut']['modules'] : [];
+
+        return new AdminModulesManager($modules);
     }
 }

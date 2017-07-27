@@ -1,4 +1,5 @@
 <?php
+
 namespace Adminaut\Manager;
 
 use League\Flysystem\Filesystem;
@@ -12,9 +13,11 @@ use Zend\Validator\File\IsImage;
 /**
  * Class Manager
  * @package Application\FileManager
+ * todo: refactor this whole class!
  */
 class FileManager
 {
+
     private static $instance = null;
 
     private static $constructParams = null;
@@ -71,12 +74,13 @@ class FileManager
             'em' => $em,
             'params' => $params,
             'filesystem' => $filesystem,
-            'cache_filesystem' => $cacheFS
+            'cache_filesystem' => $cacheFS,
         ];
     }
 
-    public static function getInstance(){
-        if(null == self::$instance) {
+    public static function getInstance()
+    {
+        if (null == self::$instance) {
             self::$instance = new self();
         }
 
@@ -156,13 +160,13 @@ class FileManager
     public function upload($element, \Adminaut\Entity\UserEntity $user = null, array $option = [])
     {
         $_file = $element->getValue();
-        if($_file['error'] != 0){
+        if ($_file['error'] != 0) {
             return null;
         }
         $fileName = $_file['name'];
         $mimetype = $_file['type'];
-        $hash     = md5(microtime(true) . $fileName);
-        $savePath = substr($hash,0,1).'/'.substr($hash,1,1).'/';
+        $hash = md5(microtime(true) . $fileName);
+        $savePath = substr($hash, 0, 1) . '/' . substr($hash, 1, 1) . '/';
 
         $file = new File();
         if ($user) {
@@ -210,8 +214,8 @@ class FileManager
             try {
                 $exif = exif_read_data($this->getFilesystem()->getAdapter()->applyPathPrefix($sourceImage));
                 $ort = isset($exif['Orientation']) ? $exif['Orientation'] : 1;
-                $_file      = $this->getFilesystem()->read($sourceImage);
-                $image      = WideImage::load($_file);
+                $_file = $this->getFilesystem()->read($sourceImage);
+                $image = WideImage::load($_file);
                 $image_data = $image->exifOrient($ort)->resize($width, $height, 'outside')
                     ->crop('center', 'center', $width, $height)
                     ->asString($file->getFileExtension());
@@ -273,7 +277,7 @@ class FileManager
     protected function addKeywordsToFile(array $keywords)
     {
         if (!empty($keywords)) {
-            $keywordEntities = array();
+            $keywordEntities = [];
             foreach ($keywords as $word) {
                 $keyword = new FileKeyword();
                 $keyword->setValue(strtolower($word));
