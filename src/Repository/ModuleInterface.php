@@ -3,11 +3,12 @@
 namespace Adminaut\Repository;
 
 /**
- * Class ModuleInterface
+ * Interface ModuleInterface
  * @package Adminaut\Repository
  */
 interface ModuleInterface
 {
+
     /**
      * @return array
      */

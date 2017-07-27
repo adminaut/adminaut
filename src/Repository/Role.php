@@ -10,11 +10,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class Role extends EntityRepository
 {
+
     /**
      * @return array
      */
     public function getList()
     {
+        // todo: use Criteria
         $qb = $this->_em->createQueryBuilder();
         $qb->select('role')
             ->from('\Adminaut\Entity\Role', 'role');

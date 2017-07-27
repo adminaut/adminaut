@@ -10,11 +10,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class Module extends EntityRepository implements ModuleInterface
 {
+
     /**
      * @return array
      */
     public function getList()
     {
+        // todo: use Criteria
         $qb = $this->_em->createQueryBuilder();
         $qb->select('e')
             ->from($this->getEntityName(), 'e')
