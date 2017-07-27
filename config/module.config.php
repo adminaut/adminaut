@@ -3,10 +3,10 @@
 namespace Adminaut;
 
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
-use Zend\Mvc\I18n\Translator;
-use Zend\Mvc\Router\Http\Literal;
-use Zend\Mvc\Router\Http\Segment;
-use Zend\Mvc\Service\TranslatorServiceFactory;
+use Zend\I18n\Translator\Translator;
+use Zend\I18n\Translator\TranslatorServiceFactory;
+use Zend\Router\Http\Segment;
+use Zend\Router\Http\Literal;
 
 return [
     'controllers' => [

@@ -2,7 +2,6 @@
 
 return [
     'adminaut' => [
-
         'modules' => [
             2 => [
                 'type' => 'module',
@@ -17,13 +16,11 @@ return [
                 'entity_class' => 'Application\Entity\News',
             ],
         ],
-
         'auth-adapter' => [
             'failedAttemptsToLock' => 5,
             'secondsToUnlock' => 60, // int in seconds
             'automaticUnlockDisabled' => false,
         ],
-
         'cookie-storage' => [
             'cookieName' => 'access-token',
             'cookiePath' => '/',
