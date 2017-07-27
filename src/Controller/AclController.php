@@ -2,10 +2,10 @@
 
 namespace Adminaut\Controller;
 
-use Adminaut\Form\InputFilter\Role as RoleInputFilter;
-use Adminaut\Form\Role as RoleForm;
-use Adminaut\Mapper\Role;
-use Adminaut\Service\AccessControl as ACL;
+use Adminaut\Form\InputFilter\RoleInputFilter;
+use Adminaut\Form\RoleForm;
+use Adminaut\Mapper\RoleMapper;
+use Adminaut\Service\AccessControlService as ACL;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -25,7 +25,8 @@ class AclController extends AdminautBaseController
      */
     protected $roleMapper;
 
-    public function __construct($config, $acl, $em, $translator, $roleMapper) {
+    public function __construct($config, $acl, $em, $translator, $roleMapper)
+    {
         parent::__construct($config, $acl, $em, $translator);
 
         $this->setConfig($config);
@@ -58,7 +59,7 @@ class AclController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        $id = (int) $this->params()->fromRoute('roleId', 0);
+        $id = (int)$this->params()->fromRoute('roleId', 0);
         if (!$id) {
             return $this->redirect()->toRoute('adminaut-role');
         }
@@ -82,7 +83,7 @@ class AclController extends AdminautBaseController
         return new ViewModel([
             'role' => $role,
             'modules' => $modules,
-            'rolePermissions' => $rolePermissions
+            'rolePermissions' => $rolePermissions,
         ]);
     }
 
@@ -106,8 +107,8 @@ class AclController extends AdminautBaseController
                     $role = $AccessControl->createRole($post);
                     $this->flashMessenger()->addSuccessMessage('Role has been successfully added.');
                     return $this->redirect()->toRoute('adminaut/acl/update-role', ['roleId' => $role->getId()]);
-                } catch(\Exception $e) {
-                    $this->flashMessenger()->addErrorMessage('Error: '.$e->getMessage());
+                } catch (\Exception $e) {
+                    $this->flashMessenger()->addErrorMessage('Error: ' . $e->getMessage());
                     return $this->redirect()->toRoute('adminaut/acl/add-role');
                 }
             }
@@ -126,7 +127,7 @@ class AclController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        $id = (int) $this->params()->fromRoute('roleId', 0);
+        $id = (int)$this->params()->fromRoute('roleId', 0);
         if (!$id) {
             return $this->redirect()->toRoute('adminaut/acl');
         }
@@ -155,8 +156,8 @@ class AclController extends AdminautBaseController
                     $AccessControl->updateRole($role, $post);
                     $AccessControl->updateRolePermissions($role, $post);
                     $this->flashMessenger()->addSuccessMessage('Role has been successfully updated.');
-                } catch(\Exception $e) {
-                    $this->flashMessenger()->addErrorMessage('Error: '.$e->getMessage());
+                } catch (\Exception $e) {
+                    $this->flashMessenger()->addErrorMessage('Error: ' . $e->getMessage());
                 }
                 return $this->redirect()->toRoute('adminaut/acl/update-role', ['roleId' => $id]);
             }
@@ -177,7 +178,7 @@ class AclController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        $id = (int) $this->params()->fromRoute('roleId', 0);
+        $id = (int)$this->params()->fromRoute('roleId', 0);
         if ($id) {
             $roleMapper = $this->getRoleMapper();
             /**
@@ -189,16 +190,13 @@ class AclController extends AdminautBaseController
                     $AccessControl = $this->getAcl();
                     $AccessControl->deleteRole($role);
                     $this->flashMessenger()->addSuccessMessage('Role has been successfully deleted.');
-                } catch(\Exception $e) {
+                } catch (\Exception $e) {
                     $this->flashMessenger()->addErrorMessage('Error: ' . $e->getMessage());
                 }
             }
         }
         return $this->redirect()->toRoute('adminaut/acl');
     }
-
-
-
 
 
     /**

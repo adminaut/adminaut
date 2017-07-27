@@ -2,8 +2,8 @@
 
 namespace Adminaut\Controller;
 
-use Adminaut\Form\User as UserForm;
-use Adminaut\Form\InputFilter\User as UserInputFilter;
+use Adminaut\Form\UserForm;
+use Adminaut\Form\InputFilter\UserInputFilter;
 use Adminaut\Service\UserService;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\Response;

@@ -4,7 +4,7 @@ namespace Adminaut\Controller;
 
 use Adminaut\Controller\Plugin\Acl;
 use Adminaut\Entity\UserEntity;
-use Adminaut\Form\InputFilter\User as UserInputFilter;
+use Adminaut\Form\InputFilter\UserInputFilter;
 use Adminaut\Manager\ModuleManager;
 use Adminaut\Mapper\ModuleMapper;
 use Adminaut\Mapper\UserMapper;

@@ -2,34 +2,39 @@
 
 namespace Adminaut\Form\InputFilter;
 
+use Zend\Filter\StringTrim;
 use Zend\InputFilter\InputFilter;
+use Zend\Validator\StringLength;
 
 /**
- * Class Role
+ * Class RoleInputFilter
  * @package Adminaut\Form\InputFilter
  */
-class Role extends InputFilter
+class RoleInputFilter extends InputFilter
 {
     /**
-     * Role constructor.
+     * RoleInputFilter constructor.
      */
     public function __construct()
-	{
+    {
+
         $this->add([
             'name' => 'name',
             'required' => true,
             'validators' => [
                 [
-                    'name' => 'StringLength',
+                    'name' => StringLength::class,
                     'options' => [
                         'min' => 2,
-                        'max' => 32
+                        'max' => 32,
                     ],
                 ],
             ],
             'filters' => [
-                ['name' => 'StringTrim'],
+                [
+                    'name' => StringTrim::class,
+                ],
             ],
         ]);
-	}
+    }
 }

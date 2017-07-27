@@ -10,10 +10,10 @@ use Zend\Form\Element\Text;
 use Zend\Form\Form;
 
 /**
- * Class User
+ * Class UserForm
  * @package Adminaut\Form
  */
-class User extends Form
+class UserForm extends Form
 {
     /**
      * Constants.
@@ -28,12 +28,13 @@ class User extends Form
     protected $status;
 
     /**
-     * User constructor.
+     * UserForm constructor.
      * @param int $status
      * @param array $option
      */
     public function __construct($status = self::STATUS_ADD, array $option = [])
     {
+
         parent::__construct();
 
         $this->setStatus($status);

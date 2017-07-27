@@ -8,17 +8,18 @@ use Zend\Validator\EmailAddress;
 use Zend\Validator\StringLength;
 
 /**
- * Class User
+ * Class UserInputFilter
  * @package Adminaut\Form\InputFilter
  */
-class User extends InputFilter
+class UserInputFilter extends InputFilter
 {
 
     /**
-     * User constructor.
+     * UserInputFilter constructor.
      */
     public function __construct()
     {
+
         $this->add([
             'name' => 'name',
             'required' => true,

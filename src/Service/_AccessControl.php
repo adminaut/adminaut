@@ -208,12 +208,12 @@ class _AccessControl
 
     /**
      * @param RoleEntity $role
-     * @return \Adminaut\Form\Role
+     * @return \Adminaut\Form\RoleForm
      */
     public function getRoleForm(RoleEntity $role)
     {
         $resources = $this->getResourceMapper()->getAllByRole($role);
-        $form = new \Adminaut\Form\Role("update", $this->modules, $resources);
+        $form = new \Adminaut\Form\RoleForm("update", $this->modules, $resources);
         return $form;
     }
 

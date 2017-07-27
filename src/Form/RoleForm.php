@@ -2,22 +2,31 @@
 
 namespace Adminaut\Form;
 
+use Zend\Form\Element\Radio;
+use Zend\Form\Element\Text;
 use Zend\Form\Form;
-use Zend\Form\Element;
 
 /**
- * Class Role
+ * Class RoleForm
  * @package Adminaut\Form
  */
-class Role extends Form
+class RoleForm extends Form
 {
+
+    /**
+     * @var string
+     */
     public $formMode;
 
     /**
-     * Role constructor.
+     * RoleForm constructor.
+     * @param string $mode
+     * @param array|null $modules
+     * @param null $resources
      */
     public function __construct($mode = "add", array $modules = null, $resources = null)
     {
+
         parent::__construct();
 
         $this->formMode = $mode;
@@ -28,7 +37,7 @@ class Role extends Form
         ]);
 
         $this->add([
-            'type' => 'Zend\Form\Element\Text',
+            'type' => Text::class,
             'name' => 'name',
             'options' => [
                 'label' => _('Name'),
@@ -38,7 +47,7 @@ class Role extends Form
             ],
         ]);
 
-        if( $mode === "update" ) {
+        if ($mode === "update") {
             $permissions = [];
             foreach ($resources as $index => $resource) {
                 $permissions[$resource->getResource()] = $resource->getPermission();
@@ -55,7 +64,7 @@ class Role extends Form
                 }
 
                 $this->add([
-                    'type' => 'Zend\Form\Element\Radio',
+                    'type' => Radio::class,
                     'name' => $module['module_name'],
                     'options' => [
                         'label' => $module['module_name'],
@@ -67,8 +76,8 @@ class Role extends Form
                         ],
                     ],
                     'attributes' => [
-                        'value' => $value
-                    ]
+                        'value' => $value,
+                    ],
                 ]);
             }
         }
