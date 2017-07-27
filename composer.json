@@ -54,15 +54,8 @@
     "almasaeed2010/adminlte": "^2.3"
   },
   "autoload": {
-    "psr-0": {
+    "psr-4": {
       "Adminaut\\": "src/"
-    }
-  },
-  "extra": {
-    "installer-paths": {
-      "www_root/adminaut/themes/{$name}": [
-        "almasaeed2010/adminlte"
-      ]
     }
   }
 }

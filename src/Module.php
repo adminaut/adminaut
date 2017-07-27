@@ -6,7 +6,6 @@ use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\InitProviderInterface;
-use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\ModuleManager\ModuleManagerInterface;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
@@ -27,7 +26,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, In
             'DoctrineORMModule',
             'TwbBundle',
             'BsbFlysystem',
-            'Adminaut\Datatype'
+            'Adminaut\Datatype',
         ];
 
         $loadedModules = $manager->getLoadedModules(false);
@@ -43,16 +42,16 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, In
      */
     public function getAutoloaderConfig()
     {
-        return array(
-            'Zend\Loader\ClassMapAutoloader' => array(
+        return [
+            'Zend\Loader\ClassMapAutoloader' => [
                 __DIR__ . '/autoload_classmap.php',
-            ),
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . str_replace('\\', '/' , __NAMESPACE__),
-                ),
-            ),
-        );
+            ],
+            'Zend\Loader\StandardAutoloader' => [
+                'namespaces' => [
+                    __NAMESPACE__ => __DIR__ . '/src/' . str_replace('\\', '/', __NAMESPACE__),
+                ],
+            ],
+        ];
     }
 
     /**
@@ -65,18 +64,18 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, In
 
     public function getFormElementConfig()
     {
-        return array(
-            'initializers' => array(
+        return [
+            'initializers' => [
                 'ObjectManagerInitializer' => function ($element, $formElements) {
                     if ($element instanceof ObjectManagerAwareInterface) {
-                        $services      = $formElements->getServiceLocator();
+                        $services = $formElements->getServiceLocator();
                         $entityManager = $services->get('Doctrine\ORM\EntityManager');
 
                         $element->setObjectManager($entityManager);
                     }
                 },
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -89,7 +88,8 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface, In
         $moduleRouteListener->attach($eventManager);
     }
 
-    function onDispatchError(MvcEvent $e) {
+    function onDispatchError(MvcEvent $e)
+    {
         $vm = $e->getViewModel();
         $vm->setTemplate('layout/admin-blank');
     }
