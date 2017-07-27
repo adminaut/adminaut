@@ -1,14 +1,15 @@
 <?php
+
 namespace Adminaut\Form\Annotation;
 
-
 use Adminaut\Form\Factory;
-use ArrayObject;
-use Zend\Code\Annotation\AnnotationCollection;
-use Zend\Code\Reflection\ClassReflection;
-use Zend\Stdlib\ArrayUtils;
+use Zend\Form\Annotation\AnnotationBuilder as ZendAnnotationBuilder;
 
-class AnnotationBuilder extends \Zend\Form\Annotation\AnnotationBuilder
+/**
+ * Class AnnotationBuilder
+ * @package Adminaut\Form\Annotation
+ */
+class AnnotationBuilder extends ZendAnnotationBuilder
 {
     /**
      * @var Factory
