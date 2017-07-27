@@ -1,11 +1,15 @@
 <?php
+
 namespace Adminaut\Form\Element;
 
 use Zend\InputFilter\InputProviderInterface;
-use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 use Zend\Validator\File\IsImage;
 use Zend\Validator\ValidatorInterface;
 
+/**
+ * Class FileImage
+ * @package Adminaut\Form\Element
+ */
 class FileImage extends File implements InputProviderInterface
 {
 
@@ -42,12 +46,12 @@ class FileImage extends File implements InputProviderInterface
     public function getInputSpecification()
     {
         return [
-            'type'     => 'Zend\InputFilter\FileInput',
-            'name'     => $this->getName(),
+            'type' => 'Zend\InputFilter\FileInput',
+            'name' => $this->getName(),
             'required' => false,
             'validators' => [
-                $this->getValidator()
-            ]
+                $this->getValidator(),
+            ],
         ];
     }
 }

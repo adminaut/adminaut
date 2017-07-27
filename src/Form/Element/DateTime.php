@@ -4,9 +4,7 @@ namespace Adminaut\Form\Element;
 
 use DateInterval;
 use DateTime as PhpDateTime;
-
-use Adminaut\Form\Element as MfccAdminFormElement;
-
+use Adminaut\Form\Element as AdminautFormElement;
 use Zend\InputFilter\InputProviderInterface;
 use Zend\Validator\Date as DateValidator;
 use Zend\Validator\DateStep as DateStepValidator;
@@ -17,7 +15,7 @@ use Zend\Validator\LessThan as LessThanValidator;
  * Class DateTime
  * @package Adminaut\Form\Element
  */
-class DateTime extends MfccAdminFormElement implements InputProviderInterface
+class DateTime extends AdminautFormElement implements InputProviderInterface
 {
     /**
      * @var array
@@ -60,7 +58,7 @@ class DateTime extends MfccAdminFormElement implements InputProviderInterface
     public function getValue($returnFormattedValue = true)
     {
         $value = parent::getValue();
-        if($value === null || (gettype($value) == "object" && ($value->getTimestamp() === false || $value->getTimestamp() === -3600))) {
+        if ($value === null || (gettype($value) == "object" && ($value->getTimestamp() === false || $value->getTimestamp() === -3600))) {
             return date($this->getFormat());
         }
         if (!$value instanceof \DateTime || !$returnFormattedValue) {
@@ -94,7 +92,7 @@ class DateTime extends MfccAdminFormElement implements InputProviderInterface
      */
     public function setFormat($format)
     {
-        $this->format = (string) $format;
+        $this->format = (string)$format;
         return $this;
     }
 
@@ -120,13 +118,13 @@ class DateTime extends MfccAdminFormElement implements InputProviderInterface
 
         if (isset($this->attributes['min'])) {
             $validators[] = new GreaterThanValidator([
-                'min'       => $this->attributes['min'],
+                'min' => $this->attributes['min'],
                 'inclusive' => true,
             ]);
         }
         if (isset($this->attributes['max'])) {
             $validators[] = new LessThanValidator([
-                'max'       => $this->attributes['max'],
+                'max' => $this->attributes['max'],
                 'inclusive' => true,
             ]);
         }
@@ -157,9 +155,9 @@ class DateTime extends MfccAdminFormElement implements InputProviderInterface
         $stepValue = (isset($this->attributes['step'])) ? $this->attributes['step'] : 1;
         $baseValue = (isset($this->attributes['min'])) ? $this->attributes['min'] : date($format);
         return new DateStepValidator([
-            'format'    => $format,
+            'format' => $format,
             'baseValue' => $baseValue,
-            'step'      => new DateInterval("PT{$stepValue}S"),
+            'step' => new DateInterval("PT{$stepValue}S"),
         ]);
     }
 
@@ -173,7 +171,7 @@ class DateTime extends MfccAdminFormElement implements InputProviderInterface
             'required' => true,
             'filters' => [
                 [
-                    'name' => 'Zend\Filter\StringTrim'
+                    'name' => 'Zend\Filter\StringTrim',
                 ],
             ],
             'validators' => $this->getValidators(),

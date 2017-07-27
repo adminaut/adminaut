@@ -1,9 +1,15 @@
 <?php
+
 namespace Adminaut\Form\Element;
 
 use Adminaut\Manager\FileManager;
+use Zend\Form\Element\File as ZendFile;
 
-class File extends \Zend\Form\Element\File
+/**
+ * Class File
+ * @package Adminaut\Form\Element
+ */
+class File extends ZendFile
 {
     /**
      * @var \Adminaut\Entity\File
@@ -29,24 +35,29 @@ class File extends \Zend\Form\Element\File
     /**
      * @return \Adminaut\Entity\File
      */
-    public function getInsertValue() {
+    public function getInsertValue()
+    {
         return $this->getFileObject();
     }
 
     /**
      * @param mixed $value
+     * @return $this
      */
-    public function setValue($value){
+    public function setValue($value)
+    {
         if ($value instanceof \Adminaut\Entity\File) {
             $this->setFileObject($value);
             $this->value = $value->getName();
         } else {
             $this->value = $value;
         }
+
+        return $this;
     }
 
-    public function getListedValue() {
+    public function getListedValue()
+    {
         $fm = FileManager::getInstance();
-
     }
 }

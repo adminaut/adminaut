@@ -6,7 +6,7 @@ use Adminaut\Form\Element\DateTime as DateTimeElement;
 use Zend\Validator\DateStep as DateStepValidator;
 
 /**
- * Class Date
+ * Class Time
  * @package Adminaut\Form\Element
  */
 class Time extends DateTimeElement
@@ -39,14 +39,14 @@ class Time extends DateTimeElement
      */
     protected function getStepValidator()
     {
-        $format    = $this->getFormat();
+        $format = $this->getFormat();
         $stepValue = (isset($this->attributes['step'])) ? $this->attributes['step'] : 1;
         $baseValue = (isset($this->attributes['min'])) ? $this->attributes['min'] : date($format);
         return new DateStepValidator([
-            'format'    => $format,
+            'format' => $format,
             'baseValue' => $baseValue,
-            'timezone'  => new \DateTimezone('UTC'),
-            'step'      => new \DateInterval("PT{$stepValue}S"),
+            'timezone' => new \DateTimezone('UTC'),
+            'step' => new \DateInterval("PT{$stepValue}S"),
         ]);
     }
 }
