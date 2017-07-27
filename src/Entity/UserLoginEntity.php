@@ -21,6 +21,8 @@ class UserLoginEntity extends Base
     const TYPE_FAILED = 0;
     const TYPE_SUCCESSFUL = 1;
 
+    //-------------------------------------------------------------------------
+
     /**
      * @ORM\Column(type="integer", name="user_id")
      * @var int
@@ -52,6 +54,8 @@ class UserLoginEntity extends Base
     {
         return $this->user;
     }
+
+    //-------------------------------------------------------------------------
 
     /**
      * @ORM\Column(type="integer", name="type", options={"default":0})

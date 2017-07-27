@@ -2,10 +2,6 @@
 
 namespace Adminaut\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
-use Zend\Form\Annotation;
-
 /**
  * Interface BaseCyclicEntityInterface
  * @package Adminaut\Entity

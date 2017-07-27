@@ -2,10 +2,6 @@
 
 namespace Adminaut\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
-use Zend\Form\Annotation;
-
 /**
  * Interface BaseEntityInterface
  * @package Adminaut\Entity
@@ -69,7 +65,7 @@ interface BaseEntityInterface
 
     /**
      * @return bool
-     * @deprecated
+     * @deprecated use isDeleted()
      */
     public function getDeleted();
 
@@ -89,12 +85,12 @@ interface BaseEntityInterface
     public function setDeletedBy($deletedBy);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isActive();
 
     /**
-     * @param boolean $active
+     * @param bool $active
      */
     public function setActive($active);
 }

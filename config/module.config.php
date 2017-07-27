@@ -69,23 +69,18 @@ return [
     ],
 
     'view_helpers' => [
-        'invokables' => [
-            'formDate' => Form\View\Helper\FormDate::class,
-            'formDateTime' => Form\View\Helper\FormDateTime::class,
-            'formFile' => Form\View\Helper\FormFile::class,
-            //'formCheckbox'                                          => Form\View\Helper\FormCheckbox::class,
-            //'formCheckbox'                                          => Form\View\Helper\Checkbox::class,
-        ],
 
         'factories' => [
             'formElement' => Form\View\Helper\Factory\FormElementFactory::class,
             View\Helper\UserIdentity::class => View\Helper\Factory\UserIdentityFactory::class,
-            'isAllowed' => View\Helper\Factory\IsAllowedViewHelperFactory::class,
-            'config' => View\Helper\Factory\ConfigViewHelperFactory::class,
+            View\Helper\IsAllowed::class => View\Helper\Factory\IsAllowedViewHelperFactory::class,
+            View\Helper\ConfigViewHelper::class => View\Helper\Factory\ConfigViewHelperFactory::class,
         ],
 
         'aliases' => [
             'userIdentity' => View\Helper\UserIdentity::class,
+            'isAllowed' => View\Helper\IsAllowed::class,
+            'config' => View\Helper\ConfigViewHelper::class,
         ],
     ],
 

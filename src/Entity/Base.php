@@ -162,7 +162,7 @@ class Base implements BaseEntityInterface
 
     /**
      * @return bool
-     * @deprecated
+     * @deprecated use isDeleted()
      */
     public function getDeleted()
     {

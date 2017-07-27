@@ -1,8 +1,9 @@
 <?php
+
 namespace Adminaut\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use \Zend\Form\Annotation;
+use Zend\Form\Annotation;
 
 /**
  * Class BaseCyclicEntity
@@ -10,7 +11,7 @@ use \Zend\Form\Annotation;
  * @ORM\HasLifecycleCallbacks
  * @package Adminaut\Entity
  */
-class BaseCyclicEntity extends Base
+class BaseCyclicEntity extends Base implements BaseCyclicEntityInterface
 {
     /**
      * @var int

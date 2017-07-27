@@ -199,9 +199,7 @@ class UserEntity extends Base implements UserInterface
      */
     public function getGravatarHash()
     {
-        $email = trim($this->getEmail());
-        $email = strtolower($email);
-        return md5($email);
+        return md5(strtolower(trim($this->getEmail())));
     }
 
     /**
