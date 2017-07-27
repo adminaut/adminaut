@@ -16,6 +16,7 @@ use Zend\Authentication\Storage\StorageInterface;
  */
 class AuthStorage implements StorageInterface
 {
+
     /**
      * @var EntityManager
      */

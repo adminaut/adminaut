@@ -1,8 +1,10 @@
 <?php
+
 namespace Adminaut\View\Helper\Factory;
 
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Adminaut\View\Helper\FileManager;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class FileManagerViewHelperFactory
@@ -12,19 +14,17 @@ class FileManagerViewHelperFactory implements FactoryInterface
 {
 
     /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
+     * @return FileManager
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        /* @var $serviceLocator \Zend\Mvc\Controller\ControllerManager */
-        $parentLocator = $serviceLocator->getServiceLocator();
-
-        $option = $parentLocator->get('FileManagerOptions');
-        $viewHelper = new \Adminaut\View\Helper\FileManager();
-        $viewHelper->setService($parentLocator->get('FileManager'));
+        // todo: make as constructor DI
+        $option = $container->get('FileManagerOptions');
+        $viewHelper = new FileManager();
+        $viewHelper->setService($container->get('FileManager'));
         $viewHelper->setParams($option->toArray());
         return $viewHelper;
     }

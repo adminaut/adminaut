@@ -4,29 +4,27 @@ namespace Adminaut\View\Helper\Factory;
 
 use Adminaut\Service\AccessControlService;
 use Adminaut\View\Helper\IsAllowed;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class IsAllowedViewHelperFactory
- * @package Adminaut\Factory\View\Helper
+ * @package Adminaut\View\Helper\Factory
  */
 class IsAllowedViewHelperFactory implements FactoryInterface
 {
 
     /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
+     * @return IsAllowed
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        /* @var $serviceLocator \Zend\Mvc\Controller\ControllerManager */
-        $parentLocator = $serviceLocator->getServiceLocator();
 
         /** @var AccessControlService $accessControlService */
-        $accessControlService = $parentLocator->get(AccessControlService::class);
+        $accessControlService = $container->get(AccessControlService::class);
 
         return new IsAllowed($accessControlService);
     }

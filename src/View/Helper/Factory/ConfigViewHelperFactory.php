@@ -3,8 +3,8 @@
 namespace Adminaut\View\Helper\Factory;
 
 use Adminaut\View\Helper\ConfigViewHelper;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class ConfigViewHelperFactory
@@ -12,19 +12,19 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 class ConfigViewHelperFactory implements FactoryInterface
 {
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        /* @var $serviceLocator \Zend\Mvc\Controller\ControllerManager */
-        $parentLocator = $serviceLocator->getServiceLocator();
 
-        $config = $parentLocator->get('config');
-        $viewHelper = new ConfigViewHelper($config);
-        return $viewHelper;
+    /**
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
+     * @return ConfigViewHelper
+     */
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    {
+
+        /** @var array $config */
+        $config = $container->get('Config');
+
+        return new ConfigViewHelper($config);
     }
 }

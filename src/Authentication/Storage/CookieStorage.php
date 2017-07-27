@@ -13,6 +13,7 @@ use Zend\Http\PhpEnvironment\Response;
  */
 class CookieStorage implements StorageInterface
 {
+
     /**
      * Request dependency - so we can read cookies from request headers
      * @var Request

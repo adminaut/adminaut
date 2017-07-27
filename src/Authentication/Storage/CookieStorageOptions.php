@@ -12,6 +12,7 @@ use Zend\Stdlib\AbstractOptions;
  */
 class CookieStorageOptions extends AbstractOptions
 {
+
     /**
      * Constants
      */

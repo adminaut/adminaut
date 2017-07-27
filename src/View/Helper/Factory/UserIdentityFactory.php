@@ -4,9 +4,8 @@ namespace Adminaut\View\Helper\Factory;
 
 use Adminaut\Authentication\Service\AuthenticationService;
 use Adminaut\View\Helper\UserIdentity;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\View\HelperPluginManager;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class UserIdentityFactory
@@ -16,16 +15,16 @@ class UserIdentityFactory implements FactoryInterface
 {
 
     /**
-     * @param ServiceLocatorInterface|HelperPluginManager $serviceLocator
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
      * @return UserIdentity
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        /** @var HelperPluginManager $helperPluginManager */
-        $helperPluginManager = $serviceLocator->getServiceLocator();
 
         /** @var AuthenticationService $authenticationService */
-        $authenticationService = $helperPluginManager->get(AuthenticationService::class);
+        $authenticationService = $container->get(AuthenticationService::class);
 
         return new UserIdentity($authenticationService);
     }
