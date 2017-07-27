@@ -2,9 +2,7 @@
 
 namespace Adminaut\Form;
 
-use Zend\Form\Element\Button;
 use Zend\Form\Element\Password;
-use Adminaut\Form\Form;
 
 /**
  * Class UserChangePasswordForm
@@ -12,11 +10,13 @@ use Adminaut\Form\Form;
  */
 class UserChangePasswordForm extends Form
 {
+
     /**
      * UserChangePasswordForm constructor.
      */
     public function __construct()
     {
+
         parent::__construct('UserChangePassword');
 
         $this->setAttribute('method', 'post');

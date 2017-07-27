@@ -1,21 +1,31 @@
 <?php
+
 namespace Adminaut\Form\View\Helper\Factory;
 
-
 use Adminaut\Form\View\Helper\FormElement;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use TwbBundle\Options\ModuleOptions;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
+/**
+ * Class FormElementFactory
+ * @package Adminaut\Form\View\Helper\Factory
+ */
 class FormElementFactory implements FactoryInterface
 {
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
      * @return FormElement
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $options = $serviceLocator->getServiceLocator()->get('TwbBundle\Options\ModuleOptions');
-        return new FormElement($options);
+
+        /** @var ModuleOptions $twbBundleModuleOptions */
+        $twbBundleModuleOptions = $container->get(ModuleOptions::class);
+
+        return new FormElement($twbBundleModuleOptions);
     }
 }

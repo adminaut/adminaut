@@ -15,6 +15,7 @@ use Zend\Form\Form;
  */
 class UserForm extends Form
 {
+
     /**
      * Constants.
      */
