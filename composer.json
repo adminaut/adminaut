@@ -39,7 +39,6 @@
     "zendframework/zend-crypt": "^3.2",
     "zendframework/zend-i18n": "^2.7",
     "zendframework/zend-json": "^3.0",
-    "zendframework/zend-config": "^3.2",
     "zendframework/zend-file": "^2.7",
     "zendframework/zend-mail": "^2.8",
     "zendframework/zend-paginator": "^2.7",
