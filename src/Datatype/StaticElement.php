@@ -2,10 +2,8 @@
 
 namespace Adminaut\Datatype;
 
-use Traversable;
-
 /**
- * Class Text
+ * Class StaticElement
  * @package Adminaut\Datatype
  */
 class StaticElement extends \TwbBundle\Form\Element\StaticElement

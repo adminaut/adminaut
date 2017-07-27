@@ -5,7 +5,6 @@ namespace Adminaut\Datatype;
 use Adminaut\Datatype\Location\Exception\InvalidDefaultCenterException;
 use Adminaut\Datatype\Location\Exception\InvalidEngineTypeException;
 use Adminaut\Datatype\Location\Exception\InvalidGoogleModeException;
-use Adminaut\Datatype\Location\Exception\InvalidSaveTypeException;
 use Zend\Form\Element;
 
 /**
@@ -116,44 +115,44 @@ class Location extends Element
             $this->setUseHiddenElement($options['use_hidden_element']);
         }
 
-        if(isset($options['engine'])) {
+        if (isset($options['engine'])) {
             $this->setEngine($options['engine']);
         }
 
-        if(isset($options['longitude_property'])) {
+        if (isset($options['longitude_property'])) {
             $this->setLongitudeProperty($options['longitude_property']);
         }
 
-        if(isset($options['default_center'])) {
+        if (isset($options['default_center'])) {
             $this->setDefaultCenter($options['default_center']);
         }
 
-        if(isset($options['default_zoom'])) {
+        if (isset($options['default_zoom'])) {
             $this->setDefaultZoomLevel($options['default_zoom']);
         }
 
-        if(isset($options['default_zoom_level'])) {
+        if (isset($options['default_zoom_level'])) {
             $this->setDefaultZoomLevel($options['default_zoom_level']);
         }
 
         /** Google engine */
-        if(isset($options['google_mode'])) {
+        if (isset($options['google_mode'])) {
             $this->setGoogleMode($options['google_mode']);
         }
 
-        if(isset($options['google_place_filter'])) {
+        if (isset($options['google_place_filter'])) {
             $this->setGooglePlacesFilter($options['google_place_filter']);
         }
 
-        if(isset($options['google_place_id_property'])) {
+        if (isset($options['google_place_id_property'])) {
             $this->setGooglePlaceIdProperty($options['google_place_id_property']);
         }
 
-        if(isset($options['enable_download_data'])) {
+        if (isset($options['enable_download_data'])) {
             $this->setEnableDownloadData($options['enable_download_data']);
         }
 
-        if(isset($options['download_data_from']) && $this->isEnableDownloadData()) {
+        if (isset($options['download_data_from']) && $this->isEnableDownloadData()) {
             $this->setDownloadDataFrom($options['download_data_from']);
         }
 
@@ -161,8 +160,6 @@ class Location extends Element
         $this->datatypeSetOptions($options);
         return $this;
     }
-
-
 
     /**
      * @return array
@@ -175,7 +172,7 @@ class Location extends Element
         $this->attributes['data-main-input'] = $this->getName();
         $this->attributes['data-engine'] = $this->getEngine();
         $this->attributes['data-readonly'] = $this->isReadOnly();
-        if($this->getEngine() === self::ENGINE_GOOGLE) {
+        if ($this->getEngine() === self::ENGINE_GOOGLE) {
             $this->attributes['data-google-mode'] = $this->getGoogleMode();
             $this->attributes['data-google-place-filter'] = json_encode($this->getGooglePlacesFilter());
         }
@@ -208,11 +205,12 @@ class Location extends Element
 
     /**
      * @param string $engine
+     * @throws InvalidEngineTypeException
      */
     public function setEngine($engine)
     {
         $availableEngines = [self::ENGINE_GOOGLE];
-        if(!in_array($engine, $availableEngines)) {
+        if (!in_array($engine, $availableEngines)) {
             throw new InvalidEngineTypeException('Invalid map engine type. Available map engines: ' . implode(', ', $availableEngines));
         } else {
             $this->engine = $engine;
@@ -229,11 +227,12 @@ class Location extends Element
 
     /**
      * @param string $googleMode
+     * @throws InvalidGoogleModeException
      */
     public function setGoogleMode($googleMode)
     {
         $availableModes = [self::GOOGLE_MODE_COORDINATES, self::GOOGLE_MODE_PLACES, self::GOOGLE_MODE_FULL];
-        if(!in_array($googleMode, $availableModes)) {
+        if (!in_array($googleMode, $availableModes)) {
             throw new InvalidGoogleModeException('Invalid Google mode. Available modes: ' . implode(',', $availableModes));
         } else {
             $this->googleMode = $googleMode;
@@ -351,12 +350,13 @@ class Location extends Element
 
     /**
      * @param array $defaultCenter
+     * @throws InvalidDefaultCenterException
      */
     public function setDefaultCenter($defaultCenter)
     {
-        if(!isset($defaultCenter['latitude']) && !isset($defaultCenter['lat'])) {
+        if (!isset($defaultCenter['latitude']) && !isset($defaultCenter['lat'])) {
             throw new InvalidDefaultCenterException('Missing latitude property.');
-        } elseif(!isset($defaultCenter['longitude']) && !isset($defaultCenter['lng'])) {
+        } else if (!isset($defaultCenter['longitude']) && !isset($defaultCenter['lng'])) {
             throw new InvalidDefaultCenterException('Missing longitude property.');
         } else {
             $defaultCenter['latitude'] = $defaultCenter['lat'];

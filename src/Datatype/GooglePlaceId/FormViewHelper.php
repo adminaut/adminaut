@@ -1,10 +1,15 @@
 <?php
+
 namespace Adminaut\Datatype\GooglePlaceId;
 
 use Adminaut\Datatype\GooglePlaceId;
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\AbstractHelper;
 
+/**
+ * Class FormViewHelper
+ * @package Adminaut\Datatype\GooglePlaceId
+ */
 class FormViewHelper extends AbstractHelper
 {
     /**
@@ -17,15 +22,16 @@ class FormViewHelper extends AbstractHelper
      */
     public function __invoke(ElementInterface $element = null)
     {
-        if (! $element) {
+        if (!$element) {
             return $this;
         }
 
         return $this->render($element);
     }
 
-    public function render($datatype) {
-        if (! $datatype instanceof GooglePlaceId) {
+    public function render($datatype)
+    {
+        if (!$datatype instanceof GooglePlaceId) {
             throw new \Zend\Form\Exception\InvalidArgumentException(sprintf(
                 '%s requires that the element is of type Adminaut\Datatype\GooglePlaceId',
                 __METHOD__
@@ -35,18 +41,18 @@ class FormViewHelper extends AbstractHelper
         $identifier = 'datatype-googleplaceid-' . $datatype->getName();
         $value = method_exists($datatype, 'getEditValue') ? $datatype->getEditValue() : $datatype->getValue();
 
-        $sRender = '<div class="row datatype-googleplaceid" id="'. $identifier .'">';
+        $sRender = '<div class="row datatype-googleplaceid" id="' . $identifier . '">';
         $sRender .= '<div class="col-xs-12"><input type="' . ($datatype->isUseHiddenElement() ? 'hidden' : 'text') . '" 
-            name="'.$datatype->getName().'" value="'.$datatype->getEditValue().'" placeholder="'.$datatype->getAttribute('placeholder').'" 
-            class="form-control datatype-googleplaceid-input" id="'. $identifier .'-input"></div>';
+            name="' . $datatype->getName() . '" value="' . $datatype->getEditValue() . '" placeholder="' . $datatype->getAttribute('placeholder') . '" 
+            class="form-control datatype-googleplaceid-input" id="' . $identifier . '-input"></div>';
         $sRender .= '</div><div class="row">';
         $sRender .= '<div class="col-xs-12">
-            <input id="'. $identifier .'-search-input" class="controls" type="text" placeholder="'. $this->view->translate('Enter a location') .'">
-            <div class="datatype-googleplaceid-map" id="'. $identifier .'-map" style="margin-top: 15px; min-height: 300px;"></div>
+            <input id="' . $identifier . '-search-input" class="controls" type="text" placeholder="' . $this->view->translate('Enter a location') . '">
+            <div class="datatype-googleplaceid-map" id="' . $identifier . '-map" style="margin-top: 15px; min-height: 300px;"></div>
         </div>';
         $sRender .= '</div>';
 
-        $sRender .= '<script>appendScript("'. $this->getView()->basepath('adminaut/js/datatype/googleplaceid.js') .'")</script>';
+        $sRender .= '<script>appendScript("' . $this->getView()->basepath('adminaut/js/datatype/googleplaceid.js') . '")</script>';
         $sRender .= '<style>
                 .controls { display: none; }
                 .datatype-googleplaceid-map .controls { display: block; }

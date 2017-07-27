@@ -1,6 +1,11 @@
 <?php
+
 namespace Adminaut\Datatype;
 
+/**
+ * Class Module
+ * @package Adminaut\Datatype
+ */
 class Module
 {
     /**
@@ -13,7 +18,7 @@ class Module
         $provider = new ConfigProvider();
         return [
             'service_manager' => $provider->getDependencyConfig(),
-            'view_helpers'    => $provider->getViewHelperConfig()
+            'view_helpers' => $provider->getViewHelperConfig(),
         ];
     }
 

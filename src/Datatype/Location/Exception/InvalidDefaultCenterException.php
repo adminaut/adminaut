@@ -1,8 +1,11 @@
 <?php
+
 namespace Adminaut\Datatype\Location\Exception;
 
 /**
- * Class InvalidSaveTypeException
+ * Class InvalidDefaultCenterException
  * @package Adminaut\Datatype\Location\Exception
  */
-class InvalidDefaultCenterException extends \Exception {}
+class InvalidDefaultCenterException extends \Exception
+{
+}

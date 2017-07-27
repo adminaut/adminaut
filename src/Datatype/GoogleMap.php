@@ -52,7 +52,7 @@ class GoogleMap extends Element
      */
     public function setOptions($options)
     {
-        if(isset($options['longVar'])) {
+        if (isset($options['longVar'])) {
             $this->setLongitudeVariable($options['longVar']);
         } else {
             if (isset($options['use_json'])) {

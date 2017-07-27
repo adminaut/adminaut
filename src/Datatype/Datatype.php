@@ -57,7 +57,7 @@ trait Datatype
     /**
      * @param bool $listed
      */
-    public function setListed(bool $listed)
+    public function setListed($listed)
     {
         $this->listed = $listed;
     }
@@ -73,7 +73,7 @@ trait Datatype
     /**
      * @param bool $primary
      */
-    public function setPrimary(bool $primary)
+    public function setPrimary($primary)
     {
         $this->primary = $primary;
     }
@@ -146,7 +146,7 @@ trait Datatype
 
     /**
      * @param  array $options
-     * @return Element
+     * @return Datatype|Element
      */
     public function setOptions($options)
     {

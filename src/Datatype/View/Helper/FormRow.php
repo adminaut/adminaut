@@ -1,4 +1,5 @@
 <?php
+
 namespace Adminaut\Datatype\View\Helper;
 
 use TwbBundle\Form\View\Helper\TwbBundleFormRow;
@@ -34,7 +35,7 @@ class FormRow extends TwbBundleFormRow
             $this->elementHelper = $this->view->plugin('datatype');
         }
 
-        if (! $this->elementHelper instanceof Datatype) {
+        if (!$this->elementHelper instanceof Datatype) {
             $this->elementHelper = new Datatype($this->twbModuleOptions);
         }
 

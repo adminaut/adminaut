@@ -5,7 +5,7 @@ namespace Adminaut\Datatype\DatatypeManager;
 use Zend\Form\Exception;
 
 /**
- * Class DatatypeManagerTrait
+ * Trait DatatypeManagerTrait
  * @package Adminaut\Datatype\DatatypeManager
  */
 trait DatatypeManagerTrait
@@ -54,7 +54,7 @@ trait DatatypeManagerTrait
             return $services->get($hydratorName);
         }
 
-        if (! class_exists($hydratorName)) {
+        if (!class_exists($hydratorName)) {
             throw new Exception\DomainException(sprintf(
                 'Expects string hydrator name to be a valid class name; received "%s"',
                 $hydratorName
@@ -82,7 +82,7 @@ trait DatatypeManagerTrait
             return $services->get($factoryName);
         }
 
-        if (! class_exists($factoryName)) {
+        if (!class_exists($factoryName)) {
             throw new Exception\DomainException(sprintf(
                 'Expects string factory name to be a valid class name; received "%s"',
                 $factoryName

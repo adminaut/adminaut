@@ -6,13 +6,14 @@ use Adminaut\Datatype\MultiCheckbox;
 use Zend\Form\Element\MultiCheckbox as MultiCheckboxElement;
 use TwbBundle\Form\View\Helper\TwbBundleFormMultiCheckbox;
 use Zend\Form\LabelAwareInterface;
-use Zend\Form\View\Helper\FormRow;
-use Zend\Form\View\Helper\FormMultiCheckbox as ZFFormMultiCheckbox;
 use Zend\Form\ElementInterface;
 use InvalidArgumentException;
 use LogicException;
-use Zend\Form\View\Helper\FormLabel;
 
+/**
+ * Class FormViewHelper
+ * @package Adminaut\Datatype\MultiCheckbox
+ */
 class FormViewHelper extends TwbBundleFormMultiCheckbox
 {
     /**
@@ -24,7 +25,7 @@ class FormViewHelper extends TwbBundleFormMultiCheckbox
      */
     public function render(ElementInterface $oElement)
     {
-        if (! $oElement instanceof MultiCheckbox) {
+        if (!$oElement instanceof MultiCheckbox) {
             throw new \Zend\Form\Exception\InvalidArgumentException(sprintf(
                 '%s requires that the element is of type Adminaut\Datatype\MultiCheckbox',
                 __METHOD__
@@ -34,10 +35,10 @@ class FormViewHelper extends TwbBundleFormMultiCheckbox
         $name = static::getName($oElement);
         $options = $oElement->getValueOptions();
 
-        $attributes         = $oElement->getAttributes();
+        $attributes = $oElement->getAttributes();
         $attributes['name'] = $name;
         $attributes['type'] = $this->getInputType();
-        $selectedOptions    = (array) $oElement->getValue();
+        $selectedOptions = (array)$oElement->getValue();
 
         $rendered = $this->renderOptions($oElement, $options, $selectedOptions, $attributes);
 
@@ -50,7 +51,7 @@ class FormViewHelper extends TwbBundleFormMultiCheckbox
             $rendered = $this->renderHiddenElement($oElement, $attributes) . $rendered;
         }
 
-        $aElementOptions = $oElement->getOptions();
+        $aElementOptions = $oElement->getOptions(); // todo: unused variable
 
         return sprintf('<div class="checkbox">%s</div>', $rendered);
     }
@@ -67,41 +68,42 @@ class FormViewHelper extends TwbBundleFormMultiCheckbox
         array $options,
         array $selectedOptions,
         array $attributes
-    ) {
+    )
+    {
         $escapeHtmlHelper = $this->getEscapeHtmlHelper();
-        $labelHelper      = $this->getLabelHelper();
-        $labelClose       = $labelHelper->closeTag();
-        $labelPosition    = $this->getLabelPosition();
+        $labelHelper = $this->getLabelHelper();
+        $labelClose = $labelHelper->closeTag();
+        $labelPosition = $this->getLabelPosition();
         $globalLabelAttributes = [];
-        $closingBracket   = $this->getInlineClosingBracket();
+        $closingBracket = $this->getInlineClosingBracket();
 
         if ($element instanceof LabelAwareInterface) {
             $globalLabelAttributes = $element->getLabelAttributes();
         }
 
         if (empty($globalLabelAttributes)) {
-            $globalLabelAttributes = $this->labelAttributes;
+            $globalLabelAttributes = $this->labelAttributes; // todo: unused variable
         }
 
         $combinedMarkup = [];
-        $count          = 0;
+        $count = 0;
 
         foreach ($options as $key => $optionSpec) {
             $count++;
 
-            $value           = '';
-            $label           = '';
+            $value = '';
+            $label = '';
             $inputAttributes = $attributes;
             $labelAttributes = ['class' => 'checkbox-label', 'for' => $inputAttributes['id']];
-            $selected        = (isset($inputAttributes['selected'])
+            $selected = (isset($inputAttributes['selected'])
                 && $inputAttributes['type'] != 'radio'
                 && $inputAttributes['selected']);
-            $disabled        = (isset($inputAttributes['disabled']) && $inputAttributes['disabled']);
+            $disabled = (isset($inputAttributes['disabled']) && $inputAttributes['disabled']);
 
             if (is_scalar($optionSpec)) {
                 $optionSpec = [
                     'label' => $optionSpec,
-                    'value' => $key
+                    'value' => $key,
                 ];
             }
 
@@ -131,8 +133,8 @@ class FormViewHelper extends TwbBundleFormMultiCheckbox
             }
 
             $inputAttributes['id'] .= '-' . $value;
-            $inputAttributes['value']    = $value;
-            $inputAttributes['checked']  = $selected;
+            $inputAttributes['value'] = $value;
+            $inputAttributes['checked'] = $selected;
             $inputAttributes['disabled'] = $disabled;
 
             $input = sprintf(
@@ -148,13 +150,13 @@ class FormViewHelper extends TwbBundleFormMultiCheckbox
                 );
             }
 
-            if (! $element instanceof LabelAwareInterface || ! $element->getLabelOption('disable_html_escape')) {
+            if (!$element instanceof LabelAwareInterface || !$element->getLabelOption('disable_html_escape')) {
                 $label = $escapeHtmlHelper($label);
             }
 
             $labelOpen = $labelHelper->openTag($labelAttributes);
 
-            if($element->getOption('inline') == true) {
+            if ($element->getOption('inline') == true) {
                 $markup = '<div class="form-group col-xs-12 col-sm-4">' . $input;
             } else {
                 $markup = '<div class="form-group col-xs-12">' . $input;

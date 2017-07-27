@@ -62,23 +62,23 @@ class GoogleStreetView extends Element
             $this->setUseHiddenElement($options['use_hidden_element']);
         }
 
-        if(isset($options['default_center'])) {
+        if (isset($options['default_center'])) {
             $this->setDefaultCenter($options['default_center']);
         }
 
-        if(isset($options['default_zoom'])) {
+        if (isset($options['default_zoom'])) {
             $this->setDefaultZoomLevel($options['default_zoom']);
         }
 
-        if(isset($options['default_zoom_level'])) {
+        if (isset($options['default_zoom_level'])) {
             $this->setDefaultZoomLevel($options['default_zoom_level']);
         }
 
-        if(isset($options['download_location'])) {
+        if (isset($options['download_location'])) {
             $this->setEnableDownloadLocation($options['download_location']);
         }
 
-        if(isset($options['location_property'])) {
+        if (isset($options['location_property'])) {
             $this->setLocationProperty($options['location_property']);
         }
 
@@ -134,12 +134,13 @@ class GoogleStreetView extends Element
 
     /**
      * @param array $defaultCenter
+     * @throws InvalidDefaultCenterException
      */
     public function setDefaultCenter($defaultCenter)
     {
-        if(!isset($defaultCenter['latitude']) && !isset($defaultCenter['lat'])) {
+        if (!isset($defaultCenter['latitude']) && !isset($defaultCenter['lat'])) {
             throw new InvalidDefaultCenterException('Missing latitude property.');
-        } elseif(!isset($defaultCenter['longitude']) && !isset($defaultCenter['lng'])) {
+        } else if (!isset($defaultCenter['longitude']) && !isset($defaultCenter['lng'])) {
             throw new InvalidDefaultCenterException('Missing longitude property.');
         } else {
             $defaultCenter['latitude'] = $defaultCenter['lat'];

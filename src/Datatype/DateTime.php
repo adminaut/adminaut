@@ -8,7 +8,7 @@ use Zend\Validator\DateStep as DateStepValidator;
 
 /**
  * Class DateTime
- * @package Adminaut\Form\Element
+ * @package Adminaut\Datatype
  */
 class DateTime extends \Zend\Form\Element\DateTime
 {

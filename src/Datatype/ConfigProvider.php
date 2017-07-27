@@ -47,7 +47,7 @@ class ConfigProvider
         return [
             'invokables' => [
                 // form collection
-                'formCollection' => View\Helper\FormCollection::class,
+                'formCollection' => View\Helper\FormCollection::class, // todo: rename to datatypeFormCollection so we don't overwrite default formCollection?
 
                 // form helpers
                 'datatypeFormSelect' => Select\FormViewHelper::class,

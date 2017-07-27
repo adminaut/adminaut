@@ -1,9 +1,11 @@
 <?php
+
 namespace Adminaut\Datatype\View\Helper\Factory;
 
 use Adminaut\Datatype\View\Helper\FormRow;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use TwbBundle\Options\ModuleOptions;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
  * Class FormRowFactory
@@ -13,12 +15,16 @@ class FormRowFactory implements FactoryInterface
 {
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
      * @return FormRow
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $options = $serviceLocator->getServiceLocator()->get('TwbBundle\Options\ModuleOptions');
-        return new FormRow($options);
+        /** @var ModuleOptions $options */
+        $twbBundleModuleOptions = $container->get(ModuleOptions::class);
+
+        return new FormRow($twbBundleModuleOptions);
     }
 }

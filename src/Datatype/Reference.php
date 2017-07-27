@@ -4,9 +4,6 @@ namespace Adminaut\Datatype;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Adminaut\Datatype\Reference\Proxy;
-use RuntimeException;
-use Zend\Code\Annotation\AnnotationManager;
-use Zend\Code\Reflection\ClassReflection;
 use Zend\Form\Annotation\Options;
 use Zend\Form\Element;
 use Zend\Form\ElementInterface;
@@ -14,11 +11,16 @@ use Zend\InputFilter\InputProviderInterface;
 use Zend\Validator\Explode as ExplodeValidator;
 use Zend\Validator\InArray as InArrayValidator;
 
+/**
+ * Class Reference
+ * @package Adminaut\Datatype
+ */
 class Reference extends Element implements InputProviderInterface
 {
     use Datatype {
         setOptions as datatypeSetOptions;
     }
+
     /**
      * Seed attributes
      *
@@ -138,7 +140,8 @@ class Reference extends Element implements InputProviderInterface
     public function setOption($key, $value)
     {
         $this->getProxy()->setOptions([$key => $value]);
-        return parent::setOption($key, $value);
+        parent::setOption($key, $value);
+        return $this;
     }
 
     /**
@@ -335,7 +338,7 @@ class Reference extends Element implements InputProviderInterface
         if (null === $this->validator && !$this->disableInArrayValidator()) {
             $validator = new InArrayValidator([
                 'haystack' => $this->getValueOptionsValues(),
-                'strict' => false
+                'strict' => false,
             ]);
 
             $this->validator = $validator;
@@ -396,7 +399,7 @@ class Reference extends Element implements InputProviderInterface
     /**
      * @param string $visualization
      */
-    public function setVisualization(string $visualization)
+    public function setVisualization($visualization)
     {
         if (in_array($visualization, ['select', 'radio'])) {
             $this->visualization = $visualization;

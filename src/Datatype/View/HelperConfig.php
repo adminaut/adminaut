@@ -1,4 +1,5 @@
 <?php
+
 namespace Adminaut\Datatype\View;
 
 use Adminaut\Datatype\ConfigProvider;

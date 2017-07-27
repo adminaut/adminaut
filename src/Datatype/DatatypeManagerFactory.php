@@ -1,4 +1,5 @@
 <?php
+
 namespace Adminaut\Datatype;
 
 use Interop\Container\ContainerInterface;
@@ -6,6 +7,10 @@ use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
+/**
+ * Class DatatypeManagerFactory
+ * @package Adminaut\Datatype
+ */
 class DatatypeManagerFactory implements FactoryInterface
 {
     /**

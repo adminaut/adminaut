@@ -97,7 +97,7 @@ class Country extends Select
     /**
      * @param bool $listName
      */
-    public function setListName(bool $listName)
+    public function setListName($listName)
     {
         $this->listName = $listName;
     }
@@ -120,7 +120,8 @@ class Country extends Select
             $this->setListName($options['listName']);
         }
 
-        return $this->datatypeSetOptions($options);
+        $this->datatypeSetOptions($options);
+        return $this;
     }
 
     /**

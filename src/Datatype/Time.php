@@ -2,11 +2,9 @@
 
 namespace Adminaut\Datatype;
 
-use Zend\Validator\DateStep as DateStepValidator;
-
 /**
- * Class Date
- * @package Adminaut\Form\Element
+ * Class Time
+ * @package Adminaut\Datatype
  */
 class Time extends DateTime
 {

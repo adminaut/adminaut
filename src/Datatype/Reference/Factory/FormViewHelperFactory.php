@@ -1,24 +1,31 @@
 <?php
+
 namespace Adminaut\Datatype\Reference\Factory;
 
 use Adminaut\Datatype\Reference\FormViewHelper;
 use Adminaut\Manager\AdminModulesManager;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
+/**
+ * Class FormViewHelperFactory
+ * @package Adminaut\Datatype\Reference\Factory
+ */
 class FormViewHelperFactory implements FactoryInterface
 {
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
      * @return FormViewHelper
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        /** @var AdminModulesManager $adminModulesManager */
-        $adminModulesManager = $serviceLocator->getServiceLocator()->get(\Adminaut\Manager\AdminModulesManager::class);
-        return new FormViewHelper(
-            $adminModulesManager
-        );
+
+        /** @var AdminModulesManager $adminModuleManager */
+        $adminModuleManager = $container->get(AdminModulesManager::class);
+
+        return new FormViewHelper($adminModuleManager);
     }
 }

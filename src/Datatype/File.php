@@ -1,4 +1,5 @@
 <?php
+
 namespace Adminaut\Datatype;
 
 use Adminaut\Manager\FileManager;

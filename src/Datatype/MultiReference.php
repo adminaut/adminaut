@@ -7,8 +7,6 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 use DoctrineModule\Form\Element\Proxy;
 use RuntimeException;
-use Zend\Code\Annotation\AnnotationManager;
-use Zend\Code\Reflection\ClassReflection;
 use Zend\Form\Annotation\Options;
 use Zend\Form\Element;
 use Zend\Form\ElementInterface;
@@ -25,6 +23,7 @@ class MultiReference extends Element implements InputProviderInterface
     use Datatype {
         setOptions as datatypeSetOptions;
     }
+
     /**
      * Seed attributes
      *
@@ -32,7 +31,7 @@ class MultiReference extends Element implements InputProviderInterface
      */
     protected $attributes = [
         'type' => 'datatypeMultiReference',
-        'multiple' => true
+        'multiple' => true,
     ];
 
     /**
@@ -149,12 +148,14 @@ class MultiReference extends Element implements InputProviderInterface
     public function setOption($key, $value)
     {
         $this->getProxy()->setOptions([$key => $value]);
-        return parent::setOption($key, $value);
+        parent::setOption($key, $value);
+        return $this;
     }
 
     /**
      * Retrieve the element value
      *
+     * @param bool $returnObject
      * @return mixed
      */
     public function getValue($returnObject = false)
@@ -168,12 +169,11 @@ class MultiReference extends Element implements InputProviderInterface
             $metadata = $proxy->getObjectManager()->getClassMetadata($proxy->getTargetClass());
             $criteria = new Criteria();
 
-            foreach($metadata->getIdentifierFieldNames() as $field) {
+            foreach ($metadata->getIdentifierFieldNames() as $field) {
                 $criteria->orWhere($criteria->expr()->in($field, $this->value));
             }
             /** @var EntityRepository $repository */
             $repository = $proxy->getObjectManager()->getRepository($proxy->getTargetClass());
-            $pr = $repository->matching($criteria);
             return $repository->matching($criteria);
         } else {
             return $this->value;
@@ -192,7 +192,7 @@ class MultiReference extends Element implements InputProviderInterface
     {
         $result = [];
         $records = $this->getValue(true);
-        foreach($records as $record) {
+        foreach ($records as $record) {
             if ($record !== null) {
                 $result[] = $record->{'get' . $this->getProxy()->getProperty()}();
             } else {
@@ -364,11 +364,11 @@ class MultiReference extends Element implements InputProviderInterface
         if (null === $this->validator && !$this->disableInArrayValidator()) {
             $validator = new InArrayValidator([
                 'haystack' => $this->getValueOptionsValues(),
-                'strict' => false
+                'strict' => false,
             ]);
 
             $validator = new ExplodeValidator([
-                'validator'      => $validator,
+                'validator' => $validator,
                 'valueDelimiter' => null, // skip explode if only one value
             ]);
 
@@ -446,7 +446,7 @@ class MultiReference extends Element implements InputProviderInterface
     /**
      * @param string $visualization
      */
-    public function setVisualization(string $visualization)
+    public function setVisualization($visualization)
     {
         if (in_array($visualization, ['select', 'checkbox'])) {
             $this->visualization = $visualization;
@@ -500,15 +500,15 @@ class MultiReference extends Element implements InputProviderInterface
             $spec['allow_empty'] = true;
             $spec['continue_if_empty'] = true;
             $spec['filters'] = [[
-                'name'    => 'Callback',
+                'name' => 'Callback',
                 'options' => [
                     'callback' => function ($value) use ($unselectedValue) {
                         if ($value === $unselectedValue) {
                             $value = [];
                         }
                         return $value;
-                    }
-                ]
+                    },
+                ],
             ]];
         }
 

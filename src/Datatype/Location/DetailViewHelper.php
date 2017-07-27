@@ -1,10 +1,15 @@
 <?php
+
 namespace Adminaut\Datatype\Location;
 
 use Adminaut\Datatype\Location;
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\AbstractHelper;
 
+/**
+ * Class DetailViewHelper
+ * @package Adminaut\Datatype\Location
+ */
 class DetailViewHelper extends AbstractHelper
 {
     /**
@@ -17,15 +22,16 @@ class DetailViewHelper extends AbstractHelper
      */
     public function __invoke(ElementInterface $element = null)
     {
-        if (! $element) {
+        if (!$element) {
             return $this;
         }
 
         return $this->render($element);
     }
 
-    public function render($datatype) {
-        if (! $datatype instanceof Location) {
+    public function render($datatype)
+    {
+        if (!$datatype instanceof Location) {
             throw new \Zend\Form\Exception\InvalidArgumentException(sprintf(
                 '%s requires that the element is of type Adminaut\Datatype\Location',
                 __METHOD__
@@ -35,7 +41,7 @@ class DetailViewHelper extends AbstractHelper
         $identifier = 'datatype-location-' . $datatype->getName();
         $value = method_exists($datatype, 'getEditValue') ? $datatype->getEditValue() : $datatype->getValue();
 
-        if(!empty($datatype->getValue())) {
+        if (!empty($datatype->getValue())) {
             $attributes = $datatype->getAttributes();
             unset($attributes['type']);
             if ($datatype->getLongitudeElement()) {
@@ -64,17 +70,18 @@ class DetailViewHelper extends AbstractHelper
      * @param Location $datatype
      * @return string
      */
-    private function getJsonValue($datatype) {
+    private function getJsonValue($datatype)
+    {
         $value = new \stdClass();
 
-        if(!empty($datatype->getValue())) {
+        if (!empty($datatype->getValue())) {
             $value->latitude = $datatype->getValue();
         }
-        if(!empty($datatype->getLongitudeElement()->getValue())) {
+        if (!empty($datatype->getLongitudeElement()->getValue())) {
             $value->longitude = $datatype->getLongitudeElement()->getValue();
         }
 
-        if($datatype->getEngine() === $datatype::ENGINE_GOOGLE) {
+        if ($datatype->getEngine() === $datatype::ENGINE_GOOGLE) {
             if ($datatype->getGooglePlaceIdElement()) {
                 $value->googlePlaceId = $datatype->getGooglePlaceIdElement()->getValue();
             }

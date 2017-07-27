@@ -12,7 +12,6 @@ class Number extends \Zend\Form\Element\Number
         setOptions as datatypeSetOptions;
     }
 
-
     /**
      * @return mixed
      */
@@ -26,7 +25,7 @@ class Number extends \Zend\Form\Element\Number
      */
     public function getInsertValue()
     {
-        return (int) $this->getValue();
+        return (int)$this->getValue();
     }
 
     /**

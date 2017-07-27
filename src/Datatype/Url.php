@@ -2,6 +2,8 @@
 
 namespace Adminaut\Datatype;
 
+use Zend\Filter\StringTrim;
+
 /**
  * Class Url
  * @package Adminaut\Datatype
@@ -11,7 +13,6 @@ class Url extends \Zend\Form\Element\Url
     use Datatype {
         setOptions as datatypeSetOptions;
     }
-
 
     /**
      * @var array
@@ -42,7 +43,9 @@ class Url extends \Zend\Form\Element\Url
             'name' => $this->getName(),
             'required' => false,
             'filters' => [
-                ['name' => 'Zend\Filter\StringTrim'],
+                [
+                    'name' => StringTrim::class,
+                ],
             ],
             'validators' => [
                 $this->getValidator(),

@@ -1,7 +1,6 @@
 <?php
 
 namespace Adminaut\Datatype;
-use Traversable;
 
 /**
  * Class Text
@@ -12,7 +11,6 @@ class Text extends \Zend\Form\Element\Text
     use Datatype {
         setOptions as datatypeSetOptions;
     }
-
 
     /**
      * @var array

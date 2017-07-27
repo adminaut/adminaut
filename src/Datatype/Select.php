@@ -1,6 +1,7 @@
 <?php
 
 namespace Adminaut\Datatype;
+
 use Traversable;
 
 /**
@@ -22,8 +23,8 @@ class Select extends \Zend\Form\Element\Select
      */
     public function getListedValue()
     {
-        if($this->getValue() !== null) {
-            if(isset($this->getValueOptions()[$this->getValue()])) {
+        if ($this->getValue() !== null) {
+            if (isset($this->getValueOptions()[$this->getValue()])) {
                 return $this->getValueOptions()[$this->getValue()];
             }
             return "";
@@ -61,7 +62,8 @@ class Select extends \Zend\Form\Element\Select
      * @param array|Traversable $options
      * @return \Zend\Form\Element
      */
-    public function setOptions($options) {
+    public function setOptions($options)
+    {
         return $this->datatypeSetOptions($options);
     }
 }

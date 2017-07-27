@@ -9,7 +9,7 @@ namespace Adminaut\Datatype;
 class MultiCheckbox extends \Zend\Form\Element\MultiCheckbox
 {
     protected $attributes = [
-        'type' => 'datatypeMultiCheckbox'
+        'type' => 'datatypeMultiCheckbox',
     ];
 
     use Datatype {
@@ -38,6 +38,4 @@ class MultiCheckbox extends \Zend\Form\Element\MultiCheckbox
         $this->value = $value === "" ? [] : $value;
         return $this;
     }
-
-
 }

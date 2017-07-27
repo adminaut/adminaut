@@ -1,4 +1,5 @@
 <?php
+
 namespace Adminaut\Datatype;
 
 /**
@@ -15,7 +16,7 @@ class Checkbox extends \Zend\Form\Element\Checkbox
      * @var array
      */
     protected $attributes = [
-        'type' => 'datatypeCheckbox'
+        'type' => 'datatypeCheckbox',
     ];
 
     /**
@@ -98,10 +99,10 @@ class Checkbox extends \Zend\Form\Element\Checkbox
      */
     public function getListedValue()
     {
-        if($this->isChecked()) {
-            return '<span class="label label-success">'. $this->getListedCheckedValue() .'</span>';
+        if ($this->isChecked()) {
+            return '<span class="label label-success">' . $this->getListedCheckedValue() . '</span>';
         } else {
-            return '<span class="label label-danger">'. $this->getListedUncheckedValue() .'</span>';
+            return '<span class="label label-danger">' . $this->getListedUncheckedValue() . '</span>';
         }
     }
 
@@ -116,7 +117,7 @@ class Checkbox extends \Zend\Form\Element\Checkbox
     /**
      * @param string $checkboxLabel
      */
-    public function setCheckboxLabel(string $checkboxLabel)
+    public function setCheckboxLabel($checkboxLabel)
     {
         $this->checkboxLabel = $checkboxLabel;
     }

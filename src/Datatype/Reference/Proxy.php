@@ -1,6 +1,7 @@
 <?php
+
 namespace Adminaut\Datatype\Reference;
-use DoctrineModule\Form\Element\Exception\InvalidRepositoryResultException;
+
 use ReflectionMethod;
 use RuntimeException;
 
@@ -24,13 +25,14 @@ class Proxy extends \DoctrineModule\Form\Element\Proxy
      * @var array
      */
     protected $orderby = [
-        'id' => 'ASC'
+        'id' => 'ASC',
     ];
 
     /**
      * @param $objects
      */
-    public function setObjects($objects) {
+    public function setObjects($objects)
+    {
         $this->objects = $objects;
     }
 
@@ -88,7 +90,8 @@ class Proxy extends \DoctrineModule\Form\Element\Proxy
     }
 
     /**
-     * @param bool $loadEmpty
+     * @param $loaded
+     * @internal param bool $loadEmpty
      */
     public function setLoaded($loaded)
     {
@@ -97,28 +100,28 @@ class Proxy extends \DoctrineModule\Form\Element\Proxy
 
     protected function loadObjects()
     {
-        if(!$this->loaded) {
-            if (! empty($this->objects)) {
+        if (!$this->loaded) {
+            if (!empty($this->objects)) {
                 return;
             }
 
-            $findMethod = (array) $this->getFindMethod();
+            $findMethod = (array)$this->getFindMethod();
 
-            if (! $findMethod) {
+            if (!$findMethod) {
                 $findMethodName = 'findBy';
-                $repository     = $this->objectManager->getRepository($this->targetClass);
-                $objects        = $repository->findBy([
-                    'deleted' => false
+                $repository = $this->objectManager->getRepository($this->targetClass);
+                $objects = $repository->findBy([
+                    'deleted' => false,
                 ], $this->getOrderby());
             } else {
-                if (! isset($findMethod['name'])) {
+                if (!isset($findMethod['name'])) {
                     throw new RuntimeException('No method name was set');
                 }
-                $findMethodName   = $findMethod['name'];
+                $findMethodName = $findMethod['name'];
                 $findMethodParams = isset($findMethod['params']) ? array_change_key_case($findMethod['params']) : [];
-                $repository       = $this->objectManager->getRepository($this->targetClass);
+                $repository = $this->objectManager->getRepository($this->targetClass);
 
-                if (! method_exists($repository, $findMethodName)) {
+                if (!method_exists($repository, $findMethodName)) {
                     throw new RuntimeException(
                         sprintf(
                             'Method "%s" could not be found in repository "%s"',
@@ -128,15 +131,15 @@ class Proxy extends \DoctrineModule\Form\Element\Proxy
                     );
                 }
 
-                $r    = new ReflectionMethod($repository, $findMethodName);
+                $r = new ReflectionMethod($repository, $findMethodName);
                 $args = [];
 
                 foreach ($r->getParameters() as $param) {
                     if (array_key_exists(strtolower($param->getName()), $findMethodParams)) {
                         $args[] = $findMethodParams[strtolower($param->getName())];
-                    } elseif ($param->isDefaultValueAvailable()) {
+                    } else if ($param->isDefaultValueAvailable()) {
                         $args[] = $param->getDefaultValue();
-                    } elseif (! $param->isOptional()) {
+                    } else if (!$param->isOptional()) {
                         throw new RuntimeException(
                             sprintf(
                                 'Required parameter "%s" with no default value for method "%s" in repository "%s"'

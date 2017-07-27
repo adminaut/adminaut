@@ -1,7 +1,11 @@
 <?php
+
 namespace Adminaut\Datatype;
 
-
+/**
+ * Class Email
+ * @package Adminaut\Datatype
+ */
 class Email extends \Zend\Form\Element\Email
 {
     use Datatype {
@@ -29,7 +33,7 @@ class Email extends \Zend\Form\Element\Email
     /**
      * @param string $icon
      */
-    public function setIcon(string $icon)
+    public function setIcon($icon)
     {
         $this->icon = $icon;
     }
@@ -45,7 +49,7 @@ class Email extends \Zend\Form\Element\Email
     /**
      * @param bool $showIcon
      */
-    public function setShowIcon(bool $showIcon)
+    public function setShowIcon($showIcon)
     {
         $this->showIcon = $showIcon;
     }
@@ -54,12 +58,13 @@ class Email extends \Zend\Form\Element\Email
      * @param array|\Traversable $options
      * @return \Zend\Form\Element
      */
-    public function setOptions($options) {
-        if(isset($options['icon'])) {
+    public function setOptions($options)
+    {
+        if (isset($options['icon'])) {
             $this->setIcon($options['icon']);
         }
 
-        if(isset($options['showIcon'])) {
+        if (isset($options['showIcon'])) {
             $this->setShowIcon($options['showIcon']);
         }
 

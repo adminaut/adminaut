@@ -1,10 +1,15 @@
 <?php
+
 namespace Adminaut\Datatype\GoogleStreetView;
 
 use Adminaut\Datatype\GoogleStreetView;
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\AbstractHelper;
 
+/**
+ * Class DetailViewHelper
+ * @package Adminaut\Datatype\GoogleStreetView
+ */
 class DetailViewHelper extends AbstractHelper
 {
     /**
@@ -17,22 +22,23 @@ class DetailViewHelper extends AbstractHelper
      */
     public function __invoke(ElementInterface $element = null)
     {
-        if (! $element) {
+        if (!$element) {
             return $this;
         }
 
         return $this->render($element);
     }
 
-    public function render($datatype) {
-        if (! $datatype instanceof GoogleStreetView) {
+    public function render($datatype)
+    {
+        if (!$datatype instanceof GoogleStreetView) {
             throw new \Zend\Form\Exception\InvalidArgumentException(sprintf(
                 '%s requires that the element is of type Adminaut\Datatype\StreetView',
                 __METHOD__
             ));
         }
 
-        if($datatype->getValue()) {
+        if ($datatype->getValue()) {
             $data = json_decode($datatype->getValue());
             $config = $this->getView()->plugin("config")->getConfig();
             $api = isset($config['adminaut']['google-api']) ? $config['adminaut']['google-api'] : "";
