@@ -2,10 +2,8 @@
 
 namespace Application\Entity;
 
+use Adminaut\Entity\Base;
 use Doctrine\ORM\Mapping as ORM;
-
-use \MfccAdminModule\Entity\Base;
-
 use Zend\Form\Annotation;
 
 /**
