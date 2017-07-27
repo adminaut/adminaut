@@ -2,42 +2,25 @@
 
 namespace Adminaut\Controller;
 
-use Adminaut\Service\AccessControlService;
-use Doctrine\ORM\EntityManager;
+use Adminaut\Controller\Plugin\Acl;
+use Adminaut\Controller\Plugin\Config;
+use Adminaut\Controller\Plugin\TranslatorPlugin;
 use Adminaut\Controller\Plugin\UserAuthentication;
-use Zend\EventManager\EventManagerInterface;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Mvc\I18n\Translator;
 use Zend\Mvc\MvcEvent;
 
 /**
  * Class AdminautBaseController
  * @package Adminaut\Controller
  * @method UserAuthentication userAuthentication()
+ * @method Acl acl()
+ * @method Config config()
+ * @method TranslatorPlugin translator()
  */
 class AdminautBaseController extends AbstractActionController
 {
-    /**
-     * @var EntityManager
-     */
-    protected $em;
-
-    /**
-     * @var AccessControlService
-     */
-    protected $acl;
-
-    /**
-     * @var array
-     */
-    protected $config;
-
-    /**
-     * @var Translator
-     */
-    protected $translator;
 
     /**
      * @var array
@@ -52,21 +35,6 @@ class AdminautBaseController extends AbstractActionController
         ],
         'footer' => '',
     ];
-
-    /**
-     * AdminautBaseController constructor.
-     * @param $config
-     * @param $acl
-     * @param $em
-     * @param $translator
-     */
-    public function __construct($config, $acl, $em, $translator)
-    {
-        $this->setConfig($config);
-        $this->setAcl($acl);
-        $this->setEntityManager($em);
-        $this->setTranslator($translator);
-    }
 
     /**
      * @param MvcEvent $e
@@ -100,86 +68,29 @@ class AdminautBaseController extends AbstractActionController
     }
 
     /**
-     * @return EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->em;
-    }
-
-    /**
-     * @param EntityManager $em
-     */
-    public function setEntityManager($em)
-    {
-        $this->em = $em;
-    }
-
-    /**
-     * @return AccessControlService
+     * @deprecated User $this->acl() instead.
+     * @return Acl
      */
     public function getAcl()
     {
-        return $this->acl;
+        return $this->acl();
     }
 
     /**
-     * @param AccessControlService $acl
-     */
-    public function setAcl($acl)
-    {
-        $this->acl = $acl;
-    }
-
-    /**
-     * @return array
+     * @deprecated User $this->config() instead.
+     * @return Config
      */
     public function getConfig()
     {
-        return $this->config;
+        return $this->config();
     }
 
     /**
-     * @param array $config
-     */
-    public function setConfig(array $config)
-    {
-        $this->config = $config;
-    }
-
-    /**
-     * @param EventManagerInterface $events
-     * @return $this
-     */
-    public function setEventManager(EventManagerInterface $events)
-    {
-
-        parent::setEventManager($events);
-        /*
-        $controller = $this;
-        $events->attach('dispatch', function ($e) use ($controller) {
-            $controller->layout('layout/admin');
-            if ($controller->zfcUserAuthentication()->hasIdentity()) {
-                var_dump($controller->zfcUserAuthentication()->getIdentity());
-            }
-        }, 100);
-        */
-        return $this;
-    }
-
-    /**
-     * @return Translator
+     * @deprecated User $this->translator() instead.
+     * @return TranslatorPlugin
      */
     public function getTranslator()
     {
-        return $this->translator;
-    }
-
-    /**
-     * @param Translator $translator
-     */
-    public function setTranslator(Translator $translator)
-    {
-        $this->translator = $translator;
+        return $this->translator();
     }
 }

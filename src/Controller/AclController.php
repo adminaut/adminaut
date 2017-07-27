@@ -4,7 +4,6 @@ namespace Adminaut\Controller;
 
 use Adminaut\Form\InputFilter\RoleInputFilter;
 use Adminaut\Form\RoleForm;
-use Adminaut\Mapper\RoleMapper;
 use Adminaut\Service\AccessControlService as ACL;
 use Zend\View\Model\ViewModel;
 
@@ -15,10 +14,6 @@ use Zend\View\Model\ViewModel;
  */
 class AclController extends AdminautBaseController
 {
-    /**
-     * @var array
-     */
-    protected $config;
 
     /**
      * @var Role
@@ -27,7 +22,6 @@ class AclController extends AdminautBaseController
 
     public function __construct($config, $acl, $em, $translator, $roleMapper)
     {
-        parent::__construct($config, $acl, $em, $translator);
 
         $this->setConfig($config);
         $this->setRoleMapper($roleMapper);
@@ -196,23 +190,6 @@ class AclController extends AdminautBaseController
             }
         }
         return $this->redirect()->toRoute('adminaut/acl');
-    }
-
-
-    /**
-     * @return array
-     */
-    public function getConfig()
-    {
-        return $this->config;
-    }
-
-    /**
-     * @param array $config
-     */
-    public function setConfig($config)
-    {
-        $this->config = $config;
     }
 
     /**

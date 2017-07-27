@@ -2,7 +2,6 @@
 
 namespace Adminaut\Manager;
 
-use Adminaut\Datatype\GoogleMap;
 use Adminaut\Datatype\MultiReference;
 use Adminaut\Datatype\Reference;
 use Adminaut\Form\Element\CyclicSheet;
@@ -13,13 +12,10 @@ use DoctrineModule\Form\Element\ObjectSelect;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use Adminaut\Entity\BaseEntityInterface;
 use Adminaut\Entity\UserInterface;
-use Adminaut\Form\Element;
 use Adminaut\Mapper\ModuleMapper;
 use Adminaut\Options\ModuleOptions;
 use Adminaut\Form\Form;
 use Adminaut\Form\Annotation\AnnotationBuilder;
-use Zend\Form\Element\Collection;
-use Zend\Form\Element\Radio;
 use Zend\Form\Fieldset;
 
 /**
@@ -74,7 +70,8 @@ class ModuleManager
         return $this->getMapper()->findById($entityId);
     }
 
-    public function getEntityClass() {
+    public function getEntityClass()
+    {
         return $this->options->getEntityClass();
     }
 
@@ -129,8 +126,8 @@ class ModuleManager
         /* @var $element Element */
         foreach ($form->getElements() as $element) {
             $elementName = $element->getName();
-            if($elementName === 'reference_property') {
-                if($element->getValue() === 'parentId') {
+            if ($elementName === 'reference_property') {
+                if ($element->getValue() === 'parentId') {
                     $entity->{$element->getValue()} = $parentEntity->getId();
                 } else {
                     $entity->{$element->getValue()} = $parentEntity;
@@ -146,7 +143,7 @@ class ModuleManager
         }
         return $entity;
     }
-    
+
     /**
      * @return Form
      */
@@ -188,45 +185,44 @@ class ModuleManager
         $form = $builder->createForm(new $entityClass());
         $form->setHydrator(new DoctrineObject($this->getEntityManager()));
 
-        if(isset($this->getOptions()->getLabels()['general_tab'])) {
+        if (isset($this->getOptions()->getLabels()['general_tab'])) {
             $tabs = $form->getTabs();
             $tabs['main']['label'] = $this->getOptions()->getLabels()['general_tab'];
             $form->setTabs($tabs);
         }
 
         /** @var Fieldset[] $fieldsets */
-        $fieldsets = array();
+        $fieldsets = [];
 
         /** @var ObjectSelect|ObjectRadio|ObjectMultiCheckbox|CyclicSheet $element */
-        foreach($form->getElements() as $element){
-            if($element instanceof ObjectSelect ||
-            $element instanceof ObjectRadio ||
-            $element instanceof ObjectMultiCheckbox ||
-            $element instanceof Reference ||
-            $element instanceof MultiReference) {
+        foreach ($form->getElements() as $element) {
+            if ($element instanceof ObjectSelect ||
+                $element instanceof ObjectRadio ||
+                $element instanceof ObjectMultiCheckbox ||
+                $element instanceof Reference ||
+                $element instanceof MultiReference) {
                 $element->setOption('object_manager', $this->getEntityManager());
-            } elseif($element instanceof CyclicSheet) {
+            } else if ($element instanceof CyclicSheet) {
                 $form->addTab($element->getName(), [
                     'label' => $element->getLabel(),
                     'action' => 'cyclicSheetAction',
                     'entity' => $element->getTargetClass(),
                     'referencedProperty' => $element->getReferencedProperty(),
                     'readonly' => $element->isReadonly(),
-                    'active' => false
+                    'active' => false,
                 ]);
 
                 $form->remove($element->getName());
                 continue;
             }
 
-            if(method_exists($element, 'isPrimary')) {
-                if($element->isPrimary()) {
+            if (method_exists($element, 'isPrimary')) {
+                if ($element->isPrimary()) {
                     $form->setPrimaryField($element->getName());
                 }
-            } elseif($element->getOption('primary') === true) {
+            } else if ($element->getOption('primary') === true) {
                 $form->setPrimaryField($element->getName());
             }
-
 
 
             /*if($tab = $element->getOption("tab")) {

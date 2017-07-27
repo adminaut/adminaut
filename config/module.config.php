@@ -7,6 +7,7 @@ use Zend\I18n\Translator\Translator;
 use Zend\I18n\Translator\TranslatorServiceFactory;
 use Zend\Router\Http\Segment;
 use Zend\Router\Http\Literal;
+use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
     'controllers' => [
@@ -16,6 +17,8 @@ return [
             Controller\ModuleController::class => Controller\Factory\ModuleControllerFactory::class,
             Controller\UsersController::class => Controller\Factory\UsersControllerFactory::class,
             Controller\AuthController::class => Controller\Factory\AuthControllerFactory::class,
+            Controller\DashboardController::class => InvokableFactory::class,
+            Controller\IndexController::class => InvokableFactory::class,
         ],
     ],
 
@@ -23,10 +26,14 @@ return [
         'factories' => [
             Controller\Plugin\UserAuthentication::class => Controller\Plugin\Factory\UserAuthenticationFactory::class,
             Controller\Plugin\Acl::class => Controller\Plugin\Factory\AclFactory::class,
+            Controller\Plugin\Config::class => Controller\Plugin\Factory\ConfigFactory::class,
+            Controller\Plugin\TranslatorPlugin::class => Controller\Plugin\Factory\TranslatorPluginFactory::class,
         ],
         'aliases' => [
             'userAuthentication' => Controller\Plugin\UserAuthentication::class,
             'acl' => Controller\Plugin\Acl::class,
+            'config' => Controller\Plugin\Config::class,
+            'translator' => Controller\Plugin\TranslatorPlugin::class,
         ],
     ],
 
@@ -82,8 +89,8 @@ return [
 
     'form_elements' => [
         'initializers' => [
-            'ObjectManager' => Initializer\ObjectManagerInitializer::class,
-            'ObjectManagerInitializer' => Initializer\ObjectManagerInitializer::class,
+//            'ObjectManager' => Initializer\ObjectManagerInitializer::class,
+//            'ObjectManagerInitializer' => Initializer\ObjectManagerInitializer::class,
         ],
         'factories' => [
             Initializer\ObjectManagerInitializer::class => Initializer\Factory\ObjectManagerInitializerFactory::class,
