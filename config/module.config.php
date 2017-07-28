@@ -58,7 +58,7 @@ return [
             Mapper\RoleMapper::class => Mapper\Factory\RoleMapperFactory::class,
 
             //Navigation
-            Navigation\Navigation::class => Navigation\NavigationFactory::class,
+            Navigation\Navigation::class => Navigation\Factory\NavigationFactory::class,
 
             // Options
             Options\FileManagerOptions::class => Options\Factory\FileManagerOptionsFactory::class,

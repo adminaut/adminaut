@@ -76,38 +76,19 @@ class Navigation extends DefaultNavigationFactory
 
         if ($accessControl->isAllowed('users', AccessControlService::READ)) {
             $pages[] = [
-                'label' => 'Systém',
+                'label' => 'System',
                 'uri' => '#',
                 'section' => true,
             ];
-            $subPage = [];
             if ($accessControl->isAllowed('users', AccessControlService::READ)) {
-                $subPage[] = [
+                $pages[] = [
                     'label' => 'Users',
                     'route' => 'adminaut/users',
-                    'icon' => 'fa fa-fw fa-user',
+                    'icon' => 'fa fa-fw fa-users',
                     'pages' => [
-                        [
-                            'label' => 'Add',
-                            'route' => 'adminaut/users/add',
-                        ],
-                        [
-                            'label' => 'View',
-                            'route' => 'adminaut/users/view',
-                        ],
-                        [
-                            'label' => 'Edit',
-                            'route' => 'adminaut/users/edit',
-                        ],
                     ],
                 ];
             }
-            $pages[] = [
-                'label' => 'User Management',
-                'uri' => '#',
-                'icon' => 'fa fa-fw fa-users',
-                'pages' => $subPage,
-            ];
         }
 
         if (null === $this->pages) {
