@@ -2,7 +2,7 @@
 
 namespace Adminaut\Controller;
 
-use Adminaut\Controller\Plugin\Acl;
+use Adminaut\Controller\Plugin\AclPlugin;
 use Adminaut\Datatype\Reference;
 use Adminaut\Form\Form;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -20,7 +20,7 @@ use Zend\View\Model\ViewModel;
 /**
  * Class ModuleController
  * @package Adminaut\Controller
- * @method Acl acl()
+ * @method AclPlugin acl()
  */
 class ModuleController extends AdminautBaseController
 {

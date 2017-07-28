@@ -5,8 +5,6 @@ namespace Adminaut;
 use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
-use Zend\ModuleManager\Feature\InitProviderInterface;
-use Zend\ModuleManager\ModuleManagerInterface;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
@@ -14,7 +12,7 @@ use Zend\Mvc\MvcEvent;
  * Class Module
  * @package Adminaut
  */
-class Module implements ConfigProviderInterface, InitProviderInterface, BootstrapListenerInterface
+class Module implements ConfigProviderInterface, BootstrapListenerInterface
 {
 
     /**
@@ -34,6 +32,7 @@ class Module implements ConfigProviderInterface, InitProviderInterface, Bootstra
      */
     public function onBootstrap(EventInterface $e)
     {
+        // todo: do we need this?
         $eventManager = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
@@ -48,28 +47,5 @@ class Module implements ConfigProviderInterface, InitProviderInterface, Bootstra
     public function getConfig()
     {
         return include __DIR__ . '/../config/module.config.php';
-    }
-
-    /**
-     * Initialize workflow
-     *
-     * @param  ModuleManagerInterface $manager
-     * @return void
-     */
-    public function init(ModuleManagerInterface $manager)
-    {
-        $adminautModules = [
-            'DoctrineModule',
-            'DoctrineORMModule',
-            'TwbBundle',
-            'BsbFlysystem',
-        ];
-
-        $loadedModules = $manager->getLoadedModules(false);
-        foreach ($adminautModules as $adminautModule) {
-            if (!in_array($adminautModule, $loadedModules)) {
-                $manager->loadModule($adminautModule);
-            }
-        }
     }
 }

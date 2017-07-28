@@ -2,30 +2,28 @@
 
 namespace Adminaut\Controller\Plugin\Factory;
 
-use Adminaut\Authentication\Service\AuthenticationService;
-use Adminaut\Controller\Plugin\UserAuthentication;
+use Adminaut\Controller\Plugin\ConfigPlugin;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
- * Class UserAuthenticationFactory
+ * Class ConfigPluginFactory
  * @package Adminaut\Controller\Plugin\Factory
  */
-class UserAuthenticationFactory implements FactoryInterface
+class ConfigPluginFactory implements FactoryInterface
 {
 
     /**
      * @param ContainerInterface $container
      * @param string $requestedName
      * @param array|null $options
-     * @return UserAuthentication
+     * @return ConfigPlugin
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
+        /** @var array $config */
+        $config = $container->get('Config');
 
-        /** @var AuthenticationService $authenticationService */
-        $authenticationService = $container->get(AuthenticationService::class);
-
-        return new UserAuthentication($authenticationService);
+        return new ConfigPlugin($config);
     }
 }

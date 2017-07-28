@@ -7,10 +7,10 @@ use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Adminaut\Authentication\Service\AuthenticationService;
 
 /**
- * Class Acl
+ * Class AclPlugin
  * @package Adminaut\Controller\Plugin
  */
-class Acl extends AbstractPlugin
+class AclPlugin extends AbstractPlugin
 {
 
     /**
@@ -24,7 +24,7 @@ class Acl extends AbstractPlugin
     private $authenticationService;
 
     /**
-     * Acl constructor.
+     * AclPlugin constructor.
      * @param AccessControlService $accessControlService
      * @param AuthenticationService $authenticationService
      */
@@ -48,5 +48,13 @@ class Acl extends AbstractPlugin
         }
 
         return $this->accessControlService->isAllowed($module, $permission, $element, $entity);
+    }
+
+    /**
+     * @return AccessControlService
+     */
+    public function getAcl()
+    {
+        return $this->accessControlService;
     }
 }

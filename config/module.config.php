@@ -15,6 +15,7 @@ return [
             Controller\AclController::class => Controller\Factory\AclControllerFactory::class,
             Controller\InstallController::class => Controller\Factory\InstallControllerFactory::class,
             Controller\ModuleController::class => Controller\Factory\ModuleControllerFactory::class,
+            Controller\ProfileController::class => Controller\Factory\ProfileControllerFactory::class,
             Controller\UsersController::class => Controller\Factory\UsersControllerFactory::class,
             Controller\AuthController::class => Controller\Factory\AuthControllerFactory::class,
             Controller\DashboardController::class => InvokableFactory::class,
@@ -24,15 +25,15 @@ return [
 
     'controller_plugins' => [
         'factories' => [
-            Controller\Plugin\UserAuthentication::class => Controller\Plugin\Factory\UserAuthenticationFactory::class,
-            Controller\Plugin\Acl::class => Controller\Plugin\Factory\AclFactory::class,
-            Controller\Plugin\Config::class => Controller\Plugin\Factory\ConfigFactory::class,
+            Controller\Plugin\AuthenticationPlugin::class => Controller\Plugin\Factory\AuthenticationPluginFactory::class,
+            Controller\Plugin\AclPlugin::class => Controller\Plugin\Factory\AclPluginFactory::class,
+            Controller\Plugin\ConfigPlugin::class => Controller\Plugin\Factory\ConfigPluginFactory::class,
             Controller\Plugin\TranslatorPlugin::class => Controller\Plugin\Factory\TranslatorPluginFactory::class,
         ],
         'aliases' => [
-            'userAuthentication' => Controller\Plugin\UserAuthentication::class,
-            'acl' => Controller\Plugin\Acl::class,
-            'config' => Controller\Plugin\Config::class,
+            'userAuthentication' => Controller\Plugin\AuthenticationPlugin::class,
+            'acl' => Controller\Plugin\AclPlugin::class,
+            'config' => Controller\Plugin\ConfigPlugin::class,
             'translator' => Controller\Plugin\TranslatorPlugin::class,
         ],
     ],

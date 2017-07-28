@@ -3,7 +3,7 @@
 namespace Adminaut\Controller;
 
 use Adminaut\Authentication\Service\AuthenticationService;
-use Adminaut\Controller\Plugin\UserAuthentication;
+use Adminaut\Controller\Plugin\AuthenticationPlugin;
 use Adminaut\Form\UserLoginForm;
 use Adminaut\Form\InputFilter\UserLoginInputFilter;
 use Adminaut\Service\UserService;
@@ -15,7 +15,7 @@ use Zend\View\Model\ViewModel;
 /**
  * Class AuthController
  * @package Adminaut\Controller
- * @method UserAuthentication userAuthentication()
+ * @method AuthenticationPlugin userAuthentication()
  */
 class AuthController extends AbstractActionController
 {

@@ -2,7 +2,7 @@
 
 namespace Adminaut\Controller;
 
-use Adminaut\Controller\Plugin\Acl;
+use Adminaut\Controller\Plugin\AclPlugin;
 use Adminaut\Entity\UserEntity;
 use Adminaut\Form\InputFilter\UserInputFilter;
 use Adminaut\Manager\ModuleManager;
@@ -17,7 +17,7 @@ use Zend\View\Model\ViewModel;
 /**
  * Class UsersController
  * @package Adminaut\Controller
- * @method Acl acl();
+ * @method AclPlugin acl();
  */
 class UsersController extends AdminautBaseController
 {

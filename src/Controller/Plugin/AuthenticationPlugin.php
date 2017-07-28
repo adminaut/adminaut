@@ -3,13 +3,14 @@
 namespace Adminaut\Controller\Plugin;
 
 use Adminaut\Authentication\Service\AuthenticationService;
+use Adminaut\Entity\UserEntity;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
 /**
- * Class UserAuthentication
+ * Class AuthenticationPlugin
  * @package Adminaut\Controller\Plugin
  */
-class UserAuthentication extends AbstractPlugin
+class AuthenticationPlugin extends AbstractPlugin
 {
     /**
      * @var AuthenticationService
@@ -17,7 +18,7 @@ class UserAuthentication extends AbstractPlugin
     private $authenticationService;
 
     /**
-     * UserAuthentication constructor.
+     * AuthenticationPlugin constructor.
      * @param AuthenticationService $authenticationService
      */
     public function __construct(AuthenticationService $authenticationService)
@@ -34,7 +35,7 @@ class UserAuthentication extends AbstractPlugin
     }
 
     /**
-     * @return \Adminaut\Entity\UserEntity|null
+     * @return UserEntity|null
      */
     public function getIdentity()
     {

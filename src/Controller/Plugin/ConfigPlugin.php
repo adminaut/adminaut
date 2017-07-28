@@ -5,10 +5,10 @@ namespace Adminaut\Controller\Plugin;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
 /**
- * Class Config
+ * Class ConfigPlugin
  * @package Adminaut\Controller\Plugin
  */
-class Config extends AbstractPlugin
+class ConfigPlugin extends AbstractPlugin
 {
     /**
      * @var array
@@ -16,7 +16,7 @@ class Config extends AbstractPlugin
     private $config;
 
     /**
-     * Config constructor.
+     * ConfigPlugin constructor.
      * @param array $config
      */
     public function __construct(array $config)

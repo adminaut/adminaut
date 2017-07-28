@@ -10,7 +10,7 @@ use Zend\View\Model\ViewModel;
 /**
  * Class AclController
  * @package Adminaut\Controller
- * @method \Adminaut\Controller\Plugin\Acl acl()
+ * @method \Adminaut\Controller\Plugin\AclPlugin acl()
  */
 class AclController extends AdminautBaseController
 {

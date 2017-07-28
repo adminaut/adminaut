@@ -2,9 +2,6 @@
 
 namespace Adminaut\Manager;
 
-use Zend\ServiceManager\ServiceManagerAwareInterface;
-use Zend\ServiceManager\ServiceManager;
-
 /**
  * Class AdminModulesManager
  * @package Adminaut\Manager
@@ -23,10 +20,11 @@ class AdminModulesManager
 
     /**
      * AdminModulesManager constructor.
+     * @param $modules
      */
     public function __construct($modules)
     {
-       array_unshift(
+        array_unshift(
             $modules,
             [
                 'label' => 'Dashboard',
@@ -34,10 +32,10 @@ class AdminModulesManager
                 'icon' => 'fa fa-fw fa-dashboard',
             ]
         );
-       $this->modules = $modules;
+        $this->modules = $modules;
 
-        foreach($this->modules as $moduleId => $module) {
-            if(isset($module['entity_class'])) {
+        foreach ($this->modules as $moduleId => $module) {
+            if (isset($module['entity_class'])) {
                 $this->entities[$moduleId] = $module['entity_class'];
             }
         }
@@ -63,19 +61,20 @@ class AdminModulesManager
      * @param string $moduleId
      * @return string|false
      */
-    public function getModuleEntity($moduleId) {
-        if(isset($this->entities[$moduleId])) {
+    public function getModuleEntity($moduleId)
+    {
+        if (isset($this->entities[$moduleId])) {
             return $this->entities[$moduleId];
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
      * @param string $entityClass
      * @return string|false
      */
-    public function getModuleByEntityClass($entityClass) {
+    public function getModuleByEntityClass($entityClass)
+    {
         return array_search($entityClass, $this->entities);
     }
 }

@@ -3,13 +3,13 @@
 namespace Adminaut\Controller;
 
 use Adminaut\Authentication\Helper\PasswordHelper;
-use Adminaut\Controller\Plugin\UserAuthentication;
 use Adminaut\Entity\UserAccessTokenEntity;
 use Adminaut\Entity\UserLoginEntity;
 use Adminaut\Form\InputFilter\UserChangePasswordInputFilter;
 use Adminaut\Form\UserChangePasswordForm;
 use Adminaut\Repository\UserAccessTokenRepository;
 use Adminaut\Repository\UserLoginRepository;
+use Doctrine\ORM\EntityManager;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\Response;
 use Zend\View\Model\ViewModel;
@@ -17,7 +17,6 @@ use Zend\View\Model\ViewModel;
 /**
  * Class ProfileController
  * @package Adminaut\Controller
- * @method UserAuthentication userAuthentication()
  */
 class ProfileController extends AdminautBaseController
 {
@@ -31,6 +30,19 @@ class ProfileController extends AdminautBaseController
     const ROUTE_ACCESS_TOKENS_DELETE = 'adminaut/profile/access-tokens/delete';
     const ROUTE_ACCESS_TOKENS_DELETE_ALL = 'adminaut/profile/access-tokens/delete-all';
 
+    /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    /**
+     * ProfileController constructor.
+     * @param EntityManager $entityManager
+     */
+    public function __construct(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 
     /**
      * @return Response|ViewModel
@@ -69,7 +81,7 @@ class ProfileController extends AdminautBaseController
                     $newPasswordHash = PasswordHelper::hash($newPassword);
 
                     $user->setPassword($newPasswordHash);
-                    $this->getEntityManager()->flush($user);
+                    $this->entityManager->flush($user);
 
                     $this->flashMessenger()->addSuccessMessage(_('Password has been changed.'));
 
@@ -94,7 +106,7 @@ class ProfileController extends AdminautBaseController
         $user = $this->userAuthentication()->getIdentity();
 
         /** @var UserLoginRepository $ulr */
-        $ulr = $this->getEntityManager()->getRepository(UserLoginEntity::class);
+        $ulr = $this->entityManager->getRepository(UserLoginEntity::class);
         $logins = $ulr->findBy(['user' => $user], ['id' => 'desc']);
 
         return new ViewModel([
@@ -111,7 +123,7 @@ class ProfileController extends AdminautBaseController
         $user = $this->userAuthentication()->getIdentity();
 
         /** @var UserAccessTokenRepository $atr */
-        $atr = $this->getEntityManager()->getRepository(UserAccessTokenEntity::class);
+        $atr = $this->entityManager->getRepository(UserAccessTokenEntity::class);
         $accessTokens = $atr->findBy(['user' => $user]);
 
         return new ViewModel([
@@ -131,12 +143,12 @@ class ProfileController extends AdminautBaseController
         if (null !== $id) {
 
             /** @var UserAccessTokenRepository $atr */
-            $atr = $this->getEntityManager()->getRepository(UserAccessTokenEntity::class);
+            $atr = $this->entityManager->getRepository(UserAccessTokenEntity::class);
             $accessToken = $atr->findOneBy(['id' => $id, 'user' => $user]);
 
             if (null !== $accessToken) {
-                $this->getEntityManager()->remove($accessToken);
-                $this->getEntityManager()->flush();
+                $this->entityManager->remove($accessToken);
+                $this->entityManager->flush();
             }
         }
 
@@ -151,13 +163,13 @@ class ProfileController extends AdminautBaseController
         $user = $this->userAuthentication()->getIdentity();
 
         /** @var UserAccessTokenRepository $atr */
-        $atr = $this->getEntityManager()->getRepository(UserAccessTokenEntity::class);
+        $atr = $this->entityManager->getRepository(UserAccessTokenEntity::class);
         $accessTokens = $atr->findBy(['user' => $user]);
 
         foreach ($accessTokens as $accessToken) {
-            $this->getEntityManager()->remove($accessToken);
+            $this->entityManager->remove($accessToken);
         }
-        $this->getEntityManager()->flush();
+        $this->entityManager->flush();
 
         return $this->redirect()->toRoute('adminaut/auth/logout');
     }

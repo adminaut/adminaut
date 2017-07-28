@@ -3,23 +3,23 @@
 namespace Adminaut\Controller\Plugin\Factory;
 
 use Adminaut\Authentication\Service\AuthenticationService;
-use Adminaut\Controller\Plugin\Acl;
+use Adminaut\Controller\Plugin\AclPlugin;
 use Adminaut\Service\AccessControlService;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
- * Class AclFactory
+ * Class AclPluginFactory
  * @package Adminaut\Controller\Plugin\Factory
  */
-class AclFactory implements FactoryInterface
+class AclPluginFactory implements FactoryInterface
 {
 
     /**
      * @param ContainerInterface $container
      * @param string $requestedName
      * @param array|null $options
-     * @return Acl
+     * @return AclPlugin
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
@@ -30,6 +30,6 @@ class AclFactory implements FactoryInterface
         /** @var AuthenticationService $authenticationService */
         $authenticationService = $container->get(AuthenticationService::class);
 
-        return new Acl($accessControlService, $authenticationService);
+        return new AclPlugin($accessControlService, $authenticationService);
     }
 }

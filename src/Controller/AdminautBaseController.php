@@ -2,22 +2,25 @@
 
 namespace Adminaut\Controller;
 
-use Adminaut\Controller\Plugin\Acl;
-use Adminaut\Controller\Plugin\Config;
+use Adminaut\Controller\Plugin\AclPlugin;
+use Adminaut\Controller\Plugin\ConfigPlugin;
 use Adminaut\Controller\Plugin\TranslatorPlugin;
-use Adminaut\Controller\Plugin\UserAuthentication;
+use Adminaut\Controller\Plugin\AuthenticationPlugin;
+use Adminaut\Service\AccessControlService;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
+use Zend\Mvc\Plugin\FlashMessenger\FlashMessenger;
 
 /**
  * Class AdminautBaseController
  * @package Adminaut\Controller
- * @method UserAuthentication userAuthentication()
- * @method Acl acl()
- * @method Config config()
+ * @method AuthenticationPlugin userAuthentication()
+ * @method AclPlugin acl()
+ * @method ConfigPlugin config()
  * @method TranslatorPlugin translator()
+ * @method FlashMessenger flashMessenger()
  */
 class AdminautBaseController extends AbstractActionController
 {
@@ -58,7 +61,7 @@ class AdminautBaseController extends AbstractActionController
 
         $this->layout('layout/admin');
         $this->layout()->setVariable('acl', $acl);
-        $appearanceConfig = isset($this->config['adminaut']['appearance']) ? $this->config['adminaut']['appearance'] : [];
+        $appearanceConfig = isset($this->config['adminaut']['appearance']) ? $this->config()['adminaut']['appearance'] : [];
         $appearance = array_merge($this->defaultAppearance, $appearanceConfig);
         $this->layout()->setVariable('appearance', $appearance);
 
@@ -69,16 +72,16 @@ class AdminautBaseController extends AbstractActionController
 
     /**
      * @deprecated User $this->acl() instead.
-     * @return Acl
+     * @return AccessControlService
      */
     public function getAcl()
     {
-        return $this->acl();
+        return $this->acl()->getAcl();
     }
 
     /**
      * @deprecated User $this->config() instead.
-     * @return Config
+     * @return ConfigPlugin
      */
     public function getConfig()
     {

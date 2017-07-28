@@ -4,6 +4,7 @@ namespace Adminaut\Manager;
 
 use Adminaut\Datatype\MultiReference;
 use Adminaut\Datatype\Reference;
+use Adminaut\Form\Annotation\AnnotationBuilder;
 use Adminaut\Form\Element\CyclicSheet;
 use Doctrine\ORM\EntityManager;
 use DoctrineModule\Form\Element\ObjectMultiCheckbox;
@@ -15,7 +16,6 @@ use Adminaut\Entity\UserInterface;
 use Adminaut\Mapper\ModuleMapper;
 use Adminaut\Options\ModuleOptions;
 use Adminaut\Form\Form;
-use Adminaut\Form\Annotation\AnnotationBuilder;
 use Zend\Form\Fieldset;
 
 /**
@@ -177,7 +177,8 @@ class ModuleManager
     public function createForm()
     {
         $entityClass = $this->options->getEntityClass();
-        $builder = new AnnotationBuilder($this->getEntityManager());
+//        $builder = new AnnotationBuilder($this->getEntityManager());
+        $builder = new AnnotationBuilder();
 
         /**
          * @var $form Form
