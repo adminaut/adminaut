@@ -20,21 +20,24 @@ return [
             Controller\AuthController::class => Controller\Factory\AuthControllerFactory::class,
             Controller\DashboardController::class => InvokableFactory::class,
             Controller\IndexController::class => InvokableFactory::class,
+            Controller\ManifestController::class => InvokableFactory::class,
         ],
     ],
 
     'controller_plugins' => [
         'factories' => [
             Controller\Plugin\AuthenticationPlugin::class => Controller\Plugin\Factory\AuthenticationPluginFactory::class,
-            Controller\Plugin\AclPlugin::class => Controller\Plugin\Factory\AclPluginFactory::class,
+            Controller\Plugin\IsAllowedPlugin::class => Controller\Plugin\Factory\IsAllowedPluginFactory::class,
             Controller\Plugin\ConfigPlugin::class => Controller\Plugin\Factory\ConfigPluginFactory::class,
-            Controller\Plugin\TranslatorPlugin::class => Controller\Plugin\Factory\TranslatorPluginFactory::class,
+            Controller\Plugin\TranslatePlugin::class => Controller\Plugin\Factory\TranslatePluginFactory::class,
+            Controller\Plugin\TranslatePluralPlugin::class => Controller\Plugin\Factory\TranslatePluralPluginFactory::class,
         ],
         'aliases' => [
-            'userAuthentication' => Controller\Plugin\AuthenticationPlugin::class,
-            'acl' => Controller\Plugin\AclPlugin::class,
+            'authentication' => Controller\Plugin\AuthenticationPlugin::class,
+            'isAllowed' => Controller\Plugin\IsAllowedPlugin::class,
             'config' => Controller\Plugin\ConfigPlugin::class,
-            'translator' => Controller\Plugin\TranslatorPlugin::class,
+            'translate' => Controller\Plugin\TranslatePlugin::class,
+            'translatePlural' => Controller\Plugin\TranslatePluralPlugin::class,
         ],
     ],
 
@@ -178,7 +181,8 @@ return [
                         'options' => [
                             'route' => 'manifest',
                             'defaults' => [
-                                'action' => 'manifest',
+                                'controller' => Controller\ManifestController::class,
+                                'action' => 'index',
                             ],
                         ],
                     ],

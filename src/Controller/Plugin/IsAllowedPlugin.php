@@ -2,6 +2,7 @@
 
 namespace Adminaut\Controller\Plugin;
 
+use Adminaut\Service\AccessControlService;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
 /**
@@ -10,5 +11,41 @@ use Zend\Mvc\Controller\Plugin\AbstractPlugin;
  */
 class IsAllowedPlugin extends AbstractPlugin
 {
+    /**
+     * @var AccessControlService
+     */
+    private $accessControlService;
 
+    /**
+     * IsAllowedPlugin constructor.
+     * @param AccessControlService $accessControlService
+     */
+    public function __construct(AccessControlService $accessControlService)
+    {
+        $this->accessControlService = $accessControlService;
+    }
+
+    /**
+     * @param $module
+     * @param $permissionLevel
+     * @param null $element
+     * @param null $entity
+     * @return IsAllowedPlugin|bool
+     */
+    public function __invoke($module = null, $permissionLevel = null, $element = null, $entity = null)
+    {
+        if ($module && $permissionLevel) {
+            return $this->accessControlService->isAllowed($module, $permissionLevel, $element, $entity);
+        }
+        return $this;
+    }
+
+    /**
+     * @return AccessControlService
+     * @deprecated
+     */
+    public function getAccessControlService()
+    {
+        return $this->accessControlService;
+    }
 }

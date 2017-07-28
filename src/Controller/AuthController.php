@@ -10,12 +10,14 @@ use Adminaut\Service\UserService;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Mvc\Plugin\FlashMessenger\FlashMessenger;
 use Zend\View\Model\ViewModel;
 
 /**
  * Class AuthController
  * @package Adminaut\Controller
- * @method AuthenticationPlugin userAuthentication()
+ * @method AuthenticationPlugin authentication()
+ * @method FlashMessenger flashMessenger()
  */
 class AuthController extends AbstractActionController
 {

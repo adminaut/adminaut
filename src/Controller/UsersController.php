@@ -68,7 +68,7 @@ class UsersController extends AdminautBaseController
      */
     public function indexAction()
     {
-        if (false === $this->acl()->isAllowed('users', AccessControlService::READ)) {
+        if (false === $this->isAllowed('users', AccessControlService::READ)) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
@@ -85,7 +85,7 @@ class UsersController extends AdminautBaseController
      */
     public function viewAction()
     {
-        if (!$this->acl()->isAllowed('users', AccessControlService::READ)) {
+        if (!$this->isAllowed('users', AccessControlService::READ)) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
@@ -110,7 +110,7 @@ class UsersController extends AdminautBaseController
      */
     public function addAction()
     {
-        if (!$this->acl()->isAllowed('users', AccessControlService::WRITE)) {
+        if (!$this->isAllowed('users', AccessControlService::WRITE)) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
@@ -135,8 +135,8 @@ class UsersController extends AdminautBaseController
             if ($form->isValid()) {
                 try {
                     $userService = $this->userService;
-                    $user = $userService->add($post, $this->userAuthentication()->getIdentity());
-                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully created.'));
+                    $user = $userService->add($post, $this->authentication()->getIdentity());
+                    $this->flashMessenger()->addSuccessMessage($this->translate('User has been successfully created.'));
                     switch ($post['submit']) {
                         case 'create-and-continue' :
                             return $this->redirect()->toRoute('adminaut/users/update', ['id' => $user->getId()]);
@@ -145,7 +145,7 @@ class UsersController extends AdminautBaseController
                             return $this->redirect()->toRoute('adminaut/users');
                     }
                 } catch (\Exception $e) {
-                    $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
+                    $this->flashMessenger()->addErrorMessage(sprintf($this->translate('Error: %s'), $e->getMessage()));
                     return $this->redirect()->toRoute('adminaut/users/add');
                 }
             }
@@ -160,7 +160,7 @@ class UsersController extends AdminautBaseController
      */
     public function editAction()
     {
-        if (!$this->acl()->isAllowed('users', AccessControlService::WRITE)) {
+        if (!$this->isAllowed('users', AccessControlService::WRITE)) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
@@ -202,8 +202,8 @@ class UsersController extends AdminautBaseController
             if ($form->isValid()) {
                 try {
                     $userService = $this->userService;
-                    $userService->update($user, $post, $this->userAuthentication()->getIdentity());
-                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully updated.'));
+                    $userService->update($user, $post, $this->authentication()->getIdentity());
+                    $this->flashMessenger()->addSuccessMessage($this->translate('User has been successfully updated.'));
 
                     switch ($post['submit']) {
                         case 'save-and-continue' :
@@ -213,7 +213,7 @@ class UsersController extends AdminautBaseController
                             return $this->redirect()->toRoute('adminaut/users');
                     }
                 } catch (\Exception $e) {
-                    $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
+                    $this->flashMessenger()->addErrorMessage(sprintf($this->translate('Error: %s'), $e->getMessage()));
                 }
             }
         }
@@ -233,7 +233,7 @@ class UsersController extends AdminautBaseController
      */
     public function deleteAction()
     {
-        if (!$this->acl()->isAllowed('users', AccessControlService::FULL)) {
+        if (!$this->isAllowed('users', AccessControlService::FULL)) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
@@ -244,10 +244,10 @@ class UsersController extends AdminautBaseController
             if ($user) {
                 try {
                     $userService = $this->userService;
-                    $userService->delete($user, $this->userAuthentication()->getIdentity());
-                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully deleted.'));
+                    $userService->delete($user, $this->authentication()->getIdentity());
+                    $this->flashMessenger()->addSuccessMessage($this->translate('User has been successfully deleted.'));
                 } catch (\Exception $e) {
-                    $this->flashMessenger()->addErrorMessage(sprintf($this->getTranslator()->translate('Error: %s'), $e->getMessage()));
+                    $this->flashMessenger()->addErrorMessage(sprintf($this->translate('Error: %s'), $e->getMessage()));
                 }
             }
         }

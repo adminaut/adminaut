@@ -49,7 +49,7 @@ class ProfileController extends AdminautBaseController
      */
     public function indexAction()
     {
-        $user = $this->userAuthentication()->getIdentity();
+        $user = $this->authentication()->getIdentity();
 
         return new ViewModel([
             'user' => $user,
@@ -64,7 +64,7 @@ class ProfileController extends AdminautBaseController
         $form = new UserChangePasswordForm();
         $form->setInputFilter(new UserChangePasswordInputFilter());
 
-        $user = $this->userAuthentication()->getIdentity();
+        $user = $this->authentication()->getIdentity();
 
         /** @var Request $request */
         $request = $this->getRequest();
@@ -103,7 +103,7 @@ class ProfileController extends AdminautBaseController
      */
     public function loginsAction()
     {
-        $user = $this->userAuthentication()->getIdentity();
+        $user = $this->authentication()->getIdentity();
 
         /** @var UserLoginRepository $ulr */
         $ulr = $this->entityManager->getRepository(UserLoginEntity::class);
@@ -120,7 +120,7 @@ class ProfileController extends AdminautBaseController
      */
     public function accessTokensAction()
     {
-        $user = $this->userAuthentication()->getIdentity();
+        $user = $this->authentication()->getIdentity();
 
         /** @var UserAccessTokenRepository $atr */
         $atr = $this->entityManager->getRepository(UserAccessTokenEntity::class);
@@ -137,7 +137,7 @@ class ProfileController extends AdminautBaseController
      */
     public function deleteAccessTokenAction()
     {
-        $user = $this->userAuthentication()->getIdentity();
+        $user = $this->authentication()->getIdentity();
         $id = $this->params('id');
 
         if (null !== $id) {
@@ -160,7 +160,7 @@ class ProfileController extends AdminautBaseController
      */
     public function deleteAllAccessTokensAction()
     {
-        $user = $this->userAuthentication()->getIdentity();
+        $user = $this->authentication()->getIdentity();
 
         /** @var UserAccessTokenRepository $atr */
         $atr = $this->entityManager->getRepository(UserAccessTokenEntity::class);

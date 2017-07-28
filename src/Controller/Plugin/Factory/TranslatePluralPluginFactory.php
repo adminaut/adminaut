@@ -2,29 +2,35 @@
 
 namespace Adminaut\Controller\Plugin\Factory;
 
-use Adminaut\Controller\Plugin\TranslatorPlugin;
+use Adminaut\Controller\Plugin\TranslatePluralPlugin;
 use Interop\Container\ContainerInterface;
 use Zend\I18n\Translator\Translator;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
- * Class TranslatorPluginFactory
+ * Class TranslatePluralPluginFactory
  * @package Adminaut\Controller\Plugin\Factory
  */
-class TranslatorPluginFactory implements FactoryInterface
+class TranslatePluralPluginFactory implements FactoryInterface
 {
 
     /**
      * @param ContainerInterface $container
      * @param string $requestedName
      * @param array|null $options
-     * @return TranslatorPlugin
+     * @return TranslatePluralPlugin
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        /** @var Translator $translator */
-        $translator = $container->get(Translator::class);
 
-        return new TranslatorPlugin($translator);
+        if (!$container->has('translator')) {
+            throw new ServiceNotCreatedException('Zend I18n Translator not configured');
+        }
+
+        /** @var Translator $translator */
+        $translator = $container->get('translator');
+
+        return new TranslatePluralPlugin($translator);
     }
 }

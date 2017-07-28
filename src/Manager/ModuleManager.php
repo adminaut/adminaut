@@ -24,33 +24,36 @@ use Zend\Form\Fieldset;
  */
 class ModuleManager
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    protected $em;
 
     /**
-     * @var ModuleMapper
+     * @var EntityManager
      */
-    protected $mapper;
+    private $entityManager;
 
     /**
      * @var ModuleOptions
      */
-    protected $options;
+    private $moduleOptions;
+
+    /**
+     * @var ModuleMapper
+     */
+    private $mapper;
 
     /**
      * @var
      */
-    protected $form;
+    private $form;
 
     /**
-     * AdminModuleManager constructor.
-     * @param $em
+     * ModuleManager constructor.
+     * @param EntityManager $entityManager
+     * @param ModuleOptions $moduleOptions
      */
-    public function __construct($em)
+    public function __construct(EntityManager $entityManager, ModuleOptions $moduleOptions)
     {
-        $this->setEntityManager($em);
+        $this->entityManager = $entityManager;
+        $this->moduleOptions = $moduleOptions;
     }
 
     /**
@@ -70,9 +73,12 @@ class ModuleManager
         return $this->getMapper()->findById($entityId);
     }
 
+    /**
+     * @return string
+     */
     public function getEntityClass()
     {
-        return $this->options->getEntityClass();
+        return $this->getModuleOptions()->getEntityClass();
     }
 
     /**
@@ -176,8 +182,7 @@ class ModuleManager
      */
     public function createForm()
     {
-        $entityClass = $this->options->getEntityClass();
-//        $builder = new AnnotationBuilder($this->getEntityManager());
+        $entityClass = $this->getModuleOptions()->getEntityClass();
         $builder = new AnnotationBuilder();
 
         /**
@@ -262,34 +267,12 @@ class ModuleManager
     }
 
     /**
-     * @param ModuleMapper $mapper
-     * @return $this
-     */
-    public function setMapper(ModuleMapper $mapper)
-    {
-        $this->mapper = $mapper;
-        return $this;
-    }
-
-    /**
      * @return ModuleOptions
+     * @deprecated
      */
     public function getOptions()
     {
-        if (!$this->options instanceof ModuleOptions) {
-            throw new Exception\RuntimeException(
-                'ModuleOptions not set.'
-            );
-        }
-        return $this->options;
-    }
-
-    /**
-     * @param ModuleOptions $options
-     */
-    public function setOptions(ModuleOptions $options)
-    {
-        $this->options = $options;
+        return $this->getModuleOptions();
     }
 
     /**
@@ -297,14 +280,14 @@ class ModuleManager
      */
     public function getEntityManager()
     {
-        return $this->em;
+        return $this->entityManager;
     }
 
     /**
-     * @param EntityManager $em
+     * @return ModuleOptions
      */
-    public function setEntityManager($em)
+    public function getModuleOptions()
     {
-        $this->em = $em;
+        return $this->moduleOptions;
     }
 }

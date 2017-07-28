@@ -6,10 +6,10 @@ use Zend\I18n\Translator\Translator;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
 /**
- * Class TranslatePlugin
+ * Class TranslatePluralPlugin
  * @package Adminaut\Controller\Plugin
  */
-class TranslatePlugin extends AbstractPlugin
+class TranslatePluralPlugin extends AbstractPlugin
 {
 
     /**
@@ -18,7 +18,7 @@ class TranslatePlugin extends AbstractPlugin
     private $translator;
 
     /**
-     * TranslatePlugin constructor.
+     * TranslatePluralPlugin constructor.
      * @param Translator $translator
      */
     public function __construct(Translator $translator)
@@ -27,13 +27,15 @@ class TranslatePlugin extends AbstractPlugin
     }
 
     /**
-     * @param $message
+     * @param $singular
+     * @param $plural
+     * @param $number
      * @param string $textDomain
      * @param null $locale
      * @return string
      */
-    public function __invoke($message, $textDomain = 'default', $locale = null)
+    public function __invoke($singular, $plural, $number, $textDomain = 'default', $locale = null)
     {
-        return $this->translator->translate($message, $textDomain, $locale);
+        return $this->translator->translatePlural($singular, $plural, $number, $textDomain, $locale);
     }
 }

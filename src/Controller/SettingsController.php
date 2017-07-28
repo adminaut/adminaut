@@ -2,9 +2,8 @@
 
 namespace Adminaut\Controller;
 
-use Adminaut\Service\AccessControl as ACL;
-
-use Adminaut\Service\AccessControl;
+use Adminaut\Service\AccessControlService;
+use Zend\Http\Response;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -13,20 +12,20 @@ use Zend\View\Model\ViewModel;
  */
 class SettingsController extends AdminautBaseController
 {
+
     /**
-     * @return ViewModel
+     * @return Response|ViewModel
      */
     public function indexAction()
     {
-        if (!$this->acl()->isAllowed('settings', AccessControl::READ)) {
+        if (!$this->isAllowed('settings', AccessControlService::READ)) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        $roleRepository = $this->getEntityManager()->getRepository('Adminaut\Entity\Role');
-        $list = $roleRepository->findAll();
+        // todo: implement settings
 
         return new ViewModel([
-            'list' => $list,
+            'list' => [],
         ]);
     }
 }

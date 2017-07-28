@@ -26,6 +26,8 @@ class ModuleManagerFactory implements FactoryInterface
         /** @var EntityManager $entityManager */
         $entityManager = $container->get(EntityManager::class);
 
+
+
         return new ModuleManager($entityManager);
     }
 }
