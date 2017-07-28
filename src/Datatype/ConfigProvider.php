@@ -5,6 +5,7 @@ namespace Adminaut\Datatype;
 /**
  * Class ConfigProvider
  * @package Adminaut\Datatype
+ * @deprecated
  */
 class ConfigProvider
 {

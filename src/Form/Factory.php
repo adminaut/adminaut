@@ -2,8 +2,6 @@
 
 namespace Adminaut\Form;
 
-use Adminaut\Form\Form;
-use Adminaut\Datatype\DatatypeManager;
 use Traversable;
 use Zend\Form\ElementInterface as ZFElementInterface;
 use Zend\Form\FieldsetInterface;

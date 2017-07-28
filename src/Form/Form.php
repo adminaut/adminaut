@@ -4,6 +4,7 @@ namespace Adminaut\Form;
 
 use Adminaut\Datatype\Checkbox;
 use Adminaut\Datatype\Radio;
+use Zend\Form\ElementInterface;
 use Zend\Form\FieldsetInterface;
 
 /**

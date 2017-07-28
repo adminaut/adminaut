@@ -5,6 +5,7 @@ namespace Adminaut\Datatype;
 /**
  * Class Module
  * @package Adminaut\Datatype
+ * @deprecated
  */
 class Module
 {
