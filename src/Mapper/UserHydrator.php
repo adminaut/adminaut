@@ -2,7 +2,7 @@
 
 namespace Adminaut\Mapper;
 
-use Zend\Stdlib\Hydrator\ClassMethods;
+use Zend\Hydrator\ClassMethods;
 use Adminaut\Entity\UserInterface as UserEntityInterface;
 
 /**

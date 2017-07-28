@@ -57,5 +57,16 @@
     "psr-4": {
       "Adminaut\\": "src/"
     }
+  },
+  "extra": {
+    "zf": {
+      "module": [
+        "DoctrineModule",
+        "DoctrineORMModule",
+        "BsbFlysystem",
+        "TwbBundle",
+        "Adminaut"
+      ]
+    }
   }
 }

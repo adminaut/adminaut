@@ -4,7 +4,7 @@ namespace Adminaut\Mapper;
 
 use Adminaut\Entity\UserEntity;
 use Doctrine\ORM\EntityManager;
-use Zend\Stdlib\Hydrator\HydratorInterface;
+use Zend\Hydrator\HydratorInterface;
 
 /**
  * Class UserMapper

@@ -7,15 +7,18 @@ use Adminaut\Datatype\Reference;
 use Adminaut\Form\Form;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Adminaut\Entity\BaseEntityInterface;
-use Adminaut\Form\Element;
 use Adminaut\Manager\ModuleManager;
 use Adminaut\Manager\FileManager;
 use Adminaut\Mapper\ModuleMapper;
 use Adminaut\Options\ModuleOptions;
 use Adminaut\Service\AccessControlService;
+use Doctrine\ORM\EntityManager;
+use Zend\Form\Element;
+use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Service\ViewPhpRendererFactory;
 use Zend\View\Model\ViewModel;
+use Zend\View\Renderer\RendererInterface;
 
 /**
  * Class ModuleController
@@ -24,47 +27,46 @@ use Zend\View\Model\ViewModel;
  */
 class ModuleController extends AdminautBaseController
 {
+
+    /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
     /**
      * @var ModuleManager
      */
-    protected $moduleManager;
+    private $moduleManager;
 
     /**
-     * @var ViewPhpRendererFactory
+     * @var RendererInterface
      */
-    protected $viewRenderer;
+    private $viewRenderer;
 
     /**
      * @var FileManager
      */
-    protected $filemanager;
-
-    /**
-     * @var array
-     */
-    protected $tabs;
+    private $fileManager;
 
     /**
      * @var ModuleManager
+     * @deprecated
      */
     protected $moduleManagerService;
 
     /**
      * ModuleController constructor.
-     * @param $config
-     * @param $acl
-     * @param $em
-     * @param $translator
-     * @param $moduleManager
-     * @param $viewRenderer
-     * @param $filemanager
+     * @param EntityManager $entityManager
+     * @param ModuleManager $moduleManager
+     * @param RendererInterface $viewRenderer
+     * @param FileManager $fileManager
      */
-    public function __construct($config, $acl, $em, $translator, $moduleManager, $viewRenderer, $filemanager)
+    public function __construct(EntityManager $entityManager, ModuleManager $moduleManager, RendererInterface $viewRenderer, FileManager $fileManager)
     {
-        parent::__construct($config, $acl, $em, $translator);
-        $this->setModuleManagerService($moduleManager);
-        $this->setViewRenderer($viewRenderer);
-        $this->setFilemanager($filemanager);
+        $this->entityManager = $entityManager;
+        $this->moduleManager = $moduleManager;
+        $this->viewRenderer = $viewRenderer;
+        $this->fileManager = $fileManager;
     }
 
     /**
@@ -155,7 +157,7 @@ class ModuleController extends AdminautBaseController
 
         $elements = [];
         foreach ($form->getElements() as $key => $element) {
-            if ($this->getAcl()->isAllowed($moduleId, AccessControlService::READ, $key)) {
+            if ($this->acl()->isAllowed($moduleId, AccessControlService::READ, $key)) {
                 $elements[$element->getName()] = $element;
             }
         }
@@ -218,9 +220,12 @@ class ModuleController extends AdminautBaseController
             }
         }
 
-        if ($this->getRequest()->isPost()) {
-            $postData = $this->getRequest()->getPost()->toArray();
-            $files = $this->getRequest()->getFiles()->toArray();
+        /** @var Request $request */
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+            $postData = $request->getPost()->toArray();
+            $files = $request->getFiles()->toArray();
             $post = array_merge_recursive($postData, $files);
 
             $form->setData($post);
@@ -298,9 +303,12 @@ class ModuleController extends AdminautBaseController
         $tabs[$this->params()->fromRoute('tab')]['active'] = true;
         $form->bind($entity);
 
-        if ($this->getRequest()->isPost()) {
-            $postData = $this->getRequest()->getPost()->toArray();
-            $files = $this->getRequest()->getFiles()->toArray();
+        /** @var Request $request */
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+            $postData = $request->getPost()->toArray();
+            $files = $request->getFiles()->toArray();
 
             $post = array_merge_recursive($postData, $files);
 
@@ -446,7 +454,7 @@ class ModuleController extends AdminautBaseController
         $referencedProperty = $tabs[$currentTab]['referencedProperty'];
         $readonly = $tabs[$currentTab]['readonly'];
 
-        $moduleManager = $this->getModuleManagerService();
+        $moduleManager = $this->getModuleManager();
         $moduleOptions = new ModuleOptions($options);
         $moduleOptions->setModuleId($moduleId);
         $moduleManager->setOptions($moduleOptions);
@@ -456,7 +464,9 @@ class ModuleController extends AdminautBaseController
         $list = $moduleManager->getList([$referencedProperty => $entity]);
         $fm = $this->getFilemanager();
         $form = $moduleManager->getForm();
-        $form->bind(new $moduleOptions->entityClass);
+        $moduleEntityClass = $moduleOptions->getEntityClass();
+        $moduleEntity = new $moduleEntityClass();
+        $form->bind($moduleEntity);
 
         /* @var $element \Zend\Form\Element */
         $listedElements = [];
@@ -667,9 +677,9 @@ class ModuleController extends AdminautBaseController
     protected function getAdminModuleManager($moduleId)
     {
         if (!$this->moduleManager instanceof ModuleManager) {
-            $moduleManager = $this->getModuleManagerService();
+            $moduleManager = $this->getModuleManager();
 
-            $config = $this->getConfig();
+            $config = $this->config();
 
             if (isset($config['adminaut']['modules']) and isset($config['adminaut']['modules'][$moduleId])) {
                 $adminModuleOption = new ModuleOptions($config['adminaut']['modules'][$moduleId]);
@@ -687,7 +697,23 @@ class ModuleController extends AdminautBaseController
     }
 
     /**
-     * @return ViewPhpRendererFactory
+     * @return EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->entityManager;
+    }
+
+    /**
+     * @return ModuleManager
+     */
+    public function getModuleManager()
+    {
+        return $this->moduleManager;
+    }
+
+    /**
+     * @return RendererInterface
      */
     public function getViewRenderer()
     {
@@ -695,42 +721,10 @@ class ModuleController extends AdminautBaseController
     }
 
     /**
-     * @param ViewPhpRendererFactory $viewRenderer
-     */
-    public function setViewRenderer($viewRenderer)
-    {
-        $this->viewRenderer = $viewRenderer;
-    }
-
-    /**
-     * @return ModuleManager
-     */
-    public function getModuleManagerService()
-    {
-        return $this->moduleManagerService;
-    }
-
-    /**
-     * @param ModuleManager $moduleManagerService
-     */
-    public function setModuleManagerService($moduleManagerService)
-    {
-        $this->moduleManagerService = $moduleManagerService;
-    }
-
-    /**
      * @return FileManager
      */
-    public function getFilemanager()
+    public function getFileManager()
     {
-        return $this->filemanager;
-    }
-
-    /**
-     * @param FileManager $filemanager
-     */
-    public function setFilemanager($filemanager)
-    {
-        $this->filemanager = $filemanager;
+        return $this->fileManager;
     }
 }

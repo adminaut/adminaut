@@ -13,6 +13,11 @@ use Zend\Stdlib\Hydrator\ClassMethods;
 use Adminaut\EventManager\EventProvider;
 use Adminaut\Db\Adapter\MasterSlaveAdapterInterface;
 
+/**
+ * Class AbstractDbMapper
+ * @package Adminaut\Mapper
+ * @deprecated We use Doctrine, not Zend/Db
+ */
 abstract class AbstractDbMapper extends EventProvider
 {
     /**

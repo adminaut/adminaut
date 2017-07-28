@@ -2,12 +2,7 @@
 
 namespace Adminaut\Mapper;
 
-use Doctrine\ORM\EntityManagerInterface;
-
 use Adminaut\Entity\Role as RoleEntity;
-
-use Zend\Stdlib\Hydrator\HydratorInterface;
-
 
 /**
  * Class RoleMapper
