@@ -12,7 +12,7 @@ use Zend\ServiceManager\Factory\InvokableFactory;
 return [
     'controllers' => [
         'factories' => [
-            Controller\AclController::class => Controller\Factory\AclControllerFactory::class,
+            //Controller\AclController::class => Controller\Factory\AclControllerFactory::class,
             Controller\InstallController::class => Controller\Factory\InstallControllerFactory::class,
             Controller\ModuleController::class => Controller\Factory\ModuleControllerFactory::class,
             Controller\ProfileController::class => Controller\Factory\ProfileControllerFactory::class,
@@ -72,19 +72,66 @@ return [
         ],
     ],
 
+    'dependencies' => [
+
+        'factories' => [
+            'FormElementManager' => Datatype\DatatypeManagerFactory::class,
+        ],
+    ],
+
     'view_helpers' => [
+
+        'invokables' => [
+            // form collection
+            'formCollection' => Datatype\View\Helper\FormCollection::class, // todo: rename to datatypeFormCollection so we don't overwrite default formCollection?
+
+            // form helpers
+            'datatypeFormSelect' => Datatype\Select\FormViewHelper::class,
+            'datatypeFormCheckbox' => Datatype\Checkbox\FormViewHelper::class,
+            'datatypeFormMultiCheckbox' => Datatype\MultiCheckbox\FormViewHelper::class,
+            'datatypeFormMultiReference' => Datatype\MultiReference\FormViewHelper::class,
+            'datatypeFormLocation' => Datatype\Location\FormViewHelper::class,
+            'datatypeFormGoogleMap' => Datatype\GoogleMap\FormViewHelper::class,
+            'datatypeFormGoogleStreetView' => Datatype\GoogleStreetView\FormViewHelper::class,
+            'datatypeFormGooglePlaceId' => Datatype\GooglePlaceId\FormViewHelper::class,
+            'datatypeFormDateTime' => Datatype\DateTime\FormViewHelper::class,
+            'datatypeFormFile' => Datatype\File\FormViewHelper::class,
+            'datatypeFormTextarea' => Datatype\Textarea\FormViewHelper::class,
+
+            // detail helpers
+            'datatypeDetail' => Datatype\View\Helper\datatypeDetailViewHelper::class,
+            'datatypeLocationDetail' => Datatype\Location\DetailViewHelper::class,
+            'datatypeGoogleMapDetail' => Datatype\GoogleMap\DetailViewHelper::class,
+            'datatypeGoogleStreetViewDetail' => Datatype\GoogleStreetView\DetailViewHelper::class,
+            'datatypeTextareaDetail' => Datatype\Textarea\DetailViewHelper::class,
+        ],
 
         'factories' => [
             'formElement' => Form\View\Helper\Factory\FormElementFactory::class,
             View\Helper\UserIdentity::class => View\Helper\Factory\UserIdentityFactory::class,
             View\Helper\IsAllowed::class => View\Helper\Factory\IsAllowedViewHelperFactory::class,
             View\Helper\ConfigViewHelper::class => View\Helper\Factory\ConfigViewHelperFactory::class,
+
+
+            // Datatype helpers
+            Datatype\View\Helper\FormRow::class => Datatype\View\Helper\Factory\FormRowFactory::class,
+            Datatype\View\Helper\Datatype::class => Datatype\View\Helper\Factory\DatatypeFactory::class,
+
+            'datatypeFormReference' => Datatype\Reference\Factory\FormViewHelperFactory::class,
         ],
 
         'aliases' => [
             'userIdentity' => View\Helper\UserIdentity::class,
             'isAllowed' => View\Helper\IsAllowed::class,
             'config' => View\Helper\ConfigViewHelper::class,
+
+
+            // Datatype helpers
+            'formrow' => Datatype\View\Helper\FormRow::class,
+            'form_row' => Datatype\View\Helper\FormRow::class,
+            'formRow' => Datatype\View\Helper\FormRow::class,
+            'FormRow' => Datatype\View\Helper\FormRow::class,
+            'datatype' => Datatype\View\Helper\Datatype::class,
         ],
     ],
 

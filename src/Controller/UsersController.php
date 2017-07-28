@@ -2,9 +2,9 @@
 
 namespace Adminaut\Controller;
 
-use Adminaut\Controller\Plugin\AclPlugin;
 use Adminaut\Entity\UserEntity;
 use Adminaut\Form\InputFilter\UserInputFilter;
+use Adminaut\Manager\AdminModulesManager;
 use Adminaut\Manager\ModuleManager;
 use Adminaut\Mapper\ModuleMapper;
 use Adminaut\Mapper\UserMapper;
@@ -12,46 +12,59 @@ use Adminaut\Options\ModuleOptions;
 use Adminaut\Repository\UserRepository;
 use Adminaut\Service\AccessControlService;
 use Adminaut\Service\UserService;
+use Doctrine\ORM\EntityManager;
+use Zend\Http\PhpEnvironment\Request;
+use Zend\Http\Response;
 use Zend\View\Model\ViewModel;
 
 /**
  * Class UsersController
  * @package Adminaut\Controller
- * @method AclPlugin acl();
  */
 class UsersController extends AdminautBaseController
 {
     /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    /**
      * @var UserMapper
      */
-    protected $userMapper;
+    private $userMapper;
 
     /**
      * @var UserService
      */
-    protected $userService;
+    private $userService;
 
     /**
      * @var ModuleManager
      */
-    protected $adminModuleManager;
+    private $moduleManager;
 
     /**
-     * @var ModuleManager
+     * @var AdminModulesManager
      */
-    protected $moduleManagerService;
+    private $adminModuleManager;
 
-
-    public function __construct($config, $acl, $em, $translator, $userMapper, $userService, $moduleManager)
+    /**
+     * UsersController constructor.
+     * @param EntityManager $entityManager
+     * @param UserMapper $userMapper
+     * @param UserService $userService
+     * @param ModuleManager $moduleManager
+     */
+    public function __construct(EntityManager $entityManager, UserMapper $userMapper, UserService $userService, ModuleManager $moduleManager)
     {
-        parent::__construct($config, $acl, $em, $translator);
-        $this->setUserMapper($userMapper);
-        $this->setUserService($userService);
-        $this->setModuleManagerService($moduleManager);
+        $this->entityManager = $entityManager;
+        $this->userMapper = $userMapper;
+        $this->userService = $userService;
+        $this->moduleManager = $moduleManager;
     }
 
     /**
-     * @return \Zend\Http\Response|ViewModel
+     * @return Response|ViewModel
      */
     public function indexAction()
     {
@@ -60,15 +73,15 @@ class UsersController extends AdminautBaseController
         }
 
         /** @var UserRepository $userRepository */
-        $userRepository = $this->getEntityManager()->getRepository(UserEntity::class);
-        $list = $userRepository->getList();
+        $userRepository = $this->entityManager->getRepository(UserEntity::class);
+        $list = $userRepository->findAll();
         return new ViewModel([
             'list' => $list,
         ]);
     }
 
     /**
-     * @return \Zend\Http\Response|ViewModel
+     * @return Response|ViewModel
      */
     public function viewAction()
     {
@@ -81,7 +94,7 @@ class UsersController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/users');
         }
 
-        $userService = $this->getUserMapper();
+        $userService = $this->userMapper;
         $user = $userService->findById($id);
         if (!$user) {
             return $this->redirect()->toRoute('adminaut/users');
@@ -93,7 +106,7 @@ class UsersController extends AdminautBaseController
     }
 
     /**
-     * @return \Zend\Http\Response|ViewModel
+     * @return Response|ViewModel
      */
     public function addAction()
     {
@@ -106,19 +119,22 @@ class UsersController extends AdminautBaseController
         $form = $this->getAdminModuleManager()->getForm();
 //        $form->setInputFilter(new UserInputFilter());
 
-        $roles = $this->config['adminaut']['roles'];
+        $roles = $this->config()['adminaut']['roles'];
         $rolesData = ['admin' => 'Admin'];
         foreach ($roles as $roleId => $role) {
             $rolesData[$roleId] = $role['name'];
         }
         $form->get('role')->setValueOptions($rolesData);
 
-        if ($this->getRequest()->isPost()) {
-            $post = $this->getRequest()->getPost()->toArray();
+        /** @var Request $request */
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+            $post = $request->getPost()->toArray();
             $form->setData($post);
             if ($form->isValid()) {
                 try {
-                    $userService = $this->getUserService();
+                    $userService = $this->userService;
                     $user = $userService->add($post, $this->userAuthentication()->getIdentity());
                     $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully created.'));
                     switch ($post['submit']) {
@@ -140,7 +156,7 @@ class UsersController extends AdminautBaseController
     }
 
     /**
-     * @return \Zend\Http\Response|ViewModel
+     * @return Response|ViewModel
      */
     public function editAction()
     {
@@ -153,7 +169,7 @@ class UsersController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/users');
         }
 
-        $userService = $this->getUserMapper();
+        $userService = $this->userMapper;
         $user = $userService->findById($id);
         if (!$user) {
             return $this->redirect()->toRoute('adminaut/users');
@@ -168,7 +184,7 @@ class UsersController extends AdminautBaseController
         $tabs = $form->getTabs();
         $tabs[$this->params()->fromRoute('tab')]['active'] = true;
 
-        $roles = $this->config['adminaut']['roles'];
+        $roles = $this->config()['adminaut']['roles'];
         $rolesData = ['admin' => 'Admin'];
         foreach ($roles as $roleId => $role) {
             $rolesData[$roleId] = $role['name'];
@@ -177,12 +193,15 @@ class UsersController extends AdminautBaseController
 
         $form->populateValues($user->toArray());
 
-        if ($this->getRequest()->isPost()) {
-            $post = $this->getRequest()->getPost()->toArray();
+        /** @var Request $request */
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+            $post = $request->getPost()->toArray();
             $form->setData($post);
             if ($form->isValid()) {
                 try {
-                    $userService = $this->getUserService();
+                    $userService = $this->userService;
                     $userService->update($user, $post, $this->userAuthentication()->getIdentity());
                     $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully updated.'));
 
@@ -210,7 +229,7 @@ class UsersController extends AdminautBaseController
     }
 
     /**
-     * @return \Zend\Http\Response
+     * @return Response
      */
     public function deleteAction()
     {
@@ -220,11 +239,11 @@ class UsersController extends AdminautBaseController
 
         $id = (int)$this->params()->fromRoute('id', 0);
         if ($id) {
-            $userRepository = $this->getEntityManager()->getRepository(UserEntity::class);
+            $userRepository = $this->entityManager->getRepository(UserEntity::class);
             $user = $userRepository->find($id);
             if ($user) {
                 try {
-                    $userService = $this->getUserService();
+                    $userService = $this->userService;
                     $userService->delete($user, $this->userAuthentication()->getIdentity());
                     $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully deleted.'));
                 } catch (\Exception $e) {
@@ -235,48 +254,15 @@ class UsersController extends AdminautBaseController
         return $this->redirect()->toRoute('adminaut/users');
     }
 
-
-    /**
-     * @return UserMapper
-     */
-    public function getUserMapper()
-    {
-        return $this->userMapper;
-    }
-
-    /**
-     * @param UserMapper $userMapper
-     */
-    public function setUserMapper($userMapper)
-    {
-        $this->userMapper = $userMapper;
-    }
-
-    /**
-     * @return UserService
-     */
-    public function getUserService()
-    {
-        return $this->userService;
-    }
-
-    /**
-     * @param UserService $userService
-     */
-    public function setUserService($userService)
-    {
-        $this->userService = $userService;
-    }
-
     /**
      * @return ModuleManager
      */
     protected function getAdminModuleManager()
     {
         if (!$this->adminModuleManager instanceof ModuleManager) {
-            $moduleManager = $this->getModuleManagerService();
+            $moduleManager = $this->moduleManager;
 
-            $config = $this->getConfig();
+            $config = $this->config();
 
             $adminModuleOption = new ModuleOptions([
                 'type' => 'module',
@@ -286,7 +272,7 @@ class UsersController extends AdminautBaseController
             ]);
             $adminModuleOption->setModuleId('users');
             $moduleManager->setOptions($adminModuleOption);
-            $moduleMapper = new moduleMapper($this->getEntityManager(), $adminModuleOption);
+            $moduleMapper = new moduleMapper($this->entityManager, $adminModuleOption);
             $moduleManager->setMapper($moduleMapper);
 
             $this->adminModuleManager = $moduleManager;
@@ -294,21 +280,5 @@ class UsersController extends AdminautBaseController
         } else {
             return $this->adminModuleManager;
         }
-    }
-
-    /**
-     * @return ModuleManager
-     */
-    public function getModuleManagerService()
-    {
-        return $this->moduleManagerService;
-    }
-
-    /**
-     * @param ModuleManager $moduleManagerService
-     */
-    public function setModuleManagerService(ModuleManager $moduleManagerService)
-    {
-        $this->moduleManagerService = $moduleManagerService;
     }
 }

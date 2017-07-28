@@ -7,35 +7,30 @@ use Adminaut\Form\InputFilter\UserInputFilter;
 use Adminaut\Service\UserService;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\Response;
-use Zend\Mvc\I18n\Translator;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Mvc\Plugin\FlashMessenger\FlashMessenger;
 use Zend\View\Model\ViewModel;
 
 /**
  * Class InstallController
  * @package Adminaut\Controller
+ * @method FlashMessenger flashMessenger()
  */
 class InstallController extends AbstractActionController
 {
+
     /**
      * @var UserService
      */
     protected $userService;
 
     /**
-     * @var Translator
-     */
-    protected $translator;
-
-    /**
      * InstallController constructor.
      * @param UserService $userService
-     * @param $translator
      */
-    public function __construct(UserService $userService, $translator)
+    public function __construct(UserService $userService)
     {
-        $this->setUserService($userService);
-        $this->setTranslator($translator);
+        $this->userService = $userService;
     }
 
     /**

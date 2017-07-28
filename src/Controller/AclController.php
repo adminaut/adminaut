@@ -2,41 +2,53 @@
 
 namespace Adminaut\Controller;
 
+use Adminaut\Entity\Role;
 use Adminaut\Form\InputFilter\RoleInputFilter;
 use Adminaut\Form\RoleForm;
-use Adminaut\Service\AccessControlService as ACL;
+use Adminaut\Mapper\RoleMapper;
+use Adminaut\Service\AccessControlService;
+use Doctrine\ORM\EntityManager;
+use Zend\Http\Response;
 use Zend\View\Model\ViewModel;
 
 /**
  * Class AclController
  * @package Adminaut\Controller
- * @method \Adminaut\Controller\Plugin\AclPlugin acl()
  */
 class AclController extends AdminautBaseController
 {
 
     /**
-     * @var Role
+     * @var EntityManager
      */
-    protected $roleMapper;
+    private $entityManager;
 
-    public function __construct($config, $acl, $em, $translator, $roleMapper)
+    /**
+     * @var RoleMapper
+     */
+    private $roleMapper;
+
+    /**
+     * AclController constructor.
+     * @param EntityManager $entityManager
+     * @param RoleMapper $roleMapper
+     */
+    public function __construct(EntityManager $entityManager, RoleMapper $roleMapper)
     {
-
-        $this->setConfig($config);
-        $this->setRoleMapper($roleMapper);
+        $this->entityManager = $entityManager;
+        $this->roleMapper = $roleMapper;
     }
 
     /**
-     * @return ViewModel
+     * @return Response|ViewModel
      */
     public function indexAction()
     {
-        if (!$this->acl()->isAllowed('Roles', ACL::READ)) {
+        if (!$this->acl()->isAllowed('Roles', AccessControlService::READ)) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        $roleRepository = $this->getEntityManager()->getRepository('Adminaut\Entity\Role');
+        $roleRepository = $this->entityManager->getRepository(Role::class);
         $list = $roleRepository->findAll();
 
         return new ViewModel([
@@ -45,11 +57,11 @@ class AclController extends AdminautBaseController
     }
 
     /**
-     * @return \Zend\Http\Response|ViewModel
+     * @return Response|ViewModel
      */
     public function showRoleAction()
     {
-        if (!$this->acl()->isAllowed('Roles', ACL::READ)) {
+        if (!$this->acl()->isAllowed('Roles', AccessControlService::READ)) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
@@ -58,11 +70,10 @@ class AclController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut-role');
         }
 
-        $RoleMapper = $this->getRoleMapper();
         /**
          * @var $role \Adminaut\Entity\Role
          */
-        $role = $RoleMapper->findById($id);
+        $role = $this->roleMapper->findById($id);
         if (!$role) {
             return $this->redirect()->toRoute('adminaut-role');
         }
@@ -82,11 +93,11 @@ class AclController extends AdminautBaseController
     }
 
     /**
-     * @return \Zend\Http\Response|ViewModel
+     * @return Response|ViewModel
      */
     public function addRoleAction()
     {
-        if (!$this->acl()->isAllowed('Roles', ACL::WRITE)) {
+        if (!$this->acl()->isAllowed('Roles', AccessControlService::WRITE)) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
@@ -113,11 +124,11 @@ class AclController extends AdminautBaseController
     }
 
     /**
-     * @return \Zend\Http\Response|ViewModel
+     * @return Response|ViewModel
      */
     public function updateRoleAction()
     {
-        if (!$this->acl()->isAllowed('Roles', ACL::WRITE)) {
+        if (!$this->acl()->isAllowed('Roles', AccessControlService::WRITE)) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
@@ -135,8 +146,7 @@ class AclController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/acl');
         }
 
-        /* @var $AccessControl \Adminaut\Service\AccessControl */
-        $AccessControl = $this->getAcl();
+        $AccessControl = $this->acl()->getAcl();
 
         $form = $AccessControl->getRoleForm($role);
         $form->populateValues($role->toArray());
@@ -146,7 +156,6 @@ class AclController extends AdminautBaseController
             $form->setData($post);
             if ($form->isValid()) {
                 try {
-                    $AccessControl = $this->getAcl();
                     $AccessControl->updateRole($role, $post);
                     $AccessControl->updateRolePermissions($role, $post);
                     $this->flashMessenger()->addSuccessMessage('Role has been successfully updated.');
@@ -164,11 +173,11 @@ class AclController extends AdminautBaseController
     }
 
     /**
-     * @return \Zend\Http\Response
+     * @return Response
      */
     public function deleteRoleAction()
     {
-        if (!$this->acl()->isAllowed('Roles', ACL::WRITE)) {
+        if (!$this->acl()->isAllowed('Roles', AccessControlService::WRITE)) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
@@ -190,21 +199,5 @@ class AclController extends AdminautBaseController
             }
         }
         return $this->redirect()->toRoute('adminaut/acl');
-    }
-
-    /**
-     * @return Role
-     */
-    public function getRoleMapper()
-    {
-        return $this->roleMapper;
-    }
-
-    /**
-     * @param Role $roleMapper
-     */
-    public function setRoleMapper($roleMapper)
-    {
-        $this->roleMapper = $roleMapper;
     }
 }
