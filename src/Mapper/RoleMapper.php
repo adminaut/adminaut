@@ -8,33 +8,15 @@ use Adminaut\Entity\Role as RoleEntity;
  * Class RoleMapper
  * @package Adminaut\Mapper
  */
-class RoleMapper
+class RoleMapper extends AbstractMapper
 {
-    /**
-     * @var \Doctrine\ORM\EntityManagerInterface
-     */
-    protected $em;
-
-    /**
-     * @var string
-     */
-    protected $entityClass = 'Adminaut\Entity\Role';
-
-    /**
-     * Role constructor.
-     * @param $em
-     */
-    public function __construct($em)
-    {
-        $this->em = $em;
-    }
 
     /**
      * @return array
      */
     public function getAll()
     {
-        $er = $this->em->getRepository($this->entityClass);
+        $er = $this->getEntityManager()->getRepository(RoleEntity::class);
         return $er->findAll();
     }
 
@@ -44,7 +26,7 @@ class RoleMapper
      */
     public function findByName($name)
     {
-        $er = $this->em->getRepository($this->entityClass);
+        $er = $this->getEntityManager()->getRepository(RoleEntity::class);
         return $er->findOneBy(['name' => $name]);
     }
 
@@ -54,7 +36,7 @@ class RoleMapper
      */
     public function findById($id)
     {
-        $er = $this->em->getRepository($this->entityClass);
+        $er = $this->getEntityManager()->getRepository(RoleEntity::class);
         return $er->findOneBy([
             'id' => $id,
         ]);
@@ -66,7 +48,9 @@ class RoleMapper
      */
     public function insert(RoleEntity $entity)
     {
-        return $this->persist($entity);
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+        return $entity;
     }
 
     /**
@@ -75,7 +59,9 @@ class RoleMapper
      */
     public function update(RoleEntity $entity)
     {
-        return $this->persist($entity);
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+        return $entity;
     }
 
     /**
@@ -83,18 +69,7 @@ class RoleMapper
      */
     public function delete(RoleEntity $entity)
     {
-        $this->em->remove($entity);
-        $this->em->flush();
-    }
-
-    /**
-     * @param $entity
-     * @return mixed
-     */
-    protected function persist($entity)
-    {
-        $this->em->persist($entity);
-        $this->em->flush();
-        return $entity;
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush();
     }
 }

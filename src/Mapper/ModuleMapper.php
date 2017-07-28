@@ -2,21 +2,15 @@
 
 namespace Adminaut\Mapper;
 
-use Doctrine\ORM\EntityManagerInterface;
-
-use Adminaut\Options\ModuleOptions as ModuleOptions;
-
+use Doctrine\ORM\EntityManager;
+use Adminaut\Options\ModuleOptions;
 
 /**
  * Class ModuleMapper
  * @package Adminaut\Mapper
  */
-class ModuleMapper
+class ModuleMapper extends AbstractMapper
 {
-    /**
-     * @var \Doctrine\ORM\EntityManagerInterface
-     */
-    protected $em;
 
     /**
      * @var ModuleOptions
@@ -25,28 +19,29 @@ class ModuleMapper
 
     /**
      * ModuleMapper constructor.
-     * @param EntityManagerInterface $em
-     * @param ModuleOptions $options
+     * @param EntityManager $entityManager
+     * @param ModuleOptions $moduleOptions
      */
-    public function __construct(EntityManagerInterface $em, ModuleOptions $options)
+    public function __construct(EntityManager $entityManager, ModuleOptions $moduleOptions)
     {
-        $this->em = $em;
-        $this->options = $options;
+        parent::__construct($entityManager);
+        $this->options = $moduleOptions;
     }
 
     /**
+     * @param array|null $criteria
      * @return array
      */
-    public function getList($criteria = null)
+    public function getList(array $criteria = null)
     {
-        $qb = $this->em->createQueryBuilder();
+        $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('e')
             ->from($this->options->getEntityClass(), 'e')
             ->where('e.deleted = 0')
             ->orderBy('e.id', 'ASC');
-        if($criteria) {
-            foreach(array_keys($criteria) as $property) {
-                $qb->andWhere('e.' . $property. ' = :' . $property);
+        if ($criteria) {
+            foreach (array_keys($criteria) as $property) {
+                $qb->andWhere('e.' . $property . ' = :' . $property);
                 $qb->setParameter($property, $criteria[$property]);
             }
         }
@@ -59,10 +54,10 @@ class ModuleMapper
      */
     public function findById($id)
     {
-        $er = $this->em->getRepository($this->options->getEntityClass());
+        $er = $this->getEntityManager()->getRepository($this->options->getEntityClass());
         return $er->findOneBy([
             'id' => $id,
-            'deleted' => 0
+            'deleted' => 0,
         ]);
     }
 
@@ -72,7 +67,10 @@ class ModuleMapper
      */
     public function insert($entity)
     {
-        return $this->persist($entity);
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+
+        return $entity;
     }
 
     /**
@@ -81,17 +79,8 @@ class ModuleMapper
      */
     public function update($entity)
     {
-        return $this->persist($entity);
-    }
-
-    /**
-     * @param $entity
-     * @return mixed
-     */
-    protected function persist($entity)
-    {
-        $this->em->persist($entity);
-        $this->em->flush();
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
 
         return $entity;
     }

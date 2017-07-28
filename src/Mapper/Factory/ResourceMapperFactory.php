@@ -2,7 +2,7 @@
 
 namespace Adminaut\Mapper\Factory;
 
-use Adminaut\Mapper\Resource as ResourceMapper;
+use Adminaut\Mapper\ResourceMapper as ResourceMapper;
 use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;

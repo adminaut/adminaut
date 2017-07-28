@@ -3,47 +3,22 @@
 namespace Adminaut\Mapper;
 
 use Adminaut\Entity\UserEntity;
-use Doctrine\ORM\EntityManager;
-use Zend\Hydrator\HydratorInterface;
 
 /**
  * Class UserMapper
  * @package Adminaut\Mapper
  */
-class UserMapper extends AbstractDbMapper
+class UserMapper extends AbstractMapper implements UserMapperInterface
 {
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
 
     /**
-     * UserMapper constructor.
-     * @param $entityManager
-     */
-    public function __construct(EntityManager $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    /**
-     * @param $email
-     * @return object
+     * @param string $email
+     * @return null|object
      */
     public function findByEmail($email)
     {
-        $er = $this->entityManager->getRepository(UserEntity::class);
+        $er = $this->getEntityManager()->getRepository(UserEntity::class);
         return $er->findOneBy(['email' => $email]);
-    }
-
-    /**
-     * @param $username
-     * @return object
-     */
-    public function findByUsername($username)
-    {
-        $er = $this->entityManager->getRepository(UserEntity::class);
-        return $er->findOneBy(['username' => $username]);
     }
 
     /**
@@ -52,7 +27,7 @@ class UserMapper extends AbstractDbMapper
      */
     public function findById($id)
     {
-        $er = $this->entityManager->getRepository(UserEntity::class);
+        $er = $this->getEntityManager()->getRepository(UserEntity::class);
         return $er->findOneBy([
             'id' => $id,
             'deleted' => 0,
@@ -61,41 +36,28 @@ class UserMapper extends AbstractDbMapper
 
     public function findFirst()
     {
-        $er = $this->entityManager->getRepository(UserEntity::class);
+        $er = $this->getEntityManager()->getRepository(UserEntity::class);
         return (isset($er->findAll()[0])) ? $er->findAll()[0] : [];
     }
 
     /**
-     * @param array|object $entity
-     * @param null $tableName
-     * @param HydratorInterface|null $hydrator
-     * @return mixed
+     * @param object $entity
+     * @return object
      */
-    public function insert($entity, $tableName = null, HydratorInterface $hydrator = null)
+    public function insert($entity)
     {
-        return $this->persist($entity);
+        $this->persist($entity);
+        $this->flush();
+        return $entity;
     }
 
     /**
-     * @param $entity
-     * @param null $where
-     * @param null $tableName
-     * @param HydratorInterface|null $hydrator
-     * @return mixed
+     * @param object $entity
+     * @return object
      */
-    public function update($entity, $where = null, $tableName = null, HydratorInterface $hydrator = null)
+    public function update($entity)
     {
-        return $this->persist($entity);
-    }
-
-    /**
-     * @param $entity
-     * @return mixed
-     */
-    protected function persist($entity)
-    {
-        $this->entityManager->persist($entity);
-        $this->entityManager->flush();
+        $this->flush();
         return $entity;
     }
 }

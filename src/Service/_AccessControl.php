@@ -5,8 +5,7 @@ namespace Adminaut\Service;
 use Doctrine\ORM\EntityManager;
 use Adminaut\Entity\Role as RoleEntity;
 use Adminaut\Entity\Resource as ResourceEntity;
-use Adminaut\Form\RolePermission as RolePermission;
-use Adminaut\Mapper\Resource as ResourceMapper;
+use Adminaut\Mapper\ResourceMapper;
 use Adminaut\Mapper\RoleMapper;
 use Adminaut\Mapper\UserMapper;
 

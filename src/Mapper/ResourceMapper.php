@@ -2,44 +2,21 @@
 
 namespace Adminaut\Mapper;
 
-use Doctrine\ORM\EntityManagerInterface;
-
 use Adminaut\Entity\Resource as ResourceEntity;
 
-use Zend\Stdlib\Hydrator\HydratorInterface;
-
-
 /**
- * Class Resource
+ * Class ResourceMapper
  * @package Adminaut\Mapper
  */
-class Resource
+class ResourceMapper extends AbstractMapper
 {
-    /**
-     * @var \Doctrine\ORM\EntityManagerInterface
-     */
-    protected $em;
-
-    /**
-     * @var string
-     */
-    protected $entityClass = 'Adminaut\Entity\Resource';
-
-    /**
-     * Role constructor.
-     * @param $em
-     */
-    public function __construct($em)
-    {
-        $this->em = $em;
-    }
 
     /**
      * @return array
      */
     public function getAll()
     {
-        $er = $this->em->getRepository($this->entityClass);
+        $er = $this->getEntityManager()->getRepository(ResourceEntity::class);
         return $er->findAll();
     }
 
@@ -49,9 +26,9 @@ class Resource
      */
     public function getAllByRole($role)
     {
-        $er = $this->em->getRepository($this->entityClass);
+        $er = $this->getEntityManager()->getRepository(ResourceEntity::class);
         return $er->findBy([
-            'role' => $role
+            'role' => $role,
         ]);
     }
 
@@ -61,7 +38,7 @@ class Resource
      */
     public function findByName($name)
     {
-        $er = $this->em->getRepository($this->entityClass);
+        $er = $this->getEntityManager()->getRepository(ResourceEntity::class);
         return $er->findOneBy(['name' => $name]);
     }
 
@@ -71,7 +48,7 @@ class Resource
      */
     public function findById($id)
     {
-        $er = $this->em->getRepository($this->entityClass);
+        $er = $this->getEntityManager()->getRepository(ResourceEntity::class);
         return $er->findOneBy([
             'id' => $id,
         ]);
@@ -83,7 +60,9 @@ class Resource
      */
     public function insert(ResourceEntity $entity)
     {
-        return $this->persist($entity);
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+        return $entity;
     }
 
     /**
@@ -92,7 +71,9 @@ class Resource
      */
     public function update(ResourceEntity $entity)
     {
-        return $this->persist($entity);
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+        return $entity;
     }
 
     /**
@@ -100,18 +81,7 @@ class Resource
      */
     public function delete(ResourceEntity $entity)
     {
-        $this->em->remove($entity);
-        $this->em->flush();
-    }
-
-    /**
-     * @param $entity
-     * @return mixed
-     */
-    protected function persist($entity)
-    {
-        $this->em->persist($entity);
-        $this->em->flush();
-        return $entity;
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush();
     }
 }
