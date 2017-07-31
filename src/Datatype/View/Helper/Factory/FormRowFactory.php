@@ -23,8 +23,9 @@ class FormRowFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         /** @var ModuleOptions $options */
-        $twbBundleModuleOptions = $container->get(ModuleOptions::class);
+//        $twbBundleModuleOptions = $container->get(ModuleOptions::class);
 
-        return new FormRow($twbBundleModuleOptions);
+//        return new FormRow($twbBundleModuleOptions);
+        return new FormRow();
     }
 }

@@ -15,10 +15,10 @@ class FormRow extends TwbBundleFormRow
     /** @var ModuleOptions */
     protected $twbModuleOptions;
 
-    public function __construct($twbModuleOptions)
-    {
-        $this->twbModuleOptions = $twbModuleOptions;
-    }
+//    public function __construct($twbModuleOptions)
+//    {
+//        $this->twbModuleOptions = $twbModuleOptions;
+//    }
 
     /**
      * Retrieve the FormElement helper

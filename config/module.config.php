@@ -43,6 +43,7 @@ return [
     ],
 
     'service_manager' => [
+
         'factories' => [
             // Authentication
             Authentication\Adapter\AuthAdapter::class => Authentication\Adapter\Factory\AuthAdapterFactory::class,
@@ -105,13 +106,26 @@ return [
             'datatypeGoogleMapDetail' => Datatype\GoogleMap\DetailViewHelper::class,
             'datatypeGoogleStreetViewDetail' => Datatype\GoogleStreetView\DetailViewHelper::class,
             'datatypeTextareaDetail' => Datatype\Textarea\DetailViewHelper::class,
+
+
+            'formrow' => Datatype\View\Helper\FormRow::class,
+            'form_row' => Datatype\View\Helper\FormRow::class,
+            'formRow' => Datatype\View\Helper\FormRow::class,
+            'FormRow' => Datatype\View\Helper\FormRow::class,
+//            'datatype' => Datatype\View\Helper\Datatype::class,  // !!! TOTO TO SRALO !!!
         ],
 
         'factories' => [
-            'formElement' => Form\View\Helper\Factory\FormElementFactory::class,
+            Form\View\Helper\FormElement::class => Form\View\Helper\Factory\FormElementFactory::class,
             View\Helper\UserIdentity::class => View\Helper\Factory\UserIdentityFactory::class,
             View\Helper\IsAllowed::class => View\Helper\Factory\IsAllowedViewHelperFactory::class,
             View\Helper\ConfigViewHelper::class => View\Helper\Factory\ConfigViewHelperFactory::class,
+
+
+            'formElement' => Form\View\Helper\Factory\FormElementFactory::class,
+            'FormElement' => Form\View\Helper\Factory\FormElementFactory::class,
+            'form_element' => Form\View\Helper\Factory\FormElementFactory::class,
+            'formelement' => Form\View\Helper\Factory\FormElementFactory::class,
 
 
             // Datatype helpers
@@ -127,6 +141,12 @@ return [
             'config' => View\Helper\ConfigViewHelper::class,
 
 
+            'formElement' => Form\View\Helper\FormElement::class,
+            'FormElement' => Form\View\Helper\FormElement::class,
+            'form_element' => Form\View\Helper\FormElement::class,
+            'formelement' => Form\View\Helper\FormElement::class,
+
+
             // Datatype helpers
             'formrow' => Datatype\View\Helper\FormRow::class,
             'form_row' => Datatype\View\Helper\FormRow::class,
@@ -140,18 +160,19 @@ return [
         'initializers' => [
 //            'ObjectManager' => Initializer\ObjectManagerInitializer::class,
 //            'ObjectManagerInitializer' => Initializer\ObjectManagerInitializer::class,
-            'ObjectManager' => function ($element, $formElements) {
-                if ($element instanceof ObjectManagerAwareInterface) {
-                    $services      = $formElements->getServiceLocator();
-                    $entityManager = $services->get('Doctrine\ORM\EntityManager');
-
-                    $element->setObjectManager($entityManager);
-                }
-            },
+//            'ObjectManager' => function ($element, $formElements) {
+//                if ($element instanceof ObjectManagerAwareInterface) {
+//                    $services = $formElements->getServiceLocator();
+//                    $entityManager = $services->get('Doctrine\ORM\EntityManager');
+//
+//                    $element->setObjectManager($entityManager);
+//                }
+//            },
         ],
         'factories' => [
             Initializer\ObjectManagerInitializer::class => Initializer\Factory\ObjectManagerInitializerFactory::class,
         ],
+
     ],
 
     'doctrine' => [
