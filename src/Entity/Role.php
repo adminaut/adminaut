@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Role
- * @ORM\Entity(repositoryClass="\Adminaut\Repository\Role")
+ * @ORM\Entity(repositoryClass="Adminaut\Repository\RoleRepository")
  * @ORM\Table(name="adminaut_role")
  * @property integer $id
  * @package Adminaut\Entity

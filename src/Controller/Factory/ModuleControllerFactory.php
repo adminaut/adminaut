@@ -34,14 +34,6 @@ class ModuleControllerFactory implements FactoryInterface
         /** @var FileManager $fileManager */
         $fileManager = $container->get(FileManager::class);
 
-        // todo: add type hint
-        $viewRenderer = $container->get('ViewRenderer');
-
-        return new ModuleController(
-            $entityManager,
-            $moduleManager,
-            $fileManager,
-            $viewRenderer
-        );
+        return new ModuleController($entityManager, $moduleManager, $fileManager);
     }
 }

@@ -3,6 +3,7 @@
 namespace Adminaut;
 
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Zend\I18n\Translator\Translator;
 use Zend\I18n\Translator\TranslatorServiceFactory;
 use Zend\Router\Http\Segment;
@@ -57,19 +58,15 @@ return [
             Manager\AdminautModulesManager::class => Manager\Factory\AdminautModulesManagerFactory::class,
             Manager\FileManager::class => Manager\Factory\FileManagerFactory::class,
 
-            // Mapper
-            Mapper\UserMapper::class => Mapper\Factory\UserMapperFactory::class,
-            Mapper\RoleMapper::class => Mapper\Factory\RoleMapperFactory::class,
-
             //Navigation
             Navigation\Navigation::class => Navigation\Factory\NavigationFactory::class,
 
             // Options
+            Options\AdminautOptions::class => Options\Factory\AdminautOptionsFactory::class,
             Options\FileManagerOptions::class => Options\Factory\FileManagerOptionsFactory::class,
 
             // Service
             Service\AccessControlService::class => Service\Factory\AccessControlServiceFactory::class,
-            Service\UserService::class => Service\Factory\UserServiceFactory::class,
 
             // Translator service
             Translator::class => TranslatorServiceFactory::class,
@@ -143,6 +140,14 @@ return [
         'initializers' => [
 //            'ObjectManager' => Initializer\ObjectManagerInitializer::class,
 //            'ObjectManagerInitializer' => Initializer\ObjectManagerInitializer::class,
+            'ObjectManager' => function ($element, $formElements) {
+                if ($element instanceof ObjectManagerAwareInterface) {
+                    $services      = $formElements->getServiceLocator();
+                    $entityManager = $services->get('Doctrine\ORM\EntityManager');
+
+                    $element->setObjectManager($entityManager);
+                }
+            },
         ],
         'factories' => [
             Initializer\ObjectManagerInitializer::class => Initializer\Factory\ObjectManagerInitializerFactory::class,

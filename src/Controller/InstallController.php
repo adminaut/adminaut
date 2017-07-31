@@ -5,7 +5,7 @@ namespace Adminaut\Controller;
 use Adminaut\Controller\Plugin\TranslatePlugin;
 use Adminaut\Form\UserForm;
 use Adminaut\Form\InputFilter\UserInputFilter;
-use Adminaut\Service\UserService;
+use Adminaut\Manager\UserManager;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -20,28 +20,41 @@ use Zend\View\Model\ViewModel;
  */
 class InstallController extends AbstractActionController
 {
-
     /**
-     * @var UserService
+     * @var UserManager
      */
-    protected $userService;
+    private $userManager;
+
+    //-------------------------------------------------------------------------
 
     /**
      * InstallController constructor.
-     * @param UserService $userService
+     * @param UserManager $userManager
      */
-    public function __construct(UserService $userService)
+    public function __construct(UserManager $userManager)
     {
-        $this->userService = $userService;
+        $this->userManager = $userManager;
     }
+
+    //-------------------------------------------------------------------------
+
+    /**
+     * @return UserManager
+     */
+    private function getUserManager()
+    {
+        return $this->userManager;
+    }
+
+    //-------------------------------------------------------------------------
 
     /**
      * @return Response|ViewModel
      */
     public function indexAction()
     {
-        $user = $this->userService->getUserMapper()->findFirst();
-        if ($user) {
+        $users = $this->getUserManager()->findAll();
+        if (count($users) <> 0) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
@@ -56,7 +69,7 @@ class InstallController extends AbstractActionController
             $form->setData($post);
             if ($form->isValid()) {
                 try {
-                    $this->userService->createSuperuser($post);
+                    $this->userManager->createSuperUser($post);
                     $this->flashMessenger()->addSuccessMessage($this->translate('User has been successfully created.'));
                     return $this->redirect()->toRoute(AuthController::ROUTE_LOGIN);
                 } catch (\Exception $e) {

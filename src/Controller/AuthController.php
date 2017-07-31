@@ -6,7 +6,7 @@ use Adminaut\Authentication\Service\AuthenticationService;
 use Adminaut\Controller\Plugin\AuthenticationPlugin;
 use Adminaut\Form\UserLoginForm;
 use Adminaut\Form\InputFilter\UserLoginInputFilter;
-use Adminaut\Service\UserService;
+use Adminaut\Manager\UserManager;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -36,20 +36,34 @@ class AuthController extends AbstractActionController
     private $authenticationService;
 
     /**
-     * @var UserService
+     * @var UserManager
      */
-    private $userService;
+    private $userManager;
+
+    //-------------------------------------------------------------------------
 
     /**
      * AuthController constructor.
      * @param AuthenticationService $authenticationService
-     * @param UserService $userService
+     * @param UserManager $userManager
      */
-    public function __construct(AuthenticationService $authenticationService, UserService $userService)
+    public function __construct(AuthenticationService $authenticationService, UserManager $userManager)
     {
         $this->authenticationService = $authenticationService;
-        $this->userService = $userService;
+        $this->userManager = $userManager;
     }
+
+    //-------------------------------------------------------------------------
+
+    /**
+     * @return UserManager
+     */
+    private function getUserManager()
+    {
+        return $this->userManager;
+    }
+
+    //-------------------------------------------------------------------------
 
     /**
      * @return Response
@@ -64,7 +78,7 @@ class AuthController extends AbstractActionController
      */
     public function loginAction()
     {
-        if (null === $this->userService->getUserMapper()->findFirst()) {
+        if (0 === $this->getUserManager()->countAll()) {
             return $this->redirect()->toRoute('adminaut/install');
         }
 

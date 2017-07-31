@@ -49,6 +49,14 @@ class UserManager extends AManager
     }
 
     /**
+     * @return int
+     */
+    public function countAll()
+    {
+        return $this->getUserRepository()->countAll();
+    }
+
+    /**
      * @param array $data
      * @param UserEntity|null $admin
      * @return UserEntity

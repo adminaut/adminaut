@@ -14,9 +14,7 @@ use Doctrine\ORM\EntityManager;
 use Zend\Form\Element;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\Response;
-//use Zend\Mvc\Service\ViewPhpRendererFactory;
 use Zend\View\Model\ViewModel;
-use Zend\View\Renderer\RendererInterface;
 
 /**
  * Class ModuleController
@@ -40,24 +38,19 @@ class ModuleController extends AdminautBaseController
      */
     private $fileManager;
 
-    /**
-     * @var RendererInterface
-     */
-    private $viewRenderer;
+    //-------------------------------------------------------------------------
 
     /**
      * ModuleController constructor.
      * @param EntityManager $entityManager
      * @param ModuleManager $moduleManager
-     * @param RendererInterface $viewRenderer
      * @param FileManager $fileManager
      */
-    public function __construct(EntityManager $entityManager, ModuleManager $moduleManager, FileManager $fileManager, RendererInterface $viewRenderer)
+    public function __construct(EntityManager $entityManager, ModuleManager $moduleManager, FileManager $fileManager)
     {
         $this->entityManager = $entityManager;
         $this->moduleManager = $moduleManager;
         $this->fileManager = $fileManager;
-        $this->viewRenderer = $viewRenderer;
     }
 
     //-------------------------------------------------------------------------
@@ -471,7 +464,7 @@ class ModuleController extends AdminautBaseController
         }
 
         /* @var $entity BaseEntityInterface */
-        $entity = $this->getAdminModuleManager($moduleId)->findById($entityId);
+        $entity = $this->getModuleManager()->findOneById($parentModuleOptions->getEntityClass(), $entityId);
         if (!$entity) {
             $this->flashMessenger()->addErrorMessage($this->translate('Record was not found.'));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
@@ -722,14 +715,6 @@ class ModuleController extends AdminautBaseController
     public function getModuleManager()
     {
         return $this->moduleManager;
-    }
-
-    /**
-     * @return RendererInterface
-     */
-    public function getViewRenderer()
-    {
-        return $this->viewRenderer;
     }
 
     /**

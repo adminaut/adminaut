@@ -184,7 +184,7 @@ class ModuleManager extends AManager
         }
 
         /** @var Fieldset[] $fieldsets */
-        $fieldsets = [];
+//        $fieldsets = [];
 
         /** @var ObjectSelect|ObjectRadio|ObjectMultiCheckbox|CyclicSheet $element */
         foreach ($form->getElements() as $element) {

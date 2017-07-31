@@ -34,10 +34,6 @@ class UsersControllerFactory implements FactoryInterface
         /** @var ModuleManager $moduleManager */
         $moduleManager = $container->get(ModuleManager::class);
 
-        return new UsersController(
-            $entityManager,
-            $userManager,
-            $moduleManager
-        );
+        return new UsersController($entityManager, $userManager, $moduleManager);
     }
 }

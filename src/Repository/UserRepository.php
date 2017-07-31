@@ -56,4 +56,12 @@ class UserRepository extends EntityRepository
             'deleted' => false,
         ], $orderBy);
     }
+
+    /**
+     * @return int
+     */
+    public function countAll()
+    {
+        return count($this->findAll());
+    }
 }

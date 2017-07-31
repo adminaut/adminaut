@@ -3,7 +3,7 @@
 namespace Adminaut\Controller\Factory;
 
 use Adminaut\Controller\InstallController;
-use Adminaut\Service\UserService;
+use Adminaut\Manager\UserManager;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
@@ -23,9 +23,9 @@ class InstallControllerFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
 
-        /** @var UserService $userService */
-        $userService = $container->get(UserService::class);
+        /** @var UserManager $userManager */
+        $userManager = $container->get(UserManager::class);
 
-        return new InstallController($userService);
+        return new InstallController($userManager);
     }
 }
