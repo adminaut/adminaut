@@ -2,22 +2,22 @@
 
 namespace Adminaut\Manager\Factory;
 
-use Adminaut\Manager\AdminModulesManager;
+use Adminaut\Manager\AdminautModulesManager;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
- * Class AdminModulesManagerFactory
+ * Class AdminautModulesManagerFactory
  * @package Adminaut\Manager\Factory
  */
-class AdminModulesManagerFactory implements FactoryInterface
+class AdminautModulesManagerFactory implements FactoryInterface
 {
 
     /**
      * @param ContainerInterface $container
      * @param string $requestedName
      * @param array|null $options
-     * @return AdminModulesManager
+     * @return AdminautModulesManager
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
@@ -27,6 +27,6 @@ class AdminModulesManagerFactory implements FactoryInterface
 
         $modules = isset($config['adminaut']['modules']) ? $config['adminaut']['modules'] : [];
 
-        return new AdminModulesManager($modules);
+        return new AdminautModulesManager($modules);
     }
 }

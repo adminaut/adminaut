@@ -1,9 +1,13 @@
 <?php
+
 namespace Adminaut\Form\Element;
 
+use Zend\Form\Element;
 
-use Adminaut\Form\Element;
-
+/**
+ * Class CyclicSheet
+ * @package Adminaut\Form\Element
+ */
 class CyclicSheet extends Element
 {
     /**

@@ -2,11 +2,13 @@
 
 namespace Adminaut\Manager;
 
+use Adminaut\Options\ModuleOptions;
+
 /**
- * Class AdminModulesManager
+ * Class AdminautModulesManager
  * @package Adminaut\Manager
  */
-class AdminModulesManager
+class AdminautModulesManager
 {
     /**
      * @var array
@@ -19,10 +21,10 @@ class AdminModulesManager
     protected $entities = [];
 
     /**
-     * AdminModulesManager constructor.
-     * @param $modules
+     * AdminautModulesManager constructor.
+     * @param array $modules
      */
-    public function __construct($modules)
+    public function __construct(array $modules)
     {
         array_unshift(
             $modules,
@@ -50,14 +52,6 @@ class AdminModulesManager
     }
 
     /**
-     * @param array $entities
-     */
-    public function setEntities($entities)
-    {
-        $this->entities = $entities;
-    }
-
-    /**
      * @param string $moduleId
      * @return string|false
      */
@@ -67,6 +61,14 @@ class AdminModulesManager
             return $this->entities[$moduleId];
         }
         return false;
+    }
+
+    /**
+     * @param $moduleId
+     */
+    public function getModuleOptionsByModuleId($moduleId)
+    {
+        return new ModuleOptions();
     }
 
     /**

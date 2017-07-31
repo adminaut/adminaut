@@ -7,193 +7,179 @@ use Adminaut\Datatype\Reference;
 use Adminaut\Form\Annotation\AnnotationBuilder;
 use Adminaut\Form\Element\CyclicSheet;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use DoctrineModule\Form\Element\ObjectMultiCheckbox;
 use DoctrineModule\Form\Element\ObjectRadio;
 use DoctrineModule\Form\Element\ObjectSelect;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 use Adminaut\Entity\BaseEntityInterface;
 use Adminaut\Entity\UserInterface;
-use Adminaut\Mapper\ModuleMapper;
 use Adminaut\Options\ModuleOptions;
 use Adminaut\Form\Form;
+use Zend\Form\Element;
 use Zend\Form\Fieldset;
 
 /**
  * Class ModuleManager
  * @package Adminaut\Manager
  */
-class ModuleManager
+class ModuleManager extends AManager
 {
 
     /**
-     * @var EntityManager
+     * @var array
      */
-    private $entityManager;
-
-    /**
-     * @var ModuleOptions
-     */
-    private $moduleOptions;
-
-    /**
-     * @var ModuleMapper
-     */
-    private $mapper;
-
-    /**
-     * @var
-     */
-    private $form;
+    private $modules;
 
     /**
      * ModuleManager constructor.
      * @param EntityManager $entityManager
-     * @param ModuleOptions $moduleOptions
+     * @param array $modules
      */
-    public function __construct(EntityManager $entityManager, ModuleOptions $moduleOptions)
+    public function __construct(EntityManager $entityManager, array $modules = [])
     {
-        $this->entityManager = $entityManager;
-        $this->moduleOptions = $moduleOptions;
+        parent::__construct($entityManager);
+        $this->modules = $modules;
     }
 
     /**
+     * @param string $entityName
+     * @return EntityRepository
+     */
+    private function getRepository($entityName)
+    {
+        return $this->entityManager->getRepository((string)$entityName);
+    }
+
+    /**
+     * @param $entityName
+     * @param array|null $orderBy
      * @return array
      */
-    public function getList($criteria = null)
+    public function findAll($entityName, array $orderBy = null)
     {
-        return $this->getMapper()->getList($criteria);
+
+        if (null === $orderBy) {
+            $orderBy = ['id' => 'ASC'];
+        }
+
+        $repository = $this->getRepository($entityName);
+
+        return $repository->findBy(['deleted' => false], $orderBy);
     }
 
     /**
-     * @param $entityId
-     * @return object
+     * @param $entityName
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @return array
      */
-    public function findById($entityId)
+    public function findBy($entityName, array $criteria = [], array $orderBy = null)
     {
-        return $this->getMapper()->findById($entityId);
+        $criteria = array_merge(['deleted' => false], $criteria);
+
+        if (null === $orderBy) {
+            $orderBy = ['id' => 'ASC'];
+        }
+
+        $repository = $this->getRepository($entityName);
+
+        return $repository->findBy($criteria, $orderBy);
     }
 
     /**
-     * @return string
+     * @param $entityName
+     * @param $id
+     * @return null|object
      */
-    public function getEntityClass()
+    public function findOneById($entityName, $id)
     {
-        return $this->getModuleOptions()->getEntityClass();
+        $repository = $this->getRepository($entityName);
+
+        return $repository->findOneBy([
+            'id' => (int)$id,
+            'deleted' => false,
+        ]);
     }
 
     /**
-     * @param $form
-     * @param UserInterface $user
-     * @return mixed
-     */
-    public function addEntity($form, UserInterface $user, BaseEntityInterface $parentEntity = null)
-    {
-        $entityClass = $this->options->getEntityClass();
-        /* @var $entity BaseEntityInterface */
-        $entity = new $entityClass();
-        $entity->setInsertedBy($user->getId());
-        $entity->setUpdatedBy($user->getId());
-        $entity = $this->bind($entity, $form, $parentEntity);
-        return $this->getMapper()->insert($entity);
-    }
-
-    /**
-     * @param BaseEntityInterface $entity
+     * @param $entityName
      * @param Form $form
-     * @param $user
-     * @return mixed
-     */
-    public function updateEntity(BaseEntityInterface $entity, Form $form, UserInterface $user, BaseEntityInterface $parentEntity = null)
-    {
-        $entity->setUpdatedBy($user->getId());
-        $entity = $this->bind($entity, $form, $parentEntity);
-        return $this->getMapper()->update($entity);
-    }
-
-    /**
-     * @param BaseEntityInterface $entity
-     * @param UserInterface $user
-     * @return mixed
-     */
-    public function deleteEntity(BaseEntityInterface $entity, UserInterface $user)
-    {
-        $entity->setDeleted(true);
-        $entity->setDeletedBy($user->getId());
-        return $this->getMapper()->update($entity);
-    }
-
-    /**
-     * @param BaseEntityInterface $entity
-     * @param Form $form
+     * @param BaseEntityInterface|null $parentEntity
+     * @param UserInterface|null $admin
      * @return BaseEntityInterface
      */
-    public function bind(BaseEntityInterface $entity, Form $form, BaseEntityInterface $parentEntity = null)
+    public function create($entityName, Form $form, BaseEntityInterface $parentEntity = null, UserInterface $admin = null)
     {
-        /* @var $element Element */
-        foreach ($form->getElements() as $element) {
-            $elementName = $element->getName();
-            if ($elementName === 'reference_property') {
-                if ($element->getValue() === 'parentId') {
-                    $entity->{$element->getValue()} = $parentEntity->getId();
-                } else {
-                    $entity->{$element->getValue()} = $parentEntity;
-                }
-                continue;
-            }
+        /* @var $entity BaseEntityInterface */
+        $entity = new $entityName();
 
-            if (method_exists($element, 'getInsertValue')) {
-                $entity->{$elementName} = $element->getInsertValue();
-            } else {
-                $entity->{$elementName} = $element->getValue();
-            }
+        $entity = $this->bind($entity, $form, $parentEntity);
+
+        if ($admin) {
+            $entity->setInsertedBy($admin->getId());
         }
+
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
+
         return $entity;
     }
 
     /**
-     * @return Form
+     * @param BaseEntityInterface $entity
+     * @param Form $form
+     * @param BaseEntityInterface|null $parentEntity
+     * @param UserInterface|null $admin
+     * @return BaseEntityInterface
      */
-    public function getForm()
+    public function update(BaseEntityInterface $entity, Form $form, BaseEntityInterface $parentEntity = null, UserInterface $admin = null)
     {
-        if ($this->form instanceof Form) {
-            return $this->form;
-        } else {
-            return $this->createForm();
+        $entity = $this->bind($entity, $form, $parentEntity);
+
+        if ($admin) {
+            $entity->setUpdatedBy($admin->getId());
         }
+
+        $this->entityManager->flush();
+
+        return $entity;
     }
 
     /**
-     * @param $form
-     * @return Form
+     * @param BaseEntityInterface $entity
+     * @param UserInterface|null $admin
+     * @return BaseEntityInterface
      */
-    public function setForm($form)
+    public function delete(BaseEntityInterface $entity, UserInterface $admin = null)
     {
-        if ($form instanceof Form) {
-            return $this->form = $form;
-        } else {
-            throw new Exception\RuntimeException(
-                'Param $form must be instance of Zend\Form\Form.'
-            );
+        $entity->setDeleted(true);
+
+        if ($admin instanceof UserInterface) {
+            $entity->setDeletedBy($admin->getId());
         }
+
+        $this->entityManager->flush();
+
+        return $entity;
     }
 
     /**
+     * @param ModuleOptions $moduleOptions
      * @return Form
      */
-    public function createForm()
+    public function createForm(ModuleOptions $moduleOptions)
     {
-        $entityClass = $this->getModuleOptions()->getEntityClass();
+        $entityName = $moduleOptions->getEntityClass();
         $builder = new AnnotationBuilder();
 
-        /**
-         * @var $form Form
-         */
-        $form = $builder->createForm(new $entityClass());
-        $form->setHydrator(new DoctrineObject($this->getEntityManager()));
+        /** @var Form $form */
+        $form = $builder->createForm(new $entityName());
+        $form->setHydrator(new DoctrineObject($this->entityManager));
 
-        if (isset($this->getOptions()->getLabels()['general_tab'])) {
+        if (isset($moduleOptions->getLabels()['general_tab'])) {
             $tabs = $form->getTabs();
-            $tabs['main']['label'] = $this->getOptions()->getLabels()['general_tab'];
+            $tabs['main']['label'] = $moduleOptions->getLabels()['general_tab'];
             $form->setTabs($tabs);
         }
 
@@ -207,7 +193,7 @@ class ModuleManager
                 $element instanceof ObjectMultiCheckbox ||
                 $element instanceof Reference ||
                 $element instanceof MultiReference) {
-                $element->setOption('object_manager', $this->getEntityManager());
+                $element->setOption('object_manager', $this->entityManager);
             } else if ($element instanceof CyclicSheet) {
                 $form->addTab($element->getName(), [
                     'label' => $element->getLabel(),
@@ -254,40 +240,46 @@ class ModuleManager
     }
 
     /**
-     * @return ModuleMapper
+     * @param BaseEntityInterface $entity
+     * @param Form $form
+     * @param BaseEntityInterface|null $parentEntity
+     * @return BaseEntityInterface
      */
-    public function getMapper()
+    public function bind(BaseEntityInterface $entity, Form $form, BaseEntityInterface $parentEntity = null)
     {
-        if (null === $this->mapper) {
-            throw new Exception\RuntimeException(
-                'ModuleMapper not set.'
-            );
+        /* @var $element Element */
+        foreach ($form->getElements() as $element) {
+            $elementName = $element->getName();
+            if ($elementName === 'reference_property') {
+                if ($element->getValue() === 'parentId') {
+                    $entity->{$element->getValue()} = $parentEntity->getId();
+                } else {
+                    $entity->{$element->getValue()} = $parentEntity;
+                }
+                continue;
+            }
+
+            if (method_exists($element, 'getInsertValue')) {
+                $entity->{$elementName} = $element->getInsertValue();
+            } else {
+                $entity->{$elementName} = $element->getValue();
+            }
         }
-        return $this->mapper;
+        return $entity;
     }
 
     /**
+     * @param $moduleId
      * @return ModuleOptions
-     * @deprecated
+     * @throws \Exception
      */
-    public function getOptions()
+    public function createModuleOptions($moduleId)
     {
-        return $this->getModuleOptions();
-    }
+        if (isset($this->modules[$moduleId])) {
+            $options = array_merge(['module_id' => $moduleId], $this->modules[$moduleId]);
+            return new ModuleOptions($options);
+        }
 
-    /**
-     * @return EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->entityManager;
-    }
-
-    /**
-     * @return ModuleOptions
-     */
-    public function getModuleOptions()
-    {
-        return $this->moduleOptions;
+        throw new \Exception('Failed to create module options.');
     }
 }

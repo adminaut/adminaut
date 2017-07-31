@@ -4,14 +4,10 @@ namespace Adminaut\Controller;
 
 use Adminaut\Entity\UserEntity;
 use Adminaut\Form\InputFilter\UserInputFilter;
-use Adminaut\Manager\AdminModulesManager;
 use Adminaut\Manager\ModuleManager;
-use Adminaut\Mapper\ModuleMapper;
-use Adminaut\Mapper\UserMapper;
+use Adminaut\Manager\UserManager;
 use Adminaut\Options\ModuleOptions;
-use Adminaut\Repository\UserRepository;
 use Adminaut\Service\AccessControlService;
-use Adminaut\Service\UserService;
 use Doctrine\ORM\EntityManager;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\Response;
@@ -29,39 +25,76 @@ class UsersController extends AdminautBaseController
     private $entityManager;
 
     /**
-     * @var UserMapper
+     * @var UserManager
      */
-    private $userMapper;
-
-    /**
-     * @var UserService
-     */
-    private $userService;
+    private $userManager;
 
     /**
      * @var ModuleManager
      */
     private $moduleManager;
 
-    /**
-     * @var AdminModulesManager
-     */
-    private $adminModuleManager;
+    //-------------------------------------------------------------------------
 
     /**
      * UsersController constructor.
      * @param EntityManager $entityManager
-     * @param UserMapper $userMapper
-     * @param UserService $userService
+     * @param UserManager $userManager
      * @param ModuleManager $moduleManager
      */
-    public function __construct(EntityManager $entityManager, UserMapper $userMapper, UserService $userService, ModuleManager $moduleManager)
+    public function __construct(EntityManager $entityManager, UserManager $userManager, ModuleManager $moduleManager)
     {
         $this->entityManager = $entityManager;
-        $this->userMapper = $userMapper;
-        $this->userService = $userService;
+        $this->userManager = $userManager;
         $this->moduleManager = $moduleManager;
     }
+
+    //-------------------------------------------------------------------------
+
+    /**
+     * @param null $default
+     * @return mixed
+     */
+    private function getId($default = null)
+    {
+        return $this->params()->fromRoute('id', $default);
+    }
+
+    /**
+     * @return UserManager
+     */
+    private function getUserManager()
+    {
+        return $this->userManager;
+    }
+
+    /**
+     * @return ModuleManager
+     */
+    private function getModuleManager()
+    {
+        return $this->moduleManager;
+    }
+
+    /**
+     * @return ModuleOptions
+     */
+    private function getModuleOptions()
+    {
+        $config = $this->config();
+
+        $moduleOptions = new ModuleOptions([
+            'type' => 'module',
+            'module_name' => 'Users',
+            'module_icon' => 'fa-users',
+            'entity_class' => isset($config['adminaut']['users']['user_entity_class']) ? $config['adminaut']['users']['user_entity_class'] : UserEntity::class,
+        ]);
+        $moduleOptions->setModuleId('users');
+
+        return $moduleOptions;
+    }
+
+    //-------------------------------------------------------------------------
 
     /**
      * @return Response|ViewModel
@@ -72,11 +105,9 @@ class UsersController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $this->entityManager->getRepository(UserEntity::class);
-        $list = $userRepository->findAll();
+        $users = $this->getUserManager()->findAll();
         return new ViewModel([
-            'list' => $list,
+            'list' => $users,
         ]);
     }
 
@@ -89,14 +120,15 @@ class UsersController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        $id = (int)$this->params()->fromRoute('id', 0);
-        if (!$id) {
+        $id = $this->getId();
+
+        if (null === $id) {
             return $this->redirect()->toRoute('adminaut/users');
         }
 
-        $userService = $this->userMapper;
-        $user = $userService->findById($id);
-        if (!$user) {
+        $user = $this->getUserManager()->findOneById($id);
+
+        if (null === $user) {
             return $this->redirect()->toRoute('adminaut/users');
         }
 
@@ -115,9 +147,10 @@ class UsersController extends AdminautBaseController
         }
 
 //        $form = new UserForm(UserForm::STATUS_ADD);
-
-        $form = $this->getAdminModuleManager()->getForm();
 //        $form->setInputFilter(new UserInputFilter());
+
+        $moduleOptions = $this->getModuleOptions();
+        $form = $this->getModuleManager()->createForm($moduleOptions);
 
         $roles = $this->config()['adminaut']['roles'];
         $rolesData = ['admin' => 'Admin'];
@@ -134,8 +167,7 @@ class UsersController extends AdminautBaseController
             $form->setData($post);
             if ($form->isValid()) {
                 try {
-                    $userService = $this->userService;
-                    $user = $userService->add($post, $this->authentication()->getIdentity());
+                    $user = $this->getModuleManager()->create($moduleOptions->getEntityClass(), $form, null, $this->authentication()->getIdentity());
                     $this->flashMessenger()->addSuccessMessage($this->translate('User has been successfully created.'));
                     switch ($post['submit']) {
                         case 'create-and-continue' :
@@ -164,21 +196,24 @@ class UsersController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        $id = (int)$this->params()->fromRoute('id', 0);
-        if (!$id) {
+        $id = $this->getId();
+
+        if (null === $id) {
             return $this->redirect()->toRoute('adminaut/users');
         }
 
-        $userService = $this->userMapper;
-        $user = $userService->findById($id);
-        if (!$user) {
+        $user = $this->getUserManager()->findOneById($id);
+
+        if (null === $user) {
             return $this->redirect()->toRoute('adminaut/users');
         }
 
 //        $form = new UserForm(UserForm::STATUS_UPDATE);
 
+        $moduleOptions = $this->getModuleOptions();
+
         /* @var $form \Adminaut\Form\Form */
-        $form = $this->getAdminModuleManager()->getForm();
+        $form = $this->getModuleManager()->createForm($moduleOptions);
         $form->setInputFilter(new UserInputFilter());
 
         $tabs = $form->getTabs();
@@ -201,8 +236,7 @@ class UsersController extends AdminautBaseController
             $form->setData($post);
             if ($form->isValid()) {
                 try {
-                    $userService = $this->userService;
-                    $userService->update($user, $post, $this->authentication()->getIdentity());
+                    $this->getModuleManager()->update($user, $form, null, $this->authentication()->getIdentity());
                     $this->flashMessenger()->addSuccessMessage($this->translate('User has been successfully updated.'));
 
                     switch ($post['submit']) {
@@ -237,14 +271,13 @@ class UsersController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        $id = (int)$this->params()->fromRoute('id', 0);
+        $id = $this->getId();
+
         if ($id) {
-            $userRepository = $this->entityManager->getRepository(UserEntity::class);
-            $user = $userRepository->find($id);
+            $user = $this->getUserManager()->findOneById($id);
             if ($user) {
                 try {
-                    $userService = $this->userService;
-                    $userService->delete($user, $this->authentication()->getIdentity());
+                    $this->getUserManager()->delete($user, $this->authentication()->getIdentity());
                     $this->flashMessenger()->addSuccessMessage($this->translate('User has been successfully deleted.'));
                 } catch (\Exception $e) {
                     $this->flashMessenger()->addErrorMessage(sprintf($this->translate('Error: %s'), $e->getMessage()));
@@ -252,33 +285,5 @@ class UsersController extends AdminautBaseController
             }
         }
         return $this->redirect()->toRoute('adminaut/users');
-    }
-
-    /**
-     * @return ModuleManager
-     */
-    protected function getAdminModuleManager()
-    {
-        if (!$this->adminModuleManager instanceof ModuleManager) {
-            $moduleManager = $this->moduleManager;
-
-            $config = $this->config();
-
-            $adminModuleOption = new ModuleOptions([
-                'type' => 'module',
-                'module_name' => 'Users',
-                'module_icon' => 'fa-users',
-                'entity_class' => isset($config['adminaut']['users']['user_entity_class']) ? $config['adminaut']['users']['user_entity_class'] : UserEntity::class,
-            ]);
-            $adminModuleOption->setModuleId('users');
-            $moduleManager->setOptions($adminModuleOption);
-            $moduleMapper = new moduleMapper($this->entityManager, $adminModuleOption);
-            $moduleManager->setMapper($moduleMapper);
-
-            $this->adminModuleManager = $moduleManager;
-            return $this->adminModuleManager;
-        } else {
-            return $this->adminModuleManager;
-        }
     }
 }

@@ -26,8 +26,11 @@ class ModuleManagerFactory implements FactoryInterface
         /** @var EntityManager $entityManager */
         $entityManager = $container->get(EntityManager::class);
 
+        /** @var array $config */
+        $config = $container->get('Config');
 
+        $modules = isset($config['adminaut']['modules']) ? $config['adminaut']['modules'] : [];
 
-        return new ModuleManager($entityManager);
+        return new ModuleManager($entityManager, $modules);
     }
 }

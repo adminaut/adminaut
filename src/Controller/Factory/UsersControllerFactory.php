@@ -4,8 +4,7 @@ namespace Adminaut\Controller\Factory;
 
 use Adminaut\Controller\UsersController;
 use Adminaut\Manager\ModuleManager;
-use Adminaut\Mapper\UserMapper;
-use Adminaut\Service\UserService;
+use Adminaut\Manager\UserManager;
 use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
@@ -29,19 +28,15 @@ class UsersControllerFactory implements FactoryInterface
         /** @var EntityManager $entityManager */
         $entityManager = $container->get(EntityManager::class);
 
-        /** @var UserMapper $userMapper */
-        $userMapper = $container->get(UserMapper::class);
-
-        /** @var UserService $userService */
-        $userService = $container->get(UserService::class);
+        /** @var UserManager $userManager */
+        $userManager = $container->get(UserManager::class);
 
         /** @var ModuleManager $moduleManager */
         $moduleManager = $container->get(ModuleManager::class);
 
         return new UsersController(
             $entityManager,
-            $userMapper,
-            $userService,
+            $userManager,
             $moduleManager
         );
     }

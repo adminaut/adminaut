@@ -3,7 +3,7 @@
 namespace Adminaut\Datatype\Reference\Factory;
 
 use Adminaut\Datatype\Reference\FormViewHelper;
-use Adminaut\Manager\AdminModulesManager;
+use Adminaut\Manager\AdminautModulesManager;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
@@ -23,8 +23,8 @@ class FormViewHelperFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
 
-        /** @var AdminModulesManager $adminModuleManager */
-        $adminModuleManager = $container->get(AdminModulesManager::class);
+        /** @var AdminautModulesManager $adminModuleManager */
+        $adminModuleManager = $container->get(AdminautModulesManager::class);
 
         return new FormViewHelper($adminModuleManager);
     }

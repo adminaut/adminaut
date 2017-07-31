@@ -33,14 +33,26 @@ class UserRepository extends EntityRepository
     }
 
     /**
-     * @param $email
+     * @param int $id
+     * @return UserEntity|null|object
+     */
+    public function findOneById($id)
+    {
+        return $this->findOneBy([
+            'id' => (int)$id,
+            'deleted' => false,
+        ]);
+    }
+
+    /**
+     * @param string $email
      * @param array|null $orderBy
-     * @return null|object|UserEntity
+     * @return UserEntity|null|object
      */
     public function findOneByEmail($email, array $orderBy = null)
     {
         return $this->findOneBy([
-            'email' => $email,
+            'email' => (string)$email,
             'deleted' => false,
         ], $orderBy);
     }

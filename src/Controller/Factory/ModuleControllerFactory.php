@@ -31,17 +31,17 @@ class ModuleControllerFactory implements FactoryInterface
         /** @var ModuleManager $moduleManager */
         $moduleManager = $container->get(ModuleManager::class);
 
-        // todo: add type hint
-        $viewRenderer = $container->get('ViewRenderer');
-
         /** @var FileManager $fileManager */
         $fileManager = $container->get(FileManager::class);
+
+        // todo: add type hint
+        $viewRenderer = $container->get('ViewRenderer');
 
         return new ModuleController(
             $entityManager,
             $moduleManager,
-            $viewRenderer,
-            $fileManager
+            $fileManager,
+            $viewRenderer
         );
     }
 }

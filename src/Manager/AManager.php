@@ -1,23 +1,22 @@
 <?php
 
-namespace Adminaut\Mapper;
+namespace Adminaut\Manager;
 
 use Doctrine\ORM\EntityManager;
 
 /**
- * Class AbstractMapper
- * @package Adminaut\Mapper
+ * Class AManager
+ * @package Adminaut\Manager
  */
-abstract class AbstractMapper
+abstract class AManager
 {
-
     /**
      * @var EntityManager
      */
-    private $entityManager;
+    protected $entityManager;
 
     /**
-     * AbstractMapper constructor.
+     * AManager constructor.
      * @param EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager)
@@ -26,15 +25,7 @@ abstract class AbstractMapper
     }
 
     /**
-     * @return EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->entityManager;
-    }
-
-    /**
-     * @param object $entity
+     * @param object $entity The instance to make managed and persistent.
      */
     public function persist($entity)
     {
@@ -42,7 +33,7 @@ abstract class AbstractMapper
     }
 
     /**
-     * @param null|object $entity
+     * @param null|object|array $entity
      */
     public function flush($entity = null)
     {

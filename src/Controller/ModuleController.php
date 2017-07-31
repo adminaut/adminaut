@@ -8,14 +8,13 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Adminaut\Entity\BaseEntityInterface;
 use Adminaut\Manager\ModuleManager;
 use Adminaut\Manager\FileManager;
-use Adminaut\Mapper\ModuleMapper;
 use Adminaut\Options\ModuleOptions;
 use Adminaut\Service\AccessControlService;
 use Doctrine\ORM\EntityManager;
 use Zend\Form\Element;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\Response;
-use Zend\Mvc\Service\ViewPhpRendererFactory;
+//use Zend\Mvc\Service\ViewPhpRendererFactory;
 use Zend\View\Model\ViewModel;
 use Zend\View\Renderer\RendererInterface;
 
@@ -37,20 +36,14 @@ class ModuleController extends AdminautBaseController
     private $moduleManager;
 
     /**
-     * @var RendererInterface
-     */
-    private $viewRenderer;
-
-    /**
      * @var FileManager
      */
     private $fileManager;
 
     /**
-     * @var ModuleManager
-     * @deprecated
+     * @var RendererInterface
      */
-    protected $moduleManagerService;
+    private $viewRenderer;
 
     /**
      * ModuleController constructor.
@@ -59,21 +52,52 @@ class ModuleController extends AdminautBaseController
      * @param RendererInterface $viewRenderer
      * @param FileManager $fileManager
      */
-    public function __construct(EntityManager $entityManager, ModuleManager $moduleManager, RendererInterface $viewRenderer, FileManager $fileManager)
+    public function __construct(EntityManager $entityManager, ModuleManager $moduleManager, FileManager $fileManager, RendererInterface $viewRenderer)
     {
         $this->entityManager = $entityManager;
         $this->moduleManager = $moduleManager;
-        $this->viewRenderer = $viewRenderer;
         $this->fileManager = $fileManager;
+        $this->viewRenderer = $viewRenderer;
     }
+
+    //-------------------------------------------------------------------------
+
+    /**
+     * @param null $default
+     * @return mixed
+     */
+    private function getMode($default = null)
+    {
+        return $this->params()->fromRoute('mode', $default);
+    }
+
+    /**
+     * @param null $default
+     * @return mixed
+     */
+    private function getModuleId($default = null)
+    {
+        return $this->params()->fromRoute('module_id', $default);
+    }
+
+    /**
+     * @param null $default
+     * @return mixed
+     */
+    private function getEntityId($default = null)
+    {
+        return $this->params()->fromRoute('entity_id', $default);
+    }
+
+    //-------------------------------------------------------------------------
 
     /**
      * @return ViewModel
      */
     public function indexAction()
     {
-        $mode = $this->params()->fromRoute('mode', false);
-        if ($mode) {
+        $mode = $this->getMode();
+        if (null !== $mode) {
             $view = $this->{$mode . "Action"}();
             if ($view instanceof ViewModel) {
                 $view->setTemplate('adminaut/module/' . $mode . ".phtml");
@@ -81,9 +105,8 @@ class ModuleController extends AdminautBaseController
             } else {
                 return $view;
             }
-        } else {
-            return new ViewModel;
         }
+        return new ViewModel;
     }
 
     /**
@@ -91,24 +114,26 @@ class ModuleController extends AdminautBaseController
      */
     public function listAction()
     {
-        $module_id = $this->params()->fromRoute('module_id', false);
-        if (!$module_id) {
+        $moduleId = $this->getModuleId();
+        if (null === $moduleId) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        $this->getAdminModuleManager($module_id);
 
-        if (!$this->isAllowed($this->moduleManager->getOptions()->getModuleId(), AccessControlService::READ)) {
+        if (!$this->isAllowed($moduleId, AccessControlService::READ)) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        $form = $this->moduleManager->getForm();
+        $moduleOptions = $this->getModuleManager()->createModuleOptions($moduleId);
+
+        $form = $this->getModuleManager()->createForm($moduleOptions);
+
+        $listedElements = [];
 
         /* @var $element \Zend\Form\Element */
-        $listedElements = [];
         foreach ($form->getElements() as $key => $element) {
             if ($element->getOption('listed')
-                && $this->getAcl()->isAllowed($module_id, AccessControlService::READ, $key)
+                && $this->isAllowed($moduleId, AccessControlService::READ, $key)
                 || (method_exists($element, 'isPrimary')
                     && $element->isPrimary()
                     || $element->getOption('primary'))
@@ -117,13 +142,13 @@ class ModuleController extends AdminautBaseController
             }
         }
 
-        $list = $this->moduleManager->getList();
+        $list = $this->getModuleManager()->findAll($moduleOptions->getEntityClass());
 
         return new ViewModel([
             'list' => $list,
             'listedElements' => $listedElements,
             'hasPrimary' => ($form->getPrimaryField() !== 'id'),
-            'moduleOption' => $this->moduleManager->getOptions(),
+            'moduleOption' => $moduleOptions,
         ]);
     }
 
@@ -132,28 +157,31 @@ class ModuleController extends AdminautBaseController
      */
     public function viewAction()
     {
-        $moduleId = $this->params()->fromRoute('module_id', false);
-        $entityId = (int)$this->params()->fromRoute('entity_id', 0);
+        $moduleId = $this->getModuleId();
+        $entityId = $this->getEntityId();
 
-        if (!$moduleId) {
+        if (null === $moduleId) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        $this->getAdminModuleManager($moduleId);
-
-        if (!$this->isAllowed($this->moduleManager->getOptions()->getModuleId(), AccessControlService::READ)) {
+        if (!$this->isAllowed($moduleId, AccessControlService::READ)) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        if (!$entityId) {
+        if (null === $entityId) {
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
-        $form = $this->moduleManager->getForm();
-        $entity = $this->moduleManager->findById($entityId);
+        $moduleOptions = $this->getModuleManager()->createModuleOptions($moduleId);
+
+        $form = $this->getModuleManager()->createForm($moduleOptions);
+
+        $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
         $form->bind($entity);
 
         $elements = [];
+
+        /* @var $element \Zend\Form\Element */
         foreach ($form->getElements() as $key => $element) {
             if ($this->isAllowed($moduleId, AccessControlService::READ, $key)) {
                 $elements[$element->getName()] = $element;
@@ -173,33 +201,33 @@ class ModuleController extends AdminautBaseController
             'primary' => $form->getPrimaryField(),
             'elements' => $elements,
             'tabs' => $tabs,
-            'moduleOption' => $this->moduleManager->getOptions(),
+            'moduleOption' => $moduleOptions,
         ]);
     }
 
     /**
-     * @return \Zend\Http\Response|ViewModel
+     * @return Response|ViewModel
      */
     public function addAction()
     {
-        $moduleId = $this->params()->fromRoute('module_id', false);
-        $entityId = (int)$this->params()->fromRoute('entity_id', 0);
+        $moduleId = $this->getModuleId();
+        $entityId = $this->getEntityId();
 
-        if (!$moduleId) {
+        if (null === $moduleId) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        $this->getAdminModuleManager($moduleId);
-
-        if (!$this->isAllowed($this->moduleManager->getOptions()->getModuleId(), AccessControlService::WRITE)) {
+        if (!$this->isAllowed($moduleId, AccessControlService::WRITE)) {
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
-        $entityClass = $this->moduleManager->getEntityClass();
+        $moduleOptions = $this->getModuleManager()->createModuleOptions($moduleId);
+
+        $entityClass = $moduleOptions->getEntityClass();
         $fm = $this->getFilemanager();
-        $form = $this->moduleManager->getForm();
+        $form = $this->getModuleManager()->createForm($moduleOptions);
         if ($entityId) {
-            $entity = $this->moduleManager->findById(1);
+            $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), 1);
             $form->bind($entity);
         } else {
             $form->bind(new $entityClass());
@@ -237,7 +265,7 @@ class ModuleController extends AdminautBaseController
                         $fm->upload($form->getElements()[$key], $this->authentication()->getIdentity());
                     }
 
-                    $entity = $this->moduleManager->addEntity($form, $this->authentication()->getIdentity());
+                    $entity = $this->getModuleManager()->create($moduleOptions->getEntityClass(), $form, null, $this->authentication()->getIdentity());
                     $this->getEventManager()->trigger($moduleId . '.createRecord', $this, [
                         'entity' => $entity,
                     ]);
@@ -263,31 +291,35 @@ class ModuleController extends AdminautBaseController
 
         return new ViewModel([
             'form' => $form,
-            'moduleOption' => $this->moduleManager->getOptions(),
+            'moduleOption' => $moduleOptions,
         ]);
     }
 
     /**
-     * @return \Zend\Http\Response|ViewModel
+     * @return Response|ViewModel
      */
     public function editAction()
     {
-        $moduleId = $this->params()->fromRoute('module_id', false);
-        $entityId = (int)$this->params()->fromRoute('entity_id', 0);
-        if (!$moduleId) {
+        $moduleId = $this->getModuleId();
+        $entityId = $this->getEntityId();
+
+        if (null === $moduleId) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        if (!$this->isAllowed($this->getAdminModuleManager($moduleId)->getOptions()->getModuleId(), AccessControlService::WRITE)) {
+        if (false === $this->isAllowed($moduleId, AccessControlService::WRITE)) {
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
-        if (!$entityId) {
+        if (null === $entityId) {
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
+
+        $moduleOptions = $this->getModuleManager()->createModuleOptions($moduleId);
 
         /* @var $entity BaseEntityInterface */
-        $entity = $this->getAdminModuleManager($moduleId)->findById($entityId);
+        $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
+
         if (!$entity) {
             $this->flashMessenger()->addErrorMessage($this->translate('Record was not found.'));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
@@ -295,7 +327,7 @@ class ModuleController extends AdminautBaseController
 
         $fm = $this->getFilemanager();
         /* @var $form \Adminaut\Form\Form */
-        $form = $this->moduleManager->getForm();
+        $form = $this->getModuleManager()->createForm($moduleOptions);
 
         $tabs = $form->getTabs();
         $tabs[$this->params()->fromRoute('tab')]['active'] = true;
@@ -324,7 +356,7 @@ class ModuleController extends AdminautBaseController
                         $fm->upload($form->getElements()[$key], $this->authentication()->getIdentity());
                     }
 
-                    $this->moduleManager->updateEntity($entity, $form, $this->authentication()->getIdentity());
+                    $this->getModuleManager()->update($entity, $form, null, $this->authentication()->getIdentity());
 
                     $primaryFieldValue = isset($form->getElements()[$form->getPrimaryField()]) ? (method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue()) : $entity->getId();
                     $this->flashMessenger()->addSuccessMessage(sprintf($this->translate('Record "%s" has been successfully updated.'), $primaryFieldValue));
@@ -351,7 +383,7 @@ class ModuleController extends AdminautBaseController
             'tabs' => $tabs,
             'entity' => $entity,
             'primary' => $form->getPrimaryField(),
-            'moduleOption' => $this->moduleManager->getOptions(),
+            'moduleOption' => $moduleOptions,
             'url_params' => [
                 'module_id' => $moduleId,
                 'entity_id' => $entityId,
@@ -365,29 +397,32 @@ class ModuleController extends AdminautBaseController
      */
     public function tabAction()
     {
-        $moduleId = $this->params()->fromRoute('module_id', false);
-        $entityId = (int)$this->params()->fromRoute('entity_id', 0);
-        if (!$moduleId) {
+        $moduleId = $this->getModuleId();
+        $entityId = $this->getEntityId();
+
+        if (null === $moduleId) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        if (!$this->isAllowed($this->getAdminModuleManager($moduleId)->getOptions()->getModuleId(), AccessControlService::WRITE)) {
+        if (!$this->isAllowed($moduleId, AccessControlService::WRITE)) {
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
-        if (!$entityId) {
+        if (null === $entityId) {
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
+
+        $moduleOptions = $this->getModuleManager()->createModuleOptions($moduleId);
 
         /* @var $entity BaseEntityInterface */
-        $entity = $this->getAdminModuleManager($moduleId)->findById($entityId);
+        $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
         if (!$entity) {
             $this->flashMessenger()->addErrorMessage($this->translate('Record was not found.'));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
         /* @var $form \Adminaut\Form\Form */
-        $form = $this->moduleManager->getForm();
+        $form = $this->getModuleManager()->createForm($moduleOptions);
 
         $tabs = $form->getTabs();
         $tabs[$this->params()->fromRoute('tab')]['active'] = true;
@@ -396,7 +431,7 @@ class ModuleController extends AdminautBaseController
             return $this->cyclicSheetAction();
         } else {
             return new ViewModel([
-                'moduleOption' => $this->moduleManager->getOptions(),
+                'moduleOption' => $moduleOptions,
                 'tabs' => $tabs,
                 'url_params' => [
                     'module_id' => $moduleId,
@@ -412,20 +447,22 @@ class ModuleController extends AdminautBaseController
      */
     public function cyclicSheetAction()
     {
-        $moduleId = $this->params()->fromRoute('module_id', false);
-        $entityId = (int)$this->params()->fromRoute('entity_id', 0);
+        $moduleId = $this->getModuleId();
+        $entityId = $this->getEntityId();
         $currentTab = $this->params()->fromRoute('tab');
         $cyclicEntityId = $this->params()->fromRoute('cyclic_entity_id', false);
         $action = $this->params()->fromRoute('entity_action', false);
-        $mode = $this->params()->fromRoute('mode');
+        $mode = $this->getMode();
 
 
         if (!$moduleId) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        $parentModuleOption = $this->getAdminModuleManager($moduleId)->getOptions();
-        if (!$this->isAllowed($parentModuleOption->getModuleId(), AccessControlService::WRITE)) {
+
+        $parentModuleOptions = $this->getModuleManager()->createModuleOptions($moduleId);
+
+        if (!$this->isAllowed($parentModuleOptions->getModuleId(), AccessControlService::WRITE)) {
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
@@ -441,7 +478,7 @@ class ModuleController extends AdminautBaseController
         }
 
         /* @var $form \Adminaut\Form\Form */
-        $entityForm = $this->moduleManager->getForm();
+        $entityForm = $this->getModuleManager()->createForm($parentModuleOptions);
 
         $tabs = $entityForm->getTabs();
         $tabs[$currentTab]['active'] = true;
@@ -605,8 +642,8 @@ class ModuleController extends AdminautBaseController
         }
 
         $view = new ViewModel([
-            'parentModuleOption' => $parentModuleOption,
-            'moduleOption' => $this->moduleManager->getOptions(),
+            'parentModuleOption' => $parentModuleOptions,
+            'moduleOption' => $this->getModuleManager()->getOptions(),
             'tabs' => $tabs,
             'currentTab' => $currentTab,
             'mode' => $this->params()->fromRoute('mode'),
@@ -632,65 +669,42 @@ class ModuleController extends AdminautBaseController
      */
     public function deleteAction()
     {
-        $moduleId = $this->params()->fromRoute('module_id', false);
-        $entityId = (int)$this->params()->fromRoute('entity_id', 0);
-        if (!$moduleId) {
+        $moduleId = $this->getModuleId();
+        $entityId = $this->getEntityId();
+
+        if (null === $moduleId) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        if (!$this->isAllowed($this->getAdminModuleManager($moduleId)->getOptions()->getModuleId(), AccessControlService::FULL)) {
+        if (!$this->isAllowed($moduleId, AccessControlService::FULL)) {
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
-        if (!$entityId) {
+        if (null === $entityId) {
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
+
+        $moduleOptions = $this->getModuleManager()->createModuleOptions($moduleId);
 
         /** @var Form $form */
-        $form = $this->getAdminModuleManager($moduleId)->getForm();
+        $form = $this->getModuleManager()->createForm($moduleOptions);
         $primaryField = $form->getPrimaryField();
 
         /* @var $entity BaseEntityInterface */
-        $entity = $this->getAdminModuleManager($moduleId)->findById($entityId);
+        $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
         if (!$entity) {
             $this->flashMessenger()->addErrorMessage($this->translate('Record was not found.'));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
         try {
-            $this->getAdminModuleManager($moduleId)->deleteEntity($entity, $this->authentication()->getIdentity());
+            $this->getModuleManager()->delete($entity, $this->authentication()->getIdentity());
             $primaryFieldValue = $entity->{'get' . ucfirst($primaryField)}();
             $this->flashMessenger()->addSuccessMessage(sprintf($this->translate('Record "%s" has been deleted.'), $primaryFieldValue));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId, 'entity_id' => $entityId]);
         } catch (\Exception $e) {
             $this->flashMessenger()->addErrorMessage(sprintf($this->translate('Error: %s'), $e->getMessage()));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId, 'entity_id' => $entityId]);
-        }
-    }
-
-    /**
-     * @param $moduleId
-     * @return ModuleManager
-     */
-    protected function getAdminModuleManager($moduleId)
-    {
-        if (!$this->moduleManager instanceof ModuleManager) {
-            $moduleManager = $this->getModuleManager();
-
-            $config = $this->config();
-
-            if (isset($config['adminaut']['modules']) and isset($config['adminaut']['modules'][$moduleId])) {
-                $adminModuleOption = new ModuleOptions($config['adminaut']['modules'][$moduleId]);
-                $adminModuleOption->setModuleId($moduleId);
-                $moduleManager->setOptions($adminModuleOption);
-                $moduleMapper = new moduleMapper($this->getEntityManager(), $adminModuleOption);
-                $moduleManager->setMapper($moduleMapper);
-            }
-
-            $this->moduleManager = $moduleManager;
-            return $this->moduleManager;
-        } else {
-            return $this->moduleManager;
         }
     }
 

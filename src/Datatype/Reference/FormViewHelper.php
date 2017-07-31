@@ -5,7 +5,7 @@ namespace Adminaut\Datatype\Reference;
 use Adminaut\Datatype\Radio;
 use Adminaut\Datatype\Reference;
 use Adminaut\Datatype\Select;
-use Adminaut\Manager\AdminModulesManager;
+use Adminaut\Manager\AdminautModulesManager;
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\AbstractHelper;
 use Zend\Form\View\Helper\FormSelect;
@@ -17,13 +17,13 @@ use Zend\Form\View\Helper\FormSelect;
 class FormViewHelper extends AbstractHelper
 {
     /**
-     * @var AdminModulesManager
+     * @var AdminautModulesManager
      */
     protected $adminModulesManager;
 
     /**
      * FormViewHelper constructor.
-     * @param AdminModulesManager $adminModulesManager
+     * @param AdminautModulesManager $adminModulesManager
      */
     public function __construct($adminModulesManager)
     {
@@ -100,7 +100,7 @@ class FormViewHelper extends AbstractHelper
     }
 
     /**
-     * @return AdminModulesManager
+     * @return AdminautModulesManager
      */
     public function getAdminModulesManager()
     {
@@ -108,7 +108,7 @@ class FormViewHelper extends AbstractHelper
     }
 
     /**
-     * @param AdminModulesManager $adminModulesManager
+     * @param AdminautModulesManager $adminModulesManager
      */
     public function setAdminModulesManager($adminModulesManager)
     {

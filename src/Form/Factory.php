@@ -2,8 +2,11 @@
 
 namespace Adminaut\Form;
 
+use Adminaut\Datatype\DatatypeManager\DatatypeManagerV3Polyfill;
 use Traversable;
+use Zend\Form\Element;
 use Zend\Form\ElementInterface as ZFElementInterface;
+use Zend\Form\ElementInterface;
 use Zend\Form\FieldsetInterface;
 use Zend\Form\FormInterface;
 use Zend\ServiceManager\ServiceManager;
@@ -15,17 +18,17 @@ use Zend\ServiceManager\ServiceManager;
 class Factory extends \Zend\Form\Factory
 {
     /**
-     * @var DatatypeManager
+     * @var DatatypeManagerV3Polyfill
      */
     private $datatypeManager;
 
     /**
      * Set the form element manager
      *
-     * @param  DatatypeManager $datatypeManager
+     * @param  DatatypeManagerV3Polyfill $datatypeManager
      * @return Factory
      */
-    public function setDatatypeManager(DatatypeManager $datatypeManager)
+    public function setDatatypeManager(DatatypeManagerV3Polyfill $datatypeManager)
     {
         $this->datatypeManager = $datatypeManager;
         return $this;
@@ -34,12 +37,12 @@ class Factory extends \Zend\Form\Factory
     /**
      * Get form element manager
      *
-     * @return DatatypeManager
+     * @return DatatypeManagerV3Polyfill
      */
     public function getDatatypeManager()
     {
         if ($this->datatypeManager === null) {
-            $this->setDatatypeManager(new DatatypeManager(new ServiceManager()));
+            $this->setDatatypeManager(new DatatypeManagerV3Polyfill(new ServiceManager()));
         }
 
         return $this->datatypeManager;
@@ -91,7 +94,7 @@ class Factory extends \Zend\Form\Factory
             return $this->configureElement($element, $spec);
         }
 
-        throw new Exception\DomainException(sprintf(
+        throw new \Zend\Form\Exception\DomainException(sprintf(
             '%s expects the $spec["type"] to implement one of %s, %s, or %s; received %s',
             __METHOD__,
             ElementInterface::class,

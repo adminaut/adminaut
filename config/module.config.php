@@ -53,7 +53,8 @@ return [
 
             // Manager
             Manager\ModuleManager::class => Manager\Factory\ModuleManagerFactory::class,
-            Manager\AdminModulesManager::class => Manager\Factory\AdminModulesManagerFactory::class,
+            Manager\UserManager::class => Manager\Factory\UserManagerFactory::class,
+            Manager\AdminautModulesManager::class => Manager\Factory\AdminautModulesManagerFactory::class,
             Manager\FileManager::class => Manager\Factory\FileManagerFactory::class,
 
             // Mapper
