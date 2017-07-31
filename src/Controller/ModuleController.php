@@ -617,7 +617,7 @@ class ModuleController extends AdminautBaseController
                         ]);
                         $this->flashMessenger()->addSuccessMessage(sprintf($this->translate('Record "%s" has been successfully updated.'), $primaryFieldValue));
                     } else {
-                        $cyclicEntity = $this->getModuleManager()->create(get_class($cyclicEntity), $form, $entity, $this->authentication()->getIdentity());
+                        $cyclicEntity = $this->getModuleManager()->create($moduleOptions->getEntityClass(), $form, $entity, $this->authentication()->getIdentity());
                         $primaryFieldValue = isset($form->getElements()[$form->getPrimaryField()]) ? (method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue()) : $cyclicEntity->getId();
                         $this->getEventManager()->trigger($moduleId . '.createCyclicRecord', $this, [
                             'entity' => $entity,
