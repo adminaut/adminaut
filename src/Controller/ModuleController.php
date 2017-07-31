@@ -478,20 +478,16 @@ class ModuleController extends AdminautBaseController
 
         $options = [
             'entity_class' => $tabs[$currentTab]['entity'],
+            'module_id' => $moduleId,
         ];
         $referencedProperty = $tabs[$currentTab]['referencedProperty'];
         $readonly = $tabs[$currentTab]['readonly'];
 
-        $moduleManager = $this->getModuleManager();
         $moduleOptions = new ModuleOptions($options);
-        $moduleOptions->setModuleId($moduleId);
-        $moduleManager->setOptions($moduleOptions);
-        $moduleMapper = new ModuleMapper($this->getEntityManager(), $moduleOptions);
-        $moduleManager->setMapper($moduleMapper);
 
-        $list = $moduleManager->getList([$referencedProperty => $entity]);
+        $list = $this->getModuleManager()->findBy($moduleOptions->getEntityClass(), [$referencedProperty => $entity]);
         $fm = $this->getFilemanager();
-        $form = $moduleManager->getForm();
+        $form = $this->getModuleManager()->createForm($moduleOptions);
         $moduleEntityClass = $moduleOptions->getEntityClass();
         $moduleEntity = new $moduleEntityClass();
         $form->bind($moduleEntity);
@@ -562,8 +558,9 @@ class ModuleController extends AdminautBaseController
         }
         $form->getElements()['reference_property']->setValue($referencedProperty);
 
+        $cyclicEntity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $cyclicEntityId);
+
         if ($action === 'edit') {
-            $cyclicEntity = $moduleManager->findById($cyclicEntityId);
 
             if (!$cyclicEntity) {
                 $this->flashMessenger()->addErrorMessage($this->translate('Record was not found.'));
@@ -571,10 +568,10 @@ class ModuleController extends AdminautBaseController
             }
 
             $form->bind($cyclicEntity);
+
         } else if ($action == 'delete') {
+
             try {
-                $cyclicEntity = $moduleManager->findById($cyclicEntityId);
-                $moduleManager->deleteEntity($cyclicEntity, $this->authentication()->getIdentity());
                 $form->bind($cyclicEntity);
                 $primaryFieldValue = isset($form->getElements()[$form->getPrimaryField()]) ? (method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue()) : $cyclicEntity->getId();
                 $this->flashMessenger()->addSuccessMessage(sprintf($this->translate('Record "%s" has been deleted.'), $primaryFieldValue));
@@ -589,9 +586,12 @@ class ModuleController extends AdminautBaseController
             }
         }
 
-        if ($this->getRequest()->isPost() && !$readonly) {
-            $postData = $this->getRequest()->getPost()->toArray();
-            $files = $this->getRequest()->getFiles()->toArray();
+        /** @var Request $request */
+        $request = $this->getRequest();
+
+        if ($request->isPost() && !$readonly) {
+            $postData = $request->getPost()->toArray();
+            $files = $request->getFiles()->toArray();
             $post = array_merge_recursive($postData, $files);
 
             $form->setData($post);
@@ -609,7 +609,7 @@ class ModuleController extends AdminautBaseController
                     }
 
                     if ($action == 'edit') {
-                        $cyclicEntity = $moduleManager->updateEntity($cyclicEntity, $form, $this->authentication()->getIdentity(), $entity);
+                        $cyclicEntity = $this->getModuleManager()->update($cyclicEntity, $form, $entity, $this->authentication()->getIdentity());
                         $primaryFieldValue = isset($form->getElements()[$form->getPrimaryField()]) ? (method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue()) : $cyclicEntity->getId();
                         $this->getEventManager()->trigger($moduleId . '.updateCyclicRecord', $this, [
                             'entity' => $entity,
@@ -617,7 +617,7 @@ class ModuleController extends AdminautBaseController
                         ]);
                         $this->flashMessenger()->addSuccessMessage(sprintf($this->translate('Record "%s" has been successfully updated.'), $primaryFieldValue));
                     } else {
-                        $cyclicEntity = $moduleManager->addEntity($form, $this->authentication()->getIdentity(), $entity);
+                        $cyclicEntity = $this->getModuleManager()->create(get_class($cyclicEntity), $form, $entity, $this->authentication()->getIdentity());
                         $primaryFieldValue = isset($form->getElements()[$form->getPrimaryField()]) ? (method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue()) : $cyclicEntity->getId();
                         $this->getEventManager()->trigger($moduleId . '.createCyclicRecord', $this, [
                             'entity' => $entity,
@@ -636,7 +636,7 @@ class ModuleController extends AdminautBaseController
 
         $view = new ViewModel([
             'parentModuleOption' => $parentModuleOptions,
-            'moduleOption' => $this->getModuleManager()->getOptions(),
+            'moduleOption' => $moduleOptions,
             'tabs' => $tabs,
             'currentTab' => $currentTab,
             'mode' => $this->params()->fromRoute('mode'),

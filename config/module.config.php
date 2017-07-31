@@ -72,6 +72,10 @@ return [
             // Translator service
             Translator::class => TranslatorServiceFactory::class,
         ],
+
+        'aliases' => [
+            'translator' => Translator::class,
+        ],
     ],
 
     'dependencies' => [
