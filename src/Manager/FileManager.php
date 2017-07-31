@@ -2,13 +2,12 @@
 
 namespace Adminaut\Manager;
 
+use Doctrine\ORM\EntityManager;
 use League\Flysystem\Filesystem;
 use Adminaut\Entity\File;
 use Adminaut\Entity\FileKeyword;
 use Adminaut\Exception;
-
 use WideImage\WideImage;
-use Zend\Validator\File\IsImage;
 
 /**
  * Class Manager
@@ -28,7 +27,7 @@ class FileManager
     protected $params;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     protected $em;
 
@@ -54,8 +53,6 @@ class FileManager
 
     /**
      * FileManager constructor.
-     * @param array $params
-     * @param \Doctrine\ORM\EntityManager $em
      */
     public function __construct()
     {
@@ -66,7 +63,10 @@ class FileManager
     }
 
     /**
-     * @param null $constructParams
+     * @param $em
+     * @param $params
+     * @param $filesystem
+     * @param $cacheFS
      */
     public static function setConstructParams($em, $params, $filesystem, $cacheFS)
     {
@@ -78,6 +78,9 @@ class FileManager
         ];
     }
 
+    /**
+     * @return FileManager|null
+     */
     public static function getInstance()
     {
         if (null == self::$instance) {
@@ -152,10 +155,10 @@ class FileManager
     }*/
 
     /**
-     * @param \Adminaut\Form\Element\File $element
-     * @param \Adminaut\Entity\User|null $user
+     * @param $element
+     * @param \Adminaut\Entity\UserEntity|null $user
      * @param array $option
-     * @return File
+     * @return File|null
      */
     public function upload($element, \Adminaut\Entity\UserEntity $user = null, array $option = [])
     {
@@ -203,7 +206,8 @@ class FileManager
      * @param File $file
      * @param int $width
      * @param int $height
-     * @return string
+     * @return mixed
+     * @throws \Exception
      */
     public function getThumbImage(File $file, $width = 200, $height = 200)
     {
@@ -238,6 +242,7 @@ class FileManager
      * @param int $maxWidth
      * @param int $maxHeight
      * @return mixed
+     * @throws \Exception
      */
     public function getImage(File $file, $maxWidth = 1200, $maxHeight = 1200)
     {
@@ -312,7 +317,7 @@ class FileManager
     }
 
     /**
-     * @return \Doctrine\ORM\EntityManager
+     * @return EntityManager
      */
     public function getEntityManager()
     {
@@ -320,7 +325,7 @@ class FileManager
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManager $em
+     * @param EntityManager $em
      */
     public function setEntityManager($em)
     {

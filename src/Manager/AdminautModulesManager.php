@@ -65,10 +65,15 @@ class AdminautModulesManager
 
     /**
      * @param $moduleId
+     * @return ModuleOptions|null
      */
     public function getModuleOptionsByModuleId($moduleId)
     {
-        return new ModuleOptions();
+        if (isset($this->modules[$moduleId])) {
+            $options = array_merge($this->modules[$moduleId], ['module_id' => $moduleId]);
+            return new ModuleOptions($options);
+        }
+        return null;
     }
 
     /**

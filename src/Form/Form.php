@@ -6,19 +6,20 @@ use Adminaut\Datatype\Checkbox;
 use Adminaut\Datatype\Radio;
 use Zend\Form\ElementInterface;
 use Zend\Form\FieldsetInterface;
+use Zend\Form\Form as ZendForm;
 
 /**
  * Class Form
  * @package Adminaut\Form
  */
-class Form extends \Zend\Form\Form
+class Form extends ZendForm
 {
     /**
      * @var array
      */
     protected $tabs = [
         'main' => [
-            'label' => "General",
+            'label' => 'General',
             'action' => 'updateAction',
             'active' => false,
         ],
@@ -55,7 +56,7 @@ class Form extends \Zend\Form\Form
     }
 
     /**
-     * @return \Zend\Form\Form
+     * @return ZendForm
      */
     public function prepare()
     {

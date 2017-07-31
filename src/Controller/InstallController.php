@@ -53,8 +53,7 @@ class InstallController extends AbstractActionController
      */
     public function indexAction()
     {
-        $users = $this->getUserManager()->findAll();
-        if (count($users) <> 0) {
+        if (0 !== $this->getUserManager()->countAll()) {
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
