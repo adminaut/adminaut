@@ -23,6 +23,30 @@ class UserManager extends AManager
     }
 
     /**
+     * @param UserEntity $user
+     * @param array $data
+     * @return UserEntity
+     */
+    private function populateData(UserEntity $user, array $data)
+    {
+        if ($data['name']) {
+            $user->setName($data['name']);
+        }
+        if ($data['email']) {
+            $user->setEmail($data['email']);
+        }
+        if ($data['active']) {
+            $user->setActive($data['active']);
+        }
+        if ($data['role']) {
+            $user->setRole($data['role']);
+        }
+        return $user;
+    }
+
+    //-------------------------------------------------------------------------
+
+    /**
      * @param $email
      * @return UserEntity|null|object
      */
@@ -137,28 +161,6 @@ class UserManager extends AManager
 
         $this->entityManager->flush();
 
-        return $user;
-    }
-
-    /**
-     * @param UserEntity $user
-     * @param array $data
-     * @return UserEntity
-     */
-    protected function populateData(UserEntity $user, array $data)
-    {
-        if ($data['name']) {
-            $user->setName($data['name']);
-        }
-        if ($data['email']) {
-            $user->setEmail($data['email']);
-        }
-        if ($data['active']) {
-            $user->setActive($data['active']);
-        }
-        if ($data['role']) {
-            $user->setRole($data['role']);
-        }
         return $user;
     }
 }

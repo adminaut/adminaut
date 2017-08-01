@@ -31,6 +31,8 @@ class ModuleManager extends AManager
      */
     private $modules;
 
+    //-------------------------------------------------------------------------
+
     /**
      * ModuleManager constructor.
      * @param EntityManager $entityManager
@@ -42,6 +44,8 @@ class ModuleManager extends AManager
         $this->modules = $modules;
     }
 
+    //-------------------------------------------------------------------------
+
     /**
      * @param string $entityName
      * @return EntityRepository
@@ -50,6 +54,8 @@ class ModuleManager extends AManager
     {
         return $this->entityManager->getRepository((string)$entityName);
     }
+
+    //-------------------------------------------------------------------------
 
     /**
      * @param $entityName
@@ -270,14 +276,37 @@ class ModuleManager extends AManager
 
     /**
      * @param $moduleId
+     * @return bool
+     */
+    public function hasModule($moduleId)
+    {
+        if (isset($this->modules[$moduleId]) && isset($this->modules[$moduleId]['type']) && 'module' === $this->modules[$moduleId]['type']) {
+            true;
+        }
+        return false;
+    }
+
+    /**
+     * @param $moduleId
+     * @return array|null
+     */
+    public function getModule($moduleId)
+    {
+        if ($this->hasModule($moduleId)) {
+            return array_merge(['module_id' => $moduleId], $this->modules[$moduleId]);
+        }
+        return null;
+    }
+
+    /**
+     * @param $moduleId
      * @return ModuleOptions
      * @throws \Exception
      */
     public function createModuleOptions($moduleId)
     {
-        if (isset($this->modules[$moduleId])) {
-            $options = array_merge(['module_id' => $moduleId], $this->modules[$moduleId]);
-            return new ModuleOptions($options);
+        if ($this->hasModule($moduleId)) {
+            return new ModuleOptions($this->getModule($moduleId));
         }
 
         throw new \Exception('Failed to create module options.');
