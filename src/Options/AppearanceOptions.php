@@ -33,7 +33,6 @@ class AppearanceOptions extends AbstractOptions
 
     /**
      * @var string
-     * todo: add default footer
      */
     private $footer = '';
 
@@ -45,6 +44,11 @@ class AppearanceOptions extends AbstractOptions
         'large' => 'adminaut/img/admin-logo-lg.svg',
         'small' => 'adminaut/img/admin-logo-mini.png',
     ];
+
+    /**
+     * @var string
+     */
+    private $themeColor = '#3c8dbc';
 
     /**
      * @return string
@@ -124,5 +128,21 @@ class AppearanceOptions extends AbstractOptions
     public function setLogo($logo)
     {
         $this->logo = $logo;
+    }
+
+    /**
+     * @return string
+     */
+    public function getThemeColor()
+    {
+        return $this->themeColor;
+    }
+
+    /**
+     * @param string $themeColor
+     */
+    public function setThemeColor($themeColor)
+    {
+        $this->themeColor = $themeColor;
     }
 }

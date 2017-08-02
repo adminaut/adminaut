@@ -19,7 +19,7 @@ class ManifestOptions extends AbstractOptions
     /**
      * @var string
      */
-    private $title = 'Adminaut';
+    private $name = 'Adminaut';
 
     /**
      * @var string
@@ -56,17 +56,17 @@ class ManifestOptions extends AbstractOptions
     /**
      * @return string
      */
-    public function getTitle()
+    public function getName()
     {
-        return $this->title;
+        return $this->name;
     }
 
     /**
-     * @param string $title
+     * @param string $name
      */
-    public function setTitle($title)
+    public function setName($name)
     {
-        $this->title = (string)$title;
+        $this->name = (string)$name;
     }
 
     /**
@@ -147,24 +147,6 @@ class ManifestOptions extends AbstractOptions
     public function setIcons(array $icons)
     {
         $this->icons = $icons;
-    }
-
-    /**
-     * @param $name
-     * @deprecated Use title key.
-     */
-    public function setName($name)
-    {
-        $this->setTitle($name);
-    }
-
-    /**
-     * @param $showName
-     * @deprecated Use title key.
-     */
-    public function setShowName($showName)
-    {
-        $this->setTitle($showName);
     }
 
     /**

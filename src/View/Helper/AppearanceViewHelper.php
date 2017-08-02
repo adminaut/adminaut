@@ -48,6 +48,8 @@ class AppearanceViewHelper extends AbstractHelper
                 return isset($this->appearanceOptions->getLogo()['small']) ? $this->appearanceOptions->getLogo()['small'] : null;
             case 'logo-type':
                 return isset($this->appearanceOptions->getLogo()['type']) ? $this->appearanceOptions->getLogo()['type'] : null;
+            case 'theme-color':
+                return $this->appearanceOptions->getThemeColor();
             default:
                 return null;
         }
