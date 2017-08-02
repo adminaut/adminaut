@@ -1,18 +1,3 @@
-<?php
-$msTileImageIconPos = 0;
-if (isset($this->config()['adminaut']['manifest']['icons'])) {
-    foreach ($this->config()['adminaut']['manifest']['icons'] as $i => $icon) {
-        if ($icon['sizes'] == '144x144') {
-            $msTileImageIconPos = $i;
-            break;
-        }
-        $msTileImageIconPos = -1;
-    }
-}
-
-$msappTileColor = isset($this->config()['adminaut']['manifest']['theme_color']) ? $this->config()['adminaut']['manifest']['theme_color'] : $this->adminautAppearance('theme-color');
-$msappTileImage = isset($this->config()['adminaut']['manifest']['icons']) && $msTileImageIconPos != -1 ? $this->basePath($this->config()['adminaut']['manifest']['icons'][0]) : $this->basePath('adminaut/img/adminaut-icon-114x114.png');
-?>
 <?php echo $this->doctype(); ?>
 <html lang="en">
 <head>
@@ -24,10 +9,9 @@ $msappTileImage = isset($this->config()['adminaut']['manifest']['icons']) && $ms
         ->appendName('generator', 'Adminaut (www.adminaut.com)')
         ->appendName('viewport', 'width=device-width, initial-scale=1.0')
         ->appendName('robots', 'noindex, nofollow')
-        ->appendName('apple-mobile-web-app-capable', 'yes')
         ->appendName('mobile-web-app-capable', 'yes')
-        ->appendName('msapplication-TileColor', $msappTileColor)
-        ->appendName('msapplication-TileImage', $msappTileImage)
+        ->appendName('apple-mobile-web-app-capable', 'yes')
+        ->appendName('description', $this->adminautAppearance('description'))
         ->appendName('theme-color', $this->adminautAppearance('theme-color'))
         ->appendName('msapplication-navbutton-color', $this->adminautAppearance('theme-color'))
         ->appendHttpEquiv('X-UA-Compatible', 'IE=edge');
