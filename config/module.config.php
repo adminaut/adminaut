@@ -125,7 +125,6 @@ return [
             View\Helper\IsAllowed::class => View\Helper\Factory\IsAllowedViewHelperFactory::class,
             View\Helper\ConfigViewHelper::class => View\Helper\Factory\ConfigViewHelperFactory::class,
             View\Helper\AppearanceViewHelper::class => View\Helper\Factory\AppearanceViewHelperFactory::class,
-            View\Helper\ManifestViewHelper::class => View\Helper\Factory\ManifestViewHelperFactory::class,
 
             Datatype\File\FormViewHelper::class => Datatype\File\Factory\FormViewHelperFactory::class,
             'formElement' => Form\View\Helper\Factory\FormElementFactory::class,
