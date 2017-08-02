@@ -1,24 +1,24 @@
 <?php
 
-namespace Adminaut\Options\Factory;
+namespace Adminaut\Service\Factory;
 
 use Adminaut\Options\AdminautOptions;
-use Adminaut\Options\ManifestOptions;
+use Adminaut\Service\ManifestService;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
- * Class ManifestOptionsFactory
- * @package Adminaut\Options\Factory
+ * Class ManifestServiceFactory
+ * @package Adminaut\Service\Factory
  */
-class ManifestOptionsFactory implements FactoryInterface
+class ManifestServiceFactory implements FactoryInterface
 {
 
     /**
      * @param ContainerInterface $container
      * @param string $requestedName
      * @param array|null $options
-     * @return ManifestOptions
+     * @return ManifestService
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
@@ -26,6 +26,6 @@ class ManifestOptionsFactory implements FactoryInterface
         /** @var AdminautOptions $adminautOptions */
         $adminautOptions = $container->get(AdminautOptions::class);
 
-        return new ManifestOptions($adminautOptions->getManifest());
+        return new ManifestService($adminautOptions->getManifest());
     }
 }

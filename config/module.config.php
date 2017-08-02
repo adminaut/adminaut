@@ -19,9 +19,9 @@ return [
             Controller\ProfileController::class => Controller\Factory\ProfileControllerFactory::class,
             Controller\UsersController::class => Controller\Factory\UsersControllerFactory::class,
             Controller\AuthController::class => Controller\Factory\AuthControllerFactory::class,
+            Controller\ManifestController::class => Controller\Factory\ManifestControllerFactory::class,
             Controller\DashboardController::class => InvokableFactory::class,
             Controller\IndexController::class => InvokableFactory::class,
-            Controller\ManifestController::class => InvokableFactory::class,
         ],
     ],
 
@@ -66,11 +66,11 @@ return [
             Options\AuthAdapterOptions::class => Options\Factory\AuthAdapterOptionsFactory::class,
             Options\CookieStorageOptions::class => Options\Factory\CookieStorageOptionsFactory::class,
             Options\FileManagerOptions::class => Options\Factory\FileManagerOptionsFactory::class,
-            Options\ManifestOptions::class => Options\Factory\ManifestOptionsFactory::class,
             Options\UsersOptions::class => Options\Factory\UsersOptionsFactory::class,
 
             // Service
             Service\AccessControlService::class => Service\Factory\AccessControlServiceFactory::class,
+            Service\ManifestService::class => Service\Factory\ManifestServiceFactory::class,
 
             // Translator service
             Translator::class => TranslatorServiceFactory::class,
