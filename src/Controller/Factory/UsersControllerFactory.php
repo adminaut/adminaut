@@ -5,6 +5,7 @@ namespace Adminaut\Controller\Factory;
 use Adminaut\Controller\UsersController;
 use Adminaut\Manager\ModuleManager;
 use Adminaut\Manager\UserManager;
+use Adminaut\Options\UsersOptions;
 use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
@@ -34,6 +35,9 @@ class UsersControllerFactory implements FactoryInterface
         /** @var ModuleManager $moduleManager */
         $moduleManager = $container->get(ModuleManager::class);
 
-        return new UsersController($entityManager, $userManager, $moduleManager);
+        /** @var UsersOptions $usersOptions */
+        $usersOptions = $container->get(UsersOptions::class);
+
+        return new UsersController($entityManager, $userManager, $moduleManager, $usersOptions);
     }
 }

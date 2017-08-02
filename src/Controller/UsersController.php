@@ -2,11 +2,11 @@
 
 namespace Adminaut\Controller;
 
-use Adminaut\Entity\UserEntity;
 use Adminaut\Form\InputFilter\UserInputFilter;
 use Adminaut\Manager\ModuleManager;
 use Adminaut\Manager\UserManager;
 use Adminaut\Options\ModuleOptions;
+use Adminaut\Options\UsersOptions;
 use Adminaut\Service\AccessControlService;
 use Doctrine\ORM\EntityManager;
 use Zend\Http\PhpEnvironment\Request;
@@ -34,6 +34,11 @@ class UsersController extends AdminautBaseController
      */
     private $moduleManager;
 
+    /**
+     * @var UsersOptions
+     */
+    private $usersOptions;
+
     //-------------------------------------------------------------------------
 
     /**
@@ -41,12 +46,14 @@ class UsersController extends AdminautBaseController
      * @param EntityManager $entityManager
      * @param UserManager $userManager
      * @param ModuleManager $moduleManager
+     * @param UsersOptions $usersOptions
      */
-    public function __construct(EntityManager $entityManager, UserManager $userManager, ModuleManager $moduleManager)
+    public function __construct(EntityManager $entityManager, UserManager $userManager, ModuleManager $moduleManager, UsersOptions $usersOptions)
     {
         $this->entityManager = $entityManager;
         $this->userManager = $userManager;
         $this->moduleManager = $moduleManager;
+        $this->usersOptions = $usersOptions;
     }
 
     //-------------------------------------------------------------------------
@@ -81,15 +88,13 @@ class UsersController extends AdminautBaseController
      */
     private function getModuleOptions()
     {
-        $config = $this->config();
-
         $moduleOptions = new ModuleOptions([
             'type' => 'module',
+            'module_id' => 'users',
             'module_name' => 'Users',
             'module_icon' => 'fa-users',
-            'entity_class' => isset($config['adminaut']['users']['user_entity_class']) ? $config['adminaut']['users']['user_entity_class'] : UserEntity::class,
+            'entity_class' => $this->usersOptions->getUserEntityClass(),
         ]);
-        $moduleOptions->setModuleId('users');
 
         return $moduleOptions;
     }
@@ -171,7 +176,7 @@ class UsersController extends AdminautBaseController
                     $this->flashMessenger()->addSuccessMessage($this->translate('User has been successfully created.'));
                     switch ($post['submit']) {
                         case 'create-and-continue' :
-                            return $this->redirect()->toRoute('adminaut/users/update', ['id' => $user->getId()]);
+                            return $this->redirect()->toRoute('adminaut/users/edit', ['id' => $user->getId()]);
                         case 'create' :
                         default :
                             return $this->redirect()->toRoute('adminaut/users');
