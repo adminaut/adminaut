@@ -21,7 +21,7 @@ class FileManagerFactory implements FactoryInterface
      * @param ContainerInterface $container
      * @param string $requestedName
      * @param array|null $options
-     * @return FileManager|null
+     * @return FileManager
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
@@ -41,13 +41,6 @@ class FileManagerFactory implements FactoryInterface
         /** @var Filesystem $fileSystemCache */
         $fileSystemCache = new Filesystem($adapterManager->get('cache'));
 
-        // todo: rewrite to constructor DI
-        FileManager::setConstructParams(
-            $entityManager,
-            $fileManagerOptions->toArray(),
-            $fileSystemDefault,
-            $fileSystemCache
-        );
-        return FileManager::getInstance();
+        return new FileManager($entityManager, $fileSystemDefault, $fileSystemCache, $fileManagerOptions);
     }
 }

@@ -2,100 +2,86 @@
 
 namespace Adminaut\Manager;
 
-use Doctrine\ORM\EntityManager;
-use League\Flysystem\Filesystem;
-use Adminaut\Entity\File;
+use Adminaut\Entity\UserEntity;
+use Adminaut\Entity\File as FileEntity;
 use Adminaut\Entity\FileKeyword;
 use Adminaut\Exception;
+use Adminaut\Options\FileManagerOptions;
+use Doctrine\ORM\EntityManager;
+use League\Flysystem\Adapter\AbstractAdapter;
+use League\Flysystem\Filesystem;
 use WideImage\WideImage;
+use Zend\Form\ElementInterface;
 
 /**
- * Class Manager
- * @package Application\FileManager
- * todo: refactor this whole class!
+ * Class FileManager
+ * @package Adminaut\Manager
  */
-class FileManager
+class FileManager extends AManager
 {
 
-    private static $instance = null;
-
-    private static $constructParams = null;
+    /**
+     * @var FileEntity
+     */
+    private $file;
 
     /**
      * @var array
      */
-    protected $params;
-
-    /**
-     * @var EntityManager
-     */
-    protected $em;
+    private $cache;
 
     /**
      * @var Filesystem
      */
-    protected $filesystem;
+    private $filesystem;
 
     /**
      * @var Filesystem
      */
-    protected $cacheFilesystem;
+    private $filesystemCache;
 
     /**
-     * @var \Adminaut\Entity\File
+     * @var FileManagerOptions
      */
-    protected $file;
-
-    /**
-     * @var array
-     */
-    protected $cache;
+    private $fileManagerOptions;
 
     /**
      * FileManager constructor.
+     * @param EntityManager $entityManager
+     * @param Filesystem $filesystem
+     * @param Filesystem $filesystemCache
+     * @param FileManagerOptions $fileManagerOptions
      */
-    public function __construct()
+    public function __construct(EntityManager $entityManager, Filesystem $filesystem, Filesystem $filesystemCache, FileManagerOptions $fileManagerOptions)
     {
-        $this->setEntityManager(self::$constructParams["em"]);
-        $this->setParams(self::$constructParams["params"]);
-        $this->setFilesystem(self::$constructParams["filesystem"]);
-        $this->setCacheFilesystem(self::$constructParams["cache_filesystem"]);
+        parent::__construct($entityManager);
+        $this->filesystem = $filesystem;
+        $this->filesystemCache = $filesystemCache;
+        $this->fileManagerOptions = $fileManagerOptions;
     }
 
     /**
-     * @param $em
-     * @param $params
-     * @param $filesystem
-     * @param $cacheFS
+     * @return Filesystem
      */
-    public static function setConstructParams($em, $params, $filesystem, $cacheFS)
+    public function getFilesystem()
     {
-        self::$constructParams = [
-            'em' => $em,
-            'params' => $params,
-            'filesystem' => $filesystem,
-            'cache_filesystem' => $cacheFS,
-        ];
+        return $this->filesystem;
     }
 
     /**
-     * @return FileManager|null
+     * @return Filesystem
      */
-    public static function getInstance()
+    public function getFilesystemCache()
     {
-        if (null == self::$instance) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
+        return $this->filesystemCache;
     }
 
     /**
-     * @param $filename
+     * @return FileManagerOptions
      */
-    private function getMimeType($filename)
+    public function getFileManagerOptions()
     {
-        $this->getFilesystem()->getMimetype($filename);
+        return $this->fileManagerOptions;
     }
 
     /**
@@ -111,7 +97,7 @@ class FileManager
         if (isset($this->cache[$fileId])) {
             $entity = $this->cache[$fileId];
         } else {
-            $entity = $this->em->find('Application\Entity\File', $fileId);
+            $entity = $this->getEntityManager()->find(FileEntity::class, $fileId);
         }
         if (!$entity) {
             throw new Exception\FileNotFoundException(
@@ -155,23 +141,23 @@ class FileManager
     }*/
 
     /**
-     * @param $element
-     * @param \Adminaut\Entity\UserEntity|null $user
+     * @param ElementInterface $element
+     * @param UserEntity|null $user
      * @param array $option
-     * @return File|null
+     * @return FileEntity|null
      */
-    public function upload($element, \Adminaut\Entity\UserEntity $user = null, array $option = [])
+    public function upload(ElementInterface $element, UserEntity $user = null, array $option = [])
     {
         $_file = $element->getValue();
         if ($_file['error'] != 0) {
             return null;
         }
         $fileName = $_file['name'];
-        $mimetype = $_file['type'];
+        $fileType = $_file['type'];
         $hash = md5(microtime(true) . $fileName);
         $savePath = substr($hash, 0, 1) . '/' . substr($hash, 1, 1) . '/';
 
-        $file = new File();
+        $file = new FileEntity();
         if ($user) {
             $file->setInsertedBy($user->getId());
         }
@@ -180,9 +166,9 @@ class FileManager
         } else {
             $file->setName($fileName);
         }
-        $file->setMimetype($mimetype);
+        $file->setMimetype($fileType);
         $file->setSize($_file['size']);
-        $file->setActive($this->params['default_is_active']);
+        $file->setActive($this->getFileManagerOptions()->getDefaultIsActive());
         $file->setSavePath($savePath . $hash);
         if (isset($option['keywords'])) {
             $this->addKeywordsToFile($option['keywords']);
@@ -191,7 +177,10 @@ class FileManager
         try {
             $this->getFilesystem()->writeStream($savePath . $hash, fopen($_file['tmp_name'], 'r+'));
 
-            $element->setFileObject($file);
+            if (method_exists($element, 'setFileObject')) {
+                $element->setFileObject($file);
+            }
+
             $this->getEntityManager()->persist($file);
         } catch (\Exception $e) {
             throw new Exception\RuntimeException(
@@ -203,28 +192,43 @@ class FileManager
     }
 
     /**
-     * @param File $file
+     * @param FileEntity $file
      * @param int $width
      * @param int $height
      * @return mixed
      * @throws \Exception
      */
-    public function getThumbImage(File $file, $width = 200, $height = 200)
+    public function getThumbImage(FileEntity $file, $width = 200, $height = 200)
     {
         $sourceImage = $file->getSavePath();
         $resultImage = $file->getSavePath() . '-' . $width . '-' . $height . '.' . $file->getFileExtension();
 
-        if (!$this->getCacheFilesystem()->has($resultImage)) {
+        /** @var AbstractAdapter $fsAdapter */
+        $fsAdapter = $this->getFilesystem()->getAdapter();
+
+        if (!$this->getFilesystemCache()->has($resultImage)) {
             try {
-                $exif = exif_read_data($this->getFilesystem()->getAdapter()->applyPathPrefix($sourceImage));
-                $ort = isset($exif['Orientation']) ? $exif['Orientation'] : 1;
+                $exif = exif_read_data($fsAdapter->applyPathPrefix($sourceImage));
                 $_file = $this->getFilesystem()->read($sourceImage);
                 $image = WideImage::load($_file);
-                $image_data = $image->exifOrient($ort)->resize($width, $height, 'outside')
-                    ->crop('center', 'center', $width, $height)
-                    ->asString($file->getFileExtension());
 
-                $this->getCacheFilesystem()->write($resultImage, $image_data);
+                // Todo: Fork WideImage and add exifOrient operation!
+                if (method_exists($image, 'exifOrient')) {
+                    $ort = isset($exif['Orientation']) ? $exif['Orientation'] : 1;
+
+                    $image_data = $image
+                        ->exifOrient($ort)
+                        ->resize($width, $height, 'outside')
+                        ->crop('center', 'center', $width, $height)
+                        ->asString($file->getFileExtension());
+                } else {
+                    $image_data = $image
+                        ->resize($width, $height, 'outside')
+                        ->crop('center', 'center', $width, $height)
+                        ->asString($file->getFileExtension());
+                }
+
+                $this->getFilesystemCache()->write($resultImage, $image_data);
             } catch (\Exception $e) {
                 throw new \Exception(
                     'Thumbnail cannot be saved.', 0, $e
@@ -232,37 +236,52 @@ class FileManager
             }
         }
 
-        $fsAdapter = $this->getCacheFilesystem()->getAdapter();
+        /** @var AbstractAdapter $fsAdapterCache */
+        $fsAdapterCache = $this->getFilesystemCache()->getAdapter();
 
-        return str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', str_replace('\\', '/', realpath($fsAdapter->getPathPrefix() . $resultImage)));
+        return str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', str_replace('\\', '/', realpath($fsAdapterCache->getPathPrefix() . $resultImage)));
     }
 
     /**
-     * @param File $file
+     * @param FileEntity $file
      * @param int $maxWidth
      * @param int $maxHeight
      * @return mixed
      * @throws \Exception
      */
-    public function getImage(File $file, $maxWidth = 1200, $maxHeight = 1200)
+    public function getImage(FileEntity $file, $maxWidth = 1200, $maxHeight = 1200)
     {
 
         $sourceImage = $file->getSavePath();
+
+        /** @var AbstractAdapter $fsAdapter */
+        $fsAdapter = $this->getFilesystem()->getAdapter();
 
         // todo: upraviť name súborov, podľa veľkosti originálu dopočítať novú veľkosť
         //$resultImage = $file->getSavePath() . '-' . $maxWidth . '-' . $maxHeight . '.' . $file->getFileExtension();
         $resultImage = $file->getSavePath() . '-' . 'resized' . '.' . $file->getFileExtension();
 
-        if (!$this->getCacheFilesystem()->has($resultImage)) {
+        if (!$this->getFilesystemCache()->has($resultImage)) {
             try {
-                $exif = exif_read_data($this->getFilesystem()->getAdapter()->applyPathPrefix($sourceImage));
-                $ort = isset($exif['Orientation']) ? $exif['Orientation'] : 1;
+                $exif = exif_read_data($fsAdapter->applyPathPrefix($sourceImage));
                 $_file = $this->getFilesystem()->read($sourceImage);
                 $image = WideImage::load($_file);
 
-                $image_data = $image->exifOrient($ort)->resize($maxWidth, $maxHeight, 'inside', 'down')->asString($file->getFileExtension());
+                // Todo: Fork WideImage and add exifOrient operation!
+                if (method_exists($image, 'exifOrient')) {
+                    $ort = isset($exif['Orientation']) ? $exif['Orientation'] : 1;
 
-                $this->getCacheFilesystem()->write($resultImage, $image_data);
+                    $image_data = $image
+                        ->exifOrient($ort)
+                        ->resize($maxWidth, $maxHeight, 'inside', 'down')
+                        ->asString($file->getFileExtension());
+                } else {
+                    $image_data = $image
+                        ->resize($maxWidth, $maxHeight, 'inside', 'down')
+                        ->asString($file->getFileExtension());
+                }
+
+                $this->getFilesystemCache()->write($resultImage, $image_data);
             } catch (\Exception $e) {
                 throw new \Exception(
                     'Resized original cannot be saved.', 0, $e
@@ -270,9 +289,10 @@ class FileManager
             }
         }
 
-        $fsAdapter = $this->getCacheFilesystem()->getAdapter();
+        /** @var AbstractAdapter $fsAdapterCache */
+        $fsAdapterCache = $this->getFilesystemCache()->getAdapter();
 
-        return str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', str_replace('\\', '/', realpath($fsAdapter->getPathPrefix() . $resultImage)));
+        return str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', str_replace('\\', '/', realpath($fsAdapterCache->getPathPrefix() . $resultImage)));
     }
 
     /**
@@ -287,7 +307,7 @@ class FileManager
                 $keyword = new FileKeyword();
                 $keyword->setValue(strtolower($word));
                 $keyword->setFile($this->file);
-                $this->em->persist($keyword);
+                $this->getEntityManager()->persist($keyword);
                 $keywordEntities[] = $keyword;
             }
             $this->file->setKeywords($keywordEntities);
@@ -314,69 +334,5 @@ class FileManager
         if (!$success) {
             throw new Exception\RuntimeException('Can\'t create file manager storage folders');
         }
-    }
-
-    /**
-     * @return EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->em;
-    }
-
-    /**
-     * @param EntityManager $em
-     */
-    public function setEntityManager($em)
-    {
-        $this->em = $em;
-    }
-
-    /**
-     * @return Filesystem
-     */
-    public function getFilesystem()
-    {
-        return $this->filesystem;
-    }
-
-    /**
-     * @param Filesystem $filesystem
-     */
-    public function setFilesystem($filesystem)
-    {
-        $this->filesystem = $filesystem;
-    }
-
-    /**
-     * @return Filesystem
-     */
-    public function getCacheFilesystem()
-    {
-        return $this->cacheFilesystem;
-    }
-
-    /**
-     * @param Filesystem $cacheFilesystem
-     */
-    public function setCacheFilesystem($cacheFilesystem)
-    {
-        $this->cacheFilesystem = $cacheFilesystem;
-    }
-
-    /**
-     * @return array
-     */
-    public function getParams()
-    {
-        return $this->params;
-    }
-
-    /**
-     * @param array $params
-     */
-    public function setParams($params)
-    {
-        $this->params = $params;
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Adminaut\Datatype;
 
-use Adminaut\Manager\FileManager;
 use Zend\Form\Element;
 
 /**
@@ -11,6 +10,7 @@ use Zend\Form\Element;
  */
 class File extends Element\File
 {
+
     protected $attributes = [
         'type' => 'datatypeFile',
     ];
@@ -37,7 +37,6 @@ class File extends Element\File
     }
 
     /**
-     * @deprecated
      * @return \Adminaut\Entity\File
      */
     public function getFileObject()
@@ -46,7 +45,6 @@ class File extends Element\File
     }
 
     /**
-     * @deprecated
      * @param $fileObject
      */
     public function setFileObject($fileObject)
@@ -75,14 +73,5 @@ class File extends Element\File
             $this->value = $value;
         }
         return $this;
-    }
-
-    /**
-     *
-     */
-    public function getListedValue()
-    {
-        // TODO[petrm] ?????
-        $fm = FileManager::getInstance();
     }
 }

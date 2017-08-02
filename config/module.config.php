@@ -101,7 +101,6 @@ return [
             'datatypeFormGoogleStreetView' => Datatype\GoogleStreetView\FormViewHelper::class,
             'datatypeFormGooglePlaceId' => Datatype\GooglePlaceId\FormViewHelper::class,
             'datatypeFormDateTime' => Datatype\DateTime\FormViewHelper::class,
-            'datatypeFormFile' => Datatype\File\FormViewHelper::class,
             'datatypeFormTextarea' => Datatype\Textarea\FormViewHelper::class,
 
             // detail helpers
@@ -111,12 +110,10 @@ return [
             'datatypeGoogleStreetViewDetail' => Datatype\GoogleStreetView\DetailViewHelper::class,
             'datatypeTextareaDetail' => Datatype\Textarea\DetailViewHelper::class,
 
-
             'formrow' => Datatype\View\Helper\FormRow::class,
             'form_row' => Datatype\View\Helper\FormRow::class,
             'formRow' => Datatype\View\Helper\FormRow::class,
             'FormRow' => Datatype\View\Helper\FormRow::class,
-//            'datatype' => Datatype\View\Helper\Datatype::class,  // !!! TOTO TO SRALO !!!
         ],
 
         'factories' => [
@@ -125,12 +122,11 @@ return [
             View\Helper\IsAllowed::class => View\Helper\Factory\IsAllowedViewHelperFactory::class,
             View\Helper\ConfigViewHelper::class => View\Helper\Factory\ConfigViewHelperFactory::class,
 
-
+            Datatype\File\FormViewHelper::class => Datatype\File\Factory\FormViewHelperFactory::class,
             'formElement' => Form\View\Helper\Factory\FormElementFactory::class,
             'FormElement' => Form\View\Helper\Factory\FormElementFactory::class,
             'form_element' => Form\View\Helper\Factory\FormElementFactory::class,
             'formelement' => Form\View\Helper\Factory\FormElementFactory::class,
-
 
             // Datatype helpers
             Datatype\View\Helper\FormRow::class => Datatype\View\Helper\Factory\FormRowFactory::class,
@@ -145,6 +141,7 @@ return [
             'config' => View\Helper\ConfigViewHelper::class,
 
 
+            'datatypeFormFile' => Datatype\File\FormViewHelper::class,
             'formElement' => Form\View\Helper\FormElement::class,
             'FormElement' => Form\View\Helper\FormElement::class,
             'form_element' => Form\View\Helper\FormElement::class,

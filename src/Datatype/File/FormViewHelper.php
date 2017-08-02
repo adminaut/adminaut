@@ -15,6 +15,20 @@ use Zend\Form\View\Helper\FormFile as ZendFormFile;
 class FormViewHelper extends ZendFormFile
 {
     /**
+     * @var FileManager
+     */
+    private $fileManager;
+
+    /**
+     * FormViewHelper constructor.
+     * @param FileManager $fileManager
+     */
+    public function __construct(FileManager $fileManager)
+    {
+        $this->fileManager = $fileManager;
+    }
+
+    /**
      * @param ElementInterface|null $element
      * @return string
      */
@@ -33,11 +47,10 @@ class FormViewHelper extends ZendFormFile
         $render = '<div class="datatype-file" data-attributes="' . htmlspecialchars(json_encode($element->getAttributes())) . '">';
         if ($element instanceof File && $element->getFile()) {
             $fileObject = $element->getFile();
-            $fm = FileManager::getInstance();
             $element->setAttribute('class', 'hidden');
             $render .= '<div class="file-icon">';
             if ($element instanceof FileImage) {
-                $render .= '<img src="' . $this->view->basePath($fm->getThumbImage($fileObject, 64, 64)) . '">';
+                $render .= '<img src="' . $this->view->basePath($this->fileManager->getThumbImage($fileObject, 64, 64)) . '">';
             } else {
                 $render .= '<img src="/img/adminaut/file-icons/' . $fileObject->getFileExtension() . '.svg">';
             }

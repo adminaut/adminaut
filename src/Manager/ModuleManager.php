@@ -281,7 +281,7 @@ class ModuleManager extends AManager
     public function hasModule($moduleId)
     {
         if (isset($this->modules[$moduleId]) && isset($this->modules[$moduleId]['type']) && 'module' === $this->modules[$moduleId]['type']) {
-            true;
+            return true;
         }
         return false;
     }
@@ -305,10 +305,12 @@ class ModuleManager extends AManager
      */
     public function createModuleOptions($moduleId)
     {
-        if ($this->hasModule($moduleId)) {
-            return new ModuleOptions($this->getModule($moduleId));
+        $module = $this->getModule($moduleId);
+
+        if (null === $module || false === is_array($module)) {
+            throw new \Exception('Failed to create module options.');
         }
 
-        throw new \Exception('Failed to create module options.');
+        return new ModuleOptions($module);
     }
 }

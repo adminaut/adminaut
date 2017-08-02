@@ -25,6 +25,14 @@ abstract class AManager
     }
 
     /**
+     * @return EntityManager
+     */
+    protected function getEntityManager()
+    {
+        return $this->entityManager;
+    }
+
+    /**
      * @param object $entity The instance to make managed and persistent.
      */
     public function persist($entity)
