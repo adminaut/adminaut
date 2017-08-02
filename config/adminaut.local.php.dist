@@ -15,13 +15,14 @@ return [
                 'module_icon' => 'fa-list-alt',
                 'entity_class' => 'Application\Entity\News',
             ],
+            // ...
         ],
-        'auth-adapter' => [
+        'authAdapter' => [
             'failedAttemptsToLock' => 5,
             'secondsToUnlock' => 60, // int in seconds
             'automaticUnlockDisabled' => false,
         ],
-        'cookie-storage' => [
+        'cookieStorage' => [
             'cookieName' => 'access-token',
             'cookiePath' => '/',
             'cookieDomain' => '',

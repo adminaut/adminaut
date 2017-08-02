@@ -3,30 +3,29 @@
 namespace Adminaut\Options\Factory;
 
 use Adminaut\Options\AdminautOptions;
+use Adminaut\Options\AuthAdapterOptions;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
- * Class AdminautOptionsFactory
+ * Class AuthAdapterOptionsFactory
  * @package Adminaut\Options\Factory
  */
-class AdminautOptionsFactory implements FactoryInterface
+class AuthAdapterOptionsFactory implements FactoryInterface
 {
 
     /**
      * @param ContainerInterface $container
      * @param string $requestedName
      * @param array|null $options
-     * @return AdminautOptions
+     * @return AuthAdapterOptions
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
 
-        /** @var array $config */
-        $config = $container->get('Config');
+        /** @var AdminautOptions $adminautOptions */
+        $adminautOptions = $container->get(AdminautOptions::class);
 
-        $options = isset($config['adminaut']) ? $config['adminaut'] : [];
-
-        return new AdminautOptions($options);
+        return new AuthAdapterOptions($adminautOptions->getAuthAdapter());
     }
 }

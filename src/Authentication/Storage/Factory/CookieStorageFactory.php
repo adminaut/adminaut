@@ -2,8 +2,8 @@
 
 namespace Adminaut\Authentication\Storage\Factory;
 
-use Adminaut\Authentication\Storage\CookieStorageOptions;
 use Adminaut\Authentication\Storage\CookieStorage;
+use Adminaut\Options\CookieStorageOptions;
 use Interop\Container\ContainerInterface;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\PhpEnvironment\Response;

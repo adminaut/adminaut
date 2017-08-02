@@ -10,9 +10,6 @@
         }
     }
 
-    /** @var array $appearance */
-    /** @var string $skin */
-    $skin = $appearance['skin'];
     $msappTileColor = isset($this->config()['adminaut']['manifest']['theme_color']) ? $this->config()['adminaut']['manifest']['theme_color'] : '#3c8dbc';
     $msappTileImage = isset($this->config()['adminaut']['manifest']['icons']) && $msTileImageIconPos != -1 ? $this->basePath($this->config()['adminaut']['manifest']['icons'][0]) : $this->basePath('adminaut/img/adminaut-icon-114x114.png');
 ?>
@@ -21,7 +18,7 @@
     <head>
         <meta charset="utf-8">
         <?php
-        echo $this->headTitle('Adminaut')->setSeparator(' | ')->setAutoEscape(false);
+        echo $this->headTitle($this->adminautAppearance('title'))->setSeparator(' | ')->setAutoEscape(false);
 
         echo $this->headMeta()
             ->appendName('generator', 'Adminaut (www.adminaut.com)')
@@ -41,7 +38,7 @@
             ->appendStylesheet($this->basePath('adminaut/css/dataTables.bootstrap.css'))
             ->appendStylesheet($this->basePath('adminaut/css/dataTables.responsive.css'))
             ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/AdminLTE.min.css'))
-            ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/skins/skin-'.$skin.'.min.css'))
+            ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/skins/skin-' . $this->adminautAppearance('skin') . '.min.css'))
             ->appendStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/flat.css'))
             ->appendStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/blue.css'))
             ->appendStylesheet($this->basePath('adminaut/themes/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css'))
@@ -79,7 +76,7 @@
 
         ?>
     </head>
-    <body class="hold-transition skin-<?php echo $skin ?> sidebar-mini<?php echo (isset($_COOKIE['sidebar-collapsed']) ? ' sidebar-collapse' : '') ?> fixed <?php echo (isset($this->config()['adminaut']['environment'])) ? $this->config()['adminaut']['environment'] : 'develop' ?>">
+    <body class="hold-transition skin-<?php echo $this->adminautAppearance('skin') ?> sidebar-mini<?php echo (isset($_COOKIE['sidebar-collapsed']) ? ' sidebar-collapse' : '') ?> fixed <?php echo (isset($this->config()['adminaut']['environment'])) ? $this->config()['adminaut']['environment'] : 'develop' ?>">
         <div id="fb-root"></div>
         <script>(function(d, s, id) {
                 var js, fjs = d.getElementsByTagName(s)[0];
@@ -110,8 +107,8 @@
             <header class="main-header">
                 <!-- Logo -->
                 <a href="<?php echo $this->url('adminaut'); ?>" class="logo logo-image">
-                    <span class="logo-lg"><img src="<?php echo $this->basePath($appearance['logo']['large']); ?>" alt="<?php echo $appearance['title'] ?>"></span>
-                    <span class="logo-mini"><img src="<?php echo $this->basePath($appearance['logo']['small']); ?>" alt="<?php $appearance['title'] ?>"></span>
+                    <span class="logo-lg"><img src="<?php echo $this->basePath($this->adminautAppearance('logo-large')); ?>" alt="<?php echo $this->adminautAppearance('title') ?>"></span>
+                    <span class="logo-mini"><img src="<?php echo $this->basePath($this->adminautAppearance('logo-small')); ?>" alt="<?php $this->adminautAppearance('title') ?>"></span>
                 </a>
                 <!-- Header Navbar: style can be found in header.less -->
                 <nav class="navbar navbar-static-top">
@@ -200,10 +197,8 @@
             </div>
 
             <footer class="main-footer">
-                <?php if (isset($this->config()['adminaut']['appearance']['footer'])) { ?>
-                    <?php echo $this->config()['adminaut']['appearance']['footer'] ?>
-                <?php } ?>
-                <?php echo sprintf($this->translate("Powered by %s."), '<a href="http://adminaut.com/" target="_blank">Adminaut</a>') ?>
+                <?php echo $this->adminautAppearance('footer') ?>
+                <?php echo sprintf($this->translate('Powered by %s.'), '<a href="http://adminaut.com/" target="_blank">Adminaut</a>') ?>
             </footer>
 
             <?php echo $this->inlineScript(); ?>

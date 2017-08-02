@@ -18,37 +18,52 @@ class AdminautOptions extends AbstractOptions
     /**
      * @var array
      */
-    private $appearance;
+    private $appearance = []; // Leave empty
 
     /**
      * @var array
      */
-    private $modules;
+    private $modules = []; // Leave empty
 
     /**
      * @var array
      */
-    private $roles;
+    private $roles = []; // Leave empty
 
     /**
      * @var array
      */
-    private $manifest;
+    private $manifest = []; // Leave empty
+
+    /**
+     * @var array
+     */
+    private $users = []; // Leave empty
+
+    /**
+     * @var array
+     */
+    private $authAdapter = []; // Leave empty
+
+    /**
+     * @var array
+     */
+    private $cookieStorage = []; // Leave empty
 
     /**
      * @var string
      */
-    private $googleAnalytics;
+    private $googleAnalytics = '';
 
     /**
      * @var string
      */
-    private $googleAPI;
+    private $googleAPI = '';
 
     /**
      * @var string
      */
-    private $environment;
+    private $environment = 'production';
 
     //-------------------------------------------------------------------------
 
@@ -117,6 +132,70 @@ class AdminautOptions extends AbstractOptions
     }
 
     /**
+     * @return array
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * @param array $users
+     */
+    public function setUsers($users)
+    {
+        $this->users = $users;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAuthAdapter()
+    {
+        return $this->authAdapter;
+    }
+
+    /**
+     * @param array $authAdapter
+     */
+    public function setAuthAdapter($authAdapter)
+    {
+        $this->authAdapter = $authAdapter;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCookieStorage()
+    {
+        return $this->cookieStorage;
+    }
+
+    /**
+     * @param array $cookieStorage
+     */
+    public function setCookieStorage($cookieStorage)
+    {
+        $this->cookieStorage = $cookieStorage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEnvironment()
+    {
+        return $this->environment;
+    }
+
+    /**
+     * @param string $environment
+     */
+    public function setEnvironment($environment)
+    {
+        $this->environment = $environment;
+    }
+
+    /**
      * @return string
      */
     public function getGoogleAnalytics()
@@ -146,21 +225,5 @@ class AdminautOptions extends AbstractOptions
     public function setGoogleAPI($googleAPI)
     {
         $this->googleAPI = $googleAPI;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEnvironment()
-    {
-        return $this->environment;
-    }
-
-    /**
-     * @param string $environment
-     */
-    public function setEnvironment($environment)
-    {
-        $this->environment = $environment;
     }
 }

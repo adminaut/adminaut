@@ -5,6 +5,7 @@ namespace Adminaut\Authentication\Adapter;
 use Adminaut\Authentication\Helper\PasswordHelper;
 use Adminaut\Entity\UserEntity;
 use Adminaut\Entity\UserLoginEntity;
+use Adminaut\Options\AuthAdapterOptions;
 use Adminaut\Repository\UserLoginRepository;
 use Adminaut\Repository\UserRepository;
 use DateTime;

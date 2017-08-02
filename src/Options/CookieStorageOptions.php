@@ -1,14 +1,12 @@
 <?php
 
-namespace Adminaut\Authentication\Storage;
+namespace Adminaut\Options;
 
-use DateTime;
-use Traversable;
 use Zend\Stdlib\AbstractOptions;
 
 /**
  * Class CookieStorageOptions
- * @package Adminaut\Authentication\Storage
+ * @package Adminaut\Options
  */
 class CookieStorageOptions extends AbstractOptions
 {
@@ -39,7 +37,7 @@ class CookieStorageOptions extends AbstractOptions
     protected $cookieDomain = '';
 
     /**
-     * @var string|DateTime
+     * @var string|\DateTime
      */
     protected $cookieExpires;
 
@@ -102,7 +100,7 @@ class CookieStorageOptions extends AbstractOptions
     }
 
     /**
-     * @return string|DateTime
+     * @return string|\DateTime
      */
     public function getCookieExpires()
     {
@@ -110,7 +108,7 @@ class CookieStorageOptions extends AbstractOptions
     }
 
     /**
-     * @param string|DateTime $cookieExpires
+     * @param string|\DateTime $cookieExpires
      */
     public function setCookieExpires($cookieExpires)
     {
@@ -151,12 +149,12 @@ class CookieStorageOptions extends AbstractOptions
 
     /**
      * CookieStorageOptions constructor.
-     * @param array|Traversable|null $options
+     * @param array|\Traversable|null $options
      */
     public function __construct($options = null)
     {
         // default cookieExpires value
-        $this->cookieExpires = new DateTime('+1 Month');
+        $this->cookieExpires = new \DateTime('+1 Month');
 
         parent::__construct($options);
     }

@@ -47,10 +47,8 @@ return [
         'factories' => [
             // Authentication
             Authentication\Adapter\AuthAdapter::class => Authentication\Adapter\Factory\AuthAdapterFactory::class,
-            Authentication\Adapter\AuthAdapterOptions::class => Authentication\Adapter\Factory\AuthAdapterOptionsFactory::class,
             Authentication\Storage\AuthStorage::class => Authentication\Storage\Factory\AuthStorageFactory::class,
             Authentication\Storage\CookieStorage::class => Authentication\Storage\Factory\CookieStorageFactory::class,
-            Authentication\Storage\CookieStorageOptions::class => Authentication\Storage\Factory\CookieStorageOptionsFactory::class,
             Authentication\Service\AuthenticationService::class => Authentication\Service\Factory\AuthenticationServiceFactory::class,
 
             // Manager
@@ -64,7 +62,12 @@ return [
 
             // Options
             Options\AdminautOptions::class => Options\Factory\AdminautOptionsFactory::class,
+            Options\AppearanceOptions::class => Options\Factory\AppearanceOptionsFactory::class,
+            Options\AuthAdapterOptions::class => Options\Factory\AuthAdapterOptionsFactory::class,
+            Options\CookieStorageOptions::class => Options\Factory\CookieStorageOptionsFactory::class,
             Options\FileManagerOptions::class => Options\Factory\FileManagerOptionsFactory::class,
+            Options\ManifestOptions::class => Options\Factory\ManifestOptionsFactory::class,
+            Options\UsersOptions::class => Options\Factory\UsersOptionsFactory::class,
 
             // Service
             Service\AccessControlService::class => Service\Factory\AccessControlServiceFactory::class,
@@ -121,6 +124,7 @@ return [
             View\Helper\UserIdentity::class => View\Helper\Factory\UserIdentityFactory::class,
             View\Helper\IsAllowed::class => View\Helper\Factory\IsAllowedViewHelperFactory::class,
             View\Helper\ConfigViewHelper::class => View\Helper\Factory\ConfigViewHelperFactory::class,
+            View\Helper\AppearanceViewHelper::class => View\Helper\Factory\AppearanceViewHelperFactory::class,
 
             Datatype\File\FormViewHelper::class => Datatype\File\Factory\FormViewHelperFactory::class,
             'formElement' => Form\View\Helper\Factory\FormElementFactory::class,
@@ -139,6 +143,8 @@ return [
             'userIdentity' => View\Helper\UserIdentity::class,
             'isAllowed' => View\Helper\IsAllowed::class,
             'config' => View\Helper\ConfigViewHelper::class,
+
+            'adminautAppearance' => View\Helper\AppearanceViewHelper::class,
 
 
             'datatypeFormFile' => Datatype\File\FormViewHelper::class,

@@ -1,15 +1,16 @@
 <?php
 
-namespace Adminaut\Authentication\Adapter;
+namespace Adminaut\Options;
 
 use Zend\Stdlib\AbstractOptions;
 
 /**
  * Class AuthAdapterOptions
- * @package Adminaut\Authentication\Adapter
+ * @package Adminaut\Options
  */
 class AuthAdapterOptions extends AbstractOptions
 {
+
     /**
      * Constants
      */

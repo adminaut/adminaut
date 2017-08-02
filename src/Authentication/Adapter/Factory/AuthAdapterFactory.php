@@ -3,7 +3,7 @@
 namespace Adminaut\Authentication\Adapter\Factory;
 
 use Adminaut\Authentication\Adapter\AuthAdapter;
-use Adminaut\Authentication\Adapter\AuthAdapterOptions;
+use Adminaut\Options\AuthAdapterOptions;
 use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
