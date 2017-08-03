@@ -19,6 +19,7 @@ use Zend\View\Model\ViewModel;
  */
 class UsersController extends AdminautBaseController
 {
+
     /**
      * @var EntityManager
      */

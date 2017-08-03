@@ -591,6 +591,15 @@ return [
                         ],
                         'may_terminate' => true,
                         'child_routes' => [
+                            'settings' => [
+                                'type' => Literal::class,
+                                'options' => [
+                                    'route' => '/settings',
+                                    'defaults' => [
+                                        'action' => 'settings',
+                                    ],
+                                ],
+                            ],
                             'change-password' => [
                                 'type' => Literal::class,
                                 'options' => [

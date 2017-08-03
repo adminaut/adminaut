@@ -58,8 +58,18 @@ class UserEntity extends Base implements UserInterface
      * @Annotation\Options({"label":"Role", "empty_option":"Select role", "listed":true});
      * @Annotation\Flags({"priority":20});
      * @Annotation\Type("Zend\Form\Element\Select");
+     * @var string
      */
     protected $role;
+
+    /**
+     * @ORM\Column(type="string", length=128, options={"default":"en"});
+     * @Annotation\Options({"label":"Language", "availableLanguages":{"cs", "sk", "en", "de"}, "listed":true});
+     * @Annotation\Flags({"priority":19});
+     * @Annotation\Type("Adminaut\Datatype\Language");
+     * @var string
+     */
+    protected $language;
 
     /**
      * @ORM\Column(type="integer", name="status", options={"default":0});
@@ -91,6 +101,7 @@ class UserEntity extends Base implements UserInterface
      */
     public function __construct()
     {
+        $this->language = 'en';
         $this->status = $this::STATUS_NEW;
         $this->accessTokens = new ArrayCollection();
         $this->logins = new ArrayCollection();
@@ -179,6 +190,22 @@ class UserEntity extends Base implements UserInterface
     }
 
     /**
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
+     * @param string $language
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+    }
+
+    /**
      * @return int
      */
     public function getStatus()
@@ -212,6 +239,8 @@ class UserEntity extends Base implements UserInterface
             'name' => $this->name,
             'email' => $this->email,
             'role' => $this->role,
+            'language' => $this->language,
+            'status' => $this->status,
             'active' => $this->active,
         ];
     }

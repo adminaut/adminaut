@@ -49,6 +49,26 @@ interface UserInterface
     public function setPassword($password);
 
     /**
+     * @return string
+     */
+    public function getRole();
+
+    /**
+     * @param string $role
+     */
+    public function setRole($role);
+
+    /**
+     * @return string
+     */
+    public function getLanguage();
+
+    /**
+     * @param string $language
+     */
+    public function setLanguage($language);
+
+    /**
      * @return int
      */
     public function getStatus();

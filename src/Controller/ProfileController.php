@@ -57,6 +57,18 @@ class ProfileController extends AdminautBaseController
     }
 
     /**
+     * @return ViewModel
+     */
+    public function settingsAction()
+    {
+        $user = $this->authentication()->getIdentity();
+
+        return new ViewModel([
+            'user' => $user,
+        ]);
+    }
+
+    /**
      * @return Response|ViewModel
      */
     public function changePasswordAction()

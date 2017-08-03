@@ -51,6 +51,7 @@
     "bushbaby/flysystem": "~3.0",
     "smottt/wideimage": "~1.1",
     "league/iso3166": "^2.0",
+    "gettext/languages": "^2.3",
     "almasaeed2010/adminlte": "^2.3"
   },
   "autoload": {

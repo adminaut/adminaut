@@ -2,23 +2,23 @@
 
 namespace Adminaut\Datatype;
 
-use League\ISO3166\ISO3166;
+use Gettext\Languages\Language as Languages;
 
 /**
- * Class Country
+ * Class Language
  * @package Adminaut\Datatype
  */
-class Country extends Select
+class Language extends Select
 {
     /**
      * @var array
      */
-    protected $countries = [];
+    protected $languages = [];
 
     /**
      * @var null|array
      */
-    protected $availableCountries = null;
+    protected $availableLanguages = null;
 
     /**
      * @var bool
@@ -26,7 +26,7 @@ class Country extends Select
     protected $listName = true;
 
     /**
-     * Country constructor.
+     * Language constructor.
      * @param null $name
      * @param array $options
      */
@@ -34,56 +34,56 @@ class Country extends Select
     {
         parent::__construct($name, $options);
 
-        $iso3166 = new ISO3166();
+        $allLanguages = Languages::getAll();
 
-        foreach ($iso3166->all() as $country) {
-            $this->countries[$country['alpha2']] = $country['name'];
+        foreach ($allLanguages as $language) {
+            $this->languages[$language->id] = $language->name;
         }
     }
 
     /**
      * @return array
      */
-    public function getCountries()
+    public function getLanguages()
     {
-        return $this->countries;
+        return $this->languages;
     }
 
     /**
-     * @param $iso
+     * @param $id
      * @return string|null
      */
-    public function getCountry($iso)
+    public function getLanguage($id)
     {
-        if (isset($this->getCountries()[$iso])) {
-            return $this->getCountries()[$iso];
+        if (isset($this->getLanguages()[$id])) {
+            return $this->getLanguages()[$id];
         }
 
         return null;
     }
 
     /**
-     * @param array $countries
+     * @param array $languages
      */
-    public function setCountries(array $countries)
+    public function setLanguages(array $languages)
     {
-        $this->countries = $countries;
+        $this->languages = $languages;
     }
 
     /**
      * @return array|null
      */
-    public function getAvailableCountries()
+    public function getAvailableLanguages()
     {
-        return $this->availableCountries;
+        return $this->availableLanguages;
     }
 
     /**
-     * @param array|null $availableCountries
+     * @param array|null $availableLanguages
      */
-    public function setAvailableCountries($availableCountries)
+    public function setAvailableLanguages($availableLanguages)
     {
-        $this->availableCountries = $availableCountries;
+        $this->availableLanguages = $availableLanguages;
     }
 
     /**
@@ -108,11 +108,11 @@ class Country extends Select
      */
     public function setOptions($options)
     {
-        if (isset($options['availableCountries'])) {
-            if (is_array($options['availableCountries'])) {
-                $this->setAvailableCountries($options['availableCountries']);
+        if (isset($options['availableLanguages'])) {
+            if (is_array($options['availableLanguages'])) {
+                $this->setAvailableLanguages($options['availableLanguages']);
             } else {
-                $this->setAvailableCountries([$options['availableCountries']]);
+                $this->setAvailableLanguages([$options['availableLanguages']]);
             }
         }
 
@@ -129,19 +129,19 @@ class Country extends Select
      */
     public function getValueOptions()
     {
-        $valueOptions = ['' => 'Select country'];
-        if (is_array($this->getAvailableCountries())) {
-            foreach ($this->getAvailableCountries() as $country) {
-                if (!isset($this->getCountries()[$country])) {
+        $valueOptions = ['' => 'Select language'];
+        if (is_array($this->getAvailableLanguages())) {
+            foreach ($this->getAvailableLanguages() as $language) {
+                if (!isset($this->getLanguages()[$language])) {
                     continue;
                 }
 
-                $valueOptions[$country] = $this->getCountries()[$country];
+                $valueOptions[$language] = $this->getLanguages()[$language];
             }
 
             return $valueOptions;
         } else {
-            return array_merge($valueOptions, $this->getCountries());
+            return array_merge($valueOptions, $this->getLanguages());
         }
     }
 
@@ -151,7 +151,7 @@ class Country extends Select
     public function getListedValue()
     {
         if ($this->isListName()) {
-            return $this->getCountry($this->getValue());
+            return $this->getLanguage($this->getValue());
         } else {
             return $this->getValue();
         }
