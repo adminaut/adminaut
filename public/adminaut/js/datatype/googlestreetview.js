@@ -19,7 +19,7 @@ function getPanoData($element) {
     var panorama = $element.data('panorama');
     var $input = $('#' + identifier + '-input');
     var data = {};
-    if($input.val()) {
+    if ($input.val()) {
         data = JSON.parse($input.val());
     }
 
@@ -36,8 +36,6 @@ function getPanoData($element) {
 }
 
 (function ($) {
-    appendScript('https://maps.googleapis.com/maps/api/js?libraries=places&key=' + google_api);
-
     $(window).load(function () {
         $('.datatype-streetview').each(function () {
             var $this = $(this);
@@ -61,7 +59,7 @@ function getPanoData($element) {
             var centerLocation;
             var $gmButtonContainer = $this.find('.gm-buttons-container');
 
-            if($input.val()) {
+            if ($input.val()) {
                 data = JSON.parse($input.val());
                 latitude = data.latitude;
                 longitude = data.longitude;
@@ -71,7 +69,7 @@ function getPanoData($element) {
                 useGeoLocation = false;
                 centerLocation = new google.maps.LatLng(latitude, longitude);
             } else {
-                if(downloadLocation === 'automatic' && ($locationLatitudeInput.val().length || $locationLongitudeInput.val().length)) {
+                if (downloadLocation === 'automatic' && ($locationLatitudeInput.val().length || $locationLongitudeInput.val().length)) {
                     centerLocation = new google.maps.LatLng($locationLatitudeInput.val(), $locationLongitudeInput.val());
                     useGeoLocation = false;
                 } else {
@@ -115,28 +113,28 @@ function getPanoData($element) {
             $this.data('map', map);
             $this.data('panorama', panorama);
 
-            if(downloadLocation !== 'disabled') {
+            if (downloadLocation !== 'disabled') {
                 map.controls[google.maps.ControlPosition.TOP_RIGHT].push($gmButtonContainer[0]);
 
-                $gmButtonContainer.find('.download-location-button').on('click', function() {
+                $gmButtonContainer.find('.download-location-button').on('click', function () {
                     var location = new google.maps.LatLng($locationLatitudeInput.val(), $locationLongitudeInput.val());
-                    sv.getPanorama({location: location, radius: 100}, function(data, status) {
+                    sv.getPanorama({location: location, radius: 100}, function (data, status) {
                         updatePanorama($this, data, status);
                     });
                     map.setZoom(18);
                 });
 
-                if(downloadLocation === 'automatic') {
-                    $locationLatitudeInput.on('change', function() {
+                if (downloadLocation === 'automatic') {
+                    $locationLatitudeInput.on('change', function () {
                         var location = new google.maps.LatLng($locationLatitudeInput.val(), $locationLongitudeInput.val());
-                        sv.getPanorama({location: location, radius: 50}, function(data, status) {
+                        sv.getPanorama({location: location, radius: 50}, function (data, status) {
                             updatePanorama($this, data, status);
                         });
                         map.setZoom(18);
                     });
-                    $locationLongitudeInput.on('change', function() {
+                    $locationLongitudeInput.on('change', function () {
                         var location = new google.maps.LatLng($locationLatitudeInput.val(), $locationLongitudeInput.val());
-                        sv.getPanorama({location: location, radius: 50}, function(data, status) {
+                        sv.getPanorama({location: location, radius: 50}, function (data, status) {
                             updatePanorama($this, data, status);
                         });
                         map.setZoom(18);
@@ -144,7 +142,7 @@ function getPanoData($element) {
                 }
             }
 
-            $gmButtonContainer.find('.remove-location-button').on('click', function() {
+            $gmButtonContainer.find('.remove-location-button').on('click', function () {
                 map.setCenter(defaultCenter);
                 map.setZoom(defaultZoomLevel || 4);
                 panorama.setVisible(false);
@@ -157,30 +155,30 @@ function getPanoData($element) {
                 $gmButtonContainer.find('.remove-location-button').hide();
             }
 
-            map.addListener('click', function(event) {
-                map.setOptions({scrollwheel:true});
-                sv.getPanorama({location: event.latLng, radius: 50}, function(data, status) {
+            map.addListener('click', function (event) {
+                map.setOptions({scrollwheel: true});
+                sv.getPanorama({location: event.latLng, radius: 50}, function (data, status) {
                     updatePanorama($this, data, status);
                 });
             });
 
-            google.maps.event.addListener(map, 'center_changed', function(event) {
-                this.setOptions({scrollwheel:true});
+            google.maps.event.addListener(map, 'center_changed', function (event) {
+                this.setOptions({scrollwheel: true});
             });
 
-            google.maps.event.addListener(map, 'mouseout', function(event){
-                this.setOptions({scrollwheel:false});
+            google.maps.event.addListener(map, 'mouseout', function (event) {
+                this.setOptions({scrollwheel: false});
             });
 
-            panorama.addListener('pano_changed', function() {
+            panorama.addListener('pano_changed', function () {
                 getPanoData($this);
             });
 
-            panorama.addListener('position_changed', function() {
+            panorama.addListener('position_changed', function () {
                 getPanoData($this);
             });
 
-            panorama.addListener('pov_changed', function() {
+            panorama.addListener('pov_changed', function () {
                 getPanoData($this);
             });
         });

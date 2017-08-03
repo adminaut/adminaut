@@ -2,6 +2,7 @@
 
 namespace Adminaut\Datatype\Location;
 
+use Adminaut\Datatype\DatatypeHelperTrait;
 use Adminaut\Datatype\Location;
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\AbstractHelper;
@@ -12,6 +13,8 @@ use Zend\Form\View\Helper\AbstractHelper;
  */
 class FormViewHelper extends AbstractHelper
 {
+    use DatatypeHelperTrait;
+
     /**
      * Invoke helper as functor
      *
@@ -90,7 +93,7 @@ class FormViewHelper extends AbstractHelper
         $sRender .= '    </div>';
         $sRender .= '</div>';
 
-        $sRender .= '<script>appendScript("' . $this->getView()->basepath('adminaut/js/datatype/location.js') . '")</script>';
+        $this->appendScript('adminaut/js/datatype/location.js');
 
         return $sRender;
     }

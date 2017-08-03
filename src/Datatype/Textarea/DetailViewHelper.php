@@ -13,6 +13,7 @@ use Zend\Form\View\Helper\AbstractHelper;
  */
 class DetailViewHelper extends AbstractHelper
 {
+
     /**
      * @var array
      */

@@ -2,6 +2,7 @@
 
 namespace Adminaut\Datatype\GoogleMap;
 
+use Adminaut\Datatype\DatatypeHelperTrait;
 use Adminaut\Datatype\GoogleMap;
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\AbstractHelper;
@@ -12,6 +13,8 @@ use Zend\Form\View\Helper\AbstractHelper;
  */
 class FormViewHelper extends AbstractHelper
 {
+    use DatatypeHelperTrait;
+
     /**
      * Invoke helper as functor
      *
@@ -61,7 +64,7 @@ class FormViewHelper extends AbstractHelper
         $sRender .= '<div class="col-xs-12"><div class="datatype-map" style="margin-top: 15px; min-height: 300px;" id="' . $identifier . '"></div></div>';
         $sRender .= '</div>';
 
-        $sRender .= '<script>appendScript("' . $this->getView()->basepath('adminaut/js/datatype/googlemap.js') . '")</script>';
+        $this->appendScript('adminaut/js/datatype/googlemap.js');
 
         return $sRender;
     }

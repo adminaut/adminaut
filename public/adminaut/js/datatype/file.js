@@ -1,5 +1,5 @@
-(function($){
-    $('body').on('click', '.datatype-file .file-remove', function(e){
+(function ($) {
+    $('body').on('click', '.datatype-file .file-remove', function (e) {
         e.preventDefault();
 
         var $container = $(this).parents('.datatype-file');

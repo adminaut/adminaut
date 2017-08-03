@@ -2,6 +2,7 @@
 
 namespace Adminaut\Datatype\Location;
 
+use Adminaut\Datatype\DatatypeHelperTrait;
 use Adminaut\Datatype\Location;
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\AbstractHelper;
@@ -12,6 +13,8 @@ use Zend\Form\View\Helper\AbstractHelper;
  */
 class DetailViewHelper extends AbstractHelper
 {
+    use DatatypeHelperTrait;
+
     /**
      * Invoke helper as functor
      *
@@ -57,10 +60,9 @@ class DetailViewHelper extends AbstractHelper
             $attributes['data-value'] = $this->getJsonValue($datatype);
             $attributes['data-readonly'] = true;
 
-            $sRender = '<div class="datatype-location" ' . $this->createAttributesString($attributes) . '></div>';
+            $this->appendScript('adminaut/js/datatype/location.js');
 
-            $sRender .= '<script>appendScript("' . $this->getView()->basepath('adminaut/js/datatype/location.js') . '")</script>';
-            return $sRender;
+            return '<div class="datatype-location" ' . $this->createAttributesString($attributes) . '></div>';
         } else {
             return '';
         }

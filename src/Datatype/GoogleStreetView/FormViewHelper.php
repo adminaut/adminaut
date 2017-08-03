@@ -2,6 +2,7 @@
 
 namespace Adminaut\Datatype\GoogleStreetView;
 
+use Adminaut\Datatype\DatatypeHelperTrait;
 use Adminaut\Datatype\GoogleStreetView;
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\AbstractHelper;
@@ -12,6 +13,8 @@ use Zend\Form\View\Helper\AbstractHelper;
  */
 class FormViewHelper extends AbstractHelper
 {
+    use DatatypeHelperTrait;
+
     /**
      * Invoke helper as functor
      *
@@ -81,7 +84,7 @@ class FormViewHelper extends AbstractHelper
         $sRender .= '    </div>';
         $sRender .= '</div>';
 
-        $sRender .= '<script>appendScript("' . $this->getView()->basepath('adminaut/js/datatype/googlestreetview.js') . '")</script>';
+        $this->appendScript('adminaut/js/datatype/googlestreetview.js');
 
         return $sRender;
     }

@@ -12,8 +12,6 @@ function placeMarker($element, location) {
 }
 
 (function ($) {
-    appendScript('https://maps.googleapis.com/maps/api/js?libraries=places&key=' + google_api);
-
     $(window).load(function () {
         $('.datatype-googleplaceid').each(function () {
             var $this = $(this);
@@ -28,19 +26,19 @@ function placeMarker($element, location) {
             var centerLocation = new google.maps.LatLng(0, 0);
             var placeId = "";
 
-            if($input.val()) {
+            if ($input.val()) {
                 placeId = $input.val();
                 showMarker = true;
                 useGeoLocation = false;
             }
 
-            if(useGeoLocation && navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
+            if (useGeoLocation && navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
                     centerLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                }, function() {
+                }, function () {
                     console.log("Your browser not support Geolocation");
                 });
-            } else if(useGeoLocation) {
+            } else if (useGeoLocation) {
                 console.log("Your browser not support Geolocation");
             }
 
@@ -51,7 +49,7 @@ function placeMarker($element, location) {
             });
 
             var placeidService = new google.maps.places.PlacesService(map);
-            if(placeId.length) {
+            if (placeId.length) {
                 var request = {
                     placeId: placeId
                 };
@@ -74,7 +72,7 @@ function placeMarker($element, location) {
             $this.data('placeidservice', placeidService);
             $this.data('autocomplete', autocomplete);
 
-            autocomplete.addListener('place_changed', function() {
+            autocomplete.addListener('place_changed', function () {
                 var place = autocomplete.getPlace();
                 if (!place.geometry) {
                     return;
@@ -91,12 +89,12 @@ function placeMarker($element, location) {
                 $input.val(place.place_id);
             });
 
-            map.addListener('click', function(event) {
+            map.addListener('click', function (event) {
                 // if(event.placeId) {
-                    placeMarker($this, event.latLng);
-                    $this.data('map').setCenter(place.geometry.location);
-                    $this.data('map').setZoom(18);
-                    $input.val(event.placeId);
+                placeMarker($this, event.latLng);
+                $this.data('map').setCenter(place.geometry.location);
+                $this.data('map').setZoom(18);
+                $input.val(event.placeId);
                 // }
             });
         });

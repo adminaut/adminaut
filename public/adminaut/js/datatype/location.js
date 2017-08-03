@@ -1,4 +1,4 @@
-jQuery.fn.locationDatatype = function() {
+jQuery.fn.locationDatatype = function () {
     var $datatype = $(this);
     this.data = $datatype.data();
 
@@ -6,7 +6,7 @@ jQuery.fn.locationDatatype = function() {
     //this.saveAs = this.data.saveAs;
     this.separator = this.data.separator;
     this.engine = this.data.engine;
-    this.$mainInput = $('input[name="'+ this.data.mainInput +'"]');
+    this.$mainInput = $('input[name="' + this.data.mainInput + '"]');
     this.$searchContainer = $datatype.find('.datatype-location-search-container');
     this.readOnly = this.data.readonly;
     this.value = this.data.value;
@@ -14,14 +14,14 @@ jQuery.fn.locationDatatype = function() {
     this.defaultZoomLevel = this.data.defaultZoomLevel;
     this.enableDownloadData = this.data.enableDownloadData;
     this.downloadDataFrom = this.data.downloadDataFrom;
-    this.$longitudeElement = $('input[name="'+ this.data.longitudeElementName +'"]');
+    this.$longitudeElement = $('input[name="' + this.data.longitudeElementName + '"]');
 
-    if(this.engine === 'google') {
+    if (this.engine === 'google') {
         this.googleMode = this.data.googleMode;
         this.googlePlaceFilter = this.data.googlePlaceFilter;
 
-        if(this.data.googlePlaceIdElementName) {
-            this.$googlePlaceIdElement = $('input[name="'+ this.data.googlePlaceIdElementName +'"]');
+        if (this.data.googlePlaceIdElementName) {
+            this.$googlePlaceIdElement = $('input[name="' + this.data.googlePlaceIdElementName + '"]');
         }
     }
 
@@ -29,23 +29,23 @@ jQuery.fn.locationDatatype = function() {
     this.marker = null;
     this.useGeoLocation = false;
 
-    this.init = function() {
+    this.init = function () {
         var $datatype = $(this);
         this.prepareContainer();
         this.map = this.initMap();
         var value = this.getValue();
-        if(typeof(value.latitude) === 'number' && typeof(value.longitude) === 'number' ) {
+        if (typeof(value.latitude) === 'number' && typeof(value.longitude) === 'number') {
             this.placeMarker(value);
             this.setCenter(value);
             this.setZoom(18);
         } else {
-            if(this.defaultCenter) {
+            if (this.defaultCenter) {
                 this.setCenter(this.defaultCenter);
             } else {
                 this.setCenter({latitude: 0, longitude: 0});
             }
 
-            if(this.defaultCenter) {
+            if (this.defaultCenter) {
                 this.setZoom(this.defaultZoomLevel);
             } else {
                 this.setZoom(4);
@@ -54,7 +54,7 @@ jQuery.fn.locationDatatype = function() {
             this.$searchContainer.find('.remove-data-button').hide();
         }
 
-        if(!this.readOnly) {
+        if (!this.readOnly) {
             this.initSearch();
             this.initClickListener();
             this.initDownloadDataListener();
@@ -66,10 +66,10 @@ jQuery.fn.locationDatatype = function() {
         this.initMouseOutListener();
     };
 
-    this.prepareContainer = function() {
+    this.prepareContainer = function () {
 
         var $renderInput = $('<div class="row"></div>');
-        if(!this.readonly) {
+        if (!this.readonly) {
             $renderInput.append($('<div class="col-xs-6"></div>').append(this.$mainInput.addClass('form-control')));
             if (this.$longitudeElement) {
                 $renderInput.append($('<div class="col-xs-6"></div>').append(this.$longitudeElement.addClass('form-control')));
@@ -78,29 +78,29 @@ jQuery.fn.locationDatatype = function() {
 
         var $renderMap = $('<div class="row"></div>');
         var $mapContainer = $('<div class="datatype-location-map-container" style="margin-top: 15px; min-height: 300px;"></div>').appendTo($('<div class="col-xs-12"></div>').appendTo($renderMap));
-        if(!this.readOnly) {
+        if (!this.readOnly) {
             $mapContainer.append(this.$searchContainer);
         }
         // var $renderMap = $('<div class="row"><div class="col-xs-12"><div class="datatype-location-map-container" style="margin-top: 15px; min-height: 300px;">' +  + '</div></div></div>')
         $(this).html($renderInput).append($renderMap);
     };
 
-    this.setCenter = function(location) {
-        if(this.engine === 'google') {
+    this.setCenter = function (location) {
+        if (this.engine === 'google') {
             this.map.setCenter({lat: location.latitude, lng: location.longitude});
         }
     };
 
-    this.initMap = function() {
-        if(this.engine === 'google') {
+    this.initMap = function () {
+        if (this.engine === 'google') {
             return new google.maps.Map($(this).find('.datatype-location-map-container')[0], {
                 scrollwheel: false
             });
         }
     };
 
-    this.placeMarker = function(location) {
-        if(this.engine === 'google') {
+    this.placeMarker = function (location) {
+        if (this.engine === 'google') {
             if (this.marker === null) {
                 this.marker = new google.maps.Marker({
                     position: {lat: location.latitude, lng: location.longitude},
@@ -112,8 +112,8 @@ jQuery.fn.locationDatatype = function() {
         }
     };
 
-    this.removeMarker = function() {
-        if(this.engine === 'google') {
+    this.removeMarker = function () {
+        if (this.engine === 'google') {
             if (this.marker !== null) {
                 this.marker.setMap(null);
                 this.marker = null;
@@ -121,10 +121,10 @@ jQuery.fn.locationDatatype = function() {
         }
     };
 
-    this.getGooglePlaceInfo = function(placeid, callback) {
+    this.getGooglePlaceInfo = function (placeid, callback) {
         var $datatype = $(this);
 
-        if(placeid) {
+        if (placeid) {
             if (this.place) {
                 if (this.place.place_id === placeid) {
                     return this.place;
@@ -147,20 +147,20 @@ jQuery.fn.locationDatatype = function() {
         }
     };
 
-    this.setZoom = function(level) {
+    this.setZoom = function (level) {
         this.map.setZoom(level);
     };
 
-    this.getValue = function() {
-        if(typeof(this.value) === 'object' && this.value.latitude !== undefined) {
-            if(typeof(this.value.latitude) !== 'number') {
+    this.getValue = function () {
+        if (typeof(this.value) === 'object' && this.value.latitude !== undefined) {
+            if (typeof(this.value.latitude) !== 'number') {
                 this.value.latitude = parseFloat(this.value.latitude);
                 this.value.longitude = parseFloat(this.value.longitude);
             }
             return this.value;
         } else {
-            if(this.engine === 'google') {
-                if(this.value.googlePlaceId !== undefined) {
+            if (this.engine === 'google') {
+                if (this.value.googlePlaceId !== undefined) {
                     console.log(this.value);
                     var place = this.getGooglePlaceInfo(this.value.googlePlaceId);
 
@@ -173,16 +173,16 @@ jQuery.fn.locationDatatype = function() {
         return this.value;
     };
 
-    this.initSearch = function() {
+    this.initSearch = function () {
         $datatype = $(this);
         var self = this;
 
-        if(this.engine === 'google') {
+        if (this.engine === 'google') {
             this.autocomplete = new google.maps.places.Autocomplete(this.$searchContainer.find('.search-input')[0]);
             this.autocomplete.bindTo('bounds', this.map);
             this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(this.$searchContainer[0]);
 
-            this.autocomplete.addListener('place_changed', function() {
+            this.autocomplete.addListener('place_changed', function () {
                 var place = self.autocomplete.getPlace();
                 if (!place.geometry) {
                     return;
@@ -199,29 +199,29 @@ jQuery.fn.locationDatatype = function() {
         }
     };
 
-    this.initClickListener = function() {
+    this.initClickListener = function () {
         var self = this;
 
-        if(this.engine === 'google') {
+        if (this.engine === 'google') {
             google.maps.event.addListener(this.map, 'click', function (event) {
-                self.map.setOptions({scrollwheel:true});
+                self.map.setOptions({scrollwheel: true});
                 self.getGooglePlaceInfo(event.placeId);
-                if(self.googleMode === 'coordinates') {
+                if (self.googleMode === 'coordinates') {
                     self.value.latitude = event.latLng.lat();
                     self.value.longitude = event.latLng.lng();
 
-                    if(event.placeId) {
+                    if (event.placeId) {
                         self.value.googlePlaceId = event.placeId;
                     }
-                } else if(self.googleMode === 'places') {
-                    if(event.placeId) {
+                } else if (self.googleMode === 'places') {
+                    if (event.placeId) {
                         self.value.latitude = event.latLng.lat();
                         self.value.longitude = event.latLng.lng();
                         self.value.googlePlaceId = event.placeId;
                     }
                 }
 
-                if(event.placeId === undefined) {
+                if (event.placeId === undefined) {
                     self.value.googlePlaceId = "";
                 }
 
@@ -231,15 +231,15 @@ jQuery.fn.locationDatatype = function() {
         }
     };
 
-    this.initDownloadDataListener = function() {
+    this.initDownloadDataListener = function () {
         var self = this;
 
-        if(this.$searchContainer.find('.download-data-button').length) {
-            this.$searchContainer.find('.download-data-button').on('click', function() {
+        if (this.$searchContainer.find('.download-data-button').length) {
+            this.$searchContainer.find('.download-data-button').on('click', function () {
                 var result = [];
 
-                $.each(self.downloadDataFrom, function(key, value) {
-                    result.push($(document).find('*[name="'+value+'"]').val());
+                $.each(self.downloadDataFrom, function (key, value) {
+                    result.push($(document).find('*[name="' + value + '"]').val());
                 });
 
                 self.$searchContainer.find('.search-input').val(result.join(', ')).focus();
@@ -247,16 +247,16 @@ jQuery.fn.locationDatatype = function() {
         }
     };
 
-    this.initRemoveDataListener = function() {
+    this.initRemoveDataListener = function () {
         var self = this;
 
-        if(this.$searchContainer.find('.remove-data-button').length) {
-            this.$searchContainer.find('.remove-data-button').on('click', function() {
+        if (this.$searchContainer.find('.remove-data-button').length) {
+            this.$searchContainer.find('.remove-data-button').on('click', function () {
                 self.$mainInput.val('');
                 self.$longitudeElement.val('');
 
-                if(self.engine === 'google') {
-                    if(self.$googlePlaceIdElement) {
+                if (self.engine === 'google') {
+                    if (self.$googlePlaceIdElement) {
                         self.$googlePlaceIdElement.val('');
                     }
                 }
@@ -269,53 +269,53 @@ jQuery.fn.locationDatatype = function() {
         }
     };
 
-    this.initMouseOutListener = function() {
-        if(this.engine === 'google') {
-            google.maps.event.addListener(this.map, 'mouseout', function(event){
-                this.setOptions({scrollwheel:false});
+    this.initMouseOutListener = function () {
+        if (this.engine === 'google') {
+            google.maps.event.addListener(this.map, 'mouseout', function (event) {
+                this.setOptions({scrollwheel: false});
             });
         }
     };
 
-    this.initCenterChangedListener = function() {
-        if(this.engine === 'google') {
-            google.maps.event.addListener(this.map, 'center_changed', function(event) {
-                this.setOptions({scrollwheel:true});
+    this.initCenterChangedListener = function () {
+        if (this.engine === 'google') {
+            google.maps.event.addListener(this.map, 'center_changed', function (event) {
+                this.setOptions({scrollwheel: true});
             });
         }
     };
 
-    this.initLocationInputsChangeListener = function() {
+    this.initLocationInputsChangeListener = function () {
         var self = this;
-        this.$mainInput.on('change', function() {
+        this.$mainInput.on('change', function () {
             self.value.latitude = parseFloat($(this).val());
             self.value.googlePlaceId = "";
 
             self.placeMarker(self.value);
             self.setCenter(self.value);
-            if(self.$googlePlaceIdElement) {
+            if (self.$googlePlaceIdElement) {
                 self.$googlePlaceIdElement.val(self.value.googlePlaceId).trigger('change');
             }
         });
 
-        this.$longitudeElement.on('change', function() {
+        this.$longitudeElement.on('change', function () {
             self.value.longitude = parseFloat($(this).val());
             self.value.googlePlaceId = "";
 
             self.placeMarker(self.value);
             self.setCenter(self.value);
-            if(self.$googlePlaceIdElement) {
+            if (self.$googlePlaceIdElement) {
                 self.$googlePlaceIdElement.val(self.value.googlePlaceId).trigger('change');
             }
         });
     };
 
-    this.updateInputsValue = function() {
-        if(this.engine === 'google') {
+    this.updateInputsValue = function () {
+        if (this.engine === 'google') {
             this.$mainInput.val(this.value.latitude.toFixed(6)).trigger('change');
             this.$longitudeElement.val(this.value.longitude.toFixed(6)).trigger('change');
 
-            if(this.$googlePlaceIdElement) {
+            if (this.$googlePlaceIdElement) {
                 this.$googlePlaceIdElement.val(this.value.googlePlaceId).trigger('change');
             }
         } else {
@@ -329,8 +329,7 @@ jQuery.fn.locationDatatype = function() {
     return this.init();
 };
 
-(function($) {
-    appendScript('https://maps.googleapis.com/maps/api/js?libraries=places&key=' + google_api);
+(function ($) {
     var style = '<style>'
         + '.datatype-location-map-container { margin-top: 15px; min-height: 300px; }'
         + '.controls { display: none; }'
@@ -343,8 +342,8 @@ jQuery.fn.locationDatatype = function() {
 
     $('head').append(style);
 
-    $(window).load(function(){
-        $('.datatype-location').each(function(){
+    $(window).load(function () {
+        $('.datatype-location').each(function () {
             $(this).locationDatatype();
         });
     });

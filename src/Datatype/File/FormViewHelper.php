@@ -2,6 +2,7 @@
 
 namespace Adminaut\Datatype\File;
 
+use Adminaut\Datatype\DatatypeHelperTrait;
 use Adminaut\Datatype\File;
 use Adminaut\Datatype\FileImage;
 use Adminaut\Manager\FileManager;
@@ -14,6 +15,8 @@ use Zend\Form\View\Helper\FormFile as ZendFormFile;
  */
 class FormViewHelper extends ZendFormFile
 {
+    use DatatypeHelperTrait;
+
     /**
      * @var FileManager
      */
@@ -64,8 +67,9 @@ class FormViewHelper extends ZendFormFile
             $render .= parent::render($element);
         }
         $render .= '</div>';
-        $render .= '<script>appendStyle("' . $this->getView()->basepath('adminaut/css/datatype/file.css') . '")</script>';
-        $render .= '<script>appendScript("' . $this->getView()->basepath('adminaut/js/datatype/file.js') . '")</script>';
+
+        $this->appendStylesheet('adminaut/css/datatype/file.css');
+        $this->appendScript('adminaut/js/datatype/file.js');
 
         return $render;
     }

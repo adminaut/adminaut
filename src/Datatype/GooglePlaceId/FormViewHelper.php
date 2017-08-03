@@ -2,6 +2,7 @@
 
 namespace Adminaut\Datatype\GooglePlaceId;
 
+use Adminaut\Datatype\DatatypeHelperTrait;
 use Adminaut\Datatype\GooglePlaceId;
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\AbstractHelper;
@@ -12,6 +13,8 @@ use Zend\Form\View\Helper\AbstractHelper;
  */
 class FormViewHelper extends AbstractHelper
 {
+    use DatatypeHelperTrait;
+
     /**
      * Invoke helper as functor
      *
@@ -52,13 +55,14 @@ class FormViewHelper extends AbstractHelper
         </div>';
         $sRender .= '</div>';
 
-        $sRender .= '<script>appendScript("' . $this->getView()->basepath('adminaut/js/datatype/googleplaceid.js') . '")</script>';
         $sRender .= '<style>
                 .controls { display: none; }
                 .datatype-googleplaceid-map .controls { display: block; }
                 .controls {background-color: #fff;border-radius: 2px;border: 1px solid transparent;box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);box-sizing: border-box;font-family: Roboto;font-size: 15px;font-weight: 300;height: 29px;margin-left: 17px;margin-top: 10px;outline: none;padding: 0 11px 0 13px;text-overflow: ellipsis;width: 400px;}
                 .controls:focus {border-color: #4d90fe;}
             </style>';
+
+        $this->appendScript('adminaut/js/datatype/googleplaceid.js');
 
         return $sRender;
     }

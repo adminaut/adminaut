@@ -12,8 +12,6 @@ function placeMarker($element, location) {
 }
 
 (function ($) {
-    appendScript('https://maps.googleapis.com/maps/api/js?libraries=places&key=' + google_api);
-
     $(window).load(function () {
         $('.datatype-map').each(function () {
             var $this = $(this);
@@ -30,7 +28,7 @@ function placeMarker($element, location) {
             var showMarker = false;
             var singleElement = ($coordElement.length > 0);
 
-            if(readonly) {
+            if (readonly) {
                 useJson = !!$this.data('usejson');
                 separator = $this.data('separator');
 
@@ -41,18 +39,18 @@ function placeMarker($element, location) {
                     coords = $this.data("data");
                     latitude = parseFloat(coords.lat) || 0;
                     longitude = parseFloat(coords.lng) || 0;
-                } catch(e) {
+                } catch (e) {
                     coords = $this.data("data").split(separator);
                     latitude = parseFloat(coords[0]) || 0;
                     longitude = parseFloat(coords[1]) || 0;
                 }
             } else {
-                if(singleElement) {
+                if (singleElement) {
                     var coords;
                     useJson = !!$coordElement.data('usejson');
                     separator = $coordElement.data('separator');
 
-                    if($coordElement.val().length) {
+                    if ($coordElement.val().length) {
                         useGeoLocation = false;
                         showMarker = true;
 
@@ -60,14 +58,14 @@ function placeMarker($element, location) {
                             coords = JSON.parse($coordElement.val());
                             latitude = parseFloat(coords.lat) || 0;
                             longitude = parseFloat(coords.lng) || 0;
-                        } catch(e) {
+                        } catch (e) {
                             coords = $coordElement.val().split(separator);
                             latitude = parseFloat(coords[0]) || 0;
                             longitude = parseFloat(coords[1]) || 0;
                         }
                     }
                 } else {
-                    if($latElement.val().length || $lngElement.val().length) {
+                    if ($latElement.val().length || $lngElement.val().length) {
                         useGeoLocation = false;
                         showMarker = true;
                         latitude = parseFloat($latElement.val()) || 0;
@@ -79,13 +77,13 @@ function placeMarker($element, location) {
             var centerLocation = new google.maps.LatLng(latitude, longitude);
             var markerLocation = new google.maps.LatLng(latitude, longitude);
 
-            if(useGeoLocation && navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
+            if (useGeoLocation && navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
                     centerLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                }, function() {
+                }, function () {
                     console.log("Your browser not support Geolocation");
                 });
-            } else if(useGeoLocation) {
+            } else if (useGeoLocation) {
                 console.log("Your browser not support Geolocation");
             }
 
@@ -101,7 +99,7 @@ function placeMarker($element, location) {
                 map.setZoom(16);
             }
 
-            if(!readonly) {
+            if (!readonly) {
                 google.maps.event.addListener(map, 'click', function (event) {
                     placeMarker($this, event.latLng);
 

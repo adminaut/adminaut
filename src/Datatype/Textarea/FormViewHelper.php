@@ -2,6 +2,7 @@
 
 namespace Adminaut\Datatype\Textarea;
 
+use Adminaut\Datatype\DatatypeHelperTrait;
 use Adminaut\Datatype\Textarea;
 use Zend\Form\ElementInterface;
 use Zend\Form\Exception\InvalidArgumentException;
@@ -13,6 +14,7 @@ use Zend\Form\View\Helper\FormTextarea;
  */
 class FormViewHelper extends FormTextarea
 {
+    use DatatypeHelperTrait;
 
     /**
      * @param ElementInterface|null $element
