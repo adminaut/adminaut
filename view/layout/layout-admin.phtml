@@ -17,17 +17,15 @@
         ->prependHttpEquiv('X-UA-Compatible', 'IE=edge');
 
     echo $this->headLink()
-        ->prependStylesheet($this->basePath('adminaut/themes/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css'))
+        ->appendStylesheet($this->basePath('adminaut/css/adminaut.css'))// append
         ->prependStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/blue.css'))
         ->prependStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/flat.css'))
         ->prependStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/skins/skin-' . $this->adminautAppearance('skin') . '.min.css'))
         ->prependStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/AdminLTE.min.css'))
         ->prependStylesheet($this->basePath('adminaut/css/dataTables.responsive.css'))
         ->prependStylesheet($this->basePath('adminaut/css/dataTables.bootstrap.css'))
-        ->prependStylesheet($this->basePath('adminaut/css/bootstrap-datetimepicker.min.css'))
         ->prependStylesheet('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
         ->prependStylesheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
-        ->appendStylesheet($this->basePath('adminaut/css/adminaut.css'))// append
         ->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath('adminaut/img/favicon.ico')], 'APPEND')
         ->headLink(['rel' => 'manifest', 'href' => $this->url('adminaut/manifest')], 'APPEND')
         ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '114x114', 'href' => $this->basePath('adminaut/img/adminaut-icon-114x114.png')], 'APPEND')
@@ -39,22 +37,16 @@
         ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '1024x1024', 'href' => $this->basePath('adminaut/img/adminaut-icon-1024x1024.png')], 'APPEND');
 
     echo $this->headScript()
-        ->prependFile('//maps.googleapis.com/maps/api/js?libraries=places&key=' . $this->config()['adminaut']['google-api'] ?: '') // todo: move do view helpers
+        ->appendFile($this->basePath('adminaut/js/adminaut.js?v=0.0.4'))// append
+        ->prependFile('//maps.googleapis.com/maps/api/js?libraries=places&key=' . $this->config()['adminaut']['google-api'] ?: '')// todo: move do view helpers
         ->prependFile($this->basePath('adminaut/js/js.cookie.js'))
         ->prependFile($this->basePath('adminaut/themes/adminlte/dist/js/app.js'))
         ->prependFile($this->basePath('adminaut/themes/adminlte/plugins/slimScroll/jquery.slimscroll.min.js'))
         ->prependFile($this->basePath('adminaut/themes/adminlte/plugins/iCheck/icheck.min.js'))
-        ->prependFile($this->basePath('adminaut/themes/adminlte/plugins/autosize/autosize.min.js'))
-        ->prependFile($this->basePath('adminaut/themes/adminlte/plugins/tinymce/js/tinymce/tinymce.min.js'))
-        ->prependFile($this->basePath('adminaut/themes/adminlte/plugins/ckeditor/config.js'))
-        ->prependFile($this->basePath('adminaut/themes/adminlte/plugins/ckeditor/ckeditor.js'))
-        ->prependFile($this->basePath('adminaut/themes/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js'))
         ->prependFile($this->basePath('adminaut/js/jquery.doubleClick.js'))
         ->prependFile($this->basePath('adminaut/js/dataTables.bootstrap.min.js'))
         ->prependFile($this->basePath('adminaut/js/jquery.dataTables.min.js'))
-        ->prependFile($this->basePath('adminaut/js/bootstrap-datetimepicker.min.js'))
         ->prependFile($this->basePath('adminaut/js/moment.min.js'))
-        ->appendFile($this->basePath('adminaut/js/adminaut.js?v=0.0.4'))// append
         ->prependFile('//gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js')
         ->prependFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
         ->prependFile('//code.jquery.com/jquery-1.11.1.min.js')

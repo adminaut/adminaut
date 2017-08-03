@@ -2,6 +2,7 @@
 
 namespace Adminaut\Datatype\DateTime;
 
+use Adminaut\Datatype\DatatypeHelperTrait;
 use Adminaut\Datatype\DateTime;
 use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\FormDateTime as ZendFormDateTime;
@@ -12,6 +13,8 @@ use Zend\Form\View\Helper\FormDateTime as ZendFormDateTime;
  */
 class FormViewHelper extends ZendFormDateTime
 {
+    use DatatypeHelperTrait;
+
     /**
      * @param ElementInterface|null $element
      * @return string
@@ -89,6 +92,10 @@ class FormViewHelper extends ZendFormDateTime
         $render .= '<script type="text/javascript">';
         $render .= "$('#" . $element->getAttribute('id') . "').datetimepicker({" . $dtpOptions . "});";
         $render .= '</script>';
+
+        $this->appendStylesheet('adminaut/css/bootstrap-datetimepicker.min.css');
+        $this->appendScript('adminaut/js/bootstrap-datetimepicker.min.js');
+
         return $render;
     }
 }
