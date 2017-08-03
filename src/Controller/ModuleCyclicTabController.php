@@ -8,5 +8,5 @@ namespace Adminaut\Controller;
  */
 class ModuleCyclicTabController extends AdminautBaseController
 {
-
+// todo: implement module cyclic tab here instead of ModuleController
 }

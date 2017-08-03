@@ -2,7 +2,7 @@
 
 namespace Adminaut\Form;
 
-use Adminaut\Form\Element\Checkbox;
+use Adminaut\Datatype\Checkbox;
 use Zend\Form\Element\Email;
 use Zend\Form\Element\Password;
 use Zend\Form\Element\Select;

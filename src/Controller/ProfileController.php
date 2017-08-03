@@ -7,6 +7,7 @@ use Adminaut\Entity\UserAccessTokenEntity;
 use Adminaut\Entity\UserLoginEntity;
 use Adminaut\Form\InputFilter\UserChangePasswordInputFilter;
 use Adminaut\Form\UserChangePasswordForm;
+use Adminaut\Form\UserSettingsForm;
 use Adminaut\Repository\UserAccessTokenRepository;
 use Adminaut\Repository\UserLoginRepository;
 use Doctrine\ORM\EntityManager;
@@ -61,9 +62,12 @@ class ProfileController extends AdminautBaseController
      */
     public function settingsAction()
     {
+        $form = new UserSettingsForm();
+
         $user = $this->authentication()->getIdentity();
 
         return new ViewModel([
+            'form' => $form,
             'user' => $user,
         ]);
     }

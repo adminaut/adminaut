@@ -1,5 +1,7 @@
 <?php
 
+// todo: Refactor this controller so users can decide, if they want use database for roles, or config array.
+
 namespace Adminaut\Controller;
 
 use Adminaut\Entity\Role;

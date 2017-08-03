@@ -2,6 +2,9 @@
 
 namespace Adminaut\Service;
 
+use Adminaut\Authentication\Service\AuthenticationService;
+use Adminaut\Entity\UserEntity;
+
 /**
  * Class AccessControlService
  * @package Adminaut\Service
@@ -14,27 +17,48 @@ class AccessControlService
     const FULL = 3;
 
     /**
+     * @var AuthenticationService
+     */
+    private $authenticationService;
+
+    /**
      * @var array
      */
     private $roles;
 
     /**
-     * @var \Adminaut\Entity\UserEntity
+     * @var UserEntity
      */
     private $user;
 
-    public function __construct($roles)
+    /**
+     * AccessControlService constructor.
+     * @param AuthenticationService $authenticationService
+     * @param array $roles
+     */
+    public function __construct(AuthenticationService $authenticationService, array $roles)
     {
         $this->roles = $roles;
+        $this->authenticationService = $authenticationService;
     }
 
+    /**
+     * @param $module
+     * @param $permissionLevel
+     * @param null $element
+     * @param null $entity
+     * @return bool
+     * @throws \Exception
+     */
     public function isAllowed($module, $permissionLevel, $element = null, $entity = null)
     {
-        if (!$this->user) {
+        if (true !== $this->authenticationService->hasIdentity()) {
             return false;
         }
 
-        if ($this->user->getRole() == "admin") {
+        $this->user = $this->authenticationService->getIdentity();
+
+        if ($this->user->getRole() == 'admin') {
             return true;
         }
 
@@ -56,7 +80,7 @@ class AccessControlService
 
         if ($element && isset($role['modules'][$module]['elements'][$element])) {
             if ($role['modules'][$module]['elements'][$element]['permission'] > $role['modules'][$module]['global']) {
-                throw new \Exception("You cannot set element permission bigger than global permission.");
+                throw new \Exception('You cannot set element permission bigger than global permission.');
             } else {
                 if ($role['modules'][$module]['elements'][$element] >= $permissionLevel) {
                     $allowed = true;
@@ -67,21 +91,5 @@ class AccessControlService
         }
 
         return $allowed;
-    }
-
-    /**
-     * @return \Adminaut\Entity\UserEntity|null
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param \Adminaut\Entity\UserEntity $user
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
     }
 }

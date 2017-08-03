@@ -30,22 +30,10 @@ class IsAllowedPlugin extends AbstractPlugin
      * @param $permissionLevel
      * @param null $element
      * @param null $entity
-     * @return IsAllowedPlugin|bool
+     * @return bool
      */
-    public function __invoke($module = null, $permissionLevel = null, $element = null, $entity = null)
+    public function __invoke($module, $permissionLevel, $element = null, $entity = null)
     {
-        if ($module && $permissionLevel) {
-            return $this->accessControlService->isAllowed($module, $permissionLevel, $element, $entity);
-        }
-        return $this;
-    }
-
-    /**
-     * @return AccessControlService
-     * @deprecated
-     */
-    public function getAccessControlService()
-    {
-        return $this->accessControlService;
+        return $this->accessControlService->isAllowed($module, $permissionLevel, $element, $entity);
     }
 }

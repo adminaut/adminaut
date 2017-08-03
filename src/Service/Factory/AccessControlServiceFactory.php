@@ -2,6 +2,7 @@
 
 namespace Adminaut\Service\Factory;
 
+use Adminaut\Authentication\Service\AuthenticationService;
 use Adminaut\Service\AccessControlService;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
@@ -22,20 +23,14 @@ class AccessControlServiceFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
 
-        /*return new \Adminaut\Service\AccessControl(
-            $container->get('config'),
-            $container->get('Doctrine\ORM\EntityManager'),
-            $container->get('UserMapper'),
-            $container->get('RoleMapper'),
-            $container->get('ResourceMapper'),
-            $container->get('ResourceMapper')
-        );*/
+        /** @var AuthenticationService $authenticationService */
+        $authenticationService = $container->get(AuthenticationService::class);
 
         /** @var array $config */
         $config = $container->get('config');
 
-        $roles = isset($config["adminaut"]['roles']) ? $config["adminaut"]['roles'] : [];
+        $roles = isset($config['adminaut']['roles']) ? $config['adminaut']['roles'] : [];
 
-        return new AccessControlService($roles);
+        return new AccessControlService($authenticationService, $roles);
     }
 }

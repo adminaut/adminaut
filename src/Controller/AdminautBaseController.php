@@ -28,7 +28,7 @@ class AdminautBaseController extends AbstractActionController
 
     /**
      * @param MvcEvent $e
-     * @return AdminautBaseController|Response
+     * @return mixed|Response
      */
     public function onDispatch(MvcEvent $e)
     {
@@ -43,38 +43,9 @@ class AdminautBaseController extends AbstractActionController
                 ],
             ]);
         }
-        $acl = $this->isAllowed()->getAccessControlService();
-        $acl->setUser($this->authentication()->getIdentity());
 
         $this->layout('layout/admin');
-        $this->layout()->setVariable('acl', $acl);
-        $this->layout()->setVariable('appearance', $this->getAppearance());
 
-        parent::onDispatch($e);
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    private function getAppearance()
-    {
-        $config = $this->config();
-
-        $appearanceDefault = [
-            'skin' => 'blue',
-            'title' => 'Adminaut',
-            'logo' => [
-                'type' => 'image',
-                'large' => 'adminaut/img/adminaut-logo.svg',
-                'small' => 'adminaut/img/adminaut-logo-mini.svg',
-            ],
-            'footer' => '',
-        ];
-
-        $appearanceConfig = isset($config['adminaut']['appearance']) ? $config['adminaut']['appearance'] : [];
-
-        return array_merge($appearanceDefault, $appearanceConfig);
+        return parent::onDispatch($e);
     }
 }

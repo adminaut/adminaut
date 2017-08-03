@@ -2,7 +2,6 @@
 
 namespace Adminaut\Navigation;
 
-use Adminaut\Authentication\Service\AuthenticationService;
 use Adminaut\Service\AccessControlService;
 use Interop\Container\ContainerInterface;
 use Zend\Navigation\Service\DefaultNavigationFactory;
@@ -20,10 +19,9 @@ class Navigation extends DefaultNavigationFactory
      */
     protected function getPages(ContainerInterface $container)
     {
-        /* @var $authService \Zend\Authentication\AuthenticationService */
-        $authService = $container->get(AuthenticationService::class);
+
+        /** @var AccessControlService $accessControl */
         $accessControl = $container->get(AccessControlService::class);
-        $accessControl->setUser($authService->getIdentity());
 
         $config = $container->get('config');
         if (isset($config['adminaut']['modules'])) {

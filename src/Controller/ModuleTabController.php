@@ -8,5 +8,5 @@ namespace Adminaut\Controller;
  */
 class ModuleTabController extends AdminautBaseController
 {
-
+// todo: implement module tab here instead of ModuleController
 }
