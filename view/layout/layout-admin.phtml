@@ -17,11 +17,11 @@
         ->prependHttpEquiv('X-UA-Compatible', 'IE=edge');
 
     echo $this->headLink()
+        ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/AdminLTE.min.css'))
+        ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/skins/skin-' . $this->adminautAppearance('skin') . '.min.css'))
         ->appendStylesheet($this->basePath('adminaut/css/adminaut.css'))// append
         ->prependStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/blue.css'))
         ->prependStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/flat.css'))
-        ->prependStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/skins/skin-' . $this->adminautAppearance('skin') . '.min.css'))
-        ->prependStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/AdminLTE.min.css'))
         ->prependStylesheet($this->basePath('adminaut/css/dataTables.responsive.css'))
         ->prependStylesheet($this->basePath('adminaut/css/dataTables.bootstrap.css'))
         ->prependStylesheet('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')

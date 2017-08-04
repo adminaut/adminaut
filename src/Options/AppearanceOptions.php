@@ -41,8 +41,8 @@ class AppearanceOptions extends AbstractOptions
      */
     private $logo = [
         'type' => 'image',
-        'large' => 'adminaut/img/admin-logo-lg.svg',
-        'small' => 'adminaut/img/admin-logo-mini.png',
+        'large' => 'adminaut/img/adminaut-logo.svg',
+        'small' => 'adminaut/img/adminaut-logo-mini.svg',
     ];
 
     /**
