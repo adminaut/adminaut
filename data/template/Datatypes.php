@@ -2,7 +2,8 @@
 
 namespace Application\Entity;
 
-use Adminaut\Entity\Base;
+use Adminaut\Entity\AdminautEntityInterface;
+use Adminaut\Entity\AdminautEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Zend\Form\Annotation;
 
@@ -13,8 +14,10 @@ use Zend\Form\Annotation;
  * @property integer $id
  * @package Application\Entity
  */
-class Datatypes extends Base
+class Datatypes implements AdminautEntityInterface
 {
+    use AdminautEntityTrait;
+
     /**
      * @ORM\Column(type="date");
      * @Annotation\Options({"label":"Date"});

@@ -20,26 +20,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @package Adminaut\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class File
+class File implements AdminautEntityInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer");
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
-
-    /**
-     * @ORM\Column(name="inserted", type="datetime", options={"default":"CURRENT_TIMESTAMP"});
-     * @var \DateTime
-     */
-    protected $inserted;
-
-    /**
-     * @ORM\Column(name="inserted_by", type="integer")
-     * @var int
-     */
-    protected $insertedBy;
+    use AdminautEntityTrait;
 
     /**
      * @ORM\Column(type="string")
@@ -55,12 +38,6 @@ class File
      * @ORM\Column(type="string")
      */
     protected $mimetype;
-
-    /**
-     * @ORM\Column(type="boolean")
-     * @var boolean
-     */
-    protected $active;
 
     /**
      * @ORM\Column(type="string")
@@ -80,57 +57,9 @@ class File
     protected $url;
 
     /**
-     * File constructor.
-     */
-    public function __construct()
-    {
-//        $this->keywords = new ArrayCollection();
-    }
-
-    /**
-     * @return int
-     */
-    public function getId() 
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param $value
-     */
-    public function setId($value) 
-    {
-        $this->id = $value;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getInserted()
-    {
-        return $this->inserted;
-    }
-
-    /**
-     * @return int
-     */
-    public function getInsertedBy()
-    {
-        return $this->insertedBy;
-    }
-
-    /**
-     * @param int $insertedBy
-     */
-    public function setInsertedBy($insertedBy)
-    {
-        $this->insertedBy = $insertedBy;
-    }
-
-    /**
      * @return string
      */
-    public function getName() 
+    public function getName()
     {
         return $this->name;
     }
@@ -138,7 +67,7 @@ class File
     /**
      * @param $value
      */
-    public function setName($value) 
+    public function setName($value)
     {
         $this->name = $value;
     }
@@ -146,7 +75,7 @@ class File
     /**
      * @return int
      */
-    public function getSize() 
+    public function getSize()
     {
         return $this->size;
     }
@@ -154,7 +83,7 @@ class File
     /**
      * @param $value
      */
-    public function setSize($value) 
+    public function setSize($value)
     {
         $this->size = $value;
     }
@@ -162,7 +91,7 @@ class File
     /**
      * @return string
      */
-    public function getMimetype() 
+    public function getMimetype()
     {
         return $this->mimetype;
     }
@@ -170,31 +99,15 @@ class File
     /**
      * @param $value
      */
-    public function setMimetype($value) 
+    public function setMimetype($value)
     {
         $this->mimetype = $value;
     }
 
     /**
-     * @return boolean
-     */
-    public function isActive()
-    {
-        return $this->active;
-    }
-
-    /**
-     * @param boolean $active
-     */
-    public function setActive($active)
-    {
-        $this->active = $active;
-    }
-
-    /**
      * @return string
      */
-    public function getSavePath() 
+    public function getSavePath()
     {
         return $this->savepath;
     }
@@ -202,7 +115,7 @@ class File
     /**
      * @param $value
      */
-    public function setSavePath($value) 
+    public function setSavePath($value)
     {
         $this->savepath = $value;
     }
@@ -231,7 +144,7 @@ class File
     /**
      * @return string
      */
-    public function getUrl() 
+    public function getUrl()
     {
         return $this->url;
     }
@@ -239,7 +152,7 @@ class File
     /**
      * @param $value
      */
-    public function setUrl($value) 
+    public function setUrl($value)
     {
         $this->url = $value;
     }
@@ -247,27 +160,22 @@ class File
     /**
      * @return string
      */
-    public function getFileExtension(){
+    public function getFileExtension()
+    {
         $a = explode('.', $this->getName());
         return end($a);
     }
 
-    public function getFormattedSize(){
+    public function getFormattedSize()
+    {
         $bytes = $this->getSize();
-        if ($bytes >= 1073741824)
-        {
+        if ($bytes >= 1073741824) {
             return number_format($bytes / 1073741824, 2) . ' GB';
-        }
-        elseif ($bytes >= 1048576)
-        {
+        } else if ($bytes >= 1048576) {
             return number_format($bytes / 1048576, 2) . ' MB';
-        }
-        elseif ($bytes >= 1024)
-        {
+        } else if ($bytes >= 1024) {
             return number_format($bytes / 1024, 2) . ' kB';
-        }
-        else
-        {
+        } else {
             return $bytes . ' B';
         }
     }
@@ -275,7 +183,7 @@ class File
     /**
      * @return array
      */
-    public function getArrayCopy() 
+    public function getArrayCopy()
     {
         return get_object_vars($this);
     }
@@ -301,7 +209,7 @@ class File
      */
     private function isImageCached($source_image, $result_image)
     {
-        if (file_exists('www_root/'.$result_image) and filemtime('www_root/'.$result_image) >= filemtime('www_root/'.$source_image)) {
+        if (file_exists('www_root/' . $result_image) and filemtime('www_root/' . $result_image) >= filemtime('www_root/' . $source_image)) {
             return true;
         } else {
             return false;

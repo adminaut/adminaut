@@ -10,6 +10,7 @@ use Zend\Form\Annotation;
  * @ORM\MappedSuperclass
  * @ORM\HasLifecycleCallbacks
  * @package Adminaut\Entity
+ * @deprecated We want to delete this option
  */
 class BaseCyclicEntity extends Base implements BaseCyclicEntityInterface
 {

@@ -14,8 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="adminaut_user_access_token")
  * @ORM\HasLifecycleCallbacks()
  */
-class UserAccessTokenEntity extends Base
+class UserAccessTokenEntity implements AdminautEntityInterface
 {
+    use AdminautEntityTrait;
+
     /**
      * @ORM\Column(type="integer", name="user_id")
      * @var int
