@@ -210,14 +210,6 @@ class File implements AdminautEntityInterface
     }
 
     /**
-     * @ORM\PrePersist
-     */
-    public function prePersist()
-    {
-        $this->inserted = new \DateTime();
-    }
-
-    /**
      * @return mixed|string
      */
     public function getFontAwesomeFileIconClass()
