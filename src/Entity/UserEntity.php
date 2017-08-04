@@ -9,11 +9,11 @@ use Zend\Form\Annotation;
 
 /**
  * Class UserEntity
- * @ORM\InheritanceType("SINGLE_TABLE")
+ * @package Adminaut\Entity
  * @ORM\Entity(repositoryClass="Adminaut\Repository\UserRepository")
  * @ORM\Table(name="adminaut_user")
- * @property integer $id
- * @package Adminaut\Entity
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\HasLifecycleCallbacks()
  */
 class UserEntity implements UserEntityInterface
 {

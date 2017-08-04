@@ -10,13 +10,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Entity
  * @ORM\Table(name="adminaut_file_manager")
- * @property int $id
- * @property string $name
- * @property int $size
- * @property string $mimetype
- * @property int $active
- * @property string $savepath
- * @property ArrayCollection $keywords
  * @package Adminaut\Entity
  * @ORM\HasLifecycleCallbacks
  */
