@@ -13,8 +13,10 @@ use Zend\Session\Validator\HttpUserAgent;
  * @ORM\Table(name="adminaut_user_login")
  * @ORM\HasLifecycleCallbacks()
  */
-class UserLoginEntity extends Base
+class UserLoginEntity implements AdminautEntityInterface
 {
+    use AdminautEntityTrait;
+
     /**
      * Types.
      */

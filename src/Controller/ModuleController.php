@@ -5,7 +5,7 @@ namespace Adminaut\Controller;
 use Adminaut\Datatype\Reference;
 use Adminaut\Form\Form;
 use Doctrine\Common\Annotations\AnnotationReader;
-use Adminaut\Entity\BaseEntityInterface;
+use Adminaut\Entity\AdminautEntityInterface;
 use Adminaut\Manager\ModuleManager;
 use Adminaut\Manager\FileManager;
 use Adminaut\Options\ModuleOptions;
@@ -310,7 +310,7 @@ class ModuleController extends AdminautBaseController
 
         $moduleOptions = $this->getModuleManager()->createModuleOptions($moduleId);
 
-        /* @var $entity BaseEntityInterface */
+        /* @var $entity AdminautEntityInterface */
         $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
 
         if (!$entity) {
@@ -407,7 +407,7 @@ class ModuleController extends AdminautBaseController
 
         $moduleOptions = $this->getModuleManager()->createModuleOptions($moduleId);
 
-        /* @var $entity BaseEntityInterface */
+        /* @var $entity AdminautEntityInterface */
         $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
         if (!$entity) {
             $this->flashMessenger()->addErrorMessage($this->translate('Record was not found.'));
@@ -463,7 +463,7 @@ class ModuleController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
-        /* @var $entity BaseEntityInterface */
+        /* @var $entity AdminautEntityInterface */
         $entity = $this->getModuleManager()->findOneById($parentModuleOptions->getEntityClass(), $entityId);
         if (!$entity) {
             $this->flashMessenger()->addErrorMessage($this->translate('Record was not found.'));
@@ -683,7 +683,7 @@ class ModuleController extends AdminautBaseController
         $form = $this->getModuleManager()->createForm($moduleOptions);
         $primaryField = $form->getPrimaryField();
 
-        /* @var $entity BaseEntityInterface */
+        /* @var $entity AdminautEntityInterface */
         $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
         if (!$entity) {
             $this->flashMessenger()->addErrorMessage($this->translate('Record was not found.'));

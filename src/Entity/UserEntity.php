@@ -9,14 +9,16 @@ use Zend\Form\Annotation;
 
 /**
  * Class UserEntity
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\Entity(repositoryClass="\Adminaut\Repository\UserRepository")
- * @ORM\Table(name="adminaut_user")
- * @property integer $id
  * @package Adminaut\Entity
+ * @ORM\Entity(repositoryClass="Adminaut\Repository\UserRepository")
+ * @ORM\Table(name="adminaut_user")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\HasLifecycleCallbacks()
  */
-class UserEntity extends Base implements UserInterface
+class UserEntity implements UserEntityInterface
 {
+    use AdminautEntityTrait;
+
     /**
      * Constants
      */
@@ -108,22 +110,6 @@ class UserEntity extends Base implements UserInterface
     }
 
     //-------------------------------------------------------------------------
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
 
     /**
      * @return string

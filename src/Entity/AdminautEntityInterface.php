@@ -3,10 +3,10 @@
 namespace Adminaut\Entity;
 
 /**
- * Interface BaseEntityInterface
+ * Interface AdminautEntityInterface
  * @package Adminaut\Entity
  */
-interface BaseEntityInterface
+interface AdminautEntityInterface
 {
     /**
      * @return int

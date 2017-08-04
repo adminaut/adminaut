@@ -12,8 +12,8 @@ use DoctrineModule\Form\Element\ObjectMultiCheckbox;
 use DoctrineModule\Form\Element\ObjectRadio;
 use DoctrineModule\Form\Element\ObjectSelect;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
-use Adminaut\Entity\BaseEntityInterface;
-use Adminaut\Entity\UserInterface;
+use Adminaut\Entity\AdminautEntityInterface;
+use Adminaut\Entity\UserEntityInterface;
 use Adminaut\Options\ModuleOptions;
 use Adminaut\Form\Form;
 use Zend\Form\Element;
@@ -111,13 +111,13 @@ class ModuleManager extends AManager
     /**
      * @param $entityName
      * @param Form $form
-     * @param BaseEntityInterface|null $parentEntity
-     * @param UserInterface|null $admin
-     * @return BaseEntityInterface
+     * @param AdminautEntityInterface|null $parentEntity
+     * @param UserEntityInterface|null $admin
+     * @return AdminautEntityInterface
      */
-    public function create($entityName, Form $form, BaseEntityInterface $parentEntity = null, UserInterface $admin = null)
+    public function create($entityName, Form $form, AdminautEntityInterface $parentEntity = null, UserEntityInterface $admin = null)
     {
-        /* @var $entity BaseEntityInterface */
+        /* @var $entity AdminautEntityInterface */
         $entity = new $entityName();
 
         $entity = $this->bind($entity, $form, $parentEntity);
@@ -133,13 +133,13 @@ class ModuleManager extends AManager
     }
 
     /**
-     * @param BaseEntityInterface $entity
+     * @param AdminautEntityInterface $entity
      * @param Form $form
-     * @param BaseEntityInterface|null $parentEntity
-     * @param UserInterface|null $admin
-     * @return BaseEntityInterface
+     * @param AdminautEntityInterface|null $parentEntity
+     * @param UserEntityInterface|null $admin
+     * @return AdminautEntityInterface
      */
-    public function update(BaseEntityInterface $entity, Form $form, BaseEntityInterface $parentEntity = null, UserInterface $admin = null)
+    public function update(AdminautEntityInterface $entity, Form $form, AdminautEntityInterface $parentEntity = null, UserEntityInterface $admin = null)
     {
         $entity = $this->bind($entity, $form, $parentEntity);
 
@@ -153,15 +153,15 @@ class ModuleManager extends AManager
     }
 
     /**
-     * @param BaseEntityInterface $entity
-     * @param UserInterface|null $admin
-     * @return BaseEntityInterface
+     * @param AdminautEntityInterface $entity
+     * @param UserEntityInterface|null $admin
+     * @return AdminautEntityInterface
      */
-    public function delete(BaseEntityInterface $entity, UserInterface $admin = null)
+    public function delete(AdminautEntityInterface $entity, UserEntityInterface $admin = null)
     {
         $entity->setDeleted(true);
 
-        if ($admin instanceof UserInterface) {
+        if ($admin instanceof UserEntityInterface) {
             $entity->setDeletedBy($admin->getId());
         }
 
@@ -246,12 +246,12 @@ class ModuleManager extends AManager
     }
 
     /**
-     * @param BaseEntityInterface $entity
+     * @param AdminautEntityInterface $entity
      * @param Form $form
-     * @param BaseEntityInterface|null $parentEntity
-     * @return BaseEntityInterface
+     * @param AdminautEntityInterface|null $parentEntity
+     * @return AdminautEntityInterface
      */
-    public function bind(BaseEntityInterface $entity, Form $form, BaseEntityInterface $parentEntity = null)
+    public function bind(AdminautEntityInterface $entity, Form $form, AdminautEntityInterface $parentEntity = null)
     {
         /* @var $element Element */
         foreach ($form->getElements() as $element) {

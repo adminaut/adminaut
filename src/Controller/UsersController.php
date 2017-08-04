@@ -243,6 +243,9 @@ class UsersController extends AdminautBaseController
             if ($form->isValid()) {
                 try {
                     $this->getModuleManager()->update($user, $form, null, $this->authentication()->getIdentity());
+
+                    $data = $form->getData($form::VALUES_AS_ARRAY);
+                    $this->getUserManager()->update($user, $data, $this->authentication()->getIdentity());
                     $this->flashMessenger()->addSuccessMessage($this->translate('User has been successfully updated.'));
 
                     switch ($post['submit']) {
