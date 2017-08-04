@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Base
- * @ORM\MappedSuperclass
- * @ORM\HasLifecycleCallbacks
  * @package Adminaut\Entity
+ * @ORM\MappedSuperclass()
+ * @ORM\HasLifecycleCallbacks()
  * @deprecated Use trait AdminautEntity
  */
-class Base implements AdminautEntityInterface, BaseEntityInterface
+class Base implements AdminautEntityInterface
 {
     use AdminautEntityTrait;
 }

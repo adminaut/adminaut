@@ -74,6 +74,7 @@ trait AdminautEntityTrait
     protected $active = true;
 
     /**
+     * @Annotation\Exclude();
      * @var string
      */
     protected $primaryField;

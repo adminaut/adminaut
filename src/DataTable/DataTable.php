@@ -1,7 +1,7 @@
 <?php
 namespace Adminaut\DataTable;
 
-use Adminaut\Entity\BaseEntityInterface;
+use Adminaut\Entity\AdminautEntityInterface;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Zend\Form\Annotation\Options;
 
@@ -13,7 +13,7 @@ class DataTable
     protected $columns;
 
     /**
-     * @var BaseEntityInterface
+     * @var AdminautEntityInterface
      */
     protected $entity;
 
@@ -75,7 +75,7 @@ class DataTable
     }
 
     /**
-     * @return BaseEntityInterface
+     * @return AdminautEntityInterface
      */
     public function getEntity()
     {
@@ -83,7 +83,7 @@ class DataTable
     }
 
     /**
-     * @param BaseEntityInterface $entity
+     * @param AdminautEntityInterface $entity
      */
     public function setEntity($entity)
     {
