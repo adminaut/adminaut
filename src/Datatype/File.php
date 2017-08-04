@@ -10,6 +10,9 @@ use Zend\Form\Element;
  */
 class File extends Element\File
 {
+    use Datatype {
+        setOptions as datatypeSetOptions;
+    }
 
     protected $attributes = [
         'type' => 'datatypeFile',
@@ -73,5 +76,23 @@ class File extends Element\File
             $this->value = $value;
         }
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getListedValue()
+    {
+        return '<i class="fa fa-fw '.$this->file->getFontAwesomeFileIconClass().'"></i> '
+            . $this->value . ' <span class="small">('.$this->file->getFormattedSize().')</span>';
+    }
+
+    /**
+     * @param array|\Traversable $options
+     * @return \Zend\Form\Element
+     */
+    public function setOptions($options)
+    {
+        return $this->datatypeSetOptions($options);
     }
 }

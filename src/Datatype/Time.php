@@ -19,7 +19,7 @@ class Time extends DateTime
      */
     public function setOptions($options)
     {
-        $options['add-on-append'] = '<i class="fa fa-clock-o"></i>';
+        $options['add-on-append'] = '<i class="fa fa-fw fa-clock-o"></i>';
         parent::setOptions($options);
         return $this;
     }

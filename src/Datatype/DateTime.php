@@ -42,7 +42,7 @@ class DateTime extends \Zend\Form\Element\DateTime
     public function setOptions($options)
     {
         if (!isset($options['add-on-prepend'])) {
-            $options['add-on-prepend'] = '<i class="fa fa-calendar"></i>';
+            $options['add-on-prepend'] = '<i class="fa fa-fw fa-calendar"></i>';
         }
 
         if (isset($options['stepping'])) {

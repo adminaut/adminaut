@@ -315,4 +315,39 @@ class File
     {
         $this->inserted = new \DateTime();
     }
+
+    /**
+     * @return mixed|string
+     */
+    public function getFontAwesomeFileIconClass()
+    {
+        static $fontAwesomeFileIconClasses = array(
+            // Images
+            'image' => 'fa-file-image-o',
+            // Audio
+            'audio' => 'fa-file-audio-o',
+            // Video
+            'video' => 'fa-file-video-o',
+            // Documents
+            'application/pdf' => 'fa-file-pdf-o',
+            'text/plain' => 'fa-file-text-o',
+            'text/html' => 'fa-file-code-o',
+            'application/json' => 'fa-file-code-o',
+            // Archives
+            'application/gzip' => 'fa-file-archive-o',
+            'application/zip' => 'fa-file-archive-o',
+            'application/x-zip-compressed' => 'fa-file-archive-o',
+            // Misc
+            'application/octet-stream' => 'fa-file-o',
+        );
+        if (isset($fontAwesomeFileIconClasses[$this->mimetype])) {
+            return $fontAwesomeFileIconClasses[$this->mimetype];
+        }
+        $mimeParts = explode('/', $this->mimetype, 2);
+        $mimeGroup = $mimeParts[0];
+        if (isset($fontAwesomeFileIconClasses[$mimeGroup])) {
+            return $fontAwesomeFileIconClasses[$mimeGroup];
+        }
+        return "fa-file-o";
+    }
 }
