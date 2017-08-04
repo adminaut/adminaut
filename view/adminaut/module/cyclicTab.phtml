@@ -20,7 +20,7 @@
             <div class="nav-tabs-custom">
                 <?php echo $this->partial('partial/tabs.phtml', ['route' => 'adminaut/module/action', 'url_params' => $this->url_params, 'tabs' => $this->tabs]); ?>
                 <div class="tab-content">
-                    <?php echo $this->partial('partial/flashMessanger.phtml', ['flashMessenger' => $this->flashMessenger()]); ?>
+                    <?php echo $this->partial('partial/messages'); ?>
 
                     <table id="cyclicEntityTable" class="table table-striped table-bordered table-hover dataTables">
                         <thead>
