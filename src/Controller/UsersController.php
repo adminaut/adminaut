@@ -2,6 +2,7 @@
 
 namespace Adminaut\Controller;
 
+use Adminaut\Authentication\Helper\PasswordHelper;
 use Adminaut\Form\InputFilter\UserInputFilter;
 use Adminaut\Manager\ModuleManager;
 use Adminaut\Manager\UserManager;
@@ -173,6 +174,17 @@ class UsersController extends AdminautBaseController
             $form->setData($post);
             if ($form->isValid()) {
                 try {
+                    if ($form->has('password')) {
+                        $passwordElement = $form->get('password');
+                        $password = $passwordElement->getValue();
+
+                        if (empty(trim($password))) {
+                            $form->remove('password');
+                        } else {
+                            $passwordElement->setValue(PasswordHelper::hash($password));
+                        }
+                    }
+
                     $user = $this->getModuleManager()->create($moduleOptions->getEntityClass(), $form, null, $this->authentication()->getIdentity());
                     $this->flashMessenger()->addSuccessMessage($this->translate('User has been successfully created.'));
                     switch ($post['submit']) {
@@ -218,7 +230,6 @@ class UsersController extends AdminautBaseController
 
         $moduleOptions = $this->getModuleOptions();
 
-        /* @var $form \Adminaut\Form\Form */
         $form = $this->getModuleManager()->createForm($moduleOptions);
         $form->setInputFilter(new UserInputFilter());
 
@@ -240,17 +251,28 @@ class UsersController extends AdminautBaseController
         if ($request->isPost()) {
             $post = $request->getPost()->toArray();
             $form->setData($post);
+
             if ($form->isValid()) {
                 try {
+
+                    if ($form->has('password')) {
+                        $passwordElement = $form->get('password');
+                        $password = $passwordElement->getValue();
+
+                        if (empty(trim($password))) {
+                            $form->remove('password');
+                        } else {
+                            $passwordElement->setValue(PasswordHelper::hash($password));
+                        }
+                    }
+
                     $this->getModuleManager()->update($user, $form, null, $this->authentication()->getIdentity());
 
-                    $data = $form->getData($form::VALUES_AS_ARRAY);
-                    $this->getUserManager()->update($user, $data, $this->authentication()->getIdentity());
                     $this->flashMessenger()->addSuccessMessage($this->translate('User has been successfully updated.'));
 
                     switch ($post['submit']) {
                         case 'save-and-continue' :
-                            return $this->redirect()->toRoute('adminaut/users/edit', ['id' => $id]);
+                            return $this->redirect()->toRoute('adminaut/users/edit', ['id' => $user->getId()]);
                         case 'save' :
                         default :
                             return $this->redirect()->toRoute('adminaut/users');

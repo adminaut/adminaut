@@ -29,17 +29,20 @@ class UserManager extends AManager
      */
     private function populateData(UserEntity $user, array $data)
     {
-        if ($data['name']) {
+        if (isset($data['name'])) {
             $user->setName($data['name']);
         }
-        if ($data['email']) {
+        if (isset($data['email'])) {
             $user->setEmail($data['email']);
         }
-        if ($data['active']) {
+        if (isset($data['active'])) {
             $user->setActive($data['active']);
         }
-        if ($data['role']) {
+        if (isset($data['role'])) {
             $user->setRole($data['role']);
+        }
+        if (isset($data['password']) && '' != trim($data['password'])) {
+            $user->setPassword(PasswordHelper::hash($data['password']));
         }
         return $user;
     }
@@ -91,8 +94,6 @@ class UserManager extends AManager
 
         $user = $this->populateData($user, $data);
 
-        $user->setPassword(PasswordHelper::hash($data['password']));
-
         if ($admin instanceof UserEntity) {
             $user->setInsertedBy($admin->getId());
         }
@@ -115,8 +116,6 @@ class UserManager extends AManager
         $data['role'] = 'admin';
         $user = $this->populateData($user, $data);
 
-        $user->setPassword(PasswordHelper::hash($data['password']));
-
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
@@ -132,10 +131,6 @@ class UserManager extends AManager
     public function update(UserEntity $user, array $data, UserEntity $admin = null)
     {
         $user = $this->populateData($user, $data);
-
-        if ($data['password']) {
-            $user->setPassword(PasswordHelper::hash($data['password']));
-        }
 
         if ($admin instanceof UserEntity) {
             $user->setUpdatedBy($admin->getId());
