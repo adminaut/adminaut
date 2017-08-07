@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @package Adminaut\Entity
  * @ORM\MappedSuperclass()
  * @ORM\HasLifecycleCallbacks()
- * @deprecated Use trait AdminautEntity
+ * @deprecated Use trait AdminautEntityTrait and implement AdminautEntityInterface
  */
 class Base implements AdminautEntityInterface
 {

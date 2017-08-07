@@ -6,21 +6,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Role
+ * Class RoleEntity
+ * @package Adminaut\Entity
  * @ORM\Entity(repositoryClass="Adminaut\Repository\RoleRepository")
  * @ORM\Table(name="adminaut_role")
- * @property integer $id
- * @package Adminaut\Entity
+ * @ORM\HasLifecycleCallbacks()
  */
-class Role
+class RoleEntity implements AdminautEntityInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(name="id", type="integer");
-     * @ORM\GeneratedValue(strategy="AUTO");
-     * @var int
-     */
-    protected $id;
+    use AdminautEntityTrait;
 
     /**
      * @ORM\Column(type="string", length=32, unique=true);
@@ -40,31 +34,15 @@ class Role
 
     /**
      * Role constructor.
-     * @param string $name
+     * @param null $name
      */
     public function __construct($name = null)
     {
-        $this->resource = new ArrayCollection();
+        $this->resources = new ArrayCollection();
         $this->users = new ArrayCollection();
         if ($name) {
             $this->name = $name;
         }
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**
@@ -84,7 +62,7 @@ class Role
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getResources()
     {
@@ -92,7 +70,7 @@ class Role
     }
 
     /**
-     * @param mixed $resources
+     * @param ArrayCollection $resources
      */
     public function setResources($resources)
     {
@@ -100,7 +78,7 @@ class Role
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getUsers()
     {
@@ -108,7 +86,7 @@ class Role
     }
 
     /**
-     * @param mixed $users
+     * @param ArrayCollection $users
      */
     public function setUsers($users)
     {

@@ -4,7 +4,7 @@
 
 namespace Adminaut\Controller;
 
-use Adminaut\Entity\Role;
+use Adminaut\Entity\RoleEntity;
 use Adminaut\Form\InputFilter\RoleInputFilter;
 use Adminaut\Form\RoleForm;
 use Adminaut\Mapper\RoleMapper;
@@ -50,7 +50,7 @@ class AclController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/dashboard');
         }
 
-        $roleRepository = $this->entityManager->getRepository(Role::class);
+        $roleRepository = $this->entityManager->getRepository(RoleEntity::class);
         $list = $roleRepository->findAll();
 
         return new ViewModel([
@@ -73,7 +73,7 @@ class AclController extends AdminautBaseController
         }
 
         /**
-         * @var $role \Adminaut\Entity\Role
+         * @var $role \Adminaut\Entity\RoleEntity
          */
         $role = $this->roleMapper->findById($id);
         if (!$role) {
@@ -141,7 +141,7 @@ class AclController extends AdminautBaseController
 
         $roleMapper = $this->getRoleMapper();
         /**
-         * @var $role \Adminaut\Entity\Role
+         * @var $role \Adminaut\Entity\RoleEntity
          */
         $role = $roleMapper->findById($id);
         if (!$role) {
@@ -187,7 +187,7 @@ class AclController extends AdminautBaseController
         if ($id) {
             $roleMapper = $this->getRoleMapper();
             /**
-             * @var $role \Adminaut\Entity\Role
+             * @var $role \Adminaut\Entity\RoleEntity
              */
             $role = $roleMapper->findById($id);
             if ($role) {

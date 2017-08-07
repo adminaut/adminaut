@@ -5,24 +5,18 @@ namespace Adminaut\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Role
+ * Class Resource
+ * @package Adminaut\Entity
  * @ORM\Entity()
  * @ORM\Table(name="adminaut_resource")
- * @property integer $id
- * @package Adminaut\Entity
+ * @ORM\HasLifecycleCallbacks()
  */
-class Resource
+class Resource implements AdminautEntityInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(name="id", type="integer");
-     * @ORM\GeneratedValue(strategy="AUTO");
-     * @var int
-     */
-    protected $id;
+    use AdminautEntityTrait;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Adminaut\Entity\Role")
+     * @ORM\ManyToOne(targetEntity="Adminaut\Entity\RoleEntity", inversedBy="resources")
      * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
      */
     protected $role;
@@ -38,22 +32,6 @@ class Resource
      * @var int
      */
     protected $permission;
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
 
     /**
      * @return mixed

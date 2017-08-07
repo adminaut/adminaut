@@ -19,7 +19,7 @@
     echo $this->headLink()
         ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/AdminLTE.min.css'))
         ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/skins/skin-' . $this->adminautAppearance('skin') . '.min.css'))
-        ->appendStylesheet($this->basePath('adminaut/css/adminaut.css'))// append
+        ->appendStylesheet($this->basePath('adminaut/css/adminaut.css'))
         ->prependStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/blue.css'))
         ->prependStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/flat.css'))
         ->prependStylesheet($this->basePath('adminaut/css/dataTables.responsive.css'))
@@ -37,7 +37,7 @@
         ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '1024x1024', 'href' => $this->basePath('adminaut/img/adminaut-icon-1024x1024.png')], 'APPEND');
 
     echo $this->headScript()
-        ->appendFile($this->basePath('adminaut/js/adminaut.js?v=0.0.4'))// append
+        ->appendFile($this->basePath('adminaut/js/adminaut.js?v=0.0.4'))
         ->prependFile('//maps.googleapis.com/maps/api/js?libraries=places&key=' . $this->config()['adminaut']['google-api'] ?: '')// todo: move do view helpers
         ->prependFile($this->basePath('adminaut/js/js.cookie.js'))
         ->prependFile($this->basePath('adminaut/themes/adminlte/dist/js/app.js'))

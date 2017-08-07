@@ -3,7 +3,7 @@
 namespace Adminaut\Service;
 
 use Doctrine\ORM\EntityManager;
-use Adminaut\Entity\Role as RoleEntity;
+use Adminaut\Entity\RoleEntity as RoleEntity;
 use Adminaut\Entity\Resource as ResourceEntity;
 use Adminaut\Mapper\ResourceMapper;
 use Adminaut\Mapper\RoleMapper;
