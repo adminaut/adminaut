@@ -51,19 +51,9 @@ class AdminautOptions extends AbstractOptions
     private $cookieStorage = []; // Leave empty
 
     /**
-     * @var string
+     * @var array
      */
-    private $googleAnalytics = '';
-
-    /**
-     * @var string
-     */
-    private $googleAPI = '';
-
-    /**
-     * @var string
-     */
-    private $environment = 'production';
+    private $variables = []; // Leave empty
 
     //-------------------------------------------------------------------------
 
@@ -180,50 +170,18 @@ class AdminautOptions extends AbstractOptions
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getEnvironment()
+    public function getVariables()
     {
-        return $this->environment;
+        return $this->variables;
     }
 
     /**
-     * @param string $environment
+     * @param array $variables
      */
-    public function setEnvironment($environment)
+    public function setVariables($variables)
     {
-        $this->environment = $environment;
-    }
-
-    /**
-     * @return string
-     */
-    public function getGoogleAnalytics()
-    {
-        return $this->googleAnalytics;
-    }
-
-    /**
-     * @param string $googleAnalytics
-     */
-    public function setGoogleAnalytics($googleAnalytics)
-    {
-        $this->googleAnalytics = $googleAnalytics;
-    }
-
-    /**
-     * @return string
-     */
-    public function getGoogleAPI()
-    {
-        return $this->googleAPI;
-    }
-
-    /**
-     * @param string $googleAPI
-     */
-    public function setGoogleAPI($googleAPI)
-    {
-        $this->googleAPI = $googleAPI;
+        $this->variables = $variables;
     }
 }
