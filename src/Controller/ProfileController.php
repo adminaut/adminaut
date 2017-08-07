@@ -6,6 +6,7 @@ use Adminaut\Authentication\Helper\PasswordHelper;
 use Adminaut\Entity\UserAccessTokenEntity;
 use Adminaut\Entity\UserLoginEntity;
 use Adminaut\Form\InputFilter\UserChangePasswordInputFilter;
+use Adminaut\Form\InputFilter\UserSettingsInputFilter;
 use Adminaut\Form\UserChangePasswordForm;
 use Adminaut\Form\UserSettingsForm;
 use Adminaut\Repository\UserAccessTokenRepository;
@@ -25,6 +26,7 @@ class ProfileController extends AdminautBaseController
      * Constants.
      */
     const ROUTE_INDEX = 'adminaut/profile';
+    const ROUTE_SETTINGS = 'adminaut/profile/settings';
     const ROUTE_CHANGE_PASSWORD = 'adminaut/profile/change-password';
     const ROUTE_LOGINS = 'adminaut/profile/logins';
     const ROUTE_ACCESS_TOKENS = 'adminaut/profile/access-tokens';
@@ -58,13 +60,45 @@ class ProfileController extends AdminautBaseController
     }
 
     /**
-     * @return ViewModel
+     * @return Response|ViewModel
      */
     public function settingsAction()
     {
         $form = new UserSettingsForm();
+        $form->setInputFilter(new UserSettingsInputFilter());
 
         $user = $this->authentication()->getIdentity();
+
+        $form->setData([
+            'name' => $user->getName(),
+            'language' => $user->getLanguage(),
+        ]);
+
+        /** @var Request $request */
+        $request = $this->getRequest();
+
+        if (true === $request->isPost()) {
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+
+                $formData = $form->getData();
+
+                try {
+
+                    $user->setName($formData['name']);
+                    $user->setLanguage($formData['language']);
+
+                    $this->entityManager->flush($user);
+
+                    $this->flashMessenger()->addSuccessMessage(_('Settings have been changed.'));
+
+                    return $this->redirect()->toRoute(self::ROUTE_SETTINGS);
+                } catch (\Exception $e) {
+                    $this->flashMessenger()->addErrorMessage(_('Setting could not be changed.'));
+                }
+            }
+        }
 
         return new ViewModel([
             'form' => $form,
@@ -93,15 +127,21 @@ class ProfileController extends AdminautBaseController
                 $formData = $form->getData();
 
                 if (true === PasswordHelper::verify($formData['password'], $user->getPassword())) {
-                    $newPassword = $formData['newPassword'];
-                    $newPasswordHash = PasswordHelper::hash($newPassword);
 
-                    $user->setPassword($newPasswordHash);
-                    $this->entityManager->flush($user);
+                    try {
 
-                    $this->flashMessenger()->addSuccessMessage(_('Password has been changed.'));
+                        $newPassword = $formData['newPassword'];
+                        $newPasswordHash = PasswordHelper::hash($newPassword);
 
-                    return $this->redirect()->toRoute(self::ROUTE_CHANGE_PASSWORD);
+                        $user->setPassword($newPasswordHash);
+                        $this->entityManager->flush($user);
+
+                        $this->flashMessenger()->addSuccessMessage(_('Password has been changed.'));
+
+                        return $this->redirect()->toRoute(self::ROUTE_CHANGE_PASSWORD);
+                    } catch (\Exception $exception) {
+                        $this->flashMessenger()->addErrorMessage(_('Password could not be changed.'));
+                    }
                 } else {
                     $this->flashMessenger()->addWarningMessage(_('Password does not match current password.'));
                 }
