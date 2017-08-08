@@ -182,6 +182,7 @@ class FileManager extends AManager
             }
 
             $this->getEntityManager()->persist($file);
+            $this->getEntityManager()->flush($file); // flush file
         } catch (\Exception $e) {
             throw new Exception\RuntimeException(
                 'File cannot be saved.', 0, $e
@@ -239,6 +240,8 @@ class FileManager extends AManager
         /** @var AbstractAdapter $fsAdapterCache */
         $fsAdapterCache = $this->getFilesystemCache()->getAdapter();
 
+//        return $fsAdapterCache->applyPathPrefix($resultImage);
+
         return str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', str_replace('\\', '/', realpath($fsAdapterCache->getPathPrefix() . $resultImage)));
     }
 
@@ -249,8 +252,15 @@ class FileManager extends AManager
      * @return mixed
      * @throws \Exception
      */
-    public function getImage(FileEntity $file, $maxWidth = 1200, $maxHeight = 1200)
+    public function getImage(FileEntity $file, $maxWidth = null, $maxHeight = null)
     {
+        if (null === $maxWidth) {
+            $maxWidth = 400;
+        }
+
+        if (null === $maxHeight) {
+            $maxHeight = $maxWidth;
+        }
 
         $sourceImage = $file->getSavePath();
 
@@ -291,6 +301,8 @@ class FileManager extends AManager
 
         /** @var AbstractAdapter $fsAdapterCache */
         $fsAdapterCache = $this->getFilesystemCache()->getAdapter();
+
+//        return $fsAdapterCache->applyPathPrefix($resultImage);
 
         return str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', str_replace('\\', '/', realpath($fsAdapterCache->getPathPrefix() . $resultImage)));
     }

@@ -39,18 +39,20 @@ return [
             // Used as background color for web appendName.
             // More information here: https://developer.mozilla.org/en-US/docs/Web/Manifest
             'background_color' => '#3c8dbc',
-            "icons" => [
+            'icons' => [
                 [
-                    "src" => "/static/favicons/android-chrome-36x36.png",
-                    "sizes" => "36x36",
-                    "type" => "image/png",
-                    "density" => "0.75",
+                    'src' => '/static/favicons/android-chrome-36x36.png',
+                    'sizes' => '36x36',
+                    'type' => 'image/png',
+                    'density' => '0.75',
                 ],
             ],
+        ],
 
-            'GA' => '',
-            'google-api' => '',
-            'environment' => 'production',
+        'variables' => [
+            'google-analytics' => '---google-analytics---',
+            'google-maps-api' => '---google-maps-api---',
+            'environment' => 'develop',
         ],
     ],
 

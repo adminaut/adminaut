@@ -83,8 +83,12 @@ class File extends Element\File
      */
     public function getListedValue()
     {
-        return '<i class="fa fa-fw '.$this->file->getFontAwesomeFileIconClass().'"></i> '
-            . $this->value . ' <span class="small">('.$this->file->getFormattedSize().')</span>';
+        if($this->file) {
+            return '<i class="fa fa-fw ' . $this->file->getFontAwesomeFileIconClass() . '"></i> '
+                . $this->value . ' <span class="small">(' . $this->file->getFormattedSize() . ')</span>';
+        }
+
+        return '';
     }
 
     /**
