@@ -51,6 +51,10 @@ return [
             Authentication\Storage\CookieStorage::class => Authentication\Storage\Factory\CookieStorageFactory::class,
             Authentication\Service\AuthenticationService::class => Authentication\Service\Factory\AuthenticationServiceFactory::class,
 
+            // Filesystem
+            'adminautPrivateFilesystem' => Filesystem\Factory\PrivateFilesystemFactory::class,
+            'adminautPublicFilesystem' => Filesystem\Factory\PublicFilesystemFactory::class,
+
             // Manager
             Manager\ModuleManager::class => Manager\Factory\ModuleManagerFactory::class,
             Manager\UserManager::class => Manager\Factory\UserManagerFactory::class,
@@ -65,7 +69,6 @@ return [
             Options\AppearanceOptions::class => Options\Factory\AppearanceOptionsFactory::class,
             Options\AuthAdapterOptions::class => Options\Factory\AuthAdapterOptionsFactory::class,
             Options\CookieStorageOptions::class => Options\Factory\CookieStorageOptionsFactory::class,
-            Options\FileManagerOptions::class => Options\Factory\FileManagerOptionsFactory::class,
             Options\UsersOptions::class => Options\Factory\UsersOptionsFactory::class,
 
             // Service

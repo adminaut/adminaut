@@ -54,6 +54,22 @@ return [
             'google-maps-api' => '---google-maps-api---',
             'environment' => 'develop',
         ],
+
+        'filesystem' => [
+            'private' => [
+                'adapter' => \League\Flysystem\Adapter\Local::class,
+                'options' => [
+                    'root' => './data/files',
+                ],
+            ],
+            'public' => [
+                'adapter' => \League\Flysystem\Adapter\Local::class,
+                'options' => [
+                    'root' => './public/_cache/files',
+                    'trim' => './public/',
+                ],
+            ],
+        ],
     ],
 
     /*'router' => [
@@ -65,21 +81,4 @@ return [
             ],
         ]
     ],*/
-
-    'bsb_flysystem' => [
-        'adapters' => [
-            'default' => [
-                'type' => 'local',
-                'options' => [
-                    'root' => './data/files',
-                ],
-            ],
-            'cache' => [
-                'type' => 'local',
-                'options' => [
-                    'root' => './public/_cache/files',
-                ],
-            ],
-        ],
-    ],
 ];

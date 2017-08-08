@@ -48,7 +48,6 @@
     "doctrine/doctrine-orm-module": "~1.1",
     "neilime/zf2-twb-bundle": "^3.1",
     "league/flysystem": "~1.0",
-    "bushbaby/flysystem": "~3.0",
     "smottt/wideimage": "~1.1",
     "league/iso3166": "^2.0",
     "gettext/languages": "^2.3",
@@ -64,7 +63,6 @@
       "module": [
         "DoctrineModule",
         "DoctrineORMModule",
-        "BsbFlysystem",
         "TwbBundle",
         "Adminaut"
       ]

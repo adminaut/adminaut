@@ -2,12 +2,10 @@
 
 namespace Adminaut\Manager\Factory;
 
-use Adminaut\Options\FileManagerOptions;
-use BsbFlysystem\Service\AdapterManager;
 use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
-use League\Flysystem\Filesystem;
 use Adminaut\Manager\FileManager;
+use League\Flysystem\Filesystem;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
@@ -29,18 +27,12 @@ class FileManagerFactory implements FactoryInterface
         /** @var EntityManager $entityManager */
         $entityManager = $container->get(EntityManager::class);
 
-        /** @var FileManagerOptions $fileManagerOptions */
-        $fileManagerOptions = $container->get(FileManagerOptions::class);
+        /** @var Filesystem $privateFilesystem */
+        $privateFilesystem = $container->get('adminautPrivateFilesystem');
 
-        /** @var AdapterManager $adapterManager */
-        $adapterManager = $container->get(AdapterManager::class);
+        /** @var Filesystem $publicFilesystem */
+        $publicFilesystem = $container->get('adminautPublicFilesystem');
 
-        /** @var Filesystem $fileSystemDefault */
-        $fileSystemDefault = new Filesystem($adapterManager->get('default'));
-
-        /** @var Filesystem $fileSystemCache */
-        $fileSystemCache = new Filesystem($adapterManager->get('cache'));
-
-        return new FileManager($entityManager, $fileSystemDefault, $fileSystemCache, $fileManagerOptions);
+        return new FileManager($entityManager, $privateFilesystem, $publicFilesystem);
     }
 }

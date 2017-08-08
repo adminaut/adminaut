@@ -6,9 +6,8 @@ use Adminaut\Entity\UserEntity;
 use Adminaut\Entity\File as FileEntity;
 use Adminaut\Entity\FileKeyword;
 use Adminaut\Exception;
-use Adminaut\Options\FileManagerOptions;
 use Doctrine\ORM\EntityManager;
-use League\Flysystem\Adapter\AbstractAdapter;
+use League\Flysystem\Adapter\Local as LocalAdapter;
 use League\Flysystem\Filesystem;
 use WideImage\WideImage;
 use Zend\Form\ElementInterface;
@@ -33,55 +32,40 @@ class FileManager extends AManager
     /**
      * @var Filesystem
      */
-    private $filesystem;
+    private $privateFilesystem;
 
     /**
      * @var Filesystem
      */
-    private $filesystemCache;
-
-    /**
-     * @var FileManagerOptions
-     */
-    private $fileManagerOptions;
+    private $publicFilesystem;
 
     /**
      * FileManager constructor.
      * @param EntityManager $entityManager
-     * @param Filesystem $filesystem
-     * @param Filesystem $filesystemCache
-     * @param FileManagerOptions $fileManagerOptions
+     * @param Filesystem $privateFilesystem
+     * @param Filesystem $publicFilesystem
      */
-    public function __construct(EntityManager $entityManager, Filesystem $filesystem, Filesystem $filesystemCache, FileManagerOptions $fileManagerOptions)
+    public function __construct(EntityManager $entityManager, Filesystem $privateFilesystem, Filesystem $publicFilesystem)
     {
         parent::__construct($entityManager);
-        $this->filesystem = $filesystem;
-        $this->filesystemCache = $filesystemCache;
-        $this->fileManagerOptions = $fileManagerOptions;
+        $this->privateFilesystem = $privateFilesystem;
+        $this->publicFilesystem = $publicFilesystem;
     }
 
     /**
      * @return Filesystem
      */
-    public function getFilesystem()
+    public function getPrivateFilesystem()
     {
-        return $this->filesystem;
+        return $this->privateFilesystem;
     }
 
     /**
      * @return Filesystem
      */
-    public function getFilesystemCache()
+    public function getPublicFilesystem()
     {
-        return $this->filesystemCache;
-    }
-
-    /**
-     * @return FileManagerOptions
-     */
-    public function getFileManagerOptions()
-    {
-        return $this->fileManagerOptions;
+        return $this->publicFilesystem;
     }
 
     /**
@@ -168,14 +152,14 @@ class FileManager extends AManager
         }
         $file->setMimetype($fileType);
         $file->setSize($_file['size']);
-        $file->setActive($this->getFileManagerOptions()->getDefaultIsActive());
+        $file->setActive(true);
         $file->setSavePath($savePath . $hash);
         if (isset($option['keywords'])) {
             $this->addKeywordsToFile($option['keywords']);
         }
 
         try {
-            $this->getFilesystem()->writeStream($savePath . $hash, fopen($_file['tmp_name'], 'r+'));
+            $this->getPrivateFilesystem()->writeStream($savePath . $hash, fopen($_file['tmp_name'], 'r+'));
 
             if (method_exists($element, 'setFileObject')) {
                 $element->setFileObject($file);
@@ -204,13 +188,13 @@ class FileManager extends AManager
         $sourceImage = $file->getSavePath();
         $resultImage = $file->getSavePath() . '-' . $width . '-' . $height . '.' . $file->getFileExtension();
 
-        /** @var AbstractAdapter $fsAdapter */
-        $fsAdapter = $this->getFilesystem()->getAdapter();
+        /** @var LocalAdapter $fsAdapter */
+        $fsAdapter = $this->getPrivateFilesystem()->getAdapter();
 
-        if (!$this->getFilesystemCache()->has($resultImage)) {
+        if (!$this->getPublicFilesystem()->has($resultImage)) {
             try {
                 $exif = exif_read_data($fsAdapter->applyPathPrefix($sourceImage));
-                $_file = $this->getFilesystem()->read($sourceImage);
+                $_file = $this->getPrivateFilesystem()->read($sourceImage);
                 $image = WideImage::load($_file);
 
                 // Todo: Fork WideImage and add exifOrient operation!
@@ -229,7 +213,7 @@ class FileManager extends AManager
                         ->asString($file->getFileExtension());
                 }
 
-                $this->getFilesystemCache()->write($resultImage, $image_data);
+                $this->getPublicFilesystem()->write($resultImage, $image_data);
             } catch (\Exception $e) {
                 throw new \Exception(
                     'Thumbnail cannot be saved.', 0, $e
@@ -237,12 +221,16 @@ class FileManager extends AManager
             }
         }
 
-        /** @var AbstractAdapter $fsAdapterCache */
-        $fsAdapterCache = $this->getFilesystemCache()->getAdapter();
+//        /** @var LocalAdapter $fsAdapterCache */
+//        $fsAdapterCache = $this->getPublicFilesystem()->getAdapter();
 
 //        return $fsAdapterCache->applyPathPrefix($resultImage);
 
-        return str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', str_replace('\\', '/', realpath($fsAdapterCache->getPathPrefix() . $resultImage)));
+//        return str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', str_replace('\\', '/', realpath($fsAdapterCache->getPathPrefix() . $resultImage)));
+
+
+        // todo: make prefix configurable
+        return '_cache/files/' . $resultImage;
     }
 
     /**
@@ -264,17 +252,17 @@ class FileManager extends AManager
 
         $sourceImage = $file->getSavePath();
 
-        /** @var AbstractAdapter $fsAdapter */
-        $fsAdapter = $this->getFilesystem()->getAdapter();
+        /** @var LocalAdapter $fsAdapter */
+        $fsAdapter = $this->getPrivateFilesystem()->getAdapter();
 
         // todo: upraviť name súborov, podľa veľkosti originálu dopočítať novú veľkosť
         //$resultImage = $file->getSavePath() . '-' . $maxWidth . '-' . $maxHeight . '.' . $file->getFileExtension();
         $resultImage = $file->getSavePath() . '-' . 'resized' . '.' . $file->getFileExtension();
 
-        if (!$this->getFilesystemCache()->has($resultImage)) {
+        if (!$this->getPublicFilesystem()->has($resultImage)) {
             try {
                 $exif = exif_read_data($fsAdapter->applyPathPrefix($sourceImage));
-                $_file = $this->getFilesystem()->read($sourceImage);
+                $_file = $this->getPrivateFilesystem()->read($sourceImage);
                 $image = WideImage::load($_file);
 
                 // Todo: Fork WideImage and add exifOrient operation!
@@ -291,7 +279,7 @@ class FileManager extends AManager
                         ->asString($file->getFileExtension());
                 }
 
-                $this->getFilesystemCache()->write($resultImage, $image_data);
+                $this->getPublicFilesystem()->write($resultImage, $image_data);
             } catch (\Exception $e) {
                 throw new \Exception(
                     'Resized original cannot be saved.', 0, $e
@@ -299,12 +287,16 @@ class FileManager extends AManager
             }
         }
 
-        /** @var AbstractAdapter $fsAdapterCache */
-        $fsAdapterCache = $this->getFilesystemCache()->getAdapter();
+//        /** @var LocalAdapter $fsAdapterCache */
+//        $fsAdapterCache = $this->getPublicFilesystem()->getAdapter();
 
 //        return $fsAdapterCache->applyPathPrefix($resultImage);
 
-        return str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', str_replace('\\', '/', realpath($fsAdapterCache->getPathPrefix() . $resultImage)));
+//        return str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', str_replace('\\', '/', realpath($fsAdapterCache->getPathPrefix() . $resultImage)));
+
+
+        // todo: make prefix configurable
+        return '_cache/files/' . $resultImage;
     }
 
     /**

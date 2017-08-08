@@ -2,6 +2,7 @@
 
 namespace Adminaut\Options;
 
+use League\Flysystem\Adapter\Local;
 use Zend\Stdlib\AbstractOptions;
 
 /**
@@ -18,42 +19,61 @@ class AdminautOptions extends AbstractOptions
     /**
      * @var array
      */
-    private $appearance = []; // Leave empty
+    private $appearance = [];
 
     /**
      * @var array
      */
-    private $modules = []; // Leave empty
+    private $modules = [];
 
     /**
      * @var array
      */
-    private $roles = []; // Leave empty
+    private $roles = [];
 
     /**
      * @var array
      */
-    private $manifest = []; // Leave empty
+    private $manifest = [];
 
     /**
      * @var array
      */
-    private $users = []; // Leave empty
+    private $users = [];
 
     /**
      * @var array
      */
-    private $authAdapter = []; // Leave empty
+    private $authAdapter = [];
 
     /**
      * @var array
      */
-    private $cookieStorage = []; // Leave empty
+    private $cookieStorage = [];
 
     /**
      * @var array
      */
-    private $variables = []; // Leave empty
+    private $variables = [];
+
+    /**
+     * @var array
+     */
+    private $filesystem = [
+        'private' => [
+            'adapter' => Local::class,
+            'options' => [
+                'root' => './data/files',
+            ],
+        ],
+        'public' => [
+            'adapter' => Local::class,
+            'options' => [
+                'root' => './www_root/_cache/files',
+                'trim' => './www_root/',
+            ],
+        ],
+    ];
 
     //-------------------------------------------------------------------------
 
@@ -183,5 +203,21 @@ class AdminautOptions extends AbstractOptions
     public function setVariables($variables)
     {
         $this->variables = $variables;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFilesystem()
+    {
+        return $this->filesystem;
+    }
+
+    /**
+     * @param array $filesystem
+     */
+    public function setFilesystem($filesystem)
+    {
+        $this->filesystem = array_merge($this->filesystem, $filesystem);
     }
 }
