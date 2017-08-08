@@ -2,8 +2,8 @@
 
 namespace Adminaut\Filesystem\Factory;
 
-use Adminaut\Options\AdminautOptions;
 use Interop\Container\ContainerInterface;
+use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\Filesystem;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
@@ -23,17 +23,8 @@ class PublicFilesystemFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
 
-        /** @var AdminautOptions $adminautOptions */
-        $adminautOptions = $container->get(AdminautOptions::class);
-
-        $filesystemOptions = $adminautOptions->getFilesystem();
-
-        $public = $filesystemOptions['public'];
-
-        $publicAdapterClass = $public['adapter'];
-        $publicAdapterRoot = $public['options']['root'];
-
-        $publicAdapter = new $publicAdapterClass($publicAdapterRoot);
+        /** @var AbstractAdapter $publicAdapter */
+        $publicAdapter = $container->get('adminautPublicFilesystemAdapter');
 
         return new Filesystem($publicAdapter);
     }

@@ -53,7 +53,9 @@ return [
 
             // Filesystem
             'adminautPrivateFilesystem' => Filesystem\Factory\PrivateFilesystemFactory::class,
+            'adminautPrivateFilesystemAdapter' => Filesystem\Adapter\Factory\PrivateAdapterFactory::class,
             'adminautPublicFilesystem' => Filesystem\Factory\PublicFilesystemFactory::class,
+            'adminautPublicFilesystemAdapter' => Filesystem\Adapter\Factory\PublicAdapterFactory::class,
 
             // Manager
             Manager\ModuleManager::class => Manager\Factory\ModuleManagerFactory::class,
