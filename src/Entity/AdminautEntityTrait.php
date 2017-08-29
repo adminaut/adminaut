@@ -59,14 +59,14 @@ trait AdminautEntityTrait
     protected $deleted = false;
 
     /**
-     * @ORM\Column(name="deleted_by", type="integer");
+     * @ORM\Column(name="deleted_by", type="integer", options={"default":0});
      * @Annotation\Exclude();
      * @var int
      */
     protected $deletedBy = 0;
 
     /**
-     * @ORM\Column(name="active", type="boolean");
+     * @ORM\Column(name="active", type="boolean", options={"default":true});
      * @Annotation\Options({"label":"Status", "listed":false, "checkbox_label":"Active", "listed_checked_value":"Active", "listed_unchecked_value":"Inactive", "listed":true});
      * @Annotation\Type("Adminaut\Datatype\Checkbox");
      * @var boolean
