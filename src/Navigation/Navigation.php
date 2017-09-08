@@ -31,7 +31,7 @@ class Navigation extends DefaultNavigationFactory
         }
 
         $pages[] = [
-            'label' => 'Dashboard',
+            'label' => _('Dashboard'),
             'route' => 'adminaut/dashboard',
             'icon' => 'fa fa-fw fa-dashboard',
         ];
@@ -74,13 +74,13 @@ class Navigation extends DefaultNavigationFactory
 
         if ($accessControl->isAllowed('users', AccessControlService::READ)) {
             $pages[] = [
-                'label' => 'System',
+                'label' => _('System'),
                 'uri' => '#',
                 'section' => true,
             ];
             if ($accessControl->isAllowed('users', AccessControlService::READ)) {
                 $pages[] = [
-                    'label' => 'Users',
+                    'label' => _('Users'),
                     'route' => 'adminaut/users',
                     'icon' => 'fa fa-fw fa-users',
                     'pages' => [

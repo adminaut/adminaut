@@ -46,6 +46,23 @@ class ModuleOptions extends AbstractOptions
     ];
 
     /**
+     * ModuleOptions constructor.
+     * @param null $options
+     */
+    public function __construct($options = null)
+    {
+        parent::__construct($options);
+
+        // this sets labels but also adds strings to .po files
+        $this->labels = [
+            'add_record' => _('Add record'),
+            'update_record' => _('Update record'),
+            'record_detail' => _('Record detail'),
+            'general_tab' => _('General'),
+        ];
+    }
+
+    /**
      * @return string
      */
     public function getType()

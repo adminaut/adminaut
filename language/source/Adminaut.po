@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Adminaut\n"
-"POT-Creation-Date: 2017-09-08 10:37+0200\n"
-"PO-Revision-Date: 2017-09-08 10:42+0200\n"
+"POT-Creation-Date: 2017-09-08 11:06+0200\n"
+"PO-Revision-Date: 2017-09-08 11:06+0200\n"
 "Last-Translator: Matúš Petrofčík <petrofcikmatus@gmail.com>\n"
 "Language-Team: Adminaut\n"
 "Language: en_US\n"
@@ -184,6 +184,46 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
+#: src/Navigation/Navigation.php:34 view/adminaut/dashboard/index.phtml:3
+#: view/adminaut/dashboard/index.phtml:6 view/adminaut/module/add.phtml:14
+#: view/adminaut/module/cyclicTab.phtml:6 view/adminaut/module/edit.phtml:15
+#: view/adminaut/module/index.phtml:6 view/adminaut/module/list.phtml:6
+#: view/adminaut/module/tab.phtml:6 view/adminaut/module/view.phtml:16
+#: view/adminaut/profile/access-tokens.phtml:7
+#: view/adminaut/profile/change-password.phtml:8
+#: view/adminaut/profile/index.phtml:7 view/adminaut/profile/logins.phtml:7
+#: view/adminaut/profile/settings.phtml:8 view/adminaut/users/add.phtml:12
+#: view/adminaut/users/edit.phtml:13 view/adminaut/users/index.phtml:6
+#: view/adminaut/users/view.phtml:7
+msgid "Dashboard"
+msgstr ""
+
+#: src/Navigation/Navigation.php:77
+msgid "System"
+msgstr ""
+
+#: src/Navigation/Navigation.php:83 view/adminaut/users/add.phtml:13
+#: view/adminaut/users/edit.phtml:14 view/adminaut/users/index.phtml:3
+#: view/adminaut/users/index.phtml:7 view/adminaut/users/view.phtml:8
+msgid "Users"
+msgstr ""
+
+#: src/Options/ModuleOptions.php:58
+msgid "Add record"
+msgstr ""
+
+#: src/Options/ModuleOptions.php:59
+msgid "Update record"
+msgstr ""
+
+#: src/Options/ModuleOptions.php:60
+msgid "Record detail"
+msgstr ""
+
+#: src/Options/ModuleOptions.php:61
+msgid "General"
+msgstr ""
+
 #: view/adminaut/acl/add-role.phtml:3 view/adminaut/acl/index.phtml:48
 msgid "Add new role"
 msgstr ""
@@ -200,7 +240,7 @@ msgid "Roles"
 msgstr ""
 
 #: view/adminaut/acl/index.phtml:16 view/adminaut/module/cyclicTab.phtml:33
-#: view/adminaut/module/list.phtml:31 view/adminaut/users/index.phtml:31
+#: view/adminaut/module/list.phtml:32 view/adminaut/users/index.phtml:31
 msgid "Actions"
 msgstr ""
 
@@ -228,8 +268,8 @@ msgstr ""
 #: view/adminaut/acl/show-role.phtml:77
 #: view/adminaut/module/cyclicTab.phtml:102
 #: view/adminaut/module/cyclicTab.phtml:123 view/adminaut/module/edit.phtml:22
-#: view/adminaut/module/list.phtml:67 view/adminaut/module/view.phtml:68
-#: view/adminaut/users/view.phtml:47
+#: view/adminaut/module/list.phtml:73 view/adminaut/module/list.phtml:74
+#: view/adminaut/module/view.phtml:68 view/adminaut/users/view.phtml:47
 msgid "Edit"
 msgstr ""
 
@@ -257,20 +297,6 @@ msgstr ""
 
 #: view/adminaut/auth/login.phtml:28
 msgid "Request access"
-msgstr ""
-
-#: view/adminaut/dashboard/index.phtml:3 view/adminaut/dashboard/index.phtml:6
-#: view/adminaut/module/add.phtml:14 view/adminaut/module/cyclicTab.phtml:6
-#: view/adminaut/module/edit.phtml:15 view/adminaut/module/index.phtml:6
-#: view/adminaut/module/list.phtml:6 view/adminaut/module/tab.phtml:6
-#: view/adminaut/module/view.phtml:16
-#: view/adminaut/profile/access-tokens.phtml:7
-#: view/adminaut/profile/change-password.phtml:8
-#: view/adminaut/profile/index.phtml:7 view/adminaut/profile/logins.phtml:7
-#: view/adminaut/profile/settings.phtml:8 view/adminaut/users/add.phtml:12
-#: view/adminaut/users/edit.phtml:13 view/adminaut/users/index.phtml:6
-#: view/adminaut/users/view.phtml:7
-msgid "Dashboard"
 msgstr ""
 
 #: view/adminaut/install/index.phtml:13
@@ -301,7 +327,8 @@ msgstr ""
 msgid "Back to list"
 msgstr ""
 
-#: view/adminaut/module/cyclicTab.phtml:123 view/adminaut/module/list.phtml:64
+#: view/adminaut/module/cyclicTab.phtml:123 view/adminaut/module/list.phtml:68
+#: view/adminaut/module/list.phtml:69
 msgid "View"
 msgstr ""
 
@@ -322,12 +349,13 @@ msgstr ""
 msgid "Save and continue"
 msgstr ""
 
-#: view/adminaut/module/edit.phtml:51 view/adminaut/module/list.phtml:69
+#: view/adminaut/module/edit.phtml:51 view/adminaut/module/list.phtml:76
+#: view/adminaut/module/list.phtml:77
 msgid "Copy"
 msgstr ""
 
 #: view/adminaut/module/edit.phtml:57 view/adminaut/module/edit.phtml:58
-#: view/adminaut/module/list.phtml:72
+#: view/adminaut/module/list.phtml:83 view/adminaut/module/list.phtml:84
 #: view/adminaut/profile/access-tokens.phtml:42
 #: view/adminaut/users/edit.phtml:41
 msgid "Delete"
@@ -352,7 +380,7 @@ msgstr ""
 #: view/adminaut/profile/access-tokens.phtml:8
 #: view/adminaut/profile/change-password.phtml:9
 #: view/adminaut/profile/index.phtml:8 view/adminaut/profile/logins.phtml:8
-#: view/adminaut/profile/settings.phtml:9 view/layout/layout-admin.phtml:127
+#: view/adminaut/profile/settings.phtml:9 view/layout/layout-admin.phtml:135
 msgid "Profile"
 msgstr ""
 
@@ -430,12 +458,6 @@ msgstr ""
 msgid "Users:"
 msgstr ""
 
-#: view/adminaut/users/add.phtml:13 view/adminaut/users/edit.phtml:14
-#: view/adminaut/users/index.phtml:3 view/adminaut/users/index.phtml:7
-#: view/adminaut/users/view.phtml:8
-msgid "Users"
-msgstr ""
-
 #: view/adminaut/users/add.phtml:24
 msgid "Add new user"
 msgstr ""
@@ -452,19 +474,19 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: view/layout/layout-admin.phtml:99
+#: view/layout/layout-admin.phtml:107
 msgid "Toggle navigation"
 msgstr ""
 
-#: view/layout/layout-admin.phtml:130
+#: view/layout/layout-admin.phtml:138
 msgid "Sign out"
 msgstr ""
 
-#: view/layout/layout-admin.phtml:157
+#: view/layout/layout-admin.phtml:165
 msgid "Search..."
 msgstr ""
 
-#: view/layout/layout-admin.phtml:186
+#: view/layout/layout-admin.phtml:194
 #, php-format
 msgid "Powered by %s."
 msgstr ""
