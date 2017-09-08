@@ -1,58 +1,72 @@
 <?php
 /** @var \Zend\Form\Form $form */
-    $form = $this->form;
+$form = $this->form;
 //    $form->setAttribute('action', $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode' => 'update']));
-    $form->prepare();
-    $primaryFieldValue = isset($elements[$primary]) ? (method_exists($form->getElements()[$primary], 'getListedValue') ? $form->getElements()[$primary]->getListedValue() : $form->getElements()[$primary]->getValue()) : $entity->getId();
+$form->prepare();
+$primaryFieldValue = isset($elements[$primary]) ? (method_exists($form->getElements()[$primary], 'getListedValue') ? $form->getElements()[$primary]->getListedValue() : $form->getElements()[$primary]->getValue()) : $entity->getId();
 ?>
 
-<section class="content-header">
-    <h1>
-        <?php echo $this->moduleOption->getModuleName() ?> <small><?php echo $primaryFieldValue; ?></small>
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
-        <li><a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->moduleOption->getModuleName() ?></a></li>
-        <li><a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $this->entity->getId()]); ?>"><?php echo $primaryFieldValue ?></a></li>
-        <li class="active"><?php echo $this->translate("Edit") ?></li>
-    </ol>
-</section>
+    <section class="content-header">
+        <h1>
+            <?php echo $this->moduleOption->getModuleName() ?>
+            <small><?php echo $primaryFieldValue; ?></small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
+            <li>
+                <a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->moduleOption->getModuleName() ?></a>
+            </li>
+            <li>
+                <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $this->entity->getId()]); ?>"><?php echo $primaryFieldValue ?></a>
+            </li>
+            <li class="active"><?php echo $this->translate("Edit") ?></li>
+        </ol>
+    </section>
 
-<section class="content">
-    <?php echo $this->form()->openTag($form); ?>
-    <div class="row">
-        <div class="col-xs-12 col-sm-8">
-            <div class="nav-tabs-custom">
-                <?php if(sizeof($this->tabs) > 1) { ?>
-                    <?php echo $this->partial('partial/tabs.phtml', ['route' => 'adminaut/module/action', 'url_params' => $this->url_params, 'tabs' => $this->tabs]); ?>
-                <?php } else { ?>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><?php echo $this->moduleOption->getLabels()['update_record'] ?></h3>
+    <section class="content">
+        <?php echo $this->form()->openTag($form); ?>
+        <div class="row">
+            <div class="col-xs-12 col-sm-8">
+                <div class="nav-tabs-custom">
+                    <?php if (sizeof($this->tabs) > 1) { ?>
+                        <?php echo $this->partial('partial/tabs.phtml', ['route' => 'adminaut/module/action', 'url_params' => $this->url_params, 'tabs' => $this->tabs]); ?>
+                    <?php } else { ?>
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><?php echo $this->moduleOption->getLabels()['update_record'] ?></h3>
+                        </div>
+                    <?php } ?>
+                    <div class="tab-content">
+                        <?php echo $this->partial('partial/messages'); ?>
+
+                        <?php echo $this->formCollection($form); ?>
                     </div>
-                <?php } ?>
-                <div class="tab-content">
-                    <?php echo $this->partial('partial/messages'); ?>
-
-                    <?php echo $this->formCollection($form); ?>
-                </div>
-                <!-- /.tab-content -->
-                <div class="box-footer clearfix">
-                    <button type="submit" name="submit" value="save" class="btn btn-primary"><?php echo $this->translate('Save'); ?></button>
-                    <button type="submit" name="submit" value="save-and-continue" class="btn btn-default"><?php echo $this->translate('Save and continue'); ?></button>
-                    <a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>" class="btn btn-link"><?php echo $this->translate('Back to list'); ?></a>
-                    <span class="pull-right">
-                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode'=>'add']); ?>" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="Copy" data-original-title="Copy"><i class="fa fa-clone"></i></a>
-                        <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::FULL)) { ?>
-                            <a href="#" data-href="<?php echo $this->url('adminaut/module/delete', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId()]); ?>" class="btn btn-sm btn-danger btn-modal-delete" data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><i class="fa fa-trash"></i></a>
-                        <?php } ?>
+                    <!-- /.tab-content -->
+                    <div class="box-footer clearfix">
+                        <button type="submit" name="submit" value="save" class="btn btn-primary"><?php echo $this->translate('Save'); ?></button>
+                        <button type="submit" name="submit" value="save-and-continue" class="btn btn-default"><?php echo $this->translate('Save and continue'); ?></button>
+                        <a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"
+                           class="btn btn-link"><?php echo $this->translate('Back to list'); ?></a>
+                        <span class="pull-right">
+                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode' => 'add']); ?>"
+                           class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="Copy" data-original-title="<?php echo $this->translate('Copy') ?>">
+                            <i class="fa fa-clone"></i>
+                        </a>
+                            <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::FULL)) { ?>
+                                <a href="#"
+                                   data-href="<?php echo $this->url('adminaut/module/delete', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId()]); ?>"
+                                   class="btn btn-sm btn-danger btn-modal-delete" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('Delete') ?>"
+                                   data-original-title="<?php echo $this->translate('Delete') ?>">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            <?php } ?>
                     </span>
+                    </div>
+                    <!-- /.box-footer -->
                 </div>
-                <!-- /.box-footer -->
             </div>
         </div>
-    </div>
-    <?php echo $this->form()->closeTag(); ?>
-</section>
+        <?php echo $this->form()->closeTag(); ?>
+    </section>
 
 <?php echo $this->partial('partial/changeModal', ['formId' => $form->getName()]) ?>
 

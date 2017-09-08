@@ -131,6 +131,7 @@ return [
             View\Helper\ConfigViewHelper::class => View\Helper\Factory\ConfigViewHelperFactory::class,
             View\Helper\AppearanceViewHelper::class => View\Helper\Factory\AppearanceViewHelperFactory::class,
             View\Helper\VariableViewHelper::class => View\Helper\Factory\VariableViewHelperFactory::class,
+            View\Helper\GetDataTableLanguage::class => View\Helper\Factory\GetDataTableLanguageFactory::class,
 
             Datatype\File\FormViewHelper::class => Datatype\File\Factory\FormViewHelperFactory::class,
             'formElement' => Form\View\Helper\Factory\FormElementFactory::class,
@@ -149,6 +150,7 @@ return [
             'userIdentity' => View\Helper\UserIdentity::class,
             'isAllowed' => View\Helper\IsAllowed::class,
             'config' => View\Helper\ConfigViewHelper::class,
+            'getDataTableLanguage' => View\Helper\GetDataTableLanguage::class,
 
             'adminautAppearance' => View\Helper\AppearanceViewHelper::class,
             'adminautVariable' => View\Helper\VariableViewHelper::class,

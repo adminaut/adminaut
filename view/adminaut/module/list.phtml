@@ -61,15 +61,15 @@
                                     <td>
                                         <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
                                             <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $entity->getId()]); ?>" type="button" class="btn btn-success"
-                                               data-toggle="tooltip" data-placement="top" title="View" data-original-title="View"><i class="fa fa-eye"></i></a>
+                                               data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('View') ?>" data-original-title="<?php echo $this->translate('View') ?>"><i class="fa fa-eye"></i></a>
                                             <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::WRITE)) { ?>
                                                 <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'edit', 'entity_id' => $entity->getId()]); ?>" type="button" class="btn btn-primary"
-                                                   data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
+                                                   data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('Edit') ?>" data-original-title="<?php echo $this->translate('Edit') ?>"><i class="fa fa-pencil"></i></a>
                                                 <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $entity->getId(), 'mode'=>'add']); ?>"
-                                                   class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="Copy" data-original-title="Copy"><i class="fa fa-clone"></i></a>
+                                                   class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('Copy') ?>" data-original-title="<?php echo $this->translate('Copy') ?>"><i class="fa fa-clone"></i></a>
                                             <?php } if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::FULL)) { ?>
                                                 <a href="#" data-href="<?php echo $this->url('adminaut/module/delete', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $entity->getId()]); ?>" type="button" class="btn btn-danger btn-modal-delete"
-                                                   data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                                                   data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('Delete') ?>" data-original-title="<?php echo $this->translate('Delete') ?>"><i class="fa fa-trash"></i></a>
                                             <?php } ?>
                                         </div>
                                     </td>

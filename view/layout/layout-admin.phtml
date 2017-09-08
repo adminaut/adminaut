@@ -54,6 +54,14 @@
         ->prependFile($this->basePath('adminaut/js/html5shiv.min.js'), 'text/javascript', ['conditional' => 'lt IE 9']);
 
     ?>
+    <script>
+        // defaults for dataTable
+        $.extend(true, $.fn.dataTable.defaults, {
+            "language": {
+                "url": "<?php echo $this->getDataTableLanguage() ?>"
+            }
+        });
+    </script>
 </head>
 <body class="hold-transition skin-<?php echo $this->adminautAppearance('skin') ?> sidebar-mini<?php echo(isset($_COOKIE['sidebar-collapsed']) ? ' sidebar-collapse' : '') ?> fixed <?php echo $this->adminautVariable('environment') ?: 'develop' ?>">
 <div id="fb-root"></div>

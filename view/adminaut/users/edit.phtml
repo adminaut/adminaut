@@ -1,4 +1,5 @@
 <?php
+/** @var \Adminaut\Form\Form $form */
 $form = $this->form;
 $form->setAttribute('action', $this->url('adminaut/users/edit', ['id' => $this->user->getId()]));
 $form->prepare();
@@ -20,7 +21,7 @@ $form->prepare();
     <div class="row">
         <div class="col-xs-12 col-sm-8">
             <div class="nav-tabs-custom">
-                <?php if(sizeof($this->tabs) > 1) { ?>
+                <?php if (sizeof($this->tabs) > 1) { ?>
                     <?php echo $this->partial('partial/tabs.phtml', ['route' => 'adminaut/users/edit', 'url_params' => $this->url_params, 'tabs' => $this->tabs]); ?>
                 <?php } else { ?>
                     <div class="box-header with-border">
@@ -29,7 +30,6 @@ $form->prepare();
                 <?php } ?>
                 <div class="tab-content">
                     <?php echo $this->partial('partial/messages'); ?>
-
                     <?php echo $this->formCollection($form); ?>
                 </div>
                 <!-- /.tab-content -->
@@ -37,7 +37,8 @@ $form->prepare();
                     <button type="submit" name="submit" value="save" class="btn btn-primary"><?php echo $this->translate('Save'); ?></button>
                     <button type="submit" name="submit" value="save-and-continue" class="btn btn-default"><?php echo $this->translate('Save and continue'); ?></button>
                     <a href="<?php echo $this->url('adminaut/users'); ?>" class="btn btn-link"><?php echo $this->translate('Back to list'); ?></a>
-                    <a href="<?php echo $this->url('adminaut/users/delete', ['id' => $this->user->getId()]); ?>" class="btn btn-danger pull-right"><?php echo $this->translate('Delete'); ?></a>
+                    <a href="<?php echo $this->url('adminaut/users/delete', ['id' => $this->user->getId()]); ?>"
+                       class="btn btn-danger pull-right"><?php echo $this->translate('Delete'); ?></a>
                 </div>
                 <!-- /.box-footer -->
             </div>
