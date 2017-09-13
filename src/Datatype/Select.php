@@ -19,18 +19,31 @@ class Select extends \Zend\Form\Element\Select
     ];
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getListedValue()
     {
-        if ($this->getValue() !== null) {
-            if (isset($this->getValueOptions()[$this->getValue()])) {
-                return $this->getValueOptions()[$this->getValue()];
-            }
-            return "";
-        } else {
+        $key = $this->getValue();
+
+        if (null === $key) {
             return '';
         }
+
+        $valueOptions = $this->getValueOptions();
+
+        if (array_key_exists($key, $valueOptions)) {
+            return $valueOptions[$key];
+        }
+
+        foreach ($valueOptions as $valueOption) {
+            if (is_array($valueOption) && array_key_exists('options', $valueOption)) {
+                if (array_key_exists($key, $valueOption['options'])) {
+                    return $valueOption['options'][$key];
+                }
+            }
+        }
+
+        return '';
     }
 
     /**
