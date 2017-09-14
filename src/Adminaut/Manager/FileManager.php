@@ -208,13 +208,25 @@ class FileManager
 
         if (!$this->getCacheFilesystem()->has($resultImage)) {
             try {
-                $exif = exif_read_data($this->getFilesystem()->getAdapter()->applyPathPrefix($sourceImage));
-                $ort = isset($exif['Orientation']) ? $exif['Orientation'] : 1;
                 $_file      = $this->getFilesystem()->read($sourceImage);
                 $image      = WideImage::load($_file);
-                $image_data = $image->exifOrient($ort)->resize($width, $height, 'outside')
-                    ->crop('center', 'center', $width, $height)
-                    ->asString($file->getFileExtension());
+
+                if (method_exists($image, 'exifOrient')){
+
+                    $exif = exif_read_data($this->getFilesystem()->getAdapter()->applyPathPrefix($sourceImage));
+                    $ort = isset($exif['Orientation']) ? $exif['Orientation'] : 1;
+
+                    $image_data = $image
+                        ->exifOrient($ort)
+                        ->resize($width, $height, 'outside')
+                        ->crop('center', 'center', $width, $height)
+                        ->asString($file->getFileExtension());
+                } else {
+                    $image_data = $image
+                        ->resize($width, $height, 'outside')
+                        ->crop('center', 'center', $width, $height)
+                        ->asString($file->getFileExtension());
+                }
 
                 $this->getCacheFilesystem()->write($resultImage, $image_data);
             } catch (\Exception $e) {
@@ -246,12 +258,23 @@ class FileManager
 
         if (!$this->getCacheFilesystem()->has($resultImage)) {
             try {
-                $exif = exif_read_data($this->getFilesystem()->getAdapter()->applyPathPrefix($sourceImage));
-                $ort = isset($exif['Orientation']) ? $exif['Orientation'] : 1;
                 $_file = $this->getFilesystem()->read($sourceImage);
                 $image = WideImage::load($_file);
 
-                $image_data = $image->exifOrient($ort)->resize($maxWidth, $maxHeight, 'inside', 'down')->asString($file->getFileExtension());
+                if (method_exists($image, 'exifOrient')){
+                    $exif = exif_read_data($this->getFilesystem()->getAdapter()->applyPathPrefix($sourceImage));
+                    $ort = isset($exif['Orientation']) ? $exif['Orientation'] : 1;
+
+                    $image_data = $image
+                        ->exifOrient($ort)
+                        ->resize($maxWidth, $maxHeight, 'inside', 'down')
+                        ->asString($file->getFileExtension());
+
+                } else {
+                    $image_data = $image
+                        ->resize($maxWidth, $maxHeight, 'inside', 'down')
+                        ->asString($file->getFileExtension());
+                }
 
                 $this->getCacheFilesystem()->write($resultImage, $image_data);
             } catch (\Exception $e) {
