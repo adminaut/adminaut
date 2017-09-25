@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-09-08 11:06+0200\n"
-"PO-Revision-Date: 2017-09-25 06:11-0400\n"
+"PO-Revision-Date: 2017-09-25 06:20-0400\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: Czech\n"
 "Language: cs_CZ\n"
@@ -125,7 +125,7 @@ msgstr ""
 #: src/Datatype/GooglePlaceId/FormViewHelper.php:53
 #: src/Datatype/Location/FormViewHelper.php:88
 msgid "Enter a location"
-msgstr ""
+msgstr "Zadejte polohu"
 
 #: src/Form/RoleForm.php:43 src/Form/RoleForm.php:46 src/Form/UserForm.php:52
 #: src/Form/UserForm.php:55 src/Form/UserSettingsForm.php:24
