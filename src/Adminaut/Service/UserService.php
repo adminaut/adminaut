@@ -11,6 +11,7 @@ use Adminaut\Mapper\RoleMapper as RoleMapper;
 use Adminaut\Mapper\UserMapper;
 use Adminaut\Authentication\Service\AuthenticationService;
 use Zend\Form\Form;
+use Zend\Form\FormInterface;
 
 /**
  * Class UserService
@@ -56,15 +57,17 @@ class UserService extends EventProvider
     /**
      * @param Form $form
      * @param UserEntity $user
+     * @param string $userClassName
      * @return mixed
      */
-    public function add(Form $form, UserEntity $user)
+    public function add(Form $form, UserEntity $user, string $userClassName = UserEntity::class)
     {
-        $entity = new UserEntity();
+        /** @var UserEntity $entity */
+        $entity = new $userClassName();
         $entity->setInsertedBy($user->getId());
         $entity->setUpdatedBy($user->getId());
         $entity = $this->populateData($entity, $form);
-        $data = $form['password'];
+        $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
         $entity->setPassword(PasswordHelper::hash($data['password']));
         return $this->getUserMapper()->insert($entity);
     }
@@ -79,7 +82,7 @@ class UserService extends EventProvider
     {
         $entity->setUpdatedBy($user->getId());
         $entity = $this->populateData($entity, $form);
-        $data = $form->getData();
+        $data = $form->getData(FormInterface::VALUES_AS_ARRAY);
         if ($data['password']) {
             $entity->setPassword(PasswordHelper::hash($data['password']));
         }

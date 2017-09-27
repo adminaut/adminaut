@@ -120,7 +120,7 @@ class UsersController extends AdminautBaseController
             if ($form->isValid()) {
                 try {
                     $userService = $this->getUserService();
-                    $user = $userService->add($form, $this->userAuthentication()->getIdentity());
+                    $user = $userService->add($form, $this->userAuthentication()->getIdentity(), $this->config['adminaut']['users']['user_entity_class']);
                     $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully created.'));
                     switch ($post['submit']) {
                         case 'create-and-continue' :
@@ -177,7 +177,8 @@ class UsersController extends AdminautBaseController
         }
         $form->get('role')->setValueOptions($rolesData);
 
-        $form->populateValues($user->toArray());
+        $form->bind($user);
+//        $form->populateValues($user->toArray());
 
         if ($this->getRequest()->isPost()) {
             $post = $this->getRequest()->getPost()->toArray();
