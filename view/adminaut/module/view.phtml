@@ -31,6 +31,8 @@
                     </div>
                 <?php } ?>
                 <div class="tab-content">
+                    <?php echo $this->partial('partial/flashMessanger.phtml', ['flashMessenger' => $this->flashMessenger()]); ?>
+
                     <fieldset class="form-horizontal">
                     <?php foreach ($elements as $fieldName => $field) { ?>
                         <?php
