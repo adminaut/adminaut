@@ -3,11 +3,14 @@
 namespace Adminaut\Service;
 
 use Adminaut\Authentication\Helper\PasswordHelper;
+use Adminaut\Entity\BaseEntityInterface;
 use Adminaut\Entity\UserEntity;
 use Adminaut\EventManager\EventProvider;
+use Adminaut\Form\Element;
 use Adminaut\Mapper\RoleMapper as RoleMapper;
 use Adminaut\Mapper\UserMapper;
 use Adminaut\Authentication\Service\AuthenticationService;
+use Zend\Form\Form;
 
 /**
  * Class UserService
@@ -51,16 +54,17 @@ class UserService extends EventProvider
     }
 
     /**
-     * @param array $data
+     * @param Form $form
      * @param UserEntity $user
      * @return mixed
      */
-    public function add(array $data, UserEntity $user)
+    public function add(Form $form, UserEntity $user)
     {
         $entity = new UserEntity();
         $entity->setInsertedBy($user->getId());
         $entity->setUpdatedBy($user->getId());
-        $entity = $this->populateData($entity, $data);
+        $entity = $this->populateData($entity, $form);
+        $data = $form['password'];
         $entity->setPassword(PasswordHelper::hash($data['password']));
         return $this->getUserMapper()->insert($entity);
     }
@@ -71,10 +75,11 @@ class UserService extends EventProvider
      * @param UserEntity $user
      * @return mixed
      */
-    public function update(UserEntity $entity, array $data, UserEntity $user)
+    public function update(UserEntity $entity, Form $form, UserEntity $user)
     {
         $entity->setUpdatedBy($user->getId());
-        $entity = $this->populateData($entity, $data);
+        $entity = $this->populateData($entity, $form);
+        $data = $form->getData();
         if ($data['password']) {
             $entity->setPassword(PasswordHelper::hash($data['password']));
         }
@@ -116,7 +121,7 @@ class UserService extends EventProvider
         $entity->setUpdatedBy(1);
         $data['active'] = true;
         $data['role'] = 'admin';
-        $entity = $this->populateData($entity, $data);
+        $entity = $this->populateDataFromArray($entity, $data);
         $entity->setPassword(PasswordHelper::hash($data['password']));
         return $this->getUserMapper()->insert($entity);
     }
@@ -126,19 +131,33 @@ class UserService extends EventProvider
      * @param array $data
      * @return UserEntity
      */
-    protected function populateData(UserEntity $entity, array $data)
+    protected function populateDataFromArray(UserEntity $entity, array $data)
     {
-        if ($data['name']) {
-            $entity->setName($data['name']);
+        foreach ($data as $key => $value) {
+            $entity->{$key} = $value;
         }
-        if ($data['email']) {
-            $entity->setEmail($data['email']);
-        }
-        if ($data['active']) {
-            $entity->setActive($data['active']);
-        }
-        if ($data['role']) {
-            $entity->setRole($data['role']);
+
+        return $entity;
+    }
+
+
+
+    /**
+     * @param BaseEntityInterface $entity
+     * @param Form $form
+     * @return BaseEntityInterface
+     */
+    protected function populateData(UserEntity $entity, Form $form)
+    {
+        /* @var $element Element */
+        foreach ($form->getElements() as $element) {
+            $elementName = $element->getName();
+
+            if (method_exists($element, 'getInsertValue')) {
+                $entity->{$elementName} = $element->getInsertValue();
+            } else {
+                $entity->{$elementName} = $element->getValue();
+            }
         }
         return $entity;
     }

@@ -12,6 +12,7 @@ use Adminaut\Options\ModuleOptions;
 use Adminaut\Repository\UserRepository;
 use Adminaut\Service\AccessControlService;
 use Adminaut\Service\UserService;
+use Zend\Form\Form;
 use Zend\View\Model\ViewModel;
 
 /**
@@ -119,7 +120,7 @@ class UsersController extends AdminautBaseController
             if ($form->isValid()) {
                 try {
                     $userService = $this->getUserService();
-                    $user = $userService->add($post, $this->userAuthentication()->getIdentity());
+                    $user = $userService->add($form, $this->userAuthentication()->getIdentity());
                     $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully created.'));
                     switch ($post['submit']) {
                         case 'create-and-continue' :
@@ -154,6 +155,7 @@ class UsersController extends AdminautBaseController
         }
 
         $userService = $this->getUserMapper();
+        /** @var UserEntity $user */
         $user = $userService->findById($id);
         if (!$user) {
             return $this->redirect()->toRoute('adminaut/users');
@@ -161,7 +163,7 @@ class UsersController extends AdminautBaseController
 
 //        $form = new UserForm(UserForm::STATUS_UPDATE);
 
-        /* @var $form \Adminaut\Form\Form */
+        /* @var Form $form  */
         $form = $this->getAdminModuleManager()->getForm();
 //        $form->setInputFilter(new UserInputFilter());
 
@@ -183,7 +185,7 @@ class UsersController extends AdminautBaseController
             if ($form->isValid()) {
                 try {
                     $userService = $this->getUserService();
-                    $userService->update($user, $post, $this->userAuthentication()->getIdentity());
+                    $userService->update($user, $form, $this->userAuthentication()->getIdentity());
                     $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate('User has been successfully updated.'));
 
                     switch ($post['submit']) {
