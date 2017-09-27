@@ -163,7 +163,7 @@ class UsersController extends AdminautBaseController
 
         /* @var $form \Adminaut\Form\Form */
         $form = $this->getAdminModuleManager()->getForm();
-        $form->setInputFilter(new UserInputFilter());
+//        $form->setInputFilter(new UserInputFilter());
 
         $tabs = $form->getTabs();
         $tabs[$this->params()->fromRoute('tab')]['active'] = true;
