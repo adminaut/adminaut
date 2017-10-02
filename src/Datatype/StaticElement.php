@@ -12,9 +12,28 @@ class StaticElement extends \TwbBundle\Form\Element\StaticElement
         setOptions as datatypeSetOptions;
     }
 
+    /**
+     * @var string
+     */
+    protected $title;
+
+    public function setOptions($options)
+    {
+        if(isset($options['label'])) {
+            $this->title = $options['label'];
+            unset($options['label']);
+        }
+
+        if(isset($options['title'])) {
+            $this->title = $options['title'];
+        }
+
+        $this->datatypeSetOptions($options);
+    }
+
     // todo: temporary show delimiter between sections
     public function getValue()
     {
-        return '<b>----- ' . $this->getLabel() . ' ------</b>';
+        return '<h3 class="static-element">' . $this->title . '</h3>';
     }
 }

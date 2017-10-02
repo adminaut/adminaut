@@ -83,6 +83,7 @@ class DetailViewHelper extends AbstractHelper
 
         // escape html tags
         $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+        $value = str_replace(PHP_EOL, '<br />', $value);
 
         // change allowed html tags back
         foreach ($this->allowedTags2 as $tag) {

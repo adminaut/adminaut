@@ -4,6 +4,7 @@ namespace Adminaut\Form;
 
 use Adminaut\Datatype\Checkbox;
 use Adminaut\Datatype\Radio;
+use Adminaut\Datatype\StaticElement;
 use Zend\Form\ElementInterface;
 use Zend\Form\FieldsetInterface;
 use Zend\Form\Form as ZendForm;
@@ -77,6 +78,10 @@ class Form extends ZendForm
 
             if ($elementOrFieldset instanceof Radio) {
                 $elementOrFieldset->setOption('column-size', 'sm-10 radio');
+            }
+
+            if($elementOrFieldset instanceof StaticElement) {
+                $elementOrFieldset->setOption('column-size', 'sm-12');
             }
 
             if (method_exists($elementOrFieldset, 'setForm')) {
