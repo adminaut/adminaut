@@ -55,7 +55,7 @@
     "smottt/wideimage": "~1.1",
     "bushbaby/flysystem": "~2.0",
     "almasaeed2010/adminlte": "~2.0",
-    "adminaut/adminaut-datatypes": "^0.0"
+    "adminaut/adminaut-datatypes": "dev-master"
   },
   "autoload": {
     "psr-0": {
