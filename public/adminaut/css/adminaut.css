@@ -78,7 +78,8 @@
 h3.static-element {
     font-size: 18px;
     margin: 0;
-    padding-bottom: 7px;
-    line-height: 1;
-    border-bottom: 1px solid #f4f4f4;
+    margin-top: 45px;
+    padding: 10px;
+    padding-left: 0;
+    border-bottom: 3px solid #3c8dbc;
 }

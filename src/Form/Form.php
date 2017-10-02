@@ -80,10 +80,6 @@ class Form extends ZendForm
                 $elementOrFieldset->setOption('column-size', 'sm-10 radio');
             }
 
-            if($elementOrFieldset instanceof StaticElement) {
-                $elementOrFieldset->setOption('column-size', 'sm-12');
-            }
-
             if (method_exists($elementOrFieldset, 'setForm')) {
                 $elementOrFieldset->setForm($this);
             }
