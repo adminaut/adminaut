@@ -161,9 +161,7 @@ jQuery.fn.locationDatatype = function () {
         } else {
             if (this.engine === 'google') {
                 if (this.value.googlePlaceId !== undefined) {
-                    console.log(this.value);
                     var place = this.getGooglePlaceInfo(this.value.googlePlaceId);
-
                     this.value.latitude = place.geometry.location.lat;
                     this.value.longitude = place.geometry.location.lng;
                 }
@@ -312,15 +310,15 @@ jQuery.fn.locationDatatype = function () {
 
     this.updateInputsValue = function () {
         if (this.engine === 'google') {
-            this.$mainInput.val(this.value.latitude.toFixed(6)).trigger('change');
-            this.$longitudeElement.val(this.value.longitude.toFixed(6)).trigger('change');
+            this.$mainInput.val(this.value.latitude.toFixed(6));
+            this.$longitudeElement.val(this.value.longitude.toFixed(6));
 
             if (this.$googlePlaceIdElement) {
-                this.$googlePlaceIdElement.val(this.value.googlePlaceId).trigger('change');
+                this.$googlePlaceIdElement.val(this.value.googlePlaceId);
             }
         } else {
-            this.$mainInput.val(this.value.latitude.toFixed(6)).trigger('change');
-            this.$longitudeElement.val(this.value.longitude.toFixed(6)).trigger('change');
+            this.$mainInput.val(this.value.latitude.toFixed(6));
+            this.$longitudeElement.val(this.value.longitude.toFixed(6));
         }
 
         this.$searchContainer.find('.remove-data-button').show();
