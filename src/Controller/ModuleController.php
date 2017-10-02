@@ -220,7 +220,7 @@ class ModuleController extends AdminautBaseController
         $fm = $this->getFilemanager();
         $form = $this->getModuleManager()->createForm($moduleOptions);
         if ($entityId) {
-            $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), 1);
+            $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
             $form->bind($entity);
         } else {
             $form->bind(new $entityClass());
