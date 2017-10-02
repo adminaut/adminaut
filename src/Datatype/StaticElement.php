@@ -17,6 +17,9 @@ class StaticElement extends \TwbBundle\Form\Element\StaticElement
      */
     protected $title;
 
+    /**
+     * @param array|\Traversable $options
+     */
     public function setOptions($options)
     {
         if(isset($options['label'])) {
@@ -31,7 +34,10 @@ class StaticElement extends \TwbBundle\Form\Element\StaticElement
         $this->datatypeSetOptions($options);
     }
 
-    // todo: temporary show delimiter between sections
+    /**
+     * todo: temporary show delimiter between sections
+     * @return string
+     */
     public function getValue()
     {
         return '<h3 class="static-element">' . $this->title . '</h3>';
