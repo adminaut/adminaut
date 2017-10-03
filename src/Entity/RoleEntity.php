@@ -8,8 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class RoleEntity
  * @package Adminaut\Entity
- * @ORM\Entity(repositoryClass="Adminaut\Repository\RoleRepository")
- * @ORM\Table(name="adminaut_role")
+ * @ORM\Entity()
+ * @ORM\Table(name="adminaut_roles")
  * @ORM\HasLifecycleCallbacks()
  */
 class RoleEntity implements AdminautEntityInterface
@@ -17,31 +17,27 @@ class RoleEntity implements AdminautEntityInterface
     use AdminautEntityTrait;
 
     /**
-     * @ORM\Column(type="string", length=32, unique=true);
+     * @ORM\Column(type="string", name="name", unique=true);
      * @var string
      */
-    protected $name;
+    protected $name = '';
 
     /**
-     * @ORM\OneToMany(targetEntity="Adminaut\Entity\Resource", mappedBy="role")
+     * Inverse side.
+     * @ORM\OneToMany(targetEntity="Adminaut\Entity\ResourceEntity", mappedBy="role")
+     * @var ArrayCollection
      */
     protected $resources;
 
     /**
-     * @ORM\OneToMany(targetEntity="Adminaut\Entity\UserEntity", mappedBy="role")
-     */
-    protected $users;
-
-    /**
-     * Role constructor.
-     * @param null $name
+     * RoleEntity constructor.
+     * @param string|null $name
      */
     public function __construct($name = null)
     {
         $this->resources = new ArrayCollection();
-        $this->users = new ArrayCollection();
         if ($name) {
-            $this->name = $name;
+            $this->setName($name);
         }
     }
 
@@ -58,7 +54,7 @@ class RoleEntity implements AdminautEntityInterface
      */
     public function setName($name)
     {
-        $this->name = $name;
+        $this->name = (string)$name;
     }
 
     /**
@@ -75,22 +71,6 @@ class RoleEntity implements AdminautEntityInterface
     public function setResources($resources)
     {
         $this->resources = $resources;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getUsers()
-    {
-        return $this->users;
-    }
-
-    /**
-     * @param ArrayCollection $users
-     */
-    public function setUsers($users)
-    {
-        $this->users = $users;
     }
 
     /**

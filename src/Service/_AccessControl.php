@@ -3,12 +3,6 @@
 namespace Adminaut\Service;
 
 use Doctrine\ORM\EntityManager;
-use Adminaut\Entity\RoleEntity as RoleEntity;
-use Adminaut\Entity\Resource as ResourceEntity;
-use Adminaut\Mapper\ResourceMapper;
-use Adminaut\Mapper\RoleMapper;
-use Adminaut\Mapper\UserMapper;
-
 use Zend\Permissions\Acl\Acl;
 use Zend\Permissions\Acl\Role\GenericRole as Role;
 use Zend\Permissions\Acl\Resource\GenericResource;
@@ -184,7 +178,7 @@ class _AccessControl
             }
             $createNewPermission = true;
             foreach ($role->getResources() as $resource) {
-                /* @var $resource \Adminaut\Entity\Resource */
+                /* @var $resource \Adminaut\Entity\ResourceEntity */
                 if ($resource->getResource() == $moduleName) {
                     $resource->setPermission($permission);
                     $EntityManager->persist($resource);

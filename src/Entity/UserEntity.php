@@ -62,7 +62,7 @@ class UserEntity implements UserEntityInterface
      * @Annotation\Type("Zend\Form\Element\Select");
      * @var string
      */
-    protected $role = '';
+    protected $role = ''; // todo: this should be reference to RoleEntity in the future
 
     /**
      * @ORM\Column(type="string", length=128, options={"default":"en"});
