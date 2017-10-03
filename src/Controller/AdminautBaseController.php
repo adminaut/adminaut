@@ -27,6 +27,41 @@ class AdminautBaseController extends AbstractActionController
 {
 
     /**
+     * @param $message
+     */
+    protected function addInfoMessage($message)
+    {
+        $this->flashMessenger()->addInfoMessage($message);
+    }
+
+    /**
+     * @param $message
+     */
+    protected function addSuccessMessage($message)
+    {
+        $this->flashMessenger()->addSuccessMessage($message);
+    }
+
+    /**
+     * @param $message
+     */
+    protected function addWarningMessage($message)
+    {
+        $this->flashMessenger()->addWarningMessage($message);
+    }
+
+    /**
+     * @param $message
+     */
+    protected function addErrorMessage($message = null)
+    {
+        if (null === $message) {
+            $message = $this->translate('Wild application error occurred.');
+        }
+        $this->flashMessenger()->addErrorMessage($message);
+    }
+
+    /**
      * @param MvcEvent $e
      * @return mixed|Response
      */
