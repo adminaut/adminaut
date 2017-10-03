@@ -3,8 +3,8 @@
 namespace Adminaut\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+//use Zend\Crypt\Password\Bcrypt;
 use Zend\Form\Annotation;
 
 /**
@@ -35,7 +35,7 @@ class UserEntity implements UserEntityInterface
      * @Annotation\Type("Adminaut\Datatype\Text");
      * @var string
      */
-    protected $name;
+    protected $name = '';
 
     /**
      * @ORM\Column(type="string", length=128, unique=true);
@@ -44,7 +44,7 @@ class UserEntity implements UserEntityInterface
      * @Annotation\Type("Zend\Form\Element\Email");
      * @var string
      */
-    protected $email;
+    protected $email = '';
 
     /**
      * @ORM\Column(type="string", length=128);
@@ -53,7 +53,7 @@ class UserEntity implements UserEntityInterface
      * @Annotation\Type("Zend\Form\Element\Password");
      * @var string
      */
-    protected $password;
+    protected $password = '';
 
     /**
      * @ORM\Column(type="string", length=128);
@@ -62,7 +62,7 @@ class UserEntity implements UserEntityInterface
      * @Annotation\Type("Zend\Form\Element\Select");
      * @var string
      */
-    protected $role;
+    protected $role = '';
 
     /**
      * @ORM\Column(type="string", length=128, options={"default":"en"});
@@ -71,20 +71,20 @@ class UserEntity implements UserEntityInterface
      * @Annotation\Type("Adminaut\Datatype\Language");
      * @var string
      */
-    protected $language;
+    protected $language = 'en';
 
     /**
      * @ORM\Column(type="integer", name="status", options={"default":0});
      * @Annotation\Exclude();
      * @var int
      */
-    protected $status;
+    protected $status = self::STATUS_NEW;
 
     /**
      * Inverse side.
      * @ORM\OneToMany(targetEntity="UserAccessTokenEntity", mappedBy="user");
      * @Annotation\Exclude();
-     * @var Collection
+     * @var ArrayCollection
      */
     protected $accessTokens;
 
@@ -92,7 +92,7 @@ class UserEntity implements UserEntityInterface
      * Inverse side.
      * @ORM\OneToMany(targetEntity="UserLoginEntity", mappedBy="user");
      * @Annotation\Exclude();
-     * @var Collection
+     * @var ArrayCollection
      */
     protected $logins;
 
@@ -103,8 +103,6 @@ class UserEntity implements UserEntityInterface
      */
     public function __construct()
     {
-        $this->language = 'en';
-        $this->status = $this::STATUS_NEW;
         $this->accessTokens = new ArrayCollection();
         $this->logins = new ArrayCollection();
     }
@@ -158,6 +156,43 @@ class UserEntity implements UserEntityInterface
     {
         $this->password = $password;
     }
+
+//    todo: implement setters and getters as below instead of generating password somewhere else in code
+//    /**
+//     * @return string
+//     */
+//    public function getPasswordHash()
+//    {
+//        return $this->password;
+//    }
+//
+//    /**
+//     * @param string $passwordHash
+//     */
+//    public function setPasswordHash($passwordHash)
+//    {
+//        $this->password = $passwordHash;
+//    }
+//
+//    /**
+//     * @param string $password
+//     * @param int $cost
+//     */
+//    public function setPassword($password, $cost = 10)
+//    {
+//        $passwordHash = (new Bcrypt())->setCost($cost)->create($password);
+//
+//        $this->setPasswordHash($passwordHash);
+//    }
+//
+//    /**
+//     * @param string $password
+//     * @return bool
+//     */
+//    public function verifyPassword($password)
+//    {
+//        return (new Bcrypt())->verify($password, $this->getPasswordHash());
+//    }
 
     /**
      * @return string
