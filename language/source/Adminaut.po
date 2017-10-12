@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Adminaut\n"
-"POT-Creation-Date: 2017-09-08 11:06+0200\n"
-"PO-Revision-Date: 2017-09-08 11:06+0200\n"
+"POT-Creation-Date: 2017-10-12 11:49+0200\n"
+"PO-Revision-Date: 2017-10-12 11:49+0200\n"
 "Last-Translator: Matúš Petrofčík <petrofcikmatus@gmail.com>\n"
 "Language-Team: Adminaut\n"
 "Language: en_US\n"
@@ -37,6 +37,10 @@ msgstr ""
 
 #: src/Authentication/Adapter/AuthAdapter.php:103
 msgid "Authenticated successfully."
+msgstr ""
+
+#: src/Controller/AdminautBaseController.php:59
+msgid "Wild application error occurred."
 msgstr ""
 
 #: src/Controller/InstallController.php:72
