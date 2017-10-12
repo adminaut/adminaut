@@ -182,6 +182,7 @@ class FileManager extends AManager
      * @param int $height
      * @return mixed
      * @throws \Exception
+     * @deprecated use ImageHelper
      */
     public function getThumbImage(FileEntity $file, $width = 200, $height = 200)
     {
@@ -239,6 +240,7 @@ class FileManager extends AManager
      * @param int $maxHeight
      * @return mixed
      * @throws \Exception
+     * @deprecated use ImageHelper
      */
     public function getImage(FileEntity $file, $maxWidth = null, $maxHeight = null)
     {
