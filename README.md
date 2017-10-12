@@ -1,5 +1,9 @@
 # Adminaut
 
+[![Crowdin](https://d322cqt584bo4o.cloudfront.net/adminaut/localized.svg)](https://crowdin.com/project/adminaut)
+[![Packagist](https://img.shields.io/packagist/v/adminaut/adminaut.svg)](https://packagist.org/packages/adminaut/adminaut)
+[![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
+
 
 ## Description
 

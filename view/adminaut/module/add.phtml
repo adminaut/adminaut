@@ -2,6 +2,7 @@
     /** @var \Zend\Form\Form $form */
     $form = $this->form;
     $form->setAttribute('action', $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode'=>'add']));
+    $form->setAttribute('data-doubleClick', true);
     $form->prepare();
 ?>
 
@@ -11,7 +12,8 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
-        <li class="active"><?php echo $this->moduleOption->getModuleName() ?></li>
+        <li><a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->moduleOption->getModuleName() ?></a></li>
+        <li class="active"><?php echo $this->translate("Add") ?></li>
     </ol>
 </section>
 
@@ -21,11 +23,11 @@
         <div class="col-xs-12 col-sm-8">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title"><?php echo $this->moduleOption->getLabels()['add_entity'] ?></h3>
+                    <h3 class="box-title"><?php echo $this->moduleOption->getLabels()['add_record'] ?></h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <?php echo $this->partial('partial/flashMessanger.phtml', ['flashMessenger' => $this->flashMessenger()]); ?>
+                    <?php echo $this->partial('partial/messages'); ?>
                     <?php
                         echo $this->formCollection($form);
                     ?>
@@ -46,3 +48,5 @@
     <!-- /.row -->
     <?php echo $this->form()->closeTag(); ?>
 </section>
+
+<?php echo $this->partial('partial/changeModal', ['formId' => $form->getName()]) ?>

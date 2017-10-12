@@ -1,6 +1,6 @@
 <section class="content-header">
     <h1>
-        <?php echo $this->translate('Users') ?>
+        <?php echo $this->translate('Users'); ?>
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
@@ -19,49 +19,57 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <?php echo $this->partial('partial/flashMessanger.phtml', ['flashMessenger' => $this->flashMessenger()]); ?>
+                    <?php echo $this->partial('partial/messages'); ?>
                     <table id="usersTable" class="table table-striped table-bordered table-hover dataTables">
                         <thead>
-                            <tr>
-                                <th>#</th>
-                                <th><?php echo $this->translate('Name'); ?></th>
-                                <th><?php echo $this->translate('Email'); ?></th>
-                                <th><?php echo $this->translate('Role'); ?></th>
-                                <th><?php echo $this->translate('Status'); ?></th>
-                                <th><?php echo $this->translate('Actions'); ?></th>
-                            </tr>
+                        <tr>
+                            <th>#</th>
+                            <th><?php echo $this->translate('Name'); ?></th>
+                            <th><?php echo $this->translate('Email'); ?></th>
+                            <th><?php echo $this->translate('Role'); ?></th>
+                            <th><?php echo $this->translate('Status'); ?></th>
+                            <th><?php echo $this->translate('Actions'); ?></th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($this->list as $entity) { ?>
-                                <?php /* @var $entity \Adminaut\Entity\UserEntity */ ?>
-                                <tr>
-                                    <td><?php echo $entity->getId(); ?></td>
-                                    <td><?php echo $entity->getName(); ?></td>
-                                    <td><?php echo $entity->getEmail(); ?></td>
-                                    <td><?php echo $entity->getRole(); ?></td>
-                                    <td>
-                                        <?php if ($entity->isActive()) { ?>
-                                            <span class="label label-success"><?php echo $this->translate('Active'); ?></span>
-                                        <?php } else { ?>
-                                            <span class="label label-danger"><?php echo $this->translate('Inactive'); ?></span>
+                        <?php foreach ($this->list as $entity) { ?>
+                            <?php /* @var $entity \Adminaut\Entity\UserEntity */ ?>
+                            <tr>
+                                <td><?php echo $entity->getId(); ?></td>
+                                <td><?php echo $this->escapeHtml($entity->getName()); ?></td>
+                                <td><?php echo $this->escapeHtml($entity->getEmail()); ?></td>
+                                <td><?php echo $this->escapeHtml($entity->getRole()); ?></td>
+                                <td>
+                                    <?php if ($entity->isActive()) { ?>
+                                        <span class="label label-success"><?php echo $this->translate('Active'); ?></span>
+                                    <?php } else { ?>
+                                        <span class="label label-danger"><?php echo $this->translate('Inactive'); ?></span>
+                                    <?php } ?>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
+                                        <a href="<?php echo $this->url('adminaut/users/view', ['id' => $entity->getId()]); ?>" type="button" class="btn btn-success">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        <?php if ($this->isAllowed('users', \Adminaut\Service\AccessControlService::WRITE)) { ?>
+                                            <a href="<?php echo $this->url('adminaut/users/edit', ['id' => $entity->getId()]); ?>" type="button" class="btn btn-info">
+                                                <i class="fa fa-pencil"></i>
+                                            </a>
+                                        <?php }
+                                        if ($this->isAllowed('users', \Adminaut\Service\AccessControlService::FULL)) { ?>
+                                            <a href="#" data-href="<?php echo $this->url('adminaut/users/delete', ['id' => $entity->getId()]); ?>" type="button"
+                                               class="btn btn-danger btn-modal-delete">
+                                                <i class="fa fa-user-times"></i>
+                                            </a>
                                         <?php } ?>
-                                    </td>
-                                    <td>
-                                        <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
-                                            <a href="<?php echo $this->url('adminaut/users/view', ['id' => $entity->getId()]); ?>" type="button" class="btn btn-success"><i class="fa fa-eye"></i></a>
-                                            <?php if ($this->isAllowed('users', \Adminaut\Service\AccessControlService::WRITE)) { ?>
-                                                <a href="<?php echo $this->url('adminaut/users/edit', ['id' => $entity->getId()]); ?>" type="button" class="btn btn-info"><i class="fa fa-pencil"></i></a>
-                                            <?php } if ($this->isAllowed('users', \Adminaut\Service\AccessControlService::FULL)) { ?>
-                                                <a href="<?php echo $this->url('adminaut/users/delete', ['id' => $entity->getId()]); ?>" type="button" class="btn btn-danger btn-modal-delete"><i class="fa fa-user-times"></i></a>
-                                            <?php } ?>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php } ?>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php } ?>
                         </tbody>
                     </table>
                     <script>
-                        (function($){
+                        (function ($) {
                             $('#usersTable').DataTable({
                                 "paging": true,
                                 "lengthChange": false,

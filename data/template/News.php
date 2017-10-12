@@ -2,10 +2,9 @@
 
 namespace Application\Entity;
 
+use Adminaut\Entity\AdminautEntityTrait;
+use Adminaut\Entity\AdminautEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
-
-use MfccAdminModule\Entity\Base;
-
 use Zend\Form\Annotation;
 
 /**
@@ -15,8 +14,10 @@ use Zend\Form\Annotation;
  * @property integer $id
  * @package Application\Entity
  */
-class News extends Base
+class News implements AdminautEntityInterface
 {
+    use AdminautEntityTrait;
+
     /**
      * @ORM\Column(type="string", length=255);
      * @Annotation\Options({"label":"Name", "listed":true});

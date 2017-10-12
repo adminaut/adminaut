@@ -2,11 +2,15 @@
 /* @var $container Zend\Navigation\Navigation */
 $container = $this->container;
 ?>
-<ul  class="sidebar-menu">
+<ul class="sidebar-menu">
     <?php foreach ($container as $page) { ?>
         <?php if (!$this->navigation()->accept($page)) continue; ?>
         <?php /* @var $page Zend\Navigation\Page\Mvc */ ?>
         <?php $hasChildren = $page->hasPages(); ?>
+        <?php if ($page->get('section') === true) { ?>
+            <li class="header"><?php echo $this->translate($page->getLabel()) ?></li>
+            <?php continue;
+        } ?>
         <?php if (!$hasChildren) { ?>
             <li class="treeview<?php if ($page->isActive()) echo ' active'; ?>">
                 <a href="<?php echo $page->getHref(); ?>"
@@ -36,7 +40,7 @@ $container = $this->container;
                         <?php if ($page->get("icon") !== "") { ?>
                             <i class="<?php echo $page->get("icon"); ?>"></i>
                         <?php } ?>
-                        <span><?php echo $this->escapeHtml($this->translate($page->getLabel(),$this->navigation($container)->getTranslatorTextDomain())); ?></span>
+                        <span><?php echo $this->escapeHtml($this->translate($page->getLabel(), $this->navigation($container)->getTranslatorTextDomain())); ?></span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
@@ -47,13 +51,14 @@ $container = $this->container;
                             if (!$this->navigation()->accept($child)) continue;
                             if ($child->get("separator") === true) { ?>
                                 <li class="divider"></li>
-                            <?php
+                                <?php
                                 continue;
-                            };
+                            }
+                        ;
                             ?>
                             <li<?php if ($child->isActive(true)) echo ' class="active"'; ?>>
                                 <a
-                                    href="<?php echo $child->getHref(); ?>"
+                                        href="<?php echo $child->getHref(); ?>"
                                     <?php if ($child->getTarget() != "") { ?>
                                         target="<?php echo $child->getTarget(); ?>"
                                     <?php } ?> >
@@ -62,7 +67,7 @@ $container = $this->container;
                                     <?php } else { ?>
                                         <i class="fa fa-circle-o"></i>
                                     <?php } ?>
-                                    <?php echo $this->escapeHtml($this->translate($child->getLabel(),$this->navigation($container)->getTranslatorTextDomain())); ?>
+                                    <?php echo $this->escapeHtml($this->translate($child->getLabel(), $this->navigation($container)->getTranslatorTextDomain())); ?>
                                 </a>
                             </li>
                         <?php } ?>

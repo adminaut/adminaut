@@ -1,45 +1,74 @@
 {
   "name": "adminaut/adminaut",
-  "description": "Adminaut",
+  "description": "Adminaut is the open-source platform for rapid development of PHP applications with the automatic construction of administration backend. It's built on the top of PHP, Zend Framework, Doctrine ORM and other frameworks.",
   "license": "MIT",
-  "authors" : [{
-    "name" : "Petr Malecha",
-    "email" : "petr.malecha@mfcc.cz",
-    "homepage" : "http://www.bedi.cz",
-    "role" : "Developer"
-  },{
-    "name" : "Josef Soušek",
-    "email" : "josef.sousek@mfcc.cz",
-    "role" : "Developer"
-  }],
-  "homepage": "https://github.com/Adminaut/adminaut",
+  "authors": [
+    {
+      "name": "Petr Malecha",
+      "email": "petr.malecha@mfcc.cz",
+      "homepage": "http://www.bedi.cz",
+      "role": "Developer"
+    },
+    {
+      "name": "Josef Soušek",
+      "email": "josef.sousek@mfcc.cz",
+      "role": "Developer"
+    },
+    {
+      "name": "Matúš Petrofčík",
+      "email": "matus@petrofcik.eu",
+      "homepage": "https://www.petrofcik.eu",
+      "role": "Developer"
+    }
+  ],
+  "homepage": "https://github.com/adminaut/adminaut",
   "keywords": [
     "adminaut",
     "admin",
-    "zf2-module"
+    "zf3-module"
   ],
   "require": {
-    "php": ">=5.6",
-    "zendframework/zendframework": "~2.5",
-    "zendframework/zend-i18n-resources": "~2.5",
+    "php": "^5.6 || ^7.0",
+    "zendframework/zend-mvc": "^3.0.1",
+    "zendframework/zend-mvc-plugin-flashmessenger": "^1.0.0",
+    "zendframework/zend-form": "^2.10",
+    "zendframework/zend-authentication": "^2.5",
+    "zendframework/zend-filter": "^2.7",
+    "zendframework/zend-navigation": "^2.8",
+    "zendframework/zend-crypt": "^3.2",
+    "zendframework/zend-i18n": "^2.7",
+    "zendframework/zend-json": "^3.0",
+    "zendframework/zend-file": "^2.7",
+    "zendframework/zend-mail": "^2.8",
+    "zendframework/zend-paginator": "^2.7",
+    "zendframework/zend-permissions-acl": "^2.6",
+    "zendframework/zend-session": "^2.8",
+    "zendframework/zend-uri": "^2.5",
+    "zendframework/zend-code": "^3.1",
     "doctrine/doctrine-orm-module": "~1.1",
-    "neilime/zf2-twb-bundle": "~2.6",
-    "smottt/wideimage": "~1.1",
-    "bushbaby/flysystem": "~2.0",
-    "almasaeed2010/adminlte": "~2.0",
-    "adminaut/adminaut-datatypes": "dev-master"
+    "neilime/zf2-twb-bundle": "^3.1",
+    "league/flysystem": "~1.0",
+    "massimo-filippi/wideimage": "^2.0@dev",
+    "league/iso3166": "^2.0",
+    "gettext/languages": "^2.3",
+    "almasaeed2010/adminlte": "^2.3"
   },
   "autoload": {
-    "psr-0": {
+    "psr-4": {
       "Adminaut\\": "src/"
-    },
-    "classmap": [
-      "./Module.php"
-    ]
+    }
   },
   "extra": {
-    "installer-paths": {
-      "www_root/adminaut/themes/{$name}": ["almasaeed2010/adminlte"]
+    "branch-alias": {
+      "dev-master": "1.0.x-dev"
+    },
+    "zf": {
+      "module": [
+        "DoctrineModule",
+        "DoctrineORMModule",
+        "TwbBundle",
+        "Adminaut"
+      ]
     }
   }
 }

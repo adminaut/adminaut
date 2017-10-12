@@ -19,7 +19,7 @@
     $('.btn-modal-delete').on('click', function(e){
         var deleteModal = $('#deleteModal');
         deleteModal.modal();
-        deleteModal.find('#confirm').attr('href', $(this).attr('href'));
+        deleteModal.find('#confirm').attr('href', $(this).data('href'));
         e.preventDefault();
     });
 </script>

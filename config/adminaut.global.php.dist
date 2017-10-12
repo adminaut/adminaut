@@ -1,53 +1,84 @@
 <?php
+
 return [
     'adminaut' => [
         'modules' => [
+            'example-section' => [
+                'type' => 'section',
+                'label' => 'Example section',
+            ],
             'example' => [
                 'type' => 'module',
                 'module_name' => 'Example module',
                 'module_icon' => 'fa-newspaper-o',
-                'entity_class' => 'Application\Entity\ExampleEntity'
+                'entity_class' => 'Application\Entity\ExampleEntity',
             ],
         ],
 
         'roles' => [],
 
         'appearance' => [
-            'theme' => 'adminlte',
-            'footer' => 'Custom footer text.'
+            'skin' => 'blue',
+            'title' => 'Adminaut',
+            'logo' => [
+                'type' => 'image',
+                'large' => 'adminaut/img/admin-logo-lg.svg',
+                'small' => 'adminaut/img/admin-logo-mini.png',
+            ],
+            'footer' => '',
         ],
-    ],
-    'manifest' => [
-        'name' => 'Adminaut',
-        'show_name' => 'Adminaut',
-        'description' => 'Adminaut - universal automatic administration system',
-        'display' => 'standalone',
-        'theme_color' => '#3c8dbc',
-        'background_color' => '#3c8dbc',
-        "icons" => [
-            [
-                "src" => "/static/favicons/android-chrome-36x36.png",
-                "sizes" => "36x36",
-                "type" => "image/png",
-                "density" => "0.75"
-            ]
-        ]
-    ],
 
-    'bsb_flysystem' => [
-        'adapters' => [
-            'default'     => [
-                'type'    => 'local',
-                'options' => [
-                    'root' => './data/files'
+        'manifest' => [
+            // Name of adminaut instance. Used on lot of places (page titles, web app, etc.)
+            'name' => 'Adminaut',
+            'show_name' => 'Adminaut',
+            'description' => 'Adminaut - universal automatic administration system',
+            'display' => 'standalone',
+            'theme_color' => '#3c8dbc',
+            // background_color (default #3c8dbc)
+            // Used as background color for web appendName.
+            // More information here: https://developer.mozilla.org/en-US/docs/Web/Manifest
+            'background_color' => '#3c8dbc',
+            'icons' => [
+                [
+                    'src' => '/static/favicons/android-chrome-36x36.png',
+                    'sizes' => '36x36',
+                    'type' => 'image/png',
+                    'density' => '0.75',
                 ],
             ],
-            'cache'     => [
-                'type'    => 'local',
+        ],
+
+        'variables' => [
+            'google-analytics' => '---google-analytics---',
+            'google-maps-api' => '---google-maps-api---',
+            'environment' => 'develop',
+        ],
+
+        'filesystem' => [
+            'private' => [
+                'adapter' => \League\Flysystem\Adapter\Local::class,
                 'options' => [
-                    'root' => './public/_cache/files'
+                    'root' => './data/files',
                 ],
-            ]
-        ]
+            ],
+            'public' => [
+                'adapter' => \League\Flysystem\Adapter\Local::class,
+                'options' => [
+                    'root' => './public/_cache/files',
+                    'trim' => './public/',
+                ],
+            ],
+        ],
     ],
+
+    /*'router' => [
+        'routes' => [
+            'adminaut' => [
+                'options' => [
+                    'route' => '/admin'
+                ]
+            ],
+        ]
+    ],*/
 ];

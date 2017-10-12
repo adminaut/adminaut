@@ -1,186 +1,219 @@
-<?php
-    $msTileImageIconPos = 0;
-    if(isset($this->config()['adminaut']['manifest']['icons'])) {
-        foreach ($this->config()['adminaut']['manifest']['icons'] as $i => $icon) {
-            if ($icon['sizes'] == '144x144') {
-                $msTileImageIconPos = $i;
-                break;
-            }
-            $msTileImageIconPos = -1;
-        }
-    }
-
-    /** @var array $appearance */
-    /** @var string $skin */
-    $skin = $appearance['skin'];
-    $msappTileColor = isset($this->config()['adminaut']['manifest']['theme_color']) ? $this->config()['adminaut']['manifest']['theme_color'] : '#3c8dbc';
-    $msappTileImage = isset($this->config()['adminaut']['manifest']['icons']) && $msTileImageIconPos != -1 ? $this->basePath($this->config()['adminaut']['manifest']['icons'][0]) : $this->basePath('adminaut/img/adminaut-icon-114x114.png');
-?>
 <?php echo $this->doctype(); ?>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <?php
-        echo $this->headTitle('Adminaut')->setSeparator(' | ')->setAutoEscape(false);
+<head>
+    <meta charset="utf-8">
+    <?php
+    echo $this->headTitle($this->adminautAppearance('title'))->setSeparator(' | ')->setAutoEscape(false);
 
-        echo $this->headMeta()
-            ->appendName('generator', 'Adminaut (www.adminaut.com)')
-            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
-            ->appendName('robots', 'noindex, nofollow')
-            ->appendName('apple-mobile-web-app-capable', 'yes')
-            ->appendName('mobile-web-app-capable', 'yes')
-            ->appendName('msapplication-TileColor', $msappTileColor)
-            ->appendName('msapplication-TileImage', $msappTileImage)
-            ->appendName('theme-color', $msappTileColor)
-            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge');
+    echo $this->headMeta()
+        ->prependName('msapplication-navbutton-color', $this->adminautAppearance('theme-color'))
+        ->prependName('theme-color', $this->adminautAppearance('theme-color'))
+        ->prependName('apple-mobile-web-app-capable', 'yes')
+        ->prependName('mobile-web-app-capable', 'yes')
+        ->prependName('generator', 'Adminaut (www.adminaut.com)')
+        ->prependName('robots', 'noindex, nofollow')
+        ->prependName('description', $this->adminautAppearance('description'))
+        ->prependName('viewport', 'width=device-width, initial-scale=1.0')
+        ->prependHttpEquiv('X-UA-Compatible', 'IE=edge');
 
-        echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath('adminaut/img/favicon.ico')))
-            ->appendStylesheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
-            ->appendStylesheet($this->basePath('adminaut/css/bootstrap-datetimepicker.min.css'))
-            ->appendStylesheet('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
-            ->appendStylesheet($this->basePath('adminaut/css/dataTables.bootstrap.css'))
-            ->appendStylesheet($this->basePath('adminaut/css/dataTables.responsive.css'))
-            ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/AdminLTE.min.css'))
-            ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/skins/skin-'.$skin.'.min.css'))
-            ->appendStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/flat.css'))
-            ->appendStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/blue.css'))
-            ->appendStylesheet($this->basePath('adminaut/css/adminaut.css'))
-            ->headLink(['rel' => 'manifest', 'href' => $this->url('adminaut/manifest')], 'APPEND')
-            ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '114x114', 'href' => $this->basePath('adminaut/img/adminaut-icon-114x114.png')], 'APPEND')
-            ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '120x120', 'href' => $this->basePath('adminaut/img/adminaut-icon-120x120.png')], 'APPEND')
-            ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '144x144', 'href' => $this->basePath('adminaut/img/adminaut-icon-144x144.png')], 'APPEND')
-            ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '152x152', 'href' => $this->basePath('adminaut/img/adminaut-icon-152x152.png')], 'APPEND')
-            ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '167x167', 'href' => $this->basePath('adminaut/img/adminaut-icon-167x167.png')], 'APPEND')
-            ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '180x180', 'href' => $this->basePath('adminaut/img/adminaut-icon-180x180.png')], 'APPEND')
-            ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '1024x1024', 'href' => $this->basePath('adminaut/img/adminaut-icon-1024x1024.png')], 'APPEND');
+    echo $this->headLink()
+        ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/AdminLTE.min.css'))
+        ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/skins/skin-' . $this->adminautAppearance('skin') . '.min.css'))
+        ->appendStylesheet($this->basePath('adminaut/css/adminaut.css'))
+        ->prependStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/blue.css'))
+        ->prependStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/flat.css'))
+        ->prependStylesheet($this->basePath('adminaut/css/dataTables.responsive.css'))
+        ->prependStylesheet($this->basePath('adminaut/css/dataTables.bootstrap.css'))
+        ->prependStylesheet('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+        ->prependStylesheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
+        ->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath('adminaut/img/favicon.ico')], 'APPEND')
+        ->headLink(['rel' => 'manifest', 'href' => $this->url('adminaut/manifest')], 'APPEND')
+        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '114x114', 'href' => $this->basePath('adminaut/img/adminaut-icon-114x114.png')], 'APPEND')
+        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '120x120', 'href' => $this->basePath('adminaut/img/adminaut-icon-120x120.png')], 'APPEND')
+        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '144x144', 'href' => $this->basePath('adminaut/img/adminaut-icon-144x144.png')], 'APPEND')
+        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '152x152', 'href' => $this->basePath('adminaut/img/adminaut-icon-152x152.png')], 'APPEND')
+        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '167x167', 'href' => $this->basePath('adminaut/img/adminaut-icon-167x167.png')], 'APPEND')
+        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '180x180', 'href' => $this->basePath('adminaut/img/adminaut-icon-180x180.png')], 'APPEND')
+        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '1024x1024', 'href' => $this->basePath('adminaut/img/adminaut-icon-1024x1024.png')], 'APPEND');
 
-        echo $this->headScript()
-            ->appendFile($this->basePath('adminaut/js/html5shiv.min.js'), 'text/javascript', ['conditional' => 'lt IE 9'])
-            ->appendFile($this->basePath('adminaut/js/respond.min.js'), 'text/javascript', ['conditional' => 'lt IE 9'])
-            ->appendFile('//code.jquery.com/jquery-1.11.1.min.js')
-            ->appendFile('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
-            ->appendFile('https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js')
-            ->appendFile($this->basePath('adminaut/js/moment.min.js'))
-            ->appendFile($this->basePath('adminaut/js/bootstrap-datetimepicker.min.js'))
-            ->appendFile($this->basePath('adminaut/js/jquery.dataTables.min.js'))
-            ->appendFile($this->basePath('adminaut/js/dataTables.bootstrap.min.js'))
-            ->appendFile($this->basePath('adminaut/themes/adminlte/dist/js/app.js'))
-            ->appendFile($this->basePath('adminaut/themes/adminlte/plugins/iCheck/icheck.min.js'))
-            ->appendFile($this->basePath('adminaut/js/js.cookie.js'))
-            ->appendFile($this->basePath('adminaut/js/adminaut.js'));
+    echo $this->headScript()
+        ->appendFile($this->basePath('adminaut/js/adminaut.js?v=0.0.4'))
+        ->prependFile('//maps.googleapis.com/maps/api/js?libraries=places&key=' . $this->adminautVariable('google-maps-api'))// todo: move do view helpers
+        ->prependFile($this->basePath('adminaut/js/js.cookie.js'))
+        ->prependFile($this->basePath('adminaut/themes/adminlte/dist/js/app.js'))
+        ->prependFile($this->basePath('adminaut/themes/adminlte/plugins/slimScroll/jquery.slimscroll.min.js'))
+        ->prependFile($this->basePath('adminaut/themes/adminlte/plugins/iCheck/icheck.min.js'))
+        ->prependFile($this->basePath('adminaut/js/jquery.doubleClick.js'))
+        ->prependFile($this->basePath('adminaut/js/dataTables.bootstrap.min.js'))
+        ->prependFile($this->basePath('adminaut/js/jquery.dataTables.min.js'))
+        ->prependFile($this->basePath('adminaut/js/moment.min.js'))
+        ->prependFile('//gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js')
+        ->prependFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+        ->prependFile('//code.jquery.com/jquery-1.11.1.min.js')
+        ->prependFile($this->basePath('adminaut/js/respond.min.js'), 'text/javascript', ['conditional' => 'lt IE 9'])
+        ->prependFile($this->basePath('adminaut/js/html5shiv.min.js'), 'text/javascript', ['conditional' => 'lt IE 9']);
 
-        ?>
-    </head>
-    <body class="hold-transition skin-<?php echo $skin ?> sidebar-mini<?php echo (isset($_COOKIE['sidebar-collapsed']) ? ' sidebar-collapse' : '') ?> fixed">
-        <div id="fb-root"></div>
-        <script>(function(d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) return;
-                js = d.createElement(s); js.id = id;
-                js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=1536749893231201";
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
-        </script>
-        <div class="wrapper">
-            <header class="main-header">
-                <!-- Logo -->
-                <a href="<?php echo $this->url('adminaut'); ?>" class="logo logo-image">
-                    <span class="logo-lg"><img src="<?php echo $this->basePath($appearance['logo']['large']); ?>" alt="<?php echo $appearance['title'] ?>"></span>
-                    <span class="logo-mini"><img src="<?php echo $this->basePath($appearance['logo']['small']); ?>" alt="<?php $appearance['title'] ?>"></span>
-                </a>
-                <!-- Header Navbar: style can be found in header.less -->
-                <nav class="navbar navbar-static-top">
-                    <!-- Sidebar toggle button-->
-                    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                        <span class="sr-only"><?php echo $this->translate("Toggle navigation"); ?></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
+    ?>
+    <script>
+        // defaults for dataTable
+        $.extend(true, $.fn.dataTable.defaults, {
+            "language": {
+                "url": "<?php echo $this->getDataTableLanguage() ?>"
+            }
+        });
+    </script>
+</head>
+<body class="hold-transition skin-<?php echo $this->adminautAppearance('skin') ?> sidebar-mini<?php echo(isset($_COOKIE['sidebar-collapsed']) ? ' sidebar-collapse' : '') ?> fixed <?php echo $this->adminautVariable('environment') ?: 'develop' ?>">
+<div id="fb-root"></div>
+<script>(function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=1536749893231201";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+<?php if ($this->adminautVariable('google-analytics')) { ?>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-                    <div class="navbar-custom-menu">
-                        <ul class="nav navbar-nav">
-                            <!-- User Account: style can be found in dropdown.less -->
-                            <li class="dropdown user user-menu">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="user-image" alt="<?php echo $this->userIdentity()->getName(); ?>">
-                                    <span class="hidden-xs"><?php echo $this->userIdentity()->getName(); ?></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <!-- User image -->
-                                    <li class="user-header">
-                                        <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="img-circle" alt="<?php echo $this->userIdentity()->getName(); ?>">
+        ga('create', '<?php echo $this->adminautVariable('google-analytics') ?>', 'auto');
+        ga('send', 'pageview');
 
-                                        <p>
-                                            <?php echo $this->userIdentity()->getName(); ?>
-                                        </p>
-                                    </li>
-                                    <!-- Menu Footer-->
-                                    <li class="user-footer">
-                                        <div class="pull-left">
-                                            <a href="<?php echo $this->url('adminaut/users/view', ['id' => $this->userIdentity()->getId()]); ?>" class="btn btn-default btn-flat"><?php echo $this->translate("Profile"); ?></a>
-                                        </div>
-                                        <div class="pull-right">
-                                            <a href="<?php echo $this->url('adminaut/user/logout'); ?>" class="btn btn-default btn-flat"><?php echo $this->translate("Sign out"); ?></a>
-                                        </div>
-                                    </li>
-                                </ul>
+    </script>
+<?php } ?>
+<div class="wrapper">
+    <header class="main-header">
+        <!-- Logo -->
+        <a href="<?php echo $this->url('adminaut'); ?>" class="logo logo-image">
+            <span class="logo-lg"><img src="<?php echo $this->basePath($this->adminautAppearance('logo-large')); ?>" alt="<?php echo $this->adminautAppearance('title') ?>"></span>
+            <span class="logo-mini"><img src="<?php echo $this->basePath($this->adminautAppearance('logo-small')); ?>" alt="<?php $this->adminautAppearance('title') ?>"></span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only"><?php echo $this->translate("Toggle navigation"); ?></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="user-image"
+                                 alt="<?php echo $this->escapeHtml($this->userIdentity()->getName()); ?>">
+                            <span class="hidden-xs"><?php echo $this->escapeHtml($this->userIdentity()->getName()); ?></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="img-circle"
+                                     alt="<?php echo $this->escapeHtml($this->userIdentity()->getName()); ?>">
+
+                                <p>
+                                    <?php echo $this->escapeHtml($this->userIdentity()->getName()); ?>
+                                </p>
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a href="<?php echo $this->url('adminaut/profile'); ?>" class="btn btn-default btn-flat"><?php echo $this->translate("Profile"); ?></a>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="<?php echo $this->url('adminaut/auth/logout'); ?>" class="btn btn-default btn-flat"><?php echo $this->translate("Sign out"); ?></a>
+                                </div>
                             </li>
                         </ul>
-                    </div>
-                </nav>
-            </header>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 
-            <aside class="main-sidebar">
-                <!-- sidebar: style can be found in sidebar.less -->
-                <section class="sidebar">
-                    <!-- Sidebar user panel -->
-                    <div class="user-panel">
-                        <div class="pull-left image">
-                            <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="img-circle" alt="<?php echo $this->userIdentity()->getName(); ?>">
-                        </div>
-                        <div class="pull-left info">
-                            <p><?php echo $this->userIdentity()->getName(); ?></p>
-                            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-                        </div>
-                    </div>
-                    <!-- search form -->
-                    <form action="#" method="get" class="sidebar-form">
-                        <div class="input-group">
-                            <input type="text" name="q" class="form-control" placeholder="<?php echo $this->translate("Search..."); ?>">
-                            <span class="input-group-btn">
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- Sidebar user panel -->
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="img-circle"
+                         alt="<?php echo $this->escapeHtml($this->userIdentity()->getName()); ?>">
+                </div>
+                <div class="pull-left info">
+                    <p><?php echo $this->escapeHtml($this->userIdentity()->getName()); ?></p>
+                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                </div>
+            </div>
+            <!-- search form -->
+            <form action="#" method="get" class="sidebar-form">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="<?php echo $this->translate("Search...") ?>">
+                    <span class="input-group-btn">
                     <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
                     </button>
                   </span>
-                        </div>
-                    </form>
-                    <!-- /.search form -->
-                    <!-- sidebar menu: : style can be found in sidebar.less -->
-                    <?php
-                    echo $this->navigation(\Adminaut\Navigation\Navigation::class)->menu()
-                        ->setUlClass('nav')
-                        ->setPartial('partial/navigation/navigation.phtml');
-                    ?>
-                </section>
-                <!-- /.sidebar -->
-            </aside>
+                </div>
+            </form>
+            <!-- /.search form -->
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <?php
+            echo $this->navigation(\Adminaut\Navigation\Navigation::class)
+                ->menu()
+                ->setUlClass('nav')
+                ->setPartial('partial/navigation/navigation.phtml');
+            ?>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
 
-            <div class="content-wrapper">
-                <?php
-                // TODO
-                //echo $this->navigation('Navigation')->breadcrumbs()->setPartial(false); ?>
+    <div class="content-wrapper">
+        <?php
+        // TODO
+        //echo $this->navigation('Navigation')->breadcrumbs()->setPartial(false); ?>
 
-                <?php echo $this->content; ?>
-            </div>
+        <?php echo $this->content; ?>
+    </div>
 
-            <footer class="main-footer">
-                <?php if (isset($this->config()['adminaut']['appearance']['footer'])) { ?>
-                    <?php echo $this->config()['adminaut']['appearance']['footer'] ?>
-                <?php } ?>
-                <?php echo sprintf($this->translate("Powered by %s."), '<a href="http://adminaut.com/" target="_blank">Adminaut</a>') ?>
-            </footer>
+    <footer class="main-footer">
+        <?php echo $this->adminautAppearance('footer') ?>
+        <?php echo sprintf($this->translate('Powered by %s.'), '<a href="http://adminaut.com/" target="_blank">Adminaut</a>') ?>
+    </footer>
 
-            <?php echo $this->inlineScript(); ?>
-        </div>
-    </body>
+</div>
+<?php echo $this->inlineScript(); ?>
+<script>
+    $(document).ready(function () {
+        if (("standalone" in window.navigator) && window.navigator.standalone) {
+            // For iOS Apps
+            $('a').on('click', function (e) {
+                e.preventDefault();
+                var new_location = $(this).attr('href');
+                if (new_location != undefined && new_location.substr(0, 1) != '#' && $(this).attr('data-method') == undefined) {
+                    window.location = new_location;
+                }
+            });
+        }
+    });
+</script>
+<script>
+    //    $(document).ready(function () {
+    //        $('form[data-doubleclick="1"]').doubleClickHandler();
+    //    });
+</script>
+</body>
 </html>

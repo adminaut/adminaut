@@ -1,32 +1,34 @@
 <?php
 
 return [
-'mfcc_admin' => [
+    'adminaut' => [
         'modules' => [
             2 => [
                 'type' => 'module',
                 'module_name' => 'Datatypes',
                 'module_icon' => 'fa-list-alt',
-                'entity_class' => 'Application\Entity\Datatypes'
+                'entity_class' => 'Application\Entity\Datatypes',
             ],
             1 => [
                 'type' => 'module',
                 'module_name' => 'News',
                 'module_icon' => 'fa-list-alt',
-                'entity_class' => 'Application\Entity\News'
+                'entity_class' => 'Application\Entity\News',
             ],
+            // ...
         ],
-        'user' => [
-            'login_redirect_route' => 'adminaut/user',
-            'logout_redirect_route' => 'adminaut/user/login',
-            'enable_user_status' => true,
-            'default_user_status' => 1,
-            'allowed_login_status' => [null, 1],
-            'user_entity_class' => 'Adminaut\Entity\User',
-            'auth_adapters' => [100 => 'Adminaut\Authentication\Adapter\Db'],
-            'auth_identity_fields' => ['email'],
-            'password_cost' => 10,
-            'use_redirect_parameter_if_present' => true,
+        'authAdapter' => [
+            'failedAttemptsToLock' => 5,
+            'secondsToUnlock' => 60, // int in seconds
+            'automaticUnlockDisabled' => false,
+        ],
+        'cookieStorage' => [
+            'cookieName' => 'access-token',
+            'cookiePath' => '/',
+            'cookieDomain' => '',
+            'cookieExpires' => '+1 month',
+            'cookieHttpOnly' => true,
+            'cookieSecure' => true,
         ],
     ],
 ];

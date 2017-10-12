@@ -1,112 +1,202 @@
 <?php
+
+namespace Adminaut;
+
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
-use Zend\Mvc\Router\Http\Literal;
-use Zend\Mvc\Router\Http\Segment;
+use Zend\I18n\Translator\Translator;
+use Zend\I18n\Translator\TranslatorServiceFactory;
+use Zend\Router\Http\Segment;
+use Zend\Router\Http\Literal;
+use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
     'controllers' => [
         'factories' => [
-            Adminaut\Controller\AclController::class         => \Adminaut\Controller\Factory\AclControllerFactory::class,
-            Adminaut\Controller\InstallController::class     => \Adminaut\Controller\Factory\InstallControllerFactory::class,
-            Adminaut\Controller\ModuleController::class      => \Adminaut\Controller\Factory\ModuleControllerFactory::class,
-            Adminaut\Controller\UsersController::class       => \Adminaut\Controller\Factory\UsersControllerFactory::class,
-            Adminaut\Controller\UserController::class        => \Adminaut\Controller\Factory\UserControllerFactory::class,
+            //Controller\AclController::class => Controller\Factory\AclControllerFactory::class,
+            Controller\InstallController::class => Controller\Factory\InstallControllerFactory::class,
+            Controller\ModuleController::class => Controller\Factory\ModuleControllerFactory::class,
+            Controller\ProfileController::class => Controller\Factory\ProfileControllerFactory::class,
+            Controller\UsersController::class => Controller\Factory\UsersControllerFactory::class,
+            Controller\AuthController::class => Controller\Factory\AuthControllerFactory::class,
+            Controller\ManifestController::class => Controller\Factory\ManifestControllerFactory::class,
+            Controller\DashboardController::class => InvokableFactory::class,
+            Controller\IndexController::class => InvokableFactory::class,
         ],
-
-        'abstract_factories' => [
-            \Adminaut\Controller\Factory\AdminautControllerAbstractFactory::class
-        ]
     ],
-
-
 
     'controller_plugins' => [
         'factories' => [
-            'userAuthentication'                              => \Adminaut\Controller\Plugin\Factory\UserAuthenticationControllerPluginFactory::class,
-            'acl'                                             => \Adminaut\Controller\Plugin\Factory\AclControllerPluginFactory::class,
-        ]
+            Controller\Plugin\AuthenticationPlugin::class => Controller\Plugin\Factory\AuthenticationPluginFactory::class,
+            Controller\Plugin\IsAllowedPlugin::class => Controller\Plugin\Factory\IsAllowedPluginFactory::class,
+            Controller\Plugin\ConfigPlugin::class => Controller\Plugin\Factory\ConfigPluginFactory::class,
+            Controller\Plugin\TranslatePlugin::class => Controller\Plugin\Factory\TranslatePluginFactory::class,
+            Controller\Plugin\TranslatePluralPlugin::class => Controller\Plugin\Factory\TranslatePluralPluginFactory::class,
+        ],
+        'aliases' => [
+            'authentication' => Controller\Plugin\AuthenticationPlugin::class,
+            'isAllowed' => Controller\Plugin\IsAllowedPlugin::class,
+            'config' => Controller\Plugin\ConfigPlugin::class,
+            'translate' => Controller\Plugin\TranslatePlugin::class,
+            'translatePlural' => Controller\Plugin\TranslatePluralPlugin::class,
+        ],
     ],
-
-
 
     'service_manager' => [
-        'alias' => [
-//            'UserAuthService' => \Zend\Authentication\AuthenticationService::class
-        ],
+
         'factories' => [
             // Authentication
-            Adminaut\Authentication\Adapter\Db::class               => Adminaut\Authentication\Adapter\Factory\DbFactory::class,
-            Adminaut\Authentication\Storage\Db::class               => Adminaut\Authentication\Storage\Factory\DbFactory::class,
-            'UserAuthService'                                       => Adminaut\Authentication\Factory\AuthenticationServiceFactory::class,
-            \Adminaut\Authentication\Adapter\AdapterChain::class    => \Adminaut\Authentication\Adapter\Factory\AdapterChainFactory::class,
+            Authentication\Adapter\AuthAdapter::class => Authentication\Adapter\Factory\AuthAdapterFactory::class,
+            Authentication\Storage\AuthStorage::class => Authentication\Storage\Factory\AuthStorageFactory::class,
+            Authentication\Storage\CookieStorage::class => Authentication\Storage\Factory\CookieStorageFactory::class,
+            Authentication\Service\AuthenticationService::class => Authentication\Service\Factory\AuthenticationServiceFactory::class,
 
-            // Controller
-            'UserRedirectCallback'                                  => \Adminaut\Controller\Factory\RedirectCallbackFactory::class,
+            // Filesystem
+            'adminautPrivateFilesystem' => Filesystem\Factory\PrivateFilesystemFactory::class,
+            'adminautPrivateFilesystemAdapter' => Filesystem\Adapter\Factory\PrivateAdapterFactory::class,
+            'adminautPublicFilesystem' => Filesystem\Factory\PublicFilesystemFactory::class,
+            'adminautPublicFilesystemAdapter' => Filesystem\Adapter\Factory\PublicAdapterFactory::class,
 
             // Manager
-            \Adminaut\Manager\ModuleManager::class                => \Adminaut\Manager\Factory\ModuleManagerFactory::class,
-            'AdminModulesManager'                                   => \Adminaut\Manager\Factory\AdminModulesManagerFactory::class,
-            \Adminaut\Manager\FileManager::class                    => \Adminaut\Manager\Factory\FileManagerFactory::class,
-
-            // Mapper
-            \Adminaut\Mapper\UserMapper::class                      => \Adminaut\Mapper\Factory\UserMapperFactory::class,
-            \Adminaut\Mapper\RoleMapper::class                      => \Adminaut\Mapper\Factory\RoleMapperFactory::class,
-            'ResourceMapper'                                        => 'MfccAdminModule\Factory\Mapper\ResourceMapperFactory',
+            Manager\ModuleManager::class => Manager\Factory\ModuleManagerFactory::class,
+            Manager\UserManager::class => Manager\Factory\UserManagerFactory::class,
+            Manager\AdminautModulesManager::class => Manager\Factory\AdminautModulesManagerFactory::class,
+            Manager\FileManager::class => Manager\Factory\FileManagerFactory::class,
 
             //Navigation
-            \Adminaut\Navigation\Navigation::class                  => \Adminaut\Navigation\NavigationFactory::class,
+            Navigation\Navigation::class => Navigation\Factory\NavigationFactory::class,
 
             // Options
-            \Adminaut\Options\UserOptions::class                    => \Adminaut\Options\Factory\UserOptionsFactory::class,
-            \Adminaut\Options\FileManagerOptions::class             => \Adminaut\Options\Factory\FileManagerOptionsFactory::class,
+            Options\AdminautOptions::class => Options\Factory\AdminautOptionsFactory::class,
+            Options\AppearanceOptions::class => Options\Factory\AppearanceOptionsFactory::class,
+            Options\AuthAdapterOptions::class => Options\Factory\AuthAdapterOptionsFactory::class,
+            Options\CookieStorageOptions::class => Options\Factory\CookieStorageOptionsFactory::class,
+            Options\UsersOptions::class => Options\Factory\UsersOptionsFactory::class,
 
             // Service
-            \Adminaut\Service\AccessControlService::class           => \Adminaut\Service\Factory\AccessControlServiceFactory::class,
-            \Adminaut\Service\UserService::class                    => \Adminaut\Service\Factory\UserServiceFactory::class,
+            Service\AccessControlService::class => Service\Factory\AccessControlServiceFactory::class,
+            Service\ManifestService::class => Service\Factory\ManifestServiceFactory::class,
 
-            \Zend\Mvc\I18n\Translator::class => \Zend\Mvc\Service\TranslatorServiceFactory::class,
-        ]
+            // Translator service
+            Translator::class => TranslatorServiceFactory::class,
+        ],
+
+        'aliases' => [
+            'translator' => Translator::class,
+        ],
     ],
 
+    'dependencies' => [
 
+        'factories' => [
+            'FormElementManager' => Datatype\DatatypeManagerFactory::class,
+        ],
+    ],
 
     'view_helpers' => [
+
         'invokables' => [
-            'formDate'                                              => \Adminaut\Form\View\Helper\FormDate::class,
-            'formDateTime'                                          => \Adminaut\Form\View\Helper\FormDateTime::class,
-            'formFile'                                              => \Adminaut\Form\View\Helper\FormFile::class,
-            'formCheckbox'                                          => \Adminaut\Form\View\Helper\FormCheckbox::class,
-//            'formCheckbox'                                          => \Adminaut\Form\View\Helper\Checkbox::class,
+            // form collection
+            'formCollection' => Datatype\View\Helper\FormCollection::class, // todo: rename to datatypeFormCollection so we don't overwrite default formCollection?
+
+            // form helpers
+            'datatypeFormSelect' => Datatype\Select\FormViewHelper::class,
+            'datatypeFormCheckbox' => Datatype\Checkbox\FormViewHelper::class,
+            'datatypeFormMultiCheckbox' => Datatype\MultiCheckbox\FormViewHelper::class,
+            'datatypeFormMultiReference' => Datatype\MultiReference\FormViewHelper::class,
+            'datatypeFormLocation' => Datatype\Location\FormViewHelper::class,
+            'datatypeFormGoogleMap' => Datatype\GoogleMap\FormViewHelper::class,
+            'datatypeFormGoogleStreetView' => Datatype\GoogleStreetView\FormViewHelper::class,
+            'datatypeFormGooglePlaceId' => Datatype\GooglePlaceId\FormViewHelper::class,
+            'datatypeFormDateTime' => Datatype\DateTime\FormViewHelper::class,
+            'datatypeFormTextarea' => Datatype\Textarea\FormViewHelper::class,
+
+            // detail helpers
+            'datatypeDetail' => Datatype\View\Helper\datatypeDetailViewHelper::class,
+            'datatypeLocationDetail' => Datatype\Location\DetailViewHelper::class,
+            'datatypeGoogleMapDetail' => Datatype\GoogleMap\DetailViewHelper::class,
+            'datatypeGoogleStreetViewDetail' => Datatype\GoogleStreetView\DetailViewHelper::class,
+            'datatypeTextareaDetail' => Datatype\Textarea\DetailViewHelper::class,
+
+            'formrow' => Datatype\View\Helper\FormRow::class,
+            'form_row' => Datatype\View\Helper\FormRow::class,
+            'formRow' => Datatype\View\Helper\FormRow::class,
+            'FormRow' => Datatype\View\Helper\FormRow::class,
         ],
 
         'factories' => [
-            'formElement'                                           => \Adminaut\Form\View\Helper\Factory\FormElementFactory::class,
-            'userIdentity'                                          => \Adminaut\View\Helper\Factory\UserIdentityViewHelperFactory::class,
-            'isAllowed'                                             => \Adminaut\View\Helper\Factory\IsAllowedViewHelperFactory::class,
-            'config'                                                => \Adminaut\View\Helper\Factory\ConfigViewHelperFactory::class,
-//            'getFileById'                                           => 'MfccAdminModule\Factory\Vie'
-        ]
+            Form\View\Helper\FormElement::class => Form\View\Helper\Factory\FormElementFactory::class,
+            View\Helper\UserIdentity::class => View\Helper\Factory\UserIdentityFactory::class,
+            View\Helper\IsAllowed::class => View\Helper\Factory\IsAllowedViewHelperFactory::class,
+            View\Helper\ConfigViewHelper::class => View\Helper\Factory\ConfigViewHelperFactory::class,
+            View\Helper\AppearanceViewHelper::class => View\Helper\Factory\AppearanceViewHelperFactory::class,
+            View\Helper\VariableViewHelper::class => View\Helper\Factory\VariableViewHelperFactory::class,
+            View\Helper\GetDataTableLanguage::class => View\Helper\Factory\GetDataTableLanguageFactory::class,
+
+            Datatype\File\FormViewHelper::class => Datatype\File\Factory\FormViewHelperFactory::class,
+            'formElement' => Form\View\Helper\Factory\FormElementFactory::class,
+            'FormElement' => Form\View\Helper\Factory\FormElementFactory::class,
+            'form_element' => Form\View\Helper\Factory\FormElementFactory::class,
+            'formelement' => Form\View\Helper\Factory\FormElementFactory::class,
+
+            // Datatype helpers
+            Datatype\View\Helper\FormRow::class => Datatype\View\Helper\Factory\FormRowFactory::class,
+            Datatype\View\Helper\Datatype::class => Datatype\View\Helper\Factory\DatatypeFactory::class,
+
+            'datatypeFormReference' => Datatype\Reference\Factory\FormViewHelperFactory::class,
+        ],
+
+        'aliases' => [
+            'userIdentity' => View\Helper\UserIdentity::class,
+            'isAllowed' => View\Helper\IsAllowed::class,
+            'config' => View\Helper\ConfigViewHelper::class,
+            'getDataTableLanguage' => View\Helper\GetDataTableLanguage::class,
+
+            'adminautAppearance' => View\Helper\AppearanceViewHelper::class,
+            'adminautVariable' => View\Helper\VariableViewHelper::class,
+
+
+            'datatypeFormFile' => Datatype\File\FormViewHelper::class,
+            'formElement' => Form\View\Helper\FormElement::class,
+            'FormElement' => Form\View\Helper\FormElement::class,
+            'form_element' => Form\View\Helper\FormElement::class,
+            'formelement' => Form\View\Helper\FormElement::class,
+
+
+            // Datatype helpers
+            'formrow' => Datatype\View\Helper\FormRow::class,
+            'form_row' => Datatype\View\Helper\FormRow::class,
+            'formRow' => Datatype\View\Helper\FormRow::class,
+            'FormRow' => Datatype\View\Helper\FormRow::class,
+            'datatype' => Datatype\View\Helper\Datatype::class,
+        ],
     ],
-
-
 
     'form_elements' => [
-        'invokables' => [
-//            'Image'                                              => 'MfccAdminModule\Form\Element\Image'
+        'initializers' => [
+//            'ObjectManager' => Initializer\ObjectManagerInitializer::class,
+//            'ObjectManagerInitializer' => Initializer\ObjectManagerInitializer::class,
+//            'ObjectManager' => function ($element, $formElements) {
+//                if ($element instanceof ObjectManagerAwareInterface) {
+//                    $services = $formElements->getServiceLocator();
+//                    $entityManager = $services->get('Doctrine\ORM\EntityManager');
+//
+//                    $element->setObjectManager($entityManager);
+//                }
+//            },
         ],
-        'initializers' => array(
-            'ObjectManager' => \Adminaut\Initializer\ObjectManagerInitializer::class
-        ),
+        'factories' => [
+            Initializer\ObjectManagerInitializer::class => Initializer\Factory\ObjectManagerInitializerFactory::class,
+        ],
+
     ],
-
-
 
     'doctrine' => [
         'driver' => [
             'adminaut_driver' => [
-                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'class' => AnnotationDriver::class,
                 'cache' => 'array',
-                'paths' => [__DIR__ . '/../src/Adminaut/Entity']
+                'paths' => [__DIR__ . '/../src/Entity'],
             ],
             'orm_default' => [
                 'drivers' => [
@@ -116,16 +206,14 @@ return [
         ],
     ],
 
-
-
     'router' => [
         'routes' => [
             'adminaut' => [
-                'type' => Literal::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route' => '/admin',
+                    'route' => '/admin[/]',
                     'defaults' => [
-                        'controller' => \Adminaut\Controller\IndexController::class,
+                        'controller' => Controller\IndexController::class,
                         'action' => 'index',
                     ],
                 ],
@@ -134,18 +222,19 @@ return [
                     'manifest' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/manifest',
+                            'route' => 'manifest',
                             'defaults' => [
-                                'action' => 'manifest',
+                                'controller' => Controller\ManifestController::class,
+                                'action' => 'index',
                             ],
                         ],
                     ],
                     'install' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/install',
+                            'route' => 'install',
                             'defaults' => [
-                                'controller' => \Adminaut\Controller\InstallController::class,
+                                'controller' => Controller\InstallController::class,
                                 'action' => 'index',
                             ],
                         ],
@@ -153,9 +242,9 @@ return [
                     'dashboard' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/dashboard',
+                            'route' => 'dashboard',
                             'defaults' => [
-                                'controller' => \Adminaut\Controller\DashboardController::class,
+                                'controller' => Controller\DashboardController::class,
                                 'action' => 'index',
                             ],
                         ],
@@ -163,9 +252,9 @@ return [
                     'module' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/module',
+                            'route' => 'module',
                             'defaults' => [
-                                'controller' => \Adminaut\Controller\ModuleController::class,
+                                'controller' => Controller\ModuleController::class,
                                 'action' => 'index',
                             ],
                         ],
@@ -179,7 +268,7 @@ return [
                                         'action' => 'list',
                                     ],
                                     'constraints' => [
-                                        'module_id' => '[a-z]*',
+                                        'module_id' => '[a-z\-]*',
                                     ],
                                 ],
                             ],
@@ -190,11 +279,11 @@ return [
                                     'defaults' => [
                                         'tab' => 'main',
                                         'mode' => 'list',
-                                        'action' => 'index'
+                                        'action' => 'index',
                                     ],
                                     'constraints' => [
-                                        'mode'    => '(view|add|edit)',
-                                        'module_id' => '[a-z]*',
+                                        'mode' => '(view|add|edit)',
+                                        'module_id' => '[a-z\-]*',
                                         'entity_id' => '[0-9]*',
                                     ],
                                 ],
@@ -206,14 +295,12 @@ return [
                                             'route' => '/:tab',
                                             'defaults' => [
                                                 'action' => 'tab',
-                                                'tab' => 'main'
+                                                'tab' => 'main',
                                             ],
                                             'constraints' => [
-                                                'module_id' => '[a-z]*',
-                                                'entity_id' => '[0-9]*',
                                                 'cyclic_entity_id' => '[0-9]*',
-                                                'tab' => '[a-z]*'
-                                            ]
+                                                'tab' => '[a-z]*',
+                                            ],
                                         ],
                                         'may_terminate' => true,
                                         'child_routes' => [
@@ -222,20 +309,16 @@ return [
                                                 'options' => [
                                                     'route' => '/:cyclic_entity_id/:entity_action',
                                                     'defaults' => [
-                                                        'action' => 'tab'
+                                                        'action' => 'tab',
                                                     ],
                                                     'constraints' => [
-                                                        'module_id' => '[a-z]*',
-                                                        'entity_id' => '[0-9]*',
-                                                        'cyclic_entity_id' => '[0-9]*',
                                                         'entity_action' => '[a-z]*',
-                                                        'tab' => '[a-z]*'
-                                                    ]
+                                                    ],
                                                 ],
                                             ],
-                                        ]
+                                        ],
                                     ],
-                                ]
+                                ],
                             ],
                             'delete' => [
                                 'type' => Segment::class,
@@ -245,19 +328,19 @@ return [
                                         'action' => 'delete',
                                     ],
                                     'constraints' => [
-                                        'module_id' => '[a-z]*',
+                                        'module_id' => '[a-z\-]*',
                                         'entity_id' => '[0-9]*',
                                     ],
                                 ],
-                            ]
+                            ],
                         ],
                     ],
                     'users' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/users',
+                            'route' => 'users',
                             'defaults' => [
-                                'controller' => \Adminaut\Controller\UsersController::class,
+                                'controller' => Controller\UsersController::class,
                                 'action' => 'index',
                             ],
                         ],
@@ -290,9 +373,26 @@ return [
                                     'route' => '/edit/:id',
                                     'defaults' => [
                                         'action' => 'edit',
+                                        'tab' => 'main',
                                     ],
                                     'constraints' => [
                                         'id' => '[0-9]*',
+                                    ],
+                                ],
+                                'may_terminate' => true,
+                                'child_routes' => [
+                                    'tab' => [
+                                        'type' => Segment::class,
+                                        'options' => [
+                                            'route' => '/:tab',
+                                            'defaults' => [
+                                                'action' => 'tab',
+                                                'tab' => 'main',
+                                            ],
+                                            'constraints' => [
+                                                'tab' => '[a-z]*',
+                                            ],
+                                        ],
                                     ],
                                 ],
                             ],
@@ -313,9 +413,9 @@ return [
                     'acl' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/acl',
+                            'route' => 'acl',
                             'defaults' => [
-                                'controller' => \Adminaut\Controller\AclController::class,
+                                'controller' => Controller\AclController::class,
                                 'action' => 'index',
                             ],
                         ],
@@ -365,15 +465,15 @@ return [
                                         'roleId' => '[0-9]*',
                                     ],
                                 ],
-                            ]
+                            ],
                         ],
                     ],
                     'settings' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/acl',
+                            'route' => 'acl',
                             'defaults' => [
-                                'controller' => \Adminaut\Controller\AclController::class,
+                                'controller' => Controller\AclController::class,
                                 'action' => 'index',
                             ],
                         ],
@@ -438,13 +538,13 @@ return [
                             ],
                         ],
                     ],
-                    'user' => [
+                    'auth' => [
                         'type' => Literal::class,
                         'priority' => 1000,
                         'options' => [
-                            'route' => '/user',
+                            'route' => 'auth',
                             'defaults' => [
-                                'controller' => \Adminaut\Controller\UserController::class,
+                                'controller' => Controller\AuthController::class,
                                 'action' => 'index',
                             ],
                         ],
@@ -455,28 +555,7 @@ return [
                                 'options' => [
                                     'route' => '/login',
                                     'defaults' => [
-                                        'controller' => \Adminaut\Controller\UserController::class,
                                         'action' => 'login',
-                                    ],
-                                ],
-                            ],
-                            'forgot-password' => [
-                                'type' => Literal::class,
-                                'options' => [
-                                    'route' => '/forgot-password',
-                                    'defaults' => [
-                                        'controller' => \Adminaut\Controller\UserController::class,
-                                        'action' => 'forgotPassword',
-                                    ],
-                                ],
-                            ],
-                            'authenticate' => [
-                                'type' => Literal::class,
-                                'options' => [
-                                    'route' => '/authenticate',
-                                    'defaults' => [
-                                        'controller' => \Adminaut\Controller\UserController::class,
-                                        'action' => 'authenticate',
                                     ],
                                 ],
                             ],
@@ -485,8 +564,96 @@ return [
                                 'options' => [
                                     'route' => '/logout',
                                     'defaults' => [
-                                        'controller' => \Adminaut\Controller\UserController::class,
-                                        'action'     => 'logout',
+                                        'action' => 'logout',
+                                    ],
+                                ],
+                            ],
+                            'forgotten-password' => [
+                                'type' => Literal::class,
+                                'options' => [
+                                    'route' => '/forgotten-password',
+                                    'defaults' => [
+                                        'action' => 'forgottenPassword',
+                                    ],
+                                ],
+                            ],
+                            'request-access' => [
+                                'type' => Literal::class,
+                                'options' => [
+                                    'route' => '/request-access',
+                                    'defaults' => [
+                                        'action' => 'requestAccess',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                    'profile' => [
+                        'type' => Literal::class,
+                        'priority' => 1000,
+                        'options' => [
+                            'route' => 'profile',
+                            'defaults' => [
+                                'controller' => Controller\ProfileController::class,
+                                'action' => 'index',
+                            ],
+                        ],
+                        'may_terminate' => true,
+                        'child_routes' => [
+                            'settings' => [
+                                'type' => Literal::class,
+                                'options' => [
+                                    'route' => '/settings',
+                                    'defaults' => [
+                                        'action' => 'settings',
+                                    ],
+                                ],
+                            ],
+                            'change-password' => [
+                                'type' => Literal::class,
+                                'options' => [
+                                    'route' => '/change-password',
+                                    'defaults' => [
+                                        'action' => 'changePassword',
+                                    ],
+                                ],
+                            ],
+                            'logins' => [
+                                'type' => Literal::class,
+                                'options' => [
+                                    'route' => '/logins',
+                                    'defaults' => [
+                                        'action' => 'logins',
+                                    ],
+                                ],
+                            ],
+                            'access-tokens' => [
+                                'type' => Literal::class,
+                                'options' => [
+                                    'route' => '/access-tokens',
+                                    'defaults' => [
+                                        'action' => 'accessTokens',
+                                    ],
+                                ],
+                                'may_terminate' => true,
+                                'child_routes' => [
+                                    'delete' => [
+                                        'type' => Segment::class,
+                                        'options' => [
+                                            'route' => '/delete/:id',
+                                            'defaults' => [
+                                                'action' => 'deleteAccessToken',
+                                            ],
+                                        ],
+                                    ],
+                                    'delete-all' => [
+                                        'type' => Literal::class,
+                                        'options' => [
+                                            'route' => '/delete-all',
+                                            'defaults' => [
+                                                'action' => 'deleteAllAccessTokens',
+                                            ],
+                                        ],
                                     ],
                                 ],
                             ],
@@ -496,12 +663,6 @@ return [
             ],
         ],
     ],
-
-
-
-
-
-
 
     'view_manager' => [
         'template_map' => [

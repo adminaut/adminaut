@@ -3,33 +3,31 @@
         <?php echo $this->moduleOption->getModuleName() ?>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
-        <li><a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->moduleOption->getModuleName() ?></a></li>
-        <li class="active"><?php echo $this->moduleOption->getLabels()['entity_detail'] ?></li>
+        <li><a href="<?php echo $this->url('adminaut/dashboard'); ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
+        <li><a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->moduleOption->getModuleName() ?></a>
+        </li>
+        <li class="active"><?php echo $this->moduleOption->getLabels()['record_detail'] ?></li>
     </ol>
 </section>
 
 <section class="content">
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="nav-tabs-custom">
-                <?php
-                $actions = [];
-                if ($this->isAllowed($this->moduleOption->getModuleName(), \Adminaut\Service\AccessControlService::WRITE)) {
-                    $actions[] = [
-                        'url' => $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode' => 'update']),
-                        'icon' => 'fa fa-pencil'
-                    ];
-                    $actions[] = [
-                        'url' => $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode'=>'add']),
-                        'icon' => 'fa fa-plus'
-                    ];
-                }
-                ?>
-                <?php echo $this->partial('partial/tabs.phtml', ['url_params' => $this->url_params, 'tabs' => $this->tabs, 'actions' => $actions]); ?>
-                <div class="tab-content">
-                    <?php echo $this->content ?>
-                </div>
-            </div>
+    <div class="nav-tabs-custom">
+        <?php
+        $actions = [];
+        if ($this->isAllowed($this->moduleOption->getModuleName(), \Adminaut\Service\AccessControlService::WRITE)) {
+            $actions[] = [
+                'url' => $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode' => 'update']),
+                'icon' => 'fa fa-pencil',
+            ];
+            $actions[] = [
+                'url' => $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'add']),
+                'icon' => 'fa fa-plus',
+            ];
+        }
+        ?>
+        <?php echo $this->partial('partial/tabs.phtml', ['url_params' => $this->url_params, 'tabs' => $this->tabs, 'actions' => $actions]); ?>
+        <div class="tab-content">
+            <?php echo $this->content ?>
         </div>
+    </div>
 </section>

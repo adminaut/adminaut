@@ -1,10 +1,10 @@
 <section class="content-header">
     <h1>
-        <?php echo $this->translate('Users:') ?>
-        <small><?php echo $this->user->getName() ?></small>
+        <?php echo $this->translate('Users:'); ?>
+        <small><?php echo $this->escapeHtml($this->user->getName()); ?></small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
+        <li><a href="<?php echo $this->url('adminaut/dashboard'); ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
         <li><a href="<?php echo $this->url('adminaut/users'); ?>"><?php echo $this->translate("Users"); ?></a></li>
         <li class="active"><?php echo $this->translate("Detail"); ?></li>
     </ol>
@@ -21,15 +21,15 @@
                 <div class="box-body">
                     <h4><?php echo $this->translate('Name'); ?></h4>
                     <p>
-                        <?php echo $this->user->getName(); ?>
+                        <?php echo $this->escapeHtml($this->user->getName()); ?>
                     </p>
-                    <hr />
+                    <hr/>
 
                     <h4><?php echo $this->translate('Email'); ?></h4>
                     <p>
-                        <?php echo $this->user->getEmail(); ?>
+                        <?php echo $this->escapeHtml($this->user->getEmail()); ?>
                     </p>
-                    <hr />
+                    <hr/>
 
                     <h4><?php echo $this->translate('Active'); ?></h4>
                     <p>
@@ -43,9 +43,13 @@
                 <!-- /.tab-content -->
                 <div class="box-footer clearfix">
                     <?php if ($this->isAllowed('users', 2)) { ?>
-                        <a href="<?php echo $this->url('adminaut/users/edit', ['id' => $this->user->getId()]); ?>" class="btn btn-primary"><?php echo $this->translate('Edit'); ?></a>
+                        <a href="<?php echo $this->url('adminaut/users/edit', ['id' => $this->user->getId()]); ?>" class="btn btn-primary">
+                            <?php echo $this->translate('Edit'); ?>
+                        </a>
                     <?php } ?>
-                    <a href="<?php echo $this->url('adminaut/users'); ?>" class="btn btn-link"><?php echo $this->translate('Back to list'); ?></a>
+                    <a href="<?php echo $this->url('adminaut/users'); ?>" class="btn btn-link">
+                        <?php echo $this->translate('Back to list'); ?>
+                    </a>
                 </div>
                 <!-- /.box-footer -->
             </div>

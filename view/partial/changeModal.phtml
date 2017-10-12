@@ -1,0 +1,27 @@
+<?php if (isset($formId)) { ?>
+
+    <script>
+        $(document).ready(function () {
+            window.somethingChanged = false;
+
+            var $form = $('#<?php echo $formId; ?>');
+
+            $form.on('change', function () {
+                window.somethingChanged = true;
+            });
+
+            $form.on('submit', function () {
+                $(window).unbind('beforeunload');
+            });
+
+            $(window).bind('beforeunload', function (e) {
+                if (window.somethingChanged) {
+                    return '<?php echo $this->translate(_('You made some changes. Do you want to leave page?')); ?>';
+                } else {
+                    e = null; // i.e; if form state change show warning box, else don't show it.
+                }
+            });
+        });
+    </script>
+
+<?php } ?>

@@ -1,0 +1,30 @@
+<div class="login-box">
+    <div class="box login-box-body">
+
+        <?php echo $this->partial('partial/messages'); ?>
+
+        <p class="login-box-msg"><?php echo $this->translate('Sign in to start your session'); ?></p>
+
+        <?php
+
+        /** @var Adminaut\Form\UserLoginForm $form */
+        $form = $this->form;
+
+        if (isset($this->redirect) && null !== $this->redirect) {
+            $url = $this->url('adminaut/auth/login', [], ['query' => ['redirect' => $this->redirect]]);
+        } else {
+            $url = $this->url('adminaut/auth/login');
+        }
+
+        $form->setAttribute('action', $url);
+        $form->prepare();
+
+        echo $this->form(null, null)->openTag($form);
+        echo $this->formCollection($form);
+        echo $this->form()->closeTag();
+        ?>
+
+        <a href="<?php echo $this->url('adminaut/auth/forgotten-password'); ?>"><?php echo $this->translate("I forgot my password"); ?></a><br>
+        <a href="<?php echo $this->url('adminaut/auth/request-access'); ?>"><?php echo $this->translate("Request access"); ?></a>
+    </div>
+</div>

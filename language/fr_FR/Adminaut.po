@@ -9,16 +9,16 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: crowdin.com\n"
+"X-Generator: Poedit 1.8.7.1\n"
 "X-Poedit-Basepath: ../..\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Poedit-KeywordsList: translate;translatePlural:1,2;translateContext:1c,2;translateContextPlural:1c,2,3\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.js\n"
 "X-Crowdin-Project: adminaut\n"
 "X-Crowdin-Language: fr\n"
 "X-Crowdin-File: /develop/language/source/Adminaut.po\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
 
 #: src/Authentication/Adapter/AuthAdapter.php:62
 #: src/Authentication/Adapter/AuthAdapter.php:67
@@ -516,4 +516,3 @@ msgstr "Non"
 #: view/partial/deleteModal.phtml:13
 msgid "Yes, delete it"
 msgstr "Oui, supprimez"
-
