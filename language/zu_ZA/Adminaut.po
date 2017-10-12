@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
-"POT-Creation-Date: 2017-09-08 11:06+0200\n"
-"PO-Revision-Date: 2017-09-08 05:30-0400\n"
+"POT-Creation-Date: 2017-10-12 11:49+0200\n"
+"PO-Revision-Date: 2017-10-12 05:51-0400\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: Zulu\n"
 "Language: zu_ZA\n"
@@ -40,6 +40,10 @@ msgstr "crwdns145:0%scrwdne145:0"
 #: src/Authentication/Adapter/AuthAdapter.php:103
 msgid "Authenticated successfully."
 msgstr "crwdns146:0crwdne146:0"
+
+#: src/Controller/AdminautBaseController.php:59
+msgid "Wild application error occurred."
+msgstr "crwdns182:0crwdne182:0"
 
 #: src/Controller/InstallController.php:72
 #: src/Controller/UsersController.php:189
