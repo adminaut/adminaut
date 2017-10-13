@@ -8,6 +8,10 @@ use League\Flysystem\Filesystem;
 use WideImage\WideImage;
 use Zend\View\Helper\AbstractHelper;
 
+/**
+ * Class ImageHelper
+ * @package Adminaut\View\Helper
+ */
 class ImageHelper extends AbstractHelper
 {
     /**
@@ -31,7 +35,6 @@ class ImageHelper extends AbstractHelper
         $this->publicFilesystem = $publicFilesystem;
     }
 
-
     /**
      * @param File $image
      * @param int|string $width
@@ -43,22 +46,25 @@ class ImageHelper extends AbstractHelper
      * @param int $alpha
      * @return string
      * @throws \Exception
+     * todo: make params after $height in array?
      */
-    public function __invoke(File $image, $width='auto', $height='auto', $mode='clip', $cropAreaX='center', $cropAreaY='center', $bg='ffffff', $alpha=0)
+    public function __invoke(File $image, $width = 'auto', $height = 'auto', $mode = 'clip', $cropAreaX = 'center', $cropAreaY = 'center', $bg = 'ffffff', $alpha = 0)
     {
         /** @var Local $publicAdapter */
         $publicAdapter = $this->publicFilesystem->getAdapter();
+
         /** @var string $sourcePath */
         $sourcePath = $image->getSavePath();
+
         /** @var string $sourceExtension */
         $sourceExtension = $image->getFileExtension();
 
-        if($width == 'auto' && $height == 'auto') {
+        if ($width == 'auto' && $height == 'auto') {
             $resultPath = $sourcePath . '.' . $sourceExtension;
-        } elseif($mode == 'clip' && ($width == 'auto' || $height == 'auto')) {
-            if($width != 'auto') {
+        } else if ($mode == 'clip' && ($width == 'auto' || $height == 'auto')) {
+            if ($width != 'auto') {
                 $resultPath = $sourcePath . '-' . $width . '-auto' . $sourceExtension;
-            }else {
+            } else {
                 $resultPath = $sourcePath . '-auto-' . $height . '.' . $sourceExtension;
             }
         } else {
@@ -66,7 +72,7 @@ class ImageHelper extends AbstractHelper
             $resultPath = $sourcePath . '-' . $width . '-' . $height . '-' . $hash . '.' . $sourceExtension;
         }
 
-        if(!$this->publicFilesystem->has($resultPath)) {
+        if (!$this->publicFilesystem->has($resultPath)) {
             /** @var Local $privateAdapter */
             $privateAdapter = $this->privateFilesystem->getAdapter();
             $fullPath = realpath($privateAdapter->applyPathPrefix($sourcePath));
@@ -75,13 +81,13 @@ class ImageHelper extends AbstractHelper
                 $original = WideImage::load($fullPath);
                 $result = $original->copy();
 
-                if(function_exists('exif_read_data')) {
+                if (function_exists('exif_read_data')) {
                     $exifData = @exif_read_data($fullPath);
                     $orientation = isset($exifData['Orientation']) ? $exifData['Orientation'] : 1;
                     $result = $result->correctExif($orientation);
                 }
 
-                if(!($width == 'auto' && $height == 'auto')) {
+                if ($width !== 'auto' || $height !== 'auto') {
                     switch ($mode) {
                         case 'scale':
                             $_w = $width == 'auto' ? null : $width;
@@ -129,9 +135,14 @@ class ImageHelper extends AbstractHelper
             }
         }
 
-        $publicPath = str_replace('\\', '/', str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', realpath($publicAdapter->applyPathPrefix('/'))));
-        $publicPath = substr($publicPath, 0, 1) !== '/' ? '/'.$publicPath : $publicPath;
+        $publicPath = str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', realpath($publicAdapter->applyPathPrefix('/')));
 
-        return $publicPath . '/' . $resultPath;
+        // fix windows directory separators
+        $publicPath = str_replace('\\', '/', $publicPath);
+
+        // remove / from string beginning
+        $publicPath = ltrim($publicPath, '/');
+
+        return '/' . $publicPath . '/' . $resultPath;
     }
 }
