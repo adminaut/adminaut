@@ -63,7 +63,7 @@ class ImageHelper extends AbstractHelper
             $resultPath = $sourcePath . '.' . $sourceExtension;
         } else if ($mode == 'clip' && ($width == 'auto' || $height == 'auto')) {
             if ($width != 'auto') {
-                $resultPath = $sourcePath . '-' . $width . '-auto' . $sourceExtension;
+                $resultPath = $sourcePath . '-' . $width . '-auto.' . $sourceExtension;
             } else {
                 $resultPath = $sourcePath . '-auto-' . $height . '.' . $sourceExtension;
             }
