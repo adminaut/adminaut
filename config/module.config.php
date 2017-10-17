@@ -3,12 +3,14 @@
 namespace Adminaut;
 
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
-use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Zend\I18n\Translator\Translator;
 use Zend\I18n\Translator\TranslatorServiceFactory;
 use Zend\Router\Http\Segment;
 use Zend\Router\Http\Literal;
 use Zend\ServiceManager\Factory\InvokableFactory;
+
+const CONSTRAINT_KEY = '[a-zA-Z-]+';
+const CONSTRAINT_ID = '[1-9][0-9]*';
 
 return [
     'controllers' => [
@@ -271,7 +273,7 @@ return [
                                         'action' => 'list',
                                     ],
                                     'constraints' => [
-                                        'module_id' => '[a-z\-]*',
+                                        'module_id' => CONSTRAINT_KEY,
                                     ],
                                 ],
                             ],
@@ -286,8 +288,8 @@ return [
                                     ],
                                     'constraints' => [
                                         'mode' => '(view|add|edit)',
-                                        'module_id' => '[a-z\-]*',
-                                        'entity_id' => '[0-9]*',
+                                        'module_id' => CONSTRAINT_KEY,
+                                        'entity_id' => CONSTRAINT_ID,
                                     ],
                                 ],
                                 'may_terminate' => true,
@@ -301,8 +303,8 @@ return [
                                                 'tab' => 'main',
                                             ],
                                             'constraints' => [
-                                                'cyclic_entity_id' => '[0-9]*',
-                                                'tab' => '[a-z]*',
+                                                'cyclic_entity_id' => CONSTRAINT_ID,
+                                                'tab' => CONSTRAINT_KEY,
                                             ],
                                         ],
                                         'may_terminate' => true,
@@ -315,7 +317,7 @@ return [
                                                         'action' => 'tab',
                                                     ],
                                                     'constraints' => [
-                                                        'entity_action' => '[a-z]*',
+                                                        'entity_action' => CONSTRAINT_KEY,
                                                     ],
                                                 ],
                                             ],
@@ -331,8 +333,8 @@ return [
                                         'action' => 'delete',
                                     ],
                                     'constraints' => [
-                                        'module_id' => '[a-z\-]*',
-                                        'entity_id' => '[0-9]*',
+                                        'module_id' => CONSTRAINT_KEY,
+                                        'entity_id' => CONSTRAINT_ID,
                                     ],
                                 ],
                             ],
@@ -357,7 +359,7 @@ return [
                                         'action' => 'view',
                                     ],
                                     'constraints' => [
-                                        'id' => '[0-9]*',
+                                        'id' => CONSTRAINT_ID,
                                     ],
                                 ],
                             ],
@@ -379,7 +381,7 @@ return [
                                         'tab' => 'main',
                                     ],
                                     'constraints' => [
-                                        'id' => '[0-9]*',
+                                        'id' => CONSTRAINT_ID,
                                     ],
                                 ],
                                 'may_terminate' => true,
@@ -393,7 +395,7 @@ return [
                                                 'tab' => 'main',
                                             ],
                                             'constraints' => [
-                                                'tab' => '[a-z]*',
+                                                'tab' => CONSTRAINT_KEY,
                                             ],
                                         ],
                                     ],
@@ -407,7 +409,7 @@ return [
                                         'action' => 'delete',
                                     ],
                                     'constraints' => [
-                                        'id' => '[0-9]*',
+                                        'id' => CONSTRAINT_ID,
                                     ],
                                 ],
                             ],
@@ -441,7 +443,7 @@ return [
                                         'action' => 'view-role',
                                     ],
                                     'constraints' => [
-                                        'roleId' => '[0-9]*',
+                                        'roleId' => CONSTRAINT_ID,
                                     ],
                                 ],
                             ],
@@ -453,7 +455,7 @@ return [
                                         'action' => 'edit-role',
                                     ],
                                     'constraints' => [
-                                        'roleId' => '[0-9]*',
+                                        'roleId' => CONSTRAINT_ID,
                                     ],
                                 ],
                             ],
@@ -465,7 +467,7 @@ return [
                                         'action' => 'delete-role',
                                     ],
                                     'constraints' => [
-                                        'roleId' => '[0-9]*',
+                                        'roleId' => CONSTRAINT_ID,
                                     ],
                                 ],
                             ],
@@ -499,7 +501,7 @@ return [
                                         'action' => 'view-role',
                                     ],
                                     'constraints' => [
-                                        'roleId' => '[0-9]*',
+                                        'roleId' => CONSTRAINT_ID,
                                     ],
                                 ],
                             ],
@@ -511,7 +513,7 @@ return [
                                         'action' => 'edit-role',
                                     ],
                                     'constraints' => [
-                                        'roleId' => '[0-9]*',
+                                        'roleId' => CONSTRAINT_ID,
                                     ],
                                 ],
                             ],
@@ -523,7 +525,7 @@ return [
                                         'action' => 'delete-role',
                                     ],
                                     'constraints' => [
-                                        'roleId' => '[0-9]*',
+                                        'roleId' => CONSTRAINT_ID,
                                     ],
                                 ],
                             ],
@@ -535,7 +537,7 @@ return [
                                         'action' => 'edit-role-permission',
                                     ],
                                     'constraints' => [
-                                        'roleId' => '[0-9]*',
+                                        'roleId' => CONSTRAINT_ID,
                                     ],
                                 ],
                             ],
@@ -646,6 +648,9 @@ return [
                                             'route' => '/delete/:id',
                                             'defaults' => [
                                                 'action' => 'deleteAccessToken',
+                                            ],
+                                            'constraints' => [
+                                                'id' => CONSTRAINT_ID,
                                             ],
                                         ],
                                     ],
