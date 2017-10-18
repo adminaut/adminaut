@@ -112,6 +112,7 @@ return [
             'datatypeFormGooglePlaceId' => Datatype\GooglePlaceId\FormViewHelper::class,
             'datatypeFormDateTime' => Datatype\DateTime\FormViewHelper::class,
             'datatypeFormTextarea' => Datatype\Textarea\FormViewHelper::class,
+            'datatypeFormUrlKey' => Datatype\UrlKey\FormViewHelper::class,
 
             // detail helpers
             'datatypeDetail' => Datatype\View\Helper\datatypeDetailViewHelper::class,
