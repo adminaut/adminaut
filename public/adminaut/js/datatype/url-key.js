@@ -12,21 +12,22 @@
 
     $(document).ready(function () {
         $('.url-key-input').each(function () {
-            $this = $(this);
-            $targetElement = $('input[name="' + $this.data('target') + '"]');
+            $urlKeyInput = $(this);
+            $targetElement = $('input[name="' + $urlKeyInput.data('target') + '"]').data('url-key-input', $urlKeyInput);
 
             if ($targetElement.length > 0) {
-                if($this.val() === "") {
+                if($urlKeyInput.val() === "") {
                     $targetElement.on('keyup', function () {
-                        if (!$this.hasClass('url-key-lock')) {
-                            $this.val(urlKey($targetElement.val()));
+                        $_urlKeyInput = $(this).data('url-key-input');
+                        if (!$_urlKeyInput.hasClass('url-key-lock')) {
+                            $_urlKeyInput.val(urlKey($(this).val()));
                         }
                     }).on('blur', function () {
-                        $this.addClass('url-key-lock');
+                        $(this).data('url-key-input').addClass('url-key-lock');
                     });
                 }
 
-                $this.parent('.input-group').append('<span class="input-group-btn"><button type="button" class="btn btn-default btn-flat url-key-refresh"><i class="fa fa-refresh"></i></button></span>');
+                $urlKeyInput.parent('.input-group').append('<span class="input-group-btn"><button type="button" class="btn btn-default btn-flat url-key-refresh"><i class="fa fa-refresh"></i></button></span>');
             }
         });
 
