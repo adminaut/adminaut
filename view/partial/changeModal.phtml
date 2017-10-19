@@ -16,7 +16,7 @@
 
             $(window).bind('beforeunload', function (e) {
                 if (window.somethingChanged) {
-                    return '<?php echo $this->translate(_('You made some changes. Do you want to leave page?')); ?>';
+                    return '<?php echo $this->translate('You made some changes. Do you want to leave page?') ?>';
                 } else {
                     e = null; // i.e; if form state change show warning box, else don't show it.
                 }

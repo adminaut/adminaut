@@ -1,0 +1,26 @@
+<?php $pages = isset($pages) ? $pages : [] ?>
+<?php $pages = array_merge([
+    [
+        'title' => _('Dashboard'),
+        'url' => $this->url('adminaut/dashboard'),
+    ],
+], $pages) ?>
+<ol class="breadcrumb">
+    <?php foreach ($pages as $page) { ?>
+        <?php $_title = $this->escapeHtml($this->translate($page['title'])) ?>
+        <?php if (isset($page['url'])) { ?>
+            <li>
+                <a href="<?php echo $page['url'] ?>">
+                    <?php echo $_title ?>
+                </a>
+            </li>
+        <?php } else { ?>
+            <li class="active">
+                <span>
+                    <?php echo $_title ?>
+                </span>
+            </li>
+        <?php } ?>
+        <?php unset($_title) ?>
+    <?php } ?>
+</ol>

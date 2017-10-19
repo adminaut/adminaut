@@ -6,41 +6,45 @@ $form->prepare();
 ?>
 <section class="content-header">
     <h1>
-        <?php echo $this->translate('Users:') ?>
+        <?php echo $this->translate('Users') ?>
+        <small><?php echo $this->translate('Add user') ?></small>
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
-        <li><a href="<?php echo $this->url('adminaut/users'); ?>"><?php echo $this->translate("Users"); ?></a></li>
-        <li class="active"><?php echo $this->translate("Add"); ?></li>
-    </ol>
+    <?php echo $this->partial('adminaut/partial/breadcrumbs', [
+        'pages' => [
+            ['title' => _('Users'), 'url' => $this->url('adminaut/users')],
+            ['title' => _('Add user')],
+        ],
+    ]) ?>
 </section>
 
 <section class="content">
-    <?php echo $this->form()->openTag($form); ?>
-    <div class="row">
-        <div class="col-xs-12 col-sm-8">
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><?php echo $this->translate('Add new user') ?></h3>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <?php echo $this->partial('partial/messages'); ?>
-                    <?php echo $this->formCollection($form); ?>
-                </div>
-                <!-- /.box-body -->
+    <?php echo $this->partial('adminaut/partial/messages') ?>
+    <div class="box">
+        <?php echo $this->form()->openTag($form) ?>
 
-                <div class="box-footer clearfix">
-                    <button type="submit" name="submit" class="btn btn-primary" value="create"><?php echo $this->translate("Create"); ?></button>
-                    <button type="submit" name="submit" class="btn btn-default" value="create-and-continue"><?php echo $this->translate("Create and continue"); ?></button>
-                    <button type="submit" name="submit" class="btn btn-default" value="create-and-new"><?php echo $this->translate("Create and new"); ?></button>
-                    <a href="<?php echo $this->url('adminaut/users'); ?>" class="btn btn-link"><?php echo $this->translate('Back to list'); ?></a>
-                </div>
-            </div>
-            <!-- /.box -->
+        <div class="box-header with-border">
+            <h3 class="box-title"><?php echo $this->translate('Add user') ?></h3>
         </div>
-        <!-- /.col -->
+
+        <div class="box-body">
+            <?php echo $this->formCollection($form) ?>
+        </div>
+
+        <div class="box-footer clearfix">
+            <button type="submit" name="submit" class="btn btn-primary" value="create">
+                <?php echo $this->translate('Create') ?>
+            </button>
+            <button type="submit" name="submit" class="btn btn-default" value="create-and-continue">
+                <?php echo $this->translate('Create and continue') ?>
+            </button>
+            <button type="submit" name="submit" class="btn btn-default" value="create-and-new">
+                <?php echo $this->translate('Create and new') ?>
+            </button>
+            <a href="<?php echo $this->url('adminaut/users') ?>" class="btn btn-link">
+                <?php echo $this->translate('Back to list') ?>
+            </a>
+        </div>
+
+        <?php echo $this->form()->closeTag() ?>
     </div>
-    <!-- /.row -->
-    <?php echo $this->form()->closeTag(); ?>
 </section>
