@@ -1,8 +1,12 @@
 <section class="content-header">
     <h1>
-        <?php echo $this->translate("Dashboard"); ?>
+        <?php echo $this->translate('Dashboard') ?>
     </h1>
-    <ol class="breadcrumb">
-        <li class="active"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></li>
-    </ol>
+    <?php echo $this->partial('adminaut/partial/breadcrumbs') ?>
+</section>
+
+<section class="content">
+    <?php echo $this->partial('adminaut/partial/messages') ?>
+
+    <?php // todo: Create some content for dashboard. ?>
 </section>
