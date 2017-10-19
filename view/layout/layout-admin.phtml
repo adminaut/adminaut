@@ -97,8 +97,8 @@
     <header class="main-header">
         <!-- Logo -->
         <a href="<?php echo $this->url('adminaut'); ?>" class="logo logo-image">
-            <span class="logo-lg"><img src="<?php echo $this->basePath($this->adminautAppearance('logo-large')); ?>" alt="<?php echo $this->adminautAppearance('title') ?>"></span>
-            <span class="logo-mini"><img src="<?php echo $this->basePath($this->adminautAppearance('logo-small')); ?>" alt="<?php $this->adminautAppearance('title') ?>"></span>
+            <span class="logo-lg"><img src="<?php echo $this->basePath($this->adminautAppearance('logo-large')) ?>" alt="<?php echo $this->adminautAppearance('title') ?>"></span>
+            <span class="logo-mini"><img src="<?php echo $this->basePath($this->adminautAppearance('logo-small')) ?>" alt="<?php $this->adminautAppearance('title') ?>"></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -115,27 +115,32 @@
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="user-image"
-                                 alt="<?php echo $this->escapeHtml($this->userIdentity()->getName()); ?>">
-                            <span class="hidden-xs"><?php echo $this->escapeHtml($this->userIdentity()->getName()); ?></span>
+                            <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm' ?>"
+                                 class="user-image"
+                                 alt="<?php echo $this->escapeHtml($this->userIdentity()->getName()) ?>">
+                            <span class="hidden-xs"><?php echo $this->escapeHtml($this->userIdentity()->getName()) ?></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="img-circle"
-                                     alt="<?php echo $this->escapeHtml($this->userIdentity()->getName()); ?>">
-
+                                <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm' ?>"
+                                     class="img-circle"
+                                     alt="<?php echo $this->escapeHtml($this->userIdentity()->getName()) ?>">
                                 <p>
-                                    <?php echo $this->escapeHtml($this->userIdentity()->getName()); ?>
+                                    <?php echo $this->escapeHtml($this->userIdentity()->getName()) ?>
                                 </p>
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="<?php echo $this->url('adminaut/profile'); ?>" class="btn btn-default btn-flat"><?php echo $this->translate("Profile"); ?></a>
+                                    <a href="<?php echo $this->url('adminaut/profile') ?>" class="btn btn-default btn-flat">
+                                        <?php echo $this->translate('Profile') ?>
+                                    </a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="<?php echo $this->url('adminaut/auth/logout'); ?>" class="btn btn-default btn-flat"><?php echo $this->translate("Sign out"); ?></a>
+                                    <a href="<?php echo $this->url('adminaut/auth/logout') ?>" class="btn btn-default btn-flat">
+                                        <?php echo $this->translate('Sign out') ?>
+                                    </a>
                                 </div>
                             </li>
                         </ul>
@@ -151,42 +156,37 @@
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm'; ?>" class="img-circle"
-                         alt="<?php echo $this->escapeHtml($this->userIdentity()->getName()); ?>">
+                    <img src="<?php echo '//www.gravatar.com/avatar/' . $this->userIdentity()->getGravatarHash() . '?d=mm' ?>"
+                         class="img-circle"
+                         alt="<?php echo $this->escapeHtml($this->userIdentity()->getName()) ?>">
                 </div>
                 <div class="pull-left info">
-                    <p><?php echo $this->escapeHtml($this->userIdentity()->getName()); ?></p>
+                    <p><?php echo $this->escapeHtml($this->userIdentity()->getName()) ?></p>
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
-            <!-- search form -->
-            <form action="#" method="get" class="sidebar-form">
-                <div class="input-group">
-                    <input type="text" name="q" class="form-control" placeholder="<?php echo $this->translate("Search...") ?>">
-                    <span class="input-group-btn">
-                    <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                    </button>
-                  </span>
-                </div>
-            </form>
-            <!-- /.search form -->
+            <?php if (false) { ?>
+                <!-- search form -->
+                <form action="#" method="get" class="sidebar-form">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="<?php echo $this->translate("Search...") ?>">
+                        <div class="input-group-btn">
+                            <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <!-- /.search form -->
+            <?php } ?>
             <!-- sidebar menu: : style can be found in sidebar.less -->
-            <?php
-            echo $this->navigation(\Adminaut\Navigation\Navigation::class)
-                ->menu()
-                ->setUlClass('nav')
-                ->setPartial('partial/navigation/navigation.phtml');
-            ?>
+            <?php echo $this->navigation(\Adminaut\Navigation\Navigation::class)->menu()->setUlClass('nav')->setPartial('adminaut/partial/navigation') ?>
         </section>
         <!-- /.sidebar -->
     </aside>
 
     <div class="content-wrapper">
-        <?php
-        // TODO
-        //echo $this->navigation('Navigation')->breadcrumbs()->setPartial(false); ?>
-
-        <?php echo $this->content; ?>
+        <?php echo $this->content ?>
     </div>
 
     <footer class="main-footer">
