@@ -15,6 +15,6 @@ class IndexController extends AdminautBaseController
      */
     public function indexAction()
     {
-        return $this->redirect()->toRoute('adminaut/dashboard');
+        return $this->redirect()->toRoute(DashboardController::ROUTE_INDEX);
     }
 }

@@ -11,6 +11,11 @@ use Zend\View\Model\ViewModel;
 class DashboardController extends AdminautBaseController
 {
     /**
+     * Routes.
+     */
+    const ROUTE_INDEX = 'adminaut/dashboard';
+
+    /**
      * @return ViewModel
      */
     public function indexAction()
