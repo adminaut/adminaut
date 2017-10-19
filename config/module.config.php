@@ -681,6 +681,7 @@ return [
 
             // partial
             'adminaut/partial/breadcrumbs' => __DIR__ . '/../view/partial/breadcrumbs.phtml',
+            'adminaut/partial/deleteModal' => __DIR__ . '/../view/partial/deleteModal.phtml',
             'adminaut/partial/messages' => __DIR__ . '/../view/partial/messages.phtml',
             'adminaut/partial/tabs' => __DIR__ . '/../view/partial/tabs.phtml',
         ],

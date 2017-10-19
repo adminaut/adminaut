@@ -85,15 +85,8 @@
 
 <script>
     (function ($) {
-        $('#usersTable').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": true,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false
-        });
+        $('#usersTable').DataTable({});
     })(jQuery);
 </script>
 
-<?php echo $this->partial('partial/deleteModal.phtml') ?>
+<?php echo $this->partial('adminaut/partial/deleteModal') ?>
