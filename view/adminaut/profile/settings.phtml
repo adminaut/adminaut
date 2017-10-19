@@ -1,34 +1,54 @@
-<?php $this->form->prepare(); ?>
+<?php $this->form->prepare() ?>
 <section class="content-header">
     <h1>
-        <?php echo $this->translate('Profile:'); ?>
-        <small><?php echo $this->escapeHtml($this->user->getName()); ?></small>
+        <?php echo $this->translate('Profile') ?>
+        <small><?php echo $this->escapeHtml($this->user->getName()) ?></small>
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="<?php echo $this->url('adminaut/dashboard'); ?>"><?php echo $this->translate("Dashboard"); ?></a></li>
-        <li><a href="<?php echo $this->url('adminaut/profile'); ?>"><?php echo $this->translate("Profile"); ?></a></li>
-        <li class="active"><?php echo $this->translate("Change password"); ?></li>
-    </ol>
+    <?php echo $this->partial('adminaut/partial/breadcrumbs', [
+        'pages' => [
+            ['title' => _('Profile'), 'url' => $this->url('adminaut/profile')],
+            ['title' => _('Settings')],
+        ],
+    ]) ?>
 </section>
-
 <section class="content">
+    <?php echo $this->partial('adminaut/partial/messages') ?>
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
-            <li><a href="<?php echo $this->url('adminaut/profile'); ?>"><?php echo $this->translate('Overview') ?></a></li>
-            <li class="active"><a href="<?php echo $this->url('adminaut/profile/settings'); ?>"><?php echo $this->translate('Settings') ?></a></li>
-            <li><a href="<?php echo $this->url('adminaut/profile/change-password'); ?>"><?php echo $this->translate('Change password') ?></a></li>
-            <li><a href="<?php echo $this->url('adminaut/profile/logins'); ?>"><?php echo $this->translate('Logins') ?></a></li>
-            <li><a href="<?php echo $this->url('adminaut/profile/access-tokens'); ?>"><?php echo $this->translate('Access tokens') ?></a></li>
+            <li>
+                <a href="<?php echo $this->url('adminaut/profile') ?>">
+                    <?php echo $this->translate('Overview') ?>
+                </a>
+            </li>
+            <li class="active">
+                <a href="<?php echo $this->url('adminaut/profile/settings') ?>">
+                    <?php echo $this->translate('Settings') ?>
+                </a>
+            </li>
+            <li>
+                <a href="<?php echo $this->url('adminaut/profile/change-password') ?>">
+                    <?php echo $this->translate('Change password') ?>
+                </a>
+            </li>
+            <li>
+                <a href="<?php echo $this->url('adminaut/profile/logins') ?>">
+                    <?php echo $this->translate('Logins') ?>
+                </a>
+            </li>
+            <li>
+                <a href="<?php echo $this->url('adminaut/profile/access-tokens') ?>">
+                    <?php echo $this->translate('Access tokens') ?>
+                </a>
+            </li>
         </ul>
         <div class="tab-content">
             <div class="row">
                 <div class="col-md-8">
-                    <?php echo $this->partial('partial/messages'); ?>
                     <?php echo $this->form()->openTag($this->form) ?>
                     <?php echo $this->formCollection($this->form) ?>
                     <div class="form-group">
                         <div class="col-md-10 col-md-offset-2">
-                            <button class="btn btn-primary"><?php echo $this->translate('Save'); ?></button>
+                            <button class="btn btn-primary"><?php echo $this->translate('Save') ?></button>
                         </div>
                     </div>
                     <?php echo $this->form()->closeTag() ?>
