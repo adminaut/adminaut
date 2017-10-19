@@ -17,8 +17,8 @@ class Module implements ConfigProviderInterface
      */
     function onDispatchError(MvcEvent $e)
     {
-        $vm = $e->getViewModel();
-        $vm->setTemplate('layout/admin-blank');
+        $viewModel = $e->getViewModel();
+        $viewModel->setTemplate('layout/admin-blank');
     }
 
     /**
@@ -28,6 +28,16 @@ class Module implements ConfigProviderInterface
      */
     public function getConfig()
     {
-        return include __DIR__ . '/../config/module.config.php';
+        return [
+            'controller_plugins' => include __DIR__ . '/../config/controller_plugins.php',
+            'controllers'        => include __DIR__ . '/../config/controllers.php',
+            'dependencies'       => include __DIR__ . '/../config/dependencies.php',
+            'doctrine'           => include __DIR__ . '/../config/doctrine.php',
+            'form_elements'      => include __DIR__ . '/../config/form_elements.php',
+            'router'             => include __DIR__ . '/../config/router.php',
+            'service_manager'    => include __DIR__ . '/../config/service_manager.php',
+            'view_helpers'       => include __DIR__ . '/../config/view_helpers.php',
+            'view_manager'       => include __DIR__ . '/../config/view_manager.php',
+        ];
     }
 }
