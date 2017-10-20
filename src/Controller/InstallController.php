@@ -20,6 +20,8 @@ use Zend\View\Model\ViewModel;
  */
 class InstallController extends AbstractActionController
 {
+    const ROUTE_INDEX = 'adminaut/install';
+
     /**
      * @var UserManager
      */
@@ -54,7 +56,7 @@ class InstallController extends AbstractActionController
     public function indexAction()
     {
         if (0 !== $this->getUserManager()->countAll()) {
-            return $this->redirect()->toRoute('adminaut/dashboard');
+            return $this->redirect()->toRoute(DashboardController::ROUTE_INDEX);
         }
 
         $form = new UserForm(UserForm::STATUS_INSTALL);
@@ -64,23 +66,34 @@ class InstallController extends AbstractActionController
         $request = $this->getRequest();
 
         if ($request->isPost()) {
+
             $post = $request->getPost()->toArray();
+
             $form->setData($post);
+
             if ($form->isValid()) {
                 try {
-                    $this->userManager->createSuperUser($post);
+
+                    $this->userManager->createSuperUser($form->getData());
+
                     $this->flashMessenger()->addSuccessMessage($this->translate('User has been successfully created.'));
+
                     return $this->redirect()->toRoute(AuthController::ROUTE_LOGIN);
                 } catch (\Exception $e) {
+
                     $this->flashMessenger()->addErrorMessage(sprintf($this->translate('Error: %s'), $e->getMessage()));
-                    return $this->redirect()->toRoute('adminaut/install');
+
+                    return $this->redirect()->toRoute(self::ROUTE_INDEX);
                 }
             }
         }
+
         $this->layout()->setVariables([
             'bodyClasses' => ['login-page'],
         ]);
+
         $this->layout('layout/admin-blank');
+
         return new ViewModel([
             'form' => $form,
         ]);

@@ -1,24 +1,19 @@
 <?php
-    $form = $this->form;
-    $form->setAttribute('action', $this->url('adminaut/install'));
-    $form->prepare();
+
+/** @var \Zend\Form\Form $form */
+$form = $this->form;
+
+$form->setAttribute('action', $this->url(\Adminaut\Controller\InstallController::ROUTE_INDEX));
+$form->prepare();
 ?>
 <div class="login-box">
-    <?php echo $this->form(null, null)->openTag($form); ?>
-    <div class="login-logo">
-        <a href="<?php echo $this->url('adminaut/auth/login') ?>">Adminaut</a>
+    <?php echo $this->form(null, null)->openTag($form) ?>
+    <div class="box login-box-body">
+        <?php echo $this->partial('adminaut/partial/messages') ?>
+        <p class="login-box-msg">
+            <?php echo $this->translate('Register first user') ?>
+        </p>
+        <?php echo $this->formCollection($form) ?>
     </div>
-    <!-- /.login-logo -->
-    <div class="box login-box-body box-success">
-        <p class="login-box-msg"><?php echo $this->translate("Register first user"); ?></p>
-
-        <?php echo $this->partial('partial/messages'); ?>
-        <?php
-            echo $this->formCollection($form);
-        ?>
-
-    </div>
-    <!-- /.login-box-body -->
-    <?php echo $this->form()->closeTag(); ?>
+    <?php echo $this->form()->closeTag() ?>
 </div>
-<!-- /.login-box -->
