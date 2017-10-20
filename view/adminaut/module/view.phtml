@@ -1,79 +1,110 @@
 <?php
-    /** @var array $elements */
-    /** @var array $ignoreFields */
-    /** @var string $primary */
-    /** @var \Adminaut\Entity\Base $ignoredFields */
-    $ignoredFields = [];
-    $primaryFieldValue = isset($elements[$primary]) ? (method_exists($elements[$primary], 'getListedValue') ? $elements[$primary]->getListedValue() : $elements[$primary]->getValue()) : $entity->getId();
+/** @var array $elements */
+/** @var array $ignoreFields */
+/** @var string $primary */
+/** @var \Adminaut\Entity\Base $ignoredFields */
+$ignoredFields = [];
+$primaryFieldValue = isset($elements[$primary]) ? (method_exists($elements[$primary], 'getListedValue') ? $elements[$primary]->getListedValue() : $elements[$primary]->getValue()) : $entity->getId();
+
+$pages = [
+    [
+        'title' => $this->moduleOption->getModuleName(),
+        'url' => $this->url('adminaut/module/list', [
+            'module_id' => $this->moduleOption->getModuleId(),
+        ]),
+    ],
+    [
+        'title' => $primaryFieldValue,
+    ],
+];
+
 ?>
-
-
 <section class="content-header">
     <h1>
-        <?php echo $this->moduleOption->getModuleName() ?> <small><?php echo $primaryFieldValue ?></small>
+        <?php echo $this->escapeHtml($this->moduleOption->getModuleName()) ?>
+        <small><?php echo $this->escapeHtml($primaryFieldValue) ?></small>
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
-        <li><a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>"><?php echo $this->moduleOption->getModuleName() ?></a></li>
-        <li class="active"><?php echo $primaryFieldValue ?></li>
-    </ol>
+    <?php echo $this->partial('adminaut/partial/breadcrumbs', ['pages' => $pages]) ?>
 </section>
 
 <section class="content">
     <div class="row">
         <div class="col-xs-12 col-sm-8">
             <div class="nav-tabs-custom">
-                <?php if(sizeof($this->tabs) > 1) { ?>
-                    <?php echo $this->partial('partial/tabs.phtml', ['route' => 'adminaut/module/action', 'url_params' => $this->url_params, 'tabs' => $this->tabs]); ?>
+                <?php if (sizeof($this->tabs) > 1) { ?>
+                    <?php echo $this->partial('adminaut/partial/tabs', [
+                        'route' => 'adminaut/module/action',
+                        'url_params' => $this->url_params,
+                        'tabs' => $this->tabs,
+                    ]) ?>
                 <?php } else { ?>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><?php echo $this->translate("Detail"); ?></h3>
+                        <h3 class="box-title"><?php echo $this->translate('Detail') ?></h3>
                     </div>
                 <?php } ?>
                 <div class="tab-content">
-                    <?php echo $this->partial('partial/messages'); ?>
+                    <?php echo $this->partial('adminaut/partial/messages') ?>
                     <fieldset class="form-horizontal">
-                    <?php foreach ($elements as $fieldName => $field) { ?>
-                        <?php
-                            if(in_array($fieldName, $ignoredFields)) { continue; }
+                        <?php foreach ($elements as $fieldName => $field) { ?>
+                            <?php
+                            if (in_array($fieldName, $ignoredFields)) {
+                                continue;
+                            }
 
-                            if($field instanceof \Adminaut\Datatype\GoogleMap) {
-                                if($field->getLongitudeVariable()) {
-                                    if(isset($elements[$field->getLongitudeVariable()])) {
+                            if ($field instanceof \Adminaut\Datatype\GoogleMap) {
+                                if ($field->getLongitudeVariable()) {
+                                    if (isset($elements[$field->getLongitudeVariable()])) {
                                         $field->setConnectedElement($elements[$field->getLongitudeVariable()]);
                                         $ignoredFields[] = $field->getLongitudeVariable();
                                     }
                                 }
-                            } elseif ($field instanceof \Adminaut\Datatype\Location) {
-                                if($field->getLongitudeProperty()) {
-                                    if(isset($elements[$field->getLongitudeProperty()])) {
+                            } else if ($field instanceof \Adminaut\Datatype\Location) {
+                                if ($field->getLongitudeProperty()) {
+                                    if (isset($elements[$field->getLongitudeProperty()])) {
                                         $field->setLongitudeElement($elements[$field->getLongitudeProperty()]);
                                         $ignoredFields[] = $field->getLongitudeProperty();
                                     }
                                 }
                             }
-                        ?>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label"><?php echo $field->getLabel() ?></label>
-                            <div class="col-sm-10 view-value">
-                            <?php echo $this->datatypeDetail($field) ?>
+                            ?>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"><?php echo $field->getLabel() ?></label>
+                                <div class="col-sm-10 view-value">
+                                    <?php echo $this->datatypeDetail($field) ?>
+                                </div>
                             </div>
-                        </div>
-                    <?php } ?>
+                        <?php } ?>
                     </fieldset>
                 </div>
-                <!-- /.tab-content -->
                 <div class="box-footer clearfix">
                     <?php if ($this->isAllowed($this->moduleOption->getModuleName(), 2)) { ?>
-                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode' => 'edit']); ?>" class="btn btn-primary"><?php echo $this->translate('Edit'); ?></a>
+                        <a href="<?php echo $this->url('adminaut/module/action', [
+                            'module_id' => $this->moduleOption->getModuleId(),
+                            'entity_id' => $this->entity->getId(),
+                            'mode' => 'edit',
+                        ]) ?>" class="btn btn-primary">
+                            <?php echo $this->translate('Edit') ?>
+                        </a>
                     <?php } ?>
-                    <a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>" class="btn btn-link"><?php echo $this->translate('Back to list'); ?></a>
-                    <span class="pull-right">
-                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode'=>'add']); ?>" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="Copy" data-original-title="Copy"><i class="fa fa-clone"></i></a>
-                        <a href="#" data-href="<?php echo $this->url('adminaut/module/delete', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId()]); ?>" class="btn btn-sm btn-danger btn-modal-delete" data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><i class="fa fa-trash"></i></a>
-                    </span>
+                    <a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]) ?>" class="btn btn-link">
+                        <?php echo $this->translate('Back to list') ?>
+                    </a>
+                    <div class="pull-right">
+                        <a href="<?php echo $this->url('adminaut/module/action', [
+                            'module_id' => $this->moduleOption->getModuleId(),
+                            'entity_id' => $this->entity->getId(),
+                            'mode' => 'add',
+                        ]) ?>" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="Copy" data-original-title="Copy">
+                            <i class="fa fa-clone"></i>
+                        </a>
+                        <a href="#" data-href="<?php echo $this->url('adminaut/module/delete', [
+                            'module_id' => $this->moduleOption->getModuleId(),
+                            'entity_id' => $this->entity->getId(),
+                        ]) ?>" class="btn btn-sm btn-danger btn-modal-delete" data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </div>
                 </div>
-                <!-- /.box-footer -->
             </div>
         </div>
 
@@ -96,5 +127,5 @@
 </section>
 
 <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::FULL)) { ?>
-    <?php echo $this->partial('partial/deleteModal.phtml'); ?>
+    <?php echo $this->partial('adminaut/partial/deleteModal') ?>
 <?php } ?>

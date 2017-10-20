@@ -9,6 +9,7 @@ return [
         'layout/admin-blank' => __DIR__ . '/../view/layout/layout-admin-blank.phtml',
 
         // partial
+        'adminaut/partial/changeModal' => __DIR__ . '/../view/partial/changeModal.phtml',
         'adminaut/partial/breadcrumbs' => __DIR__ . '/../view/partial/breadcrumbs.phtml',
         'adminaut/partial/deleteModal' => __DIR__ . '/../view/partial/deleteModal.phtml',
         'adminaut/partial/messages' => __DIR__ . '/../view/partial/messages.phtml',

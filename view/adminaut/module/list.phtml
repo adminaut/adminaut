@@ -1,11 +1,12 @@
 <section class="content-header">
     <h1>
-        <?php echo $this->moduleOption->getModuleName() ?>
+        <?php echo $this->escapeHtml($this->moduleOption->getModuleName()) ?>
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="<?php echo $this->url('adminaut/dashboard') ?>"><i class="fa fa-dashboard"></i> <?php echo $this->translate("Dashboard"); ?></a></li>
-        <li class="active"><?php echo $this->moduleOption->getModuleName() ?></li>
-    </ol>
+    <?php echo $this->partial('adminaut/partial/breadcrumbs', [
+        'pages' => [
+            ['title' => $this->moduleOption->getModuleName()],
+        ],
+    ]) ?>
 </section>
 
 <section class="content">
@@ -20,7 +21,7 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <?php echo $this->partial('partial/messages'); ?>
+                    <?php echo $this->partial('adminaut/partial/messages') ?>
 
                     <table id="moduleEntityTable" class="table table-striped table-bordered table-hover dataTables">
                         <thead>
@@ -122,5 +123,5 @@
 </section>
 
 <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::FULL)) { ?>
-    <?php echo $this->partial('partial/deleteModal.phtml'); ?>
+    <?php echo $this->partial('adminaut/partial/deleteModal'); ?>
 <?php } ?>
