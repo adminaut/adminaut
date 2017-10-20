@@ -21,7 +21,7 @@ class SettingsController extends AdminautBaseController
     public function indexAction()
     {
         if (!$this->isAllowed('settings', AccessControlService::READ)) {
-            return $this->redirect()->toRoute('adminaut/dashboard');
+            return $this->redirect()->toRoute(DashboardController::ROUTE_INDEX);
         }
 
         // todo: implement settings

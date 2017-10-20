@@ -7,7 +7,6 @@ namespace Adminaut\Controller;
 use Adminaut\Entity\RoleEntity;
 use Adminaut\Form\InputFilter\RoleInputFilter;
 use Adminaut\Form\RoleForm;
-use Adminaut\Mapper\RoleMapper;
 use Adminaut\Service\AccessControlService;
 use Doctrine\ORM\EntityManager;
 use Zend\Http\Response;
@@ -19,6 +18,9 @@ use Zend\View\Model\ViewModel;
  */
 class AclController extends AdminautBaseController
 {
+    const ROUTE_INDEX = 'adminaut/acl';
+    const ROUTE_ADD_ROLE = 'adminaut/acl/add-role';
+    const ROUTE_EDIT_ROLE = 'adminaut/acl/update-role'; // todo: change update to edit
 
     /**
      * @var EntityManager
@@ -47,7 +49,7 @@ class AclController extends AdminautBaseController
     public function indexAction()
     {
         if (!$this->acl()->isAllowed('Roles', AccessControlService::READ)) {
-            return $this->redirect()->toRoute('adminaut/dashboard');
+            return $this->redirect()->toRoute(DashboardController::ROUTE_INDEX);
         }
 
         $roleRepository = $this->entityManager->getRepository(RoleEntity::class);
@@ -64,7 +66,7 @@ class AclController extends AdminautBaseController
     public function showRoleAction()
     {
         if (!$this->acl()->isAllowed('Roles', AccessControlService::READ)) {
-            return $this->redirect()->toRoute('adminaut/dashboard');
+            return $this->redirect()->toRoute(DashboardController::ROUTE_INDEX);
         }
 
         $id = (int)$this->params()->fromRoute('roleId', 0);
@@ -100,7 +102,7 @@ class AclController extends AdminautBaseController
     public function addRoleAction()
     {
         if (!$this->acl()->isAllowed('Roles', AccessControlService::WRITE)) {
-            return $this->redirect()->toRoute('adminaut/dashboard');
+            return $this->redirect()->toRoute(DashboardController::ROUTE_INDEX);
         }
 
         $form = new RoleForm();
@@ -112,11 +114,11 @@ class AclController extends AdminautBaseController
                 try {
                     $AccessControl = $this->getAcl();
                     $role = $AccessControl->createRole($post);
-                    $this->flashMessenger()->addSuccessMessage('Role has been successfully added.');
-                    return $this->redirect()->toRoute('adminaut/acl/update-role', ['roleId' => $role->getId()]);
+                    $this->addSuccessMessage('Role has been successfully added.');
+                    return $this->redirect()->toRoute(self::ROUTE_EDIT_ROLE, ['roleId' => $role->getId()]);
                 } catch (\Exception $e) {
-                    $this->flashMessenger()->addErrorMessage('Error: ' . $e->getMessage());
-                    return $this->redirect()->toRoute('adminaut/acl/add-role');
+                    $this->addErrorMessage('Error: ' . $e->getMessage());
+                    return $this->redirect()->toRoute(self::ROUTE_ADD_ROLE);
                 }
             }
         }
@@ -131,12 +133,12 @@ class AclController extends AdminautBaseController
     public function updateRoleAction()
     {
         if (!$this->acl()->isAllowed('Roles', AccessControlService::WRITE)) {
-            return $this->redirect()->toRoute('adminaut/dashboard');
+            return $this->redirect()->toRoute(DashboardController::ROUTE_INDEX);
         }
 
         $id = (int)$this->params()->fromRoute('roleId', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('adminaut/acl');
+            return $this->redirect()->toRoute(self::ROUTE_INDEX);
         }
 
         $roleMapper = $this->getRoleMapper();
@@ -145,7 +147,7 @@ class AclController extends AdminautBaseController
          */
         $role = $roleMapper->findById($id);
         if (!$role) {
-            return $this->redirect()->toRoute('adminaut/acl');
+            return $this->redirect()->toRoute(self::ROUTE_INDEX);
         }
 
         $AccessControl = $this->acl()->getAcl();
@@ -160,11 +162,11 @@ class AclController extends AdminautBaseController
                 try {
                     $AccessControl->updateRole($role, $post);
                     $AccessControl->updateRolePermissions($role, $post);
-                    $this->flashMessenger()->addSuccessMessage('Role has been successfully updated.');
+                    $this->addSuccessMessage('Role has been successfully updated.');
                 } catch (\Exception $e) {
-                    $this->flashMessenger()->addErrorMessage('Error: ' . $e->getMessage());
+                    $this->addErrorMessage('Error: ' . $e->getMessage());
                 }
-                return $this->redirect()->toRoute('adminaut/acl/update-role', ['roleId' => $id]);
+                return $this->redirect()->toRoute(self::ROUTE_EDIT_ROLE, ['roleId' => $id]);
             }
         }
 
@@ -180,7 +182,7 @@ class AclController extends AdminautBaseController
     public function deleteRoleAction()
     {
         if (!$this->acl()->isAllowed('Roles', AccessControlService::WRITE)) {
-            return $this->redirect()->toRoute('adminaut/dashboard');
+            return $this->redirect()->toRoute(DashboardController::ROUTE_INDEX);
         }
 
         $id = (int)$this->params()->fromRoute('roleId', 0);
@@ -194,12 +196,12 @@ class AclController extends AdminautBaseController
                 try {
                     $AccessControl = $this->getAcl();
                     $AccessControl->deleteRole($role);
-                    $this->flashMessenger()->addSuccessMessage('Role has been successfully deleted.');
+                    $this->addSuccessMessage('Role has been successfully deleted.');
                 } catch (\Exception $e) {
-                    $this->flashMessenger()->addErrorMessage('Error: ' . $e->getMessage());
+                    $this->addErrorMessage('Error: ' . $e->getMessage());
                 }
             }
         }
-        return $this->redirect()->toRoute('adminaut/acl');
+        return $this->redirect()->toRoute(self::ROUTE_INDEX);
     }
 }

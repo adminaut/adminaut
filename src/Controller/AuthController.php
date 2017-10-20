@@ -79,11 +79,11 @@ class AuthController extends AbstractActionController
     public function loginAction()
     {
         if (0 === $this->getUserManager()->countAll()) {
-            return $this->redirect()->toRoute('adminaut/install');
+            return $this->redirect()->toRoute(InstallController::ROUTE_INDEX);
         }
 
         if (true === $this->authenticationService->hasIdentity()) {
-            return $this->redirect()->toRoute('adminaut/dashboard');
+            return $this->redirect()->toRoute(DashboardController::ROUTE_INDEX);
         }
 
         $form = new UserLoginForm();
@@ -107,7 +107,7 @@ class AuthController extends AbstractActionController
                     if (null !== $redirect) {
                         return $this->redirect()->toUrl(rawurldecode($redirect));
                     }
-                    return $this->redirect()->toRoute('adminaut/dashboard');
+                    return $this->redirect()->toRoute(DashboardController::ROUTE_INDEX);
                 }
 
                 foreach ($result->getMessages() as $message) {
