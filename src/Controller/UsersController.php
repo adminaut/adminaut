@@ -21,6 +21,14 @@ class UsersController extends AdminautBaseController
 {
 
     /**
+     * Routes.
+     */
+    const ROUTE_INDEX = 'adminaut/users';
+    const ROUTE_ADD = 'adminaut/users/add';
+    const ROUTE_EDIT = 'adminaut/users/edit';
+    const ROUTE_DELETE = 'adminaut/users/delete';
+
+    /**
      * @var EntityManager
      */
     private $entityManager;
@@ -129,13 +137,13 @@ class UsersController extends AdminautBaseController
         $id = $this->getId();
 
         if (null === $id) {
-            return $this->redirect()->toRoute('adminaut/users');
+            return $this->redirect()->toRoute(self::ROUTE_INDEX);
         }
 
         $user = $this->getUserManager()->findOneById($id);
 
         if (null === $user) {
-            return $this->redirect()->toRoute('adminaut/users');
+            return $this->redirect()->toRoute(self::ROUTE_INDEX);
         }
 
         return new ViewModel([
@@ -188,14 +196,14 @@ class UsersController extends AdminautBaseController
                     $this->addSuccessMessage($this->translate('User has been successfully created.'));
                     switch ($post['submit']) {
                         case 'create-and-continue' :
-                            return $this->redirect()->toRoute('adminaut/users/edit', ['id' => $user->getId()]);
+                            return $this->redirect()->toRoute(self::ROUTE_EDIT, ['id' => $user->getId()]);
                         case 'create' :
                         default :
-                            return $this->redirect()->toRoute('adminaut/users');
+                            return $this->redirect()->toRoute(self::ROUTE_INDEX);
                     }
                 } catch (\Exception $e) {
                     $this->addErrorMessage(sprintf($this->translate('Error: %s'), $e->getMessage()));
-                    return $this->redirect()->toRoute('adminaut/users/add');
+                    return $this->redirect()->toRoute(self::ROUTE_ADD);
                 }
             }
         }
@@ -216,13 +224,13 @@ class UsersController extends AdminautBaseController
         $id = $this->getId();
 
         if (null === $id) {
-            return $this->redirect()->toRoute('adminaut/users');
+            return $this->redirect()->toRoute(self::ROUTE_INDEX);
         }
 
         $user = $this->getUserManager()->findOneById($id);
 
         if (null === $user) {
-            return $this->redirect()->toRoute('adminaut/users');
+            return $this->redirect()->toRoute(self::ROUTE_INDEX);
         }
 
 //        $form = new UserForm(UserForm::STATUS_UPDATE);
@@ -271,10 +279,10 @@ class UsersController extends AdminautBaseController
 
                     switch ($post['submit']) {
                         case 'save-and-continue' :
-                            return $this->redirect()->toRoute('adminaut/users/edit', ['id' => $user->getId()]);
+                            return $this->redirect()->toRoute(self::ROUTE_EDIT, ['id' => $user->getId()]);
                         case 'save' :
                         default :
-                            return $this->redirect()->toRoute('adminaut/users');
+                            return $this->redirect()->toRoute(self::ROUTE_INDEX);
                     }
                 } catch (\Exception $e) {
                     $this->addErrorMessage(sprintf($this->translate('Error: %s'), $e->getMessage()));
@@ -314,6 +322,6 @@ class UsersController extends AdminautBaseController
                 }
             }
         }
-        return $this->redirect()->toRoute('adminaut/users');
+        return $this->redirect()->toRoute(self::ROUTE_INDEX);
     }
 }

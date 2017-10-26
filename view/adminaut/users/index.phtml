@@ -15,7 +15,7 @@
 
         <div class="box-header with-border">
             <?php if ($this->isAllowed('users', \Adminaut\Service\AccessControlService::WRITE)) { ?>
-                <a href="<?php echo $this->url('adminaut/users/add'); ?>" class="btn btn-primary">
+                <a href="<?php echo $this->url('adminaut/users/add') ?>" class="btn btn-primary">
                     <?php echo $this->translate('Add user') ?>
                 </a>
             <?php } ?>
