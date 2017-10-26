@@ -56,7 +56,7 @@ return [
 
 ### 3. Set up your configuration
 
-Look into file `vendor/adminaut/adminaut/config/adminaut.local.php.dist` and copy it's content to your application config.
+Look into the file `vendor/adminaut/adminaut/config-dist/adminaut.global.php.dist` and `vendor/adminaut/adminaut/config-dist/adminaut.local.php.dist` and copy it's content to your application config.
 
 ### 4. Set up Doctrine connection
 
