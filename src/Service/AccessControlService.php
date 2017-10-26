@@ -11,6 +11,9 @@ use Adminaut\Entity\UserEntity;
  */
 class AccessControlService
 {
+    /**
+     * Constants.
+     */
     const NONE = 0;
     const READ = 1;
     const WRITE = 2;
