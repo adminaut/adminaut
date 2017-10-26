@@ -34,6 +34,8 @@ class AccessControlService
      */
     private $user;
 
+    //-------------------------------------------------------------------------
+
     /**
      * AccessControlService constructor.
      * @param AuthenticationService $authenticationService
@@ -41,9 +43,11 @@ class AccessControlService
      */
     public function __construct(AuthenticationService $authenticationService, array $roles)
     {
-        $this->roles = $roles;
         $this->authenticationService = $authenticationService;
+        $this->roles = $roles;
     }
+
+    //-------------------------------------------------------------------------
 
     /**
      * @param $module
@@ -55,13 +59,15 @@ class AccessControlService
      */
     public function isAllowed($module, $permissionLevel, $element = null, $entity = null)
     {
-        if (true !== $this->authenticationService->hasIdentity()) {
-            return false;
+        if (!$this->user) {
+            if (!$this->authenticationService->hasIdentity()) {
+                return false;
+            }
+
+            $this->user = $this->authenticationService->getIdentity();
         }
 
-        $this->user = $this->authenticationService->getIdentity();
-
-        if ($this->user->getRole() == 'admin') {
+        if ($this->user->getRole() === 'admin') {
             return true;
         }
 

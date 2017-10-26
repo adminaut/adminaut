@@ -12,7 +12,7 @@ class ManifestService
     /**
      * @var array
      */
-    private $customManifest;
+    private $customManifest = [];
 
     /**
      * @var array
@@ -99,6 +99,8 @@ class ManifestService
         ],
     ];
 
+    //-------------------------------------------------------------------------
+
     /**
      * ManifestService constructor.
      * @param array $customManifest
@@ -107,6 +109,8 @@ class ManifestService
     {
         $this->customManifest = $customManifest;
     }
+
+    //-------------------------------------------------------------------------
 
     /**
      * @return array

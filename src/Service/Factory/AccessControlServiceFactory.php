@@ -29,7 +29,11 @@ class AccessControlServiceFactory implements FactoryInterface
         /** @var array $config */
         $config = $container->get('config');
 
-        $roles = isset($config['adminaut']['roles']) ? $config['adminaut']['roles'] : [];
+        $roles = [];
+
+        if (isset($config['adminaut']['roles']) && is_array($config['adminaut']['roles'])) {
+            $roles = $config['adminaut']['roles'];
+        }
 
         return new AccessControlService($authenticationService, $roles);
     }

@@ -4,7 +4,7 @@ namespace Adminaut\Authentication\Service;
 
 use Adminaut\Authentication\Adapter\AuthAdapter;
 use Adminaut\Authentication\Storage\AuthStorage;
-use Adminaut\Entity\UserEntity;
+use Adminaut\Entity\UserEntityInterface;
 use Zend\Authentication\AuthenticationServiceInterface;
 use Zend\Authentication\Result;
 
@@ -84,7 +84,10 @@ class AuthenticationService implements AuthenticationServiceInterface
     {
         $result = $this->adapter->authenticate($email, $password);
 
-        if ($result->getCode() === Result::SUCCESS && true === $result->getIdentity() instanceof UserEntity) {
+        if (
+            $result->getCode() === Result::SUCCESS
+            && $result->getIdentity() instanceof UserEntityInterface
+        ) {
             $this->storage->write($result->getIdentity());
         }
 
@@ -107,7 +110,7 @@ class AuthenticationService implements AuthenticationServiceInterface
     /**
      * Returns the authenticated identity or null if no identity is available
      *
-     * @return UserEntity|null
+     * @return UserEntityInterface|null
      */
     public function getIdentity()
     {
