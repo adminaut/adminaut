@@ -7,6 +7,7 @@ use Adminaut\Options\CookieStorageOptions;
 use Interop\Container\ContainerInterface;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\PhpEnvironment\Response;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
@@ -33,6 +34,10 @@ class CookieStorageFactory implements FactoryInterface
 
         /** @var CookieStorageOptions $options */
         $options = $container->get(CookieStorageOptions::class);
+
+        if ($options->isCookieSecure() and $request->getServer('SERVER_PORT') != 443) {
+            throw new ServiceNotCreatedException('The cookie security option is set to true on a non-https site.');
+        }
 
         return new CookieStorage($request, $response, $options);
     }
