@@ -242,6 +242,7 @@ trait AdminautEntityTrait
     public function __set($name, $value)
     {
         $setter = 'set' . ucfirst($name);
+
         if (method_exists($this, $setter)) {
             $this->$setter($value);
         } else {
