@@ -6,7 +6,6 @@ use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
     'factories' => [
-        //Controller\AclController::class => Controller\Factory\AclControllerFactory::class,
         Controller\AuthController::class => Controller\Factory\AuthControllerFactory::class,
         Controller\DashboardController::class => InvokableFactory::class,
         Controller\IndexController::class => InvokableFactory::class,
