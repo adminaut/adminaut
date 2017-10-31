@@ -20,7 +20,7 @@ interface MailServiceInterface
      * @param $toEmail
      * @param null $toName
      */
-    public function sendRecoveryMail($body, $toEmail, $toName = null);
+    public function sendPasswordRecoveryMail($body, $toEmail, $toName = null);
 
     /**
      * @param $body

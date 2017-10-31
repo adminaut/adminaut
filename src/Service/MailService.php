@@ -2,6 +2,7 @@
 
 namespace Adminaut\Service;
 
+use Adminaut\Service\Exception\RuntimeException;
 use Zend\Mail;
 
 /**
@@ -74,7 +75,8 @@ class MailService implements MailServiceInterface
      */
     public function sendInvitationMail($body, $toEmail, $toName = null)
     {
-        // TODO: Implement sendInvitationMail() method.
+        $subject = sprintf('Invitation - %s', $this->getSystemName());
+        $this->sendMail($subject, $body, $this->getSystemEmail(), $this->getSystemName(), $toEmail, $toName);
     }
 
     /**
@@ -82,9 +84,10 @@ class MailService implements MailServiceInterface
      * @param $toEmail
      * @param null $toName
      */
-    public function sendRecoveryMail($body, $toEmail, $toName = null)
+    public function sendPasswordRecoveryMail($body, $toEmail, $toName = null)
     {
-        // TODO: Implement sendRecoveryMail() method.
+        $subject = sprintf('Password recovery - %s', $this->getSystemName());
+        $this->sendMail($subject, $body, $this->getSystemEmail(), $this->getSystemName(), $toEmail, $toName);
     }
 
     /**
@@ -94,7 +97,8 @@ class MailService implements MailServiceInterface
      */
     public function sendNotificationMail($body, $toEmail, $toName = null)
     {
-        // TODO: Implement sendNotificationMail() method.
+        $subject = sprintf('Notification - %s', $this->getSystemName());
+        $this->sendMail($subject, $body, $this->getSystemEmail(), $this->getSystemName(), $toEmail, $toName);
     }
 
     /**
@@ -120,6 +124,10 @@ class MailService implements MailServiceInterface
 
         $transport = new Mail\Transport\Sendmail();
 
-        $transport->send($mail);
+        try {
+            $transport->send($mail);
+        } catch (\Exception $exception) {
+            throw new RuntimeException('An exception has been thrown during email sending.', 1, $exception);
+        }
     }
 }
