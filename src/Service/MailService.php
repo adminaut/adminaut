@@ -32,7 +32,7 @@ class MailService implements MailServiceInterface
         }
 
         if (array_key_exists('system_email', $options)) {
-            $this->setSystemName($options['system_email']);
+            $this->setSystemEmail($options['system_email']);
         }
     }
 
@@ -112,6 +112,7 @@ class MailService implements MailServiceInterface
     public function sendMail($subject, $body, $fromEmail, $fromName, $toEmail, $toName = null)
     {
         $mail = new Mail\Message();
+        $mail->setEncoding('UTF-8'); // prevents invalid header runtime exception
         $mail->setSubject($subject);
         $mail->setBody($body);
         $mail->setFrom($fromEmail, $fromName);
