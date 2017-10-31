@@ -3,10 +3,10 @@
 namespace Adminaut\Service\Exception;
 
 /**
- * Interface ExceptionInterface
+ * Class RuntimeException
  * @package Adminaut\Service\Exception
  */
-interface ExceptionInterface
+class RuntimeException extends \RuntimeException
 {
 
 }
