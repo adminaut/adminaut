@@ -33,6 +33,7 @@ class UserEntity implements UserEntityInterface
      * @Annotation\Options({"label":"Name", "listed":true});
      * @Annotation\Flags({"priority":5});
      * @Annotation\Type("Adminaut\Datatype\Text");
+     * @Annotation\Required(true);
      * @var string
      */
     protected $name = '';
@@ -42,6 +43,7 @@ class UserEntity implements UserEntityInterface
      * @Annotation\Options({"label":"Email", "listed":true, "primary":true});
      * @Annotation\Flags({"priority":10});
      * @Annotation\Type("Zend\Form\Element\Email");
+     * @Annotation\Required(true);
      * @var string
      */
     protected $email = '';
@@ -60,6 +62,7 @@ class UserEntity implements UserEntityInterface
      * @Annotation\Options({"label":"Role", "empty_option":"Select role", "listed":true});
      * @Annotation\Flags({"priority":20});
      * @Annotation\Type("Zend\Form\Element\Select");
+     * @Annotation\Required(true);
      * @var string
      */
     protected $role = '';
@@ -69,13 +72,27 @@ class UserEntity implements UserEntityInterface
      * @Annotation\Options({"label":"Language", "availableLanguages":{"cs", "sk", "en", "de"}, "listed":true});
      * @Annotation\Flags({"priority":19});
      * @Annotation\Type("Adminaut\Datatype\Language");
+     * @Annotation\Required(true);
      * @var string
      */
     protected $language = 'en';
 
     /**
      * @ORM\Column(type="integer", name="status", options={"default":0});
-     * @Annotation\Exclude();
+     * @Annotation\Options({
+     *     "label":"Status",
+     *     "value_options":{
+     *          "0":"Unknown",
+     *          "1":"New",
+     *          "2":"Active",
+     *          "3":"Locked",
+     *          "4":"Banned"
+     *      },
+     *     "listed":true
+     * });
+     * @Annotation\Flags({"priority":18});
+     * @Annotation\Type("Zend\Form\Element\Select");
+     * @Annotation\Required(true);
      * @var int
      */
     protected $status = self::STATUS_NEW;
