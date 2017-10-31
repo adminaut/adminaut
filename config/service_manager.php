@@ -37,6 +37,7 @@ return [
 
         // Service
         Service\AccessControlService::class => Service\Factory\AccessControlServiceFactory::class,
+        Service\MailService::class => Service\Factory\MailServiceFactory::class,
         Service\ManifestService::class => Service\Factory\ManifestServiceFactory::class,
 
         // Translator service
