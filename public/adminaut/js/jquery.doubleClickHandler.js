@@ -1,4 +1,4 @@
-;(function (window, document, $, undefined) {
+;(function ($) {
 
     var DoubleClickHandler = {
 
@@ -24,9 +24,9 @@
             DoubleClickHandler.init($(this));
         });
     };
-})(window, document, jQuery);
+})(jQuery);
 
-// use:
+// example:
 // $(document).ready(function () {
 //     $('#form').doubleClickHandler();
 // });

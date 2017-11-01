@@ -2,6 +2,7 @@
 /** @var \Adminaut\Form\Form $form */
 $form = $this->form;
 $form->setAttribute('action', $this->url('adminaut/users/edit', ['id' => $this->user->getId()]));
+$form->setAttribute('data-doubleClick', true);
 $form->prepare();
 ?>
 <section class="content-header">
