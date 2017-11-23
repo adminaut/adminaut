@@ -6,19 +6,25 @@ use TwbBundle\Form\View\Helper\TwbBundleFormRow;
 use TwbBundle\Options\ModuleOptions;
 use Zend\Form\View\Helper\FormElement;
 
+//use Zend\Form\ElementInterface;
+//use Zend\Form\LabelAwareInterface;
+
 /**
  * Class FormRow
  * @package Admianut\Datatype\View\Helper
  */
 class FormRow extends TwbBundleFormRow
 {
-    /** @var ModuleOptions */
-    protected $twbModuleOptions;
 
-//    public function __construct($twbModuleOptions)
-//    {
-//        $this->twbModuleOptions = $twbModuleOptions;
-//    }
+    /**
+     * @var string
+     */
+    protected $requiredFormat = '<span class="adminaut-required-input-star">&#42;</span>';
+
+    /**
+     * @var ModuleOptions
+     */
+    protected $twbModuleOptions;
 
     /**
      * Retrieve the FormElement helper
@@ -41,4 +47,28 @@ class FormRow extends TwbBundleFormRow
 
         return $this->elementHelper;
     }
+
+//    /**
+//     * Render element's label
+//     * @param ElementInterface $oElement
+//     * @return string
+//     */
+//    protected function renderLabel(ElementInterface $oElement)
+//    {
+//        if ($oElement->getAttribute('required')) {
+//            if ($oElement instanceof LabelAwareInterface) {
+//                $this->labelAttributes = $oElement->getLabelAttributes();
+//            }
+//
+//            if (isset($this->labelAttributes['class'])) {
+//                $this->labelAttributes['class'] .= ' required';
+//            } else {
+//                $this->labelAttributes['class'] = 'required';
+//            }
+//        }
+//
+//        var_dump($this->labelAttributes);
+//
+//        return parent::renderLabel($oElement);
+//    }
 }

@@ -28,7 +28,11 @@ return [
             'cookieDomain' => '',
             'cookieExpires' => '+1 month',
             'cookieHttpOnly' => true,
-            'cookieSecure' => true,
+            'cookieSecure' => true, // set false if you don't use https:// protocol
+        ],
+        'mail_service' => [
+            'system_name' => 'Adminaut',
+            'system_email' => 'no-reply@example.com',
         ],
     ],
 ];

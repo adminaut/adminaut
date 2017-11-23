@@ -43,7 +43,7 @@
         ->prependFile($this->basePath('adminaut/themes/adminlte/dist/js/app.js'))
         ->prependFile($this->basePath('adminaut/themes/adminlte/plugins/slimScroll/jquery.slimscroll.min.js'))
         ->prependFile($this->basePath('adminaut/themes/adminlte/plugins/iCheck/icheck.min.js'))
-        ->prependFile($this->basePath('adminaut/js/jquery.doubleClick.js'))
+        ->prependFile($this->basePath('adminaut/js/jquery.doubleClickHandler.js'))
         ->prependFile($this->basePath('adminaut/js/dataTables.bootstrap.min.js'))
         ->prependFile($this->basePath('adminaut/js/jquery.dataTables.min.js'))
         ->prependFile($this->basePath('adminaut/js/moment.min.js'))
@@ -211,9 +211,9 @@
     });
 </script>
 <script>
-    //    $(document).ready(function () {
-    //        $('form[data-doubleclick="1"]').doubleClickHandler();
-    //    });
+    $(document).ready(function () {
+        $('form[data-doubleClick="1"]').doubleClickHandler();
+    });
 </script>
 </body>
 </html>

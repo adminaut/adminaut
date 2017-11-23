@@ -75,6 +75,7 @@
     content: counters(item, ".") ". ";
     margin-left: -20px;
 }
+
 h3.static-element {
     font-size: 18px;
     margin: 0;
@@ -82,4 +83,8 @@ h3.static-element {
     padding: 10px;
     padding-left: 0;
     border-bottom: 3px solid #3c8dbc;
+}
+
+.adminaut-required-input-star {
+    color: #6e6e6e;
 }
