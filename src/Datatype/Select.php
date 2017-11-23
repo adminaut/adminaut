@@ -29,9 +29,11 @@ class Select extends \Zend\Form\Element\Select
             return '';
         }
 
+        $key = (string) $key;
+
         $valueOptions = $this->getValueOptions();
 
-        if (array_key_exists($key, $valueOptions)) {
+        if (array_key_exists((string) $key, $valueOptions)) {
             return $valueOptions[$key];
         }
 
