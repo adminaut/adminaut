@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-10-12 11:49+0200\n"
-"PO-Revision-Date: 2017-12-17 08:00-0500\n"
+"PO-Revision-Date: 2017-12-17 08:11-0500\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -39,16 +39,16 @@ msgstr "Konto wurde gesperrt bis %s."
 
 #: src/Authentication/Adapter/AuthAdapter.php:103
 msgid "Authenticated successfully."
-msgstr ""
+msgstr "Erfolgreich authentifiziert."
 
 #: src/Controller/AdminautBaseController.php:59
 msgid "Wild application error occurred."
-msgstr ""
+msgstr "Wilder Anwendungsfehler aufgetreten."
 
 #: src/Controller/InstallController.php:72
 #: src/Controller/UsersController.php:189
 msgid "User has been successfully created."
-msgstr ""
+msgstr "Benutzer wurde erfolgreich erstellt."
 
 #: src/Controller/InstallController.php:75
 #: src/Controller/ModuleController.php:277
@@ -61,13 +61,13 @@ msgstr ""
 #: src/Controller/UsersController.php:314
 #, php-format
 msgid "Error: %s"
-msgstr ""
+msgstr "Fehler: %s"
 
 #: src/Controller/ModuleController.php:266
 #: src/Controller/ModuleController.php:626
 #, php-format
 msgid "Record \"%s\" has been successfully created."
-msgstr ""
+msgstr "Datensatz ''%s'' wurde erfolgreich erstellt."
 
 #: src/Controller/ModuleController.php:317
 #: src/Controller/ModuleController.php:413
@@ -81,17 +81,17 @@ msgstr "Datensatz wurde nicht gefunden."
 #: src/Controller/ModuleController.php:618
 #, php-format
 msgid "Record \"%s\" has been successfully updated."
-msgstr ""
+msgstr "Datensatz ''%s'' wurde erfolgreich aktualisiert."
 
 #: src/Controller/ModuleController.php:577
 #: src/Controller/ModuleController.php:696
 #, php-format
 msgid "Record \"%s\" has been deleted."
-msgstr ""
+msgstr "Datensatz ''%s'' wurde gelöscht."
 
 #: src/Controller/ProfileController.php:94
 msgid "Settings have been changed."
-msgstr ""
+msgstr "Einstellungen wurden geändert."
 
 #: src/Controller/ProfileController.php:98
 msgid "Setting could not be changed."
