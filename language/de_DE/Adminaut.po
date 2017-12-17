@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-10-12 11:49+0200\n"
-"PO-Revision-Date: 2017-12-17 08:11-0500\n"
+"PO-Revision-Date: 2017-12-17 08:20-0500\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -95,23 +95,23 @@ msgstr "Einstellungen wurden geändert."
 
 #: src/Controller/ProfileController.php:98
 msgid "Setting could not be changed."
-msgstr ""
+msgstr "Einstellung konnte nicht geändert werden."
 
 #: src/Controller/ProfileController.php:139
 msgid "Password has been changed."
-msgstr ""
+msgstr "Kennwort wurde geändert."
 
 #: src/Controller/ProfileController.php:143
 msgid "Password could not be changed."
-msgstr ""
+msgstr "Kennwort konnte nicht geändert werden."
 
 #: src/Controller/ProfileController.php:146
 msgid "Password does not match current password."
-msgstr ""
+msgstr "Kennwort passt nicht den aktuellen Kennwort an."
 
 #: src/Controller/UsersController.php:271
 msgid "User has been successfully updated."
-msgstr ""
+msgstr "Benutzer wurde erfolgreich aktualisiert."
 
 #: src/Controller/UsersController.php:312
 msgid "User has been successfully deleted."
