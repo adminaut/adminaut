@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-10-12 11:49+0200\n"
-"PO-Revision-Date: 2017-12-17 08:20-0500\n"
+"PO-Revision-Date: 2017-12-17 08:30-0500\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -119,17 +119,17 @@ msgstr "Benutzer wurde erfolgreich gelöscht."
 
 #: src/Datatype/DatatypeHelperTrait.php:25
 msgid "Method getView() does not exist."
-msgstr ""
+msgstr "Verfahren getView() existiert nicht."
 
 #: src/Datatype/DatatypeHelperTrait.php:31
 #, php-format
 msgid "View is not instance of %s."
-msgstr ""
+msgstr "Ansicht ist keine Instanz von %s."
 
 #: src/Datatype/GooglePlaceId/FormViewHelper.php:53
 #: src/Datatype/Location/FormViewHelper.php:88
 msgid "Enter a location"
-msgstr ""
+msgstr "Einen Standort eingeben"
 
 #: src/Form/RoleForm.php:43 src/Form/RoleForm.php:46 src/Form/UserForm.php:52
 #: src/Form/UserForm.php:55 src/Form/UserSettingsForm.php:24
@@ -142,24 +142,24 @@ msgstr "Name"
 #: src/Form/UserChangePasswordForm.php:28
 #: src/Form/UserChangePasswordForm.php:31
 msgid "Current password"
-msgstr ""
+msgstr "Aktuelles Kennwort"
 
 #: src/Form/UserChangePasswordForm.php:39
 #: src/Form/UserChangePasswordForm.php:42
 msgid "New password"
-msgstr ""
+msgstr "Neues Kennwort"
 
 #: src/Form/UserChangePasswordForm.php:50
 #: src/Form/UserChangePasswordForm.php:53
 msgid "New password again"
-msgstr ""
+msgstr "Neues Kennwort wiederholen"
 
 #: src/Form/UserForm.php:63 src/Form/UserForm.php:66
 #: src/Form/UserLoginForm.php:31 src/Form/UserLoginForm.php:35
 #: view/adminaut/profile/index.phtml:29 view/adminaut/users/index.phtml:28
 #: view/adminaut/users/view.phtml:28
 msgid "Email"
-msgstr ""
+msgstr "E-Mail"
 
 #: src/Form/UserForm.php:74 src/Form/UserForm.php:77
 #: src/Form/UserLoginForm.php:43 src/Form/UserLoginForm.php:47
@@ -174,7 +174,7 @@ msgstr "Rolle"
 
 #: src/Form/UserForm.php:90
 msgid "Select role"
-msgstr ""
+msgstr "Rolle wählen"
 
 #: src/Form/UserForm.php:98 view/adminaut/profile/index.phtml:41
 #: view/adminaut/profile/index.phtml:44 view/adminaut/users/index.phtml:44
@@ -184,11 +184,11 @@ msgstr "Aktiv"
 
 #: src/Form/UserLoginForm.php:56
 msgid "Sign in"
-msgstr ""
+msgstr "Anmelden"
 
 #: src/Form/UserSettingsForm.php:35
 msgid "Language"
-msgstr ""
+msgstr "Sprache"
 
 #: src/Navigation/Navigation.php:34 view/adminaut/dashboard/index.phtml:3
 #: view/adminaut/dashboard/index.phtml:6 view/adminaut/module/add.phtml:14
@@ -202,7 +202,7 @@ msgstr ""
 #: view/adminaut/users/edit.phtml:13 view/adminaut/users/index.phtml:6
 #: view/adminaut/users/view.phtml:7
 msgid "Dashboard"
-msgstr ""
+msgstr "Übersicht"
 
 #: src/Navigation/Navigation.php:77
 msgid "System"
