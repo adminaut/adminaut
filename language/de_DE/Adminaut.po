@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-10-12 11:49+0200\n"
-"PO-Revision-Date: 2017-12-17 08:51-0500\n"
+"PO-Revision-Date: 2017-12-17 09:00-0500\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -320,27 +320,27 @@ msgstr "Erstellen"
 
 #: view/adminaut/module/add.phtml:39 view/adminaut/users/add.phtml:35
 msgid "Create and continue"
-msgstr ""
+msgstr "Erstellen und fortsetzen"
 
 #: view/adminaut/module/add.phtml:40 view/adminaut/users/add.phtml:36
 msgid "Create and new"
-msgstr ""
+msgstr "Erstellen und neu"
 
 #: view/adminaut/module/add.phtml:41 view/adminaut/module/cyclicTab.phtml:104
 #: view/adminaut/module/edit.phtml:48 view/adminaut/module/view.phtml:70
 #: view/adminaut/users/add.phtml:37 view/adminaut/users/edit.phtml:39
 #: view/adminaut/users/view.phtml:51
 msgid "Back to list"
-msgstr ""
+msgstr "Zurück zur Liste"
 
 #: view/adminaut/module/cyclicTab.phtml:123 view/adminaut/module/list.phtml:68
 #: view/adminaut/module/list.phtml:69
 msgid "View"
-msgstr ""
+msgstr "Ansehen"
 
 #: view/adminaut/module/cyclicTab.phtml:123
 msgid "Add new"
-msgstr ""
+msgstr "Neu hinzufügen"
 
 #: view/adminaut/module/cyclicTab.phtml:137 view/adminaut/module/edit.phtml:45
 #: view/adminaut/profile/settings.phtml:31 view/adminaut/users/edit.phtml:37
@@ -349,16 +349,16 @@ msgstr "Speichern"
 
 #: view/adminaut/module/cyclicTab.phtml:138
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
 #: view/adminaut/module/edit.phtml:46 view/adminaut/users/edit.phtml:38
 msgid "Save and continue"
-msgstr ""
+msgstr "Speichern und fortsetzen"
 
 #: view/adminaut/module/edit.phtml:51 view/adminaut/module/list.phtml:76
 #: view/adminaut/module/list.phtml:77
 msgid "Copy"
-msgstr ""
+msgstr "Kopieren"
 
 #: view/adminaut/module/edit.phtml:57 view/adminaut/module/edit.phtml:58
 #: view/adminaut/module/list.phtml:83 view/adminaut/module/list.phtml:84
@@ -381,7 +381,7 @@ msgstr "Detail"
 #: view/adminaut/profile/index.phtml:3 view/adminaut/profile/logins.phtml:3
 #: view/adminaut/profile/settings.phtml:4
 msgid "Profile:"
-msgstr ""
+msgstr "Profil:"
 
 #: view/adminaut/profile/access-tokens.phtml:8
 #: view/adminaut/profile/change-password.phtml:9
@@ -396,7 +396,7 @@ msgstr "Profil"
 #: view/adminaut/profile/index.phtml:20 view/adminaut/profile/logins.phtml:20
 #: view/adminaut/profile/settings.phtml:21
 msgid "Access tokens"
-msgstr ""
+msgstr "Zugangsbeweis"
 
 #: view/adminaut/profile/access-tokens.phtml:16
 #: view/adminaut/profile/change-password.phtml:17
@@ -404,14 +404,14 @@ msgstr ""
 #: view/adminaut/profile/logins.phtml:16
 #: view/adminaut/profile/settings.phtml:17
 msgid "Overview"
-msgstr ""
+msgstr "Übersicht"
 
 #: view/adminaut/profile/access-tokens.phtml:17
 #: view/adminaut/profile/change-password.phtml:18
 #: view/adminaut/profile/index.phtml:17 view/adminaut/profile/logins.phtml:17
 #: view/adminaut/profile/settings.phtml:18
 msgid "Settings"
-msgstr ""
+msgstr "Einstellungen"
 
 #: view/adminaut/profile/access-tokens.phtml:18
 #: view/adminaut/profile/change-password.phtml:10
@@ -420,7 +420,7 @@ msgstr ""
 #: view/adminaut/profile/settings.phtml:10
 #: view/adminaut/profile/settings.phtml:19
 msgid "Change password"
-msgstr ""
+msgstr "Kennwort ändern"
 
 #: view/adminaut/profile/access-tokens.phtml:19
 #: view/adminaut/profile/change-password.phtml:20
@@ -428,27 +428,27 @@ msgstr ""
 #: view/adminaut/profile/logins.phtml:19
 #: view/adminaut/profile/settings.phtml:20
 msgid "Logins"
-msgstr ""
+msgstr "Anmeldungen"
 
 #: view/adminaut/profile/access-tokens.phtml:27
 msgid "Hash"
-msgstr ""
+msgstr "Hash"
 
 #: view/adminaut/profile/access-tokens.phtml:28
 msgid "Created"
-msgstr ""
+msgstr "Erstellt"
 
 #: view/adminaut/profile/access-tokens.phtml:29
 msgid "Action"
-msgstr ""
+msgstr "Aktion"
 
 #: view/adminaut/profile/access-tokens.phtml:51
 msgid "Delete all"
-msgstr ""
+msgstr "Alle löschen"
 
 #: view/adminaut/profile/change-password.phtml:31
 msgid "Change"
-msgstr ""
+msgstr "Ändern"
 
 #: view/adminaut/profile/index.phtml:46 view/adminaut/users/index.phtml:46
 #: view/adminaut/users/view.phtml:39
@@ -457,16 +457,16 @@ msgstr "Inaktiv"
 
 #: view/adminaut/profile/index.phtml:51
 msgid "Created at"
-msgstr ""
+msgstr "Erstellt am"
 
 #: view/adminaut/users/add.phtml:9 view/adminaut/users/edit.phtml:9
 #: view/adminaut/users/view.phtml:3
 msgid "Users:"
-msgstr ""
+msgstr "Benutzer:"
 
 #: view/adminaut/users/add.phtml:24
 msgid "Add new user"
-msgstr ""
+msgstr "Neuen Benutzer hinzufügen"
 
 #: view/adminaut/users/edit.phtml:15 view/adminaut/users/edit.phtml:28
 msgid "Update"
