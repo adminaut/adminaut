@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-10-12 11:49+0200\n"
-"PO-Revision-Date: 2017-12-17 09:00-0500\n"
+"PO-Revision-Date: 2017-12-17 09:10-0500\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -470,11 +470,11 @@ msgstr "Neuen Benutzer hinzufügen"
 
 #: view/adminaut/users/edit.phtml:15 view/adminaut/users/edit.phtml:28
 msgid "Update"
-msgstr ""
+msgstr "Aktualisieren"
 
 #: view/adminaut/users/index.phtml:17 view/adminaut/users/index.phtml:88
 msgid "Add user"
-msgstr ""
+msgstr "Benutzer hinzufügen"
 
 #: view/adminaut/users/index.phtml:30
 msgid "Status"
@@ -482,11 +482,11 @@ msgstr "Status"
 
 #: view/layout/layout-admin.phtml:107
 msgid "Toggle navigation"
-msgstr ""
+msgstr "Navigation umschalten"
 
 #: view/layout/layout-admin.phtml:138
 msgid "Sign out"
-msgstr ""
+msgstr "Abmelden"
 
 #: view/layout/layout-admin.phtml:165
 msgid "Search..."
@@ -499,7 +499,7 @@ msgstr "Powered by %s."
 
 #: view/partial/changeModal.phtml:19
 msgid "You made some changes. Do you want to leave page?"
-msgstr ""
+msgstr "Sie haben einige Änderungen vorgenommen. Wollen Sie die Seite verlassen?"
 
 #: view/partial/deleteModal.phtml:6
 msgid "Confirm delete"
@@ -507,7 +507,7 @@ msgstr "Löschen bestätigen"
 
 #: view/partial/deleteModal.phtml:9
 msgid "Are you sure?"
-msgstr ""
+msgstr "Sind Sie sicher?"
 
 #: view/partial/deleteModal.phtml:12
 msgid "No"
