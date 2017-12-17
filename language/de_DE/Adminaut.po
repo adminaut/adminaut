@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-10-12 11:49+0200\n"
-"PO-Revision-Date: 2017-12-17 05:30-0500\n"
+"PO-Revision-Date: 2017-12-17 08:00-0500\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -24,18 +24,18 @@ msgstr ""
 #: src/Authentication/Adapter/AuthAdapter.php:67
 #: src/Authentication/Adapter/AuthAdapter.php:97
 msgid "Invalid credentials."
-msgstr ""
+msgstr "Ungültige Anmeldedaten."
 
 #: src/Authentication/Adapter/AuthAdapter.php:71
 #: src/Authentication/Adapter/AuthAdapter.php:81
 #, php-format
 msgid "Account has been locked."
-msgstr ""
+msgstr "Konto wurde blockiert."
 
 #: src/Authentication/Adapter/AuthAdapter.php:91
 #, php-format
 msgid "Account has been locked until %s."
-msgstr ""
+msgstr "Konto wurde gesperrt bis %s."
 
 #: src/Authentication/Adapter/AuthAdapter.php:103
 msgid "Authenticated successfully."
