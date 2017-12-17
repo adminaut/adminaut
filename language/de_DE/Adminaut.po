@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2017-10-12 11:49+0200\n"
-"PO-Revision-Date: 2017-12-17 08:41-0500\n"
+"PO-Revision-Date: 2017-12-17 08:51-0500\n"
 "Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -277,11 +277,11 @@ msgstr "Benutzer zur Rolle zugeordnet"
 #: view/adminaut/module/list.phtml:73 view/adminaut/module/list.phtml:74
 #: view/adminaut/module/view.phtml:68 view/adminaut/users/view.phtml:47
 msgid "Edit"
-msgstr ""
+msgstr "Bearbeiten"
 
 #: view/adminaut/acl/update-role.phtml:3
 msgid "Update role"
-msgstr ""
+msgstr "Rolle aktualisieren"
 
 #: view/adminaut/auth/forgotten-password.phtml:7
 #: view/adminaut/auth/request-access.phtml:7
@@ -291,23 +291,23 @@ msgstr "Passwort vergessen"
 #: view/adminaut/auth/forgotten-password.phtml:16
 #: view/adminaut/auth/request-access.phtml:16
 msgid "Send new password"
-msgstr ""
+msgstr "Sende neues Kennwort"
 
 #: view/adminaut/auth/login.phtml:6
 msgid "Sign in to start your session"
-msgstr ""
+msgstr "Melden Sie sich an um Ihre Sitzung zu starten"
 
 #: view/adminaut/auth/login.phtml:27
 msgid "I forgot my password"
-msgstr ""
+msgstr "Ich habe mein Kennwort vergessen"
 
 #: view/adminaut/auth/login.phtml:28
 msgid "Request access"
-msgstr ""
+msgstr "Zugang anfordern"
 
 #: view/adminaut/install/index.phtml:13
 msgid "Register first user"
-msgstr ""
+msgstr "Ersten Benutzer registrieren"
 
 #: view/adminaut/module/add.phtml:16 view/adminaut/users/add.phtml:14
 msgid "Add"
@@ -316,7 +316,7 @@ msgstr "Hinzufügen"
 #: view/adminaut/module/add.phtml:38 view/adminaut/module/cyclicTab.phtml:140
 #: view/adminaut/users/add.phtml:34
 msgid "Create"
-msgstr ""
+msgstr "Erstellen"
 
 #: view/adminaut/module/add.phtml:39 view/adminaut/users/add.phtml:35
 msgid "Create and continue"
