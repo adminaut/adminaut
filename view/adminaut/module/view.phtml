@@ -65,7 +65,7 @@
                 </div>
                 <!-- /.tab-content -->
                 <div class="box-footer clearfix">
-                    <?php if ($this->isAllowed($this->moduleOption->getModuleName(), 2)) { ?>
+                    <?php if ($this->isAllowed($this->moduleOption->getModuleId(), 2)) { ?>
                         <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode' => 'edit']); ?>" class="btn btn-primary"><?php echo $this->translate('Edit'); ?></a>
                     <?php } ?>
                     <a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]); ?>" class="btn btn-link"><?php echo $this->translate('Back to list'); ?></a>

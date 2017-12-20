@@ -26,7 +26,7 @@
                                 <a href="<?php echo $this->url('adminaut/acl/show-role', ['roleId' => $entity->getId()]); ?>" type="button" class="btn btn-success"
                                    data-toggle="tooltip" data-placement="top" title="Show" data-original-title="Show"><i class="fa fa-eye"></i></a>
                                 <?php if ($entity->getId() != 1) { ?>
-                                    <?php if ($this->isAllowed('Roles', 2)) { ?>
+                                    <?php if ($this->isAllowed('roles', 2)) { ?>
                                         <a href="<?php echo $this->url('adminaut/acl/update-role', ['roleId' => $entity->getId()]); ?>" type="button" class="btn btn-info"
                                            data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
                                         <a href="<?php echo $this->url('adminaut/acl/delete-role', ['roleId' => $entity->getId()]); ?>" type="button" class="btn btn-danger btn-modal-delete"
@@ -44,7 +44,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <?php if ($this->isAllowed('Roles', 2)) { ?>
+        <?php if ($this->isAllowed('roles', 2)) { ?>
             <a href="<?php echo $this->url('adminaut/acl/add-role'); ?>" class="btn btn-primary "><i class="fa fa-plus"></i> <?php echo $this->translate('Add new role'); ?></a>
         <?php } ?>
     </div>

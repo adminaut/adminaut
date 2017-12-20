@@ -48,7 +48,7 @@
             </table>
         </div>
     </div>
-    <?php if ($this->isAllowed('Users', 1)) { ?>
+    <?php if ($this->isAllowed('users', 1)) { ?>
         <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -73,7 +73,7 @@
     <div class="col-md-12">
         <a href="<?php echo $this->url('adminaut/acl'); ?>" type="button" class="btn btn-default"><i class="fa fa-chevron-left"></i> <?php echo $this->translate('Back'); ?></a>
         <?php if ($this->role->getId() != 1) { ?>
-            <?php if ($this->isAllowed('Roles', 2)) { ?>
+            <?php if ($this->isAllowed('roles', 2)) { ?>
                 <a href="<?php echo $this->url('adminaut/acl/update-role', ['roleId' => $this->role->getId()]); ?>" type="button" class="btn btn-primary"><i class="fa fa-pencil"></i> <?php echo $this->translate('Edit'); ?></a>
             <?php } ?>
         <?php } ?>
