@@ -152,7 +152,7 @@ $pages[] = [
                 </div>
                 <?php if ($this->mode == 'view') { ?>
                     <div class="box-footer clearfix">
-                        <?php if ($this->isAllowed($this->parentModuleOption->getModuleName(), 2)) { ?>
+                        <?php if ($this->isAllowed($this->parentModuleOption->getModuleId(), 2)) { ?>
                             <a href="<?php echo $this->url('adminaut/module/action/tab', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'mode' => 'edit', 'tab' => $this->currentTab]); ?>"
                                class="btn btn-primary"><?php echo $this->translate('Edit'); ?></a>
                         <?php } ?>

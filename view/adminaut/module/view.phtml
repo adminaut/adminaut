@@ -77,7 +77,7 @@ $pages = [
                     </fieldset>
                 </div>
                 <div class="box-footer clearfix">
-                    <?php if ($this->isAllowed($this->moduleOption->getModuleName(), 2)) { ?>
+                    <?php if ($this->isAllowed($this->moduleOption->getModuleId(), 2)) { ?>
                         <a href="<?php echo $this->url('adminaut/module/action', [
                             'module_id' => $this->moduleOption->getModuleId(),
                             'entity_id' => $this->entity->getId(),
