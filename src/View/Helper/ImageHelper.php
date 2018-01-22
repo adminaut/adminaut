@@ -77,61 +77,72 @@ class ImageHelper extends AbstractHelper
             $privateAdapter = $this->privateFilesystem->getAdapter();
             $fullPath = realpath($privateAdapter->applyPathPrefix($sourcePath));
 
-            try {
-                $original = WideImage::load($fullPath);
-                $result = $original->copy();
+            if($this->privateFilesystem->getMimetype($sourcePath) === 'image/svg+xml') {
+                $resultPath = $sourcePath . '.svg';
 
-                if (function_exists('exif_read_data')) {
-                    $exifData = @exif_read_data($fullPath);
-                    $orientation = isset($exifData['Orientation']) ? $exifData['Orientation'] : 1;
-                    $result = $result->correctExif($orientation);
+                try {
+                    $original = $this->privateFilesystem->read($sourcePath);
+                    $this->publicFilesystem->write($resultPath, $original);
+                } catch (\Exception $e) {
+                    // TODO : log
                 }
+            } else {
+                try {
+                    $original = WideImage::load($fullPath);
+                    $result = $original->copy();
 
-                if ($width !== 'auto' || $height !== 'auto') {
-                    switch ($mode) {
-                        case 'scale':
-                            $_w = $width == 'auto' ? null : $width;
-                            $_h = $height == 'auto' ? null : $height;
-
-                            $result = $result->resize($_w, $_h, 'fill');
-                            break;
-
-                        case 'crop':
-                            $_w = $width == 'auto' ? '100%' : $width;
-                            $_h = $height == 'auto' ? '100%' : $height;
-                            $allowedCropAreasX = ['left', 'center', 'right'];
-                            $allowedCropAreasY = ['top', 'center', 'middle', 'bottom'];
-                            $_cax = in_array($cropAreaX, $allowedCropAreasX) || is_integer($cropAreaX) ? $cropAreaX : 'center';
-                            $_cay = in_array($cropAreaY, $allowedCropAreasY) || is_integer($cropAreaY) ? $cropAreaY : 'center';
-
-                            $result = $result->crop($_cax, $_cay, $_w, $_h);
-                            break;
-
-                        case 'fill':
-                            $_w = $width == 'auto' ? null : $width;
-                            $_h = $height == 'auto' ? null : $height;
-
-                            $_cw = $width == 'auto' ? '100%' : $width;
-                            $_ch = $height == 'auto' ? '100%' : $height;
-                            $_bg = str_replace('#', '', $bg);
-                            list($r, $g, $b) = sscanf($_bg, "%02x%02x%02x");
-                            $_bg = $original->allocateColorAlpha($r, $g, $b, $alpha);
-
-                            $result = $result->resize($_w, $_h)->resizeCanvas($_cw, $_ch, 'center', 'center', $_bg);
-                            break;
-
-                        default:
-                            $_w = $width == 'auto' ? null : $width;
-                            $_h = $height == 'auto' ? null : $height;
-
-                            $result = $result->resize($_w, $_h);
-                            break;
+                    if (function_exists('exif_read_data')) {
+                        $exifData = @exif_read_data($fullPath);
+                        $orientation = isset($exifData['Orientation']) ? $exifData['Orientation'] : 1;
+                        $result = $result->correctExif($orientation);
                     }
-                }
 
-                $this->publicFilesystem->write($resultPath, $result->asString($sourceExtension));
-            } catch (\Exception $e) {
-                throw new \Exception('Resized original cannot be saved.', 0, $e);
+                    if ($width !== 'auto' || $height !== 'auto') {
+                        switch ($mode) {
+                            case 'scale':
+                                $_w = $width == 'auto' ? null : $width;
+                                $_h = $height == 'auto' ? null : $height;
+
+                                $result = $result->resize($_w, $_h, 'fill');
+                                break;
+
+                            case 'crop':
+                                $_w = $width == 'auto' ? '100%' : $width;
+                                $_h = $height == 'auto' ? '100%' : $height;
+                                $allowedCropAreasX = ['left', 'center', 'right'];
+                                $allowedCropAreasY = ['top', 'center', 'middle', 'bottom'];
+                                $_cax = in_array($cropAreaX, $allowedCropAreasX) || is_integer($cropAreaX) ? $cropAreaX : 'center';
+                                $_cay = in_array($cropAreaY, $allowedCropAreasY) || is_integer($cropAreaY) ? $cropAreaY : 'center';
+
+                                $result = $result->crop($_cax, $_cay, $_w, $_h);
+                                break;
+
+                            case 'fill':
+                                $_w = $width == 'auto' ? null : $width;
+                                $_h = $height == 'auto' ? null : $height;
+
+                                $_cw = $width == 'auto' ? '100%' : $width;
+                                $_ch = $height == 'auto' ? '100%' : $height;
+                                $_bg = str_replace('#', '', $bg);
+                                list($r, $g, $b) = sscanf($_bg, "%02x%02x%02x");
+                                $_bg = $original->allocateColorAlpha($r, $g, $b, $alpha);
+
+                                $result = $result->resize($_w, $_h)->resizeCanvas($_cw, $_ch, 'center', 'center', $_bg);
+                                break;
+
+                            default:
+                                $_w = $width == 'auto' ? null : $width;
+                                $_h = $height == 'auto' ? null : $height;
+
+                                $result = $result->resize($_w, $_h);
+                                break;
+                        }
+                    }
+
+                    $this->publicFilesystem->write($resultPath, $result->asString($sourceExtension));
+                } catch (\Exception $e) {
+                    // TODO : log
+                }
             }
         }
 
