@@ -558,6 +558,7 @@ class ModuleController extends AdminautBaseController
         }
         $form->getElements()['reference_property']->setValue($referencedProperty);
 
+        /** @var AdminautEntityInterface $cyclicEntity */
         $cyclicEntity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $cyclicEntityId);
 
         if ($action === 'edit') {
@@ -572,9 +573,8 @@ class ModuleController extends AdminautBaseController
         } else if ($action == 'delete') {
 
             try {
-                $form->bind($cyclicEntity);
-                $primaryFieldValue = isset($form->getElements()[$form->getPrimaryField()]) ? (method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue()) : $cyclicEntity->getId();
-                $this->addSuccessMessage(sprintf($this->translate('Record "%s" has been deleted.'), $primaryFieldValue));
+                $this->getModuleManager()->delete($cyclicEntity, $this->authentication()->getIdentity());
+                $this->addSuccessMessage(sprintf($this->translate('Record "%s" has been deleted.'), $cyclicEntity->getPrimaryFieldValue()));
                 $this->getEventManager()->trigger($moduleId . '.deleteCyclicRecord', $this, [
                     'entity' => $entity,
                     'cyclicEntity' => $cyclicEntity,

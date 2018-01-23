@@ -16,7 +16,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    $('.btn-modal-delete').on('click', function(e){
+    $(document).on('click', '.btn-modal-delete', function(e){
         var deleteModal = $('#deleteModal');
         deleteModal.modal();
         deleteModal.find('#confirm').attr('href', $(this).data('href'));

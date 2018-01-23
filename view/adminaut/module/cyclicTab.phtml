@@ -119,7 +119,7 @@ $pages[] = [
                                                 <a href="<?php echo $this->url('adminaut/module/action/tab/action', ['module_id' => $this->url_params['module_id'], 'mode' => 'edit', 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId(), 'entity_action' => 'edit'], ['fragment' => 'form']); ?>"
                                                    type="button" class="btn btn-info"
                                                    data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
-                                                <a href="<?php echo $this->url('adminaut/module/action/tab/action', ['module_id' => $this->url_params['module_id'], 'mode' => 'edit', 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId(), 'entity_action' => 'delete']); ?>"
+                                                <a href="#" data-href="<?php echo $this->url('adminaut/module/action/tab/action', ['module_id' => $this->url_params['module_id'], 'mode' => 'edit', 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId(), 'entity_action' => 'delete']); ?>"
                                                    type="button" class="btn btn-danger btn-modal-delete"
                                                    data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><i class="fa fa-trash"></i></a>
                                             <?php } else if ($readonly) { ?>
