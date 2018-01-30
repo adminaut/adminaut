@@ -6,7 +6,7 @@ namespace Adminaut\Datatype;
  * Class Text
  * @package Adminaut\Datatype
  */
-class UrlKey extends Text
+class Slug extends Text
 {
     /**
      * @var string
@@ -17,7 +17,7 @@ class UrlKey extends Text
      * @var array
      */
     protected $attributes = [
-        'type' => 'datatypeUrlKey'
+        'type' => 'datatypeSlug'
     ];
 
     /**
@@ -60,7 +60,7 @@ class UrlKey extends Text
     public function getAttributes()
     {
         $attributes = parent::getAttributes();
-        $attributes['class'] = 'url-key-input form-control';
+        $attributes['class'] = 'slug-input form-control';
         if(!empty($this->getTarget())) {
             $attributes['data-target'] = $this->getTarget();
         }

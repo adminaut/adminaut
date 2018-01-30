@@ -1,6 +1,6 @@
 <?php
 
-namespace Adminaut\Datatype\UrlKey;
+namespace Adminaut\Datatype\Slug;
 
 use Adminaut\Datatype\DatatypeHelperTrait;
 use Adminaut\Datatype\DateTime;
@@ -9,7 +9,7 @@ use Zend\Form\View\Helper\FormElement as ZendFormElement;
 
 /**
  * Class FormViewHelper
- * @package Adminaut\Datatype\UrlKey
+ * @package Adminaut\Datatype\Slug
  */
 class FormViewHelper extends ZendFormElement
 {
@@ -31,7 +31,7 @@ class FormViewHelper extends ZendFormElement
     public function render(ElementInterface $element)
     {
         $element->setAttribute('type', 'text');
-        $this->appendScript('adminaut/js/datatype/url-key.js');
+        $this->appendScript('adminaut/js/datatype/slug.js');
 
         return parent::render($element);
     }
