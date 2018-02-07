@@ -19,6 +19,7 @@ return [
         'datatypeFormDateTime' => Datatype\DateTime\FormViewHelper::class,
         'datatypeFormTextarea' => Datatype\Textarea\FormViewHelper::class,
         'datatypeFormSlug' => Datatype\Slug\FormViewHelper::class,
+        'datatypeFormColor' => Datatype\Color\FormViewHelper::class,
 
         // detail helpers
         'datatypeDetail' => Datatype\View\Helper\datatypeDetailViewHelper::class,
