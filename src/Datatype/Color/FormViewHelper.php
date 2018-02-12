@@ -33,19 +33,16 @@ class FormViewHelper extends ZendFormColor
 
         $this->appendScript('adminaut/themes/adminlte/plugins/colorpicker/bootstrap-colorpicker.min.js');
         $this->appendStylesheet('adminaut/themes/adminlte/plugins/colorpicker/bootstrap-colorpicker.min.css');
+        $this->appendScript('adminaut/js/datatype/color.js');
         $this->appendStylesheet('adminaut/css/datatype/color.css');
 
         $element->setAttribute('type', 'text');
 
-        $render = parent::render($element);
-
-        $render .= '<script>$(".datatype-color").colorpicker({align:"left",customClass: \'colorpicker-2x\',sliders: {saturation: {maxLeft: 200,maxTop: 200},hue: {maxTop: 200},alpha: {maxTop: 200}}';
-
         if($element->getFormat()) {
-            $render .= ',format:"'.$element->getFormat().'"';
+            $element->setAttribute('data-format', $element->getFormat());
         }
 
-        $render .= '})</script>';
+        $render = parent::render($element);
 
         return $render;
     }
