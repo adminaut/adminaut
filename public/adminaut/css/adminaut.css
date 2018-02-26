@@ -55,7 +55,7 @@
     color: #b8b8b8;
 }
 
-.form-control::-ms-input-placeholder { /* Microsoft Edge */
+.form-control:-ms-input-placeholder { /* Microsoft Edge */
     color: #b8b8b8;
 }
 
@@ -87,4 +87,8 @@ h3.static-element {
 
 .adminaut-required-input-star {
     color: #6e6e6e;
+}
+
+#moduleEntityTable .action-column .btn-group {
+    min-width: 130px;
 }

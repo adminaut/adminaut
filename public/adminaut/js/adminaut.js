@@ -11,4 +11,11 @@
             Cookies.remove('sidebar-collapsed');
         });
     });
+
+    $(document).on('click', '#moduleEntityTable a.primary', function(e){
+        if(e.altKey && $(this).parents('tr').find('a.edit').length > 0) {
+            e.preventDefault();
+            window.location = $(this).parents('tr').find('a.edit').attr('href');
+        }
+    });
 })(jQuery);
