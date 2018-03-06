@@ -35,6 +35,7 @@ class FileImage extends File
     {
         if (null === $this->validator) {
             $this->validator = new IsImage();
+            $this->validator->disableMagicFile(true);
         }
         return $this->validator;
     }
