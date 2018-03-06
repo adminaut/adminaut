@@ -1,12 +1,12 @@
 (function ($) {
     $(document).ready(function () {
         var $datatypeColor = $('.datatype-color');
-        var $datatypeColorInput = $datatypeColor.find('input');
 
         $datatypeColor.each(function () {
-            $this = $(this);
+            var $this = $(this);
+            var $datatypeColorInput = $this.find('input');
 
-            $($this).colorpicker({
+            $this.colorpicker({
                 align:"left",
                 customClass: 'colorpicker-2x',
                 sliders: {
@@ -24,8 +24,8 @@
                 format:($datatypeColorInput.data('format') !== undefined ? $datatypeColorInput.data('format') : false)
             });
 
-            if($datatypeColor.find('input').val() !== '') {
-                var initColor = $datatypeColor.data('colorpicker').color;
+            if($datatypeColorInput.val() !== '') {
+                var initColor = $this.data('colorpicker').color;
                 var rgb = initColor.toRGB();
                 var o = Math.round(((parseInt(rgb.r) * 299) + (parseInt(rgb.g) * 587) + (parseInt(rgb.b) * 114)) / 1000);
                 var fore = (o > 125) ? "black" : "white";
