@@ -53,7 +53,7 @@ class FormViewHelper extends ZendFormFile
             $element->setAttribute('class', 'hidden');
             $render .= '<div class="file-icon">';
             if ($element instanceof FileImage) {
-                $render .= '<img src="' . $this->view->adminautImage($fileObject, 64, 64, 'crop') . '" width="64" height="64">';
+                $render .= '<img src="' . $this->view->adminautImage($fileObject, 64, 64, 'crop') . '" width="64" height="64" class="datatype-file-image-preview">';
             } else {
                 $render .= '<img src="/img/adminaut/file-icons/' . $fileObject->getFileExtension() . '.svg">';
             }

@@ -109,12 +109,16 @@ class ImageHelper extends AbstractHelper
                             case 'crop':
                                 $_w = $width == 'auto' ? '100%' : $width;
                                 $_h = $height == 'auto' ? '100%' : $height;
+
+                                $_resizeW = $width == 'auto' ? null : $width;
+                                $_resizeH = $height == 'auto' ? null : $height;
+
                                 $allowedCropAreasX = ['left', 'center', 'right'];
                                 $allowedCropAreasY = ['top', 'center', 'middle', 'bottom'];
                                 $_cax = in_array($cropAreaX, $allowedCropAreasX) || is_integer($cropAreaX) ? $cropAreaX : 'center';
                                 $_cay = in_array($cropAreaY, $allowedCropAreasY) || is_integer($cropAreaY) ? $cropAreaY : 'center';
 
-                                $result = $result->crop($_cax, $_cay, $_w, $_h);
+                                $result = $result->resize($_w, $_h, 'fill')->crop($_cax, $_cay, $_w, $_h);
                                 break;
 
                             case 'fill':
