@@ -3,11 +3,14 @@
 namespace Adminaut\Form;
 
 use Adminaut\Datatype\Checkbox;
+use Adminaut\Datatype\File;
 use Adminaut\Datatype\Radio;
 use Adminaut\Datatype\StaticElement;
 use Zend\Form\ElementInterface;
 use Zend\Form\FieldsetInterface;
 use Zend\Form\Form as ZendForm;
+use Zend\InputFilter\Input;
+use Zend\InputFilter\InputFilter;
 
 /**
  * Class Form
@@ -108,6 +111,24 @@ class Form extends ZendForm
             }
         }
         return $this->primaryField;
+    }
+
+    public function setData($data)
+    {
+        foreach ($this->getElements() as $element) {
+            if($element instanceof File) {
+                if(!array_key_exists($element->getName(), $data)) {
+                    if($element->getFileObject() instanceof \Adminaut\Entity\File) {
+                        /** @var Input $inputFilter */
+                        $inputFilter = $this->getInputFilter()->get($element->getName());
+
+                        $inputFilter->setRequired(false);
+                    }
+                }
+            }
+        }
+
+        return parent::setData($data);
     }
 
     /**
