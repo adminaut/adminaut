@@ -6,6 +6,7 @@ use Adminaut\Authentication\Service\AuthenticationService;
 use Adminaut\Controller\AuthController;
 use Adminaut\Manager\UserManager;
 use Interop\Container\ContainerInterface;
+use MassimoFilippi\SlackModule\Service\SlackService;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
@@ -30,6 +31,16 @@ class AuthControllerFactory implements FactoryInterface
         /** @var UserManager $userManager */
         $userManager = $container->get(UserManager::class);
 
-        return new AuthController($authenticationService, $userManager);
+        /** @var array $config */
+        $config = $container->get('config');
+
+        /** @var SlackService|null $slackService */
+        $slackService = null;
+
+        if (isset($config['adminaut']['slack']) && isset($config['adminaut']['slack']['enabled']) && true === $config['adminaut']['slack']['enabled']) {
+            $slackService = $container->get('adminautSlackService');
+        }
+
+        return new AuthController($authenticationService, $userManager, $slackService);
     }
 }
