@@ -38,6 +38,7 @@ class Module implements ConfigProviderInterface
             'service_manager'    => include __DIR__ . '/../config/service_manager.php',
             'view_helpers'       => include __DIR__ . '/../config/view_helpers.php',
             'view_manager'       => include __DIR__ . '/../config/view_manager.php',
+            'translator'         => include __DIR__ . '/../config/translator.php'
         ];
     }
 }

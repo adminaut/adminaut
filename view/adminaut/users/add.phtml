@@ -7,8 +7,8 @@ $form->prepare();
 ?>
 <section class="content-header">
     <h1>
-        <?php echo $this->translate('Users') ?>
-        <small><?php echo $this->translate('Add user') ?></small>
+        <?php echo $this->translate('Users', 'adminaut') ?>
+        <small><?php echo $this->translate('Add user', 'adminaut') ?></small>
     </h1>
     <?php echo $this->partial('adminaut/partial/breadcrumbs', [
         'pages' => [
@@ -24,7 +24,7 @@ $form->prepare();
         <?php echo $this->form()->openTag($form) ?>
 
         <div class="box-header with-border">
-            <h3 class="box-title"><?php echo $this->translate('Add user') ?></h3>
+            <h3 class="box-title"><?php echo $this->translate('Add user', 'adminaut') ?></h3>
         </div>
 
         <div class="box-body">
@@ -33,16 +33,16 @@ $form->prepare();
 
         <div class="box-footer clearfix">
             <button type="submit" name="submit" class="btn btn-primary" value="create">
-                <?php echo $this->translate('Create') ?>
+                <?php echo $this->translate('Create', 'adminaut') ?>
             </button>
             <button type="submit" name="submit" class="btn btn-default" value="create-and-continue">
-                <?php echo $this->translate('Create and continue') ?>
+                <?php echo $this->translate('Create and continue', 'adminaut') ?>
             </button>
             <button type="submit" name="submit" class="btn btn-default" value="create-and-new">
-                <?php echo $this->translate('Create and new') ?>
+                <?php echo $this->translate('Create and new', 'adminaut') ?>
             </button>
             <a href="<?php echo $this->url('adminaut/users') ?>" class="btn btn-link">
-                <?php echo $this->translate('Back to list') ?>
+                <?php echo $this->translate('Back to list', 'adminaut') ?>
             </a>
         </div>
 

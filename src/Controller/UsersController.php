@@ -193,7 +193,7 @@ class UsersController extends AdminautBaseController
                     }
 
                     $user = $this->getModuleManager()->create($moduleOptions->getEntityClass(), $form, null, $this->authentication()->getIdentity());
-                    $this->addSuccessMessage($this->translate('User has been successfully created.'));
+                    $this->addSuccessMessage($this->translate('User has been successfully created.', 'adminaut'));
                     switch ($post['submit']) {
                         case 'create-and-continue' :
                             return $this->redirect()->toRoute(self::ROUTE_EDIT, ['id' => $user->getId()]);
@@ -202,7 +202,7 @@ class UsersController extends AdminautBaseController
                             return $this->redirect()->toRoute(self::ROUTE_INDEX);
                     }
                 } catch (\Exception $e) {
-                    $this->addErrorMessage(sprintf($this->translate('Error: %s'), $e->getMessage()));
+                    $this->addErrorMessage(sprintf($this->translate('Error: %s', 'adminaut'), $e->getMessage()));
                     return $this->redirect()->toRoute(self::ROUTE_ADD);
                 }
             }
@@ -275,7 +275,7 @@ class UsersController extends AdminautBaseController
 
                     $this->getModuleManager()->update($user, $form, null, $this->authentication()->getIdentity());
 
-                    $this->addSuccessMessage($this->translate('User has been successfully updated.'));
+                    $this->addSuccessMessage($this->translate('User has been successfully updated.', 'adminaut'));
 
                     switch ($post['submit']) {
                         case 'save-and-continue' :
@@ -285,7 +285,7 @@ class UsersController extends AdminautBaseController
                             return $this->redirect()->toRoute(self::ROUTE_INDEX);
                     }
                 } catch (\Exception $e) {
-                    $this->addErrorMessage(sprintf($this->translate('Error: %s'), $e->getMessage()));
+                    $this->addErrorMessage(sprintf($this->translate('Error: %s', 'adminaut'), $e->getMessage()));
                 }
             }
         }
@@ -316,9 +316,9 @@ class UsersController extends AdminautBaseController
             if ($user) {
                 try {
                     $this->getUserManager()->delete($user, $this->authentication()->getIdentity());
-                    $this->addSuccessMessage($this->translate('User has been successfully deleted.'));
+                    $this->addSuccessMessage($this->translate('User has been successfully deleted.', 'adminaut'));
                 } catch (\Exception $e) {
-                    $this->addErrorMessage(sprintf($this->translate('Error: %s'), $e->getMessage()));
+                    $this->addErrorMessage(sprintf($this->translate('Error: %s', 'adminaut'), $e->getMessage()));
                 }
             }
         }

@@ -17,15 +17,15 @@ $form->prepare();
     <div class="box login-box-body">
         <?php echo $this->partial('adminaut/partial/messages') ?>
         <p class="login-box-msg">
-            <?php echo $this->translate('Sign in to start your session') ?>
+            <?php echo $this->translate('Sign in to start your session', 'adminaut') ?>
         </p>
         <?php echo $this->formCollection($form) ?>
         <a href="<?php echo $this->url(\Adminaut\Controller\AuthController::ROUTE_FORGOTTEN_PASSWORD) ?>">
-            <?php echo $this->translate('I forgot my password') ?>
+            <?php echo $this->translate('I forgot my password', 'adminaut') ?>
         </a>
         <br>
         <a href="<?php echo $this->url(\Adminaut\Controller\AuthController::ROUTE_REQUEST_ACCESS) ?>">
-            <?php echo $this->translate('Request access') ?>
+            <?php echo $this->translate('Request access', 'adminaut') ?>
         </a>
     </div>
     <?php echo $this->form()->closeTag() ?>

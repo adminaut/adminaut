@@ -7,8 +7,13 @@ use Adminaut\Controller\Plugin\AuthenticationPlugin;
 use Adminaut\Controller\Plugin\IsAllowedPlugin;
 use Adminaut\Controller\Plugin\TranslatePlugin;
 use Adminaut\Controller\Plugin\TranslatePluralPlugin;
+use Adminaut\Entity\UserEntityInterface;
+use Gettext\Languages\CldrData;
+use Gettext\Languages\Language;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\Response;
+use Zend\I18n\Translator\Translator;
+use Zend\I18n\View\Helper\Translate;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Plugin\FlashMessenger\FlashMessenger;
@@ -56,7 +61,7 @@ class AdminautBaseController extends AbstractActionController
     protected function addErrorMessage($message = null)
     {
         if (null === $message) {
-            $message = $this->translate('Wild application error occurred.');
+            $message = $this->translate('Wild application error occurred.', 'adminaut');
         }
         $this->flashMessenger()->addErrorMessage($message);
     }
@@ -77,6 +82,27 @@ class AdminautBaseController extends AbstractActionController
                     'redirect' => rawurlencode($request->getUriString()),
                 ],
             ]);
+        } else {
+            /** @var UserEntityInterface $userEntity */
+            $userEntity = $this->authentication()->getIdentity();
+
+            if(!empty($userEntity->getLanguage())) {
+                /** @var Translate $translateHelper */
+                $translateHelper = $this->viewHelper('translate');
+                $layout = $this->layout();
+
+                /** @var Translator $translator */
+                $translator = $translateHelper->getTranslator();
+                $translator->setLocale('en_US');
+                $translator->setFallbackLocale('en_US');
+
+                switch ($userEntity->getLanguage()) {
+                    case 'en': $translator->setLocale('en_US'); break;
+                    case 'de': $translator->setLocale('de_DE'); break;
+                    case 'cs': $translator->setLocale('cs_CZ'); break;
+                    case 'sk': $translator->setLocale('sk_SK'); break;
+                }
+            }
         }
 
         $this->layout('layout/admin');

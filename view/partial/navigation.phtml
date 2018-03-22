@@ -8,7 +8,7 @@ $container = $this->container;
         <?php /* @var $page Zend\Navigation\Page\Mvc */ ?>
         <?php $hasChildren = $page->hasPages(); ?>
         <?php if ($page->get('section') === true) { ?>
-            <li class="header"><?php echo $this->translate($page->getLabel()) ?></li>
+            <li class="header"><?php echo $this->translate($page->getLabel(), 'adminaut') ?></li>
             <?php continue;
         } ?>
         <?php if (!$hasChildren) { ?>
@@ -21,7 +21,7 @@ $container = $this->container;
                     <?php if ($page->get("icon") !== "") { ?>
                         <i class="<?php echo $page->get("icon"); ?>"></i>
                     <?php } ?>
-                    <span><?php echo $this->escapeHtml($this->translate($page->getLabel(), $this->navigation($container)->getTranslatorTextDomain())); ?></span>
+                    <span><?php echo $this->escapeHtml($this->translate($page->getLabel(), 'adminaut')); ?></span>
                 </a>
             </li>
         <?php } else { ?>
@@ -40,7 +40,7 @@ $container = $this->container;
                         <?php if ($page->get("icon") !== "") { ?>
                             <i class="<?php echo $page->get("icon"); ?>"></i>
                         <?php } ?>
-                        <span><?php echo $this->escapeHtml($this->translate($page->getLabel(), $this->navigation($container)->getTranslatorTextDomain())); ?></span>
+                        <span><?php echo $this->escapeHtml($this->translate($page->getLabel(), 'adminaut')); ?></span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                         </span>
@@ -67,7 +67,7 @@ $container = $this->container;
                                     <?php } else { ?>
                                         <i class="fa fa-circle-o"></i>
                                     <?php } ?>
-                                    <?php echo $this->escapeHtml($this->translate($child->getLabel(), $this->navigation($container)->getTranslatorTextDomain())); ?>
+                                    <?php echo $this->escapeHtml($this->translate($child->getLabel(), 'adminaut')); ?>
                                 </a>
                             </li>
                         <?php } ?>
@@ -83,7 +83,7 @@ $container = $this->container;
                         <?php if ($page->get("icon") !== "") { ?>
                             <i class="<?php echo $page->get("icon"); ?>"></i>
                         <?php } ?>
-                        <span><?php echo $this->escapeHtml($this->translate($page->getLabel(), $this->navigation($container)->getTranslatorTextDomain())); ?></span>
+                        <span><?php echo $this->escapeHtml($this->translate($page->getLabel(), 'adminaut')); ?></span>
                     </a>
                 </li>
             <?php } ?>

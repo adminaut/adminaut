@@ -39,7 +39,7 @@ $pages = [
                     ]) ?>
                 <?php } else { ?>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><?php echo $this->translate('Detail') ?></h3>
+                        <h3 class="box-title"><?php echo $this->translate('Detail', 'adminaut') ?></h3>
                     </div>
                 <?php } ?>
                 <div class="tab-content">
@@ -83,11 +83,11 @@ $pages = [
                             'entity_id' => $this->entity->getId(),
                             'mode' => 'edit',
                         ]) ?>" class="btn btn-primary">
-                            <?php echo $this->translate('Edit') ?>
+                            <?php echo $this->translate('Edit', 'adminaut') ?>
                         </a>
                     <?php } ?>
                     <a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]) ?>" class="btn btn-link">
-                        <?php echo $this->translate('Back to list') ?>
+                        <?php echo $this->translate('Back to list', 'adminaut') ?>
                     </a>
                     <div class="pull-right">
                         <a href="<?php echo $this->url('adminaut/module/action', [

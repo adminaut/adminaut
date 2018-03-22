@@ -4,6 +4,7 @@ namespace Adminaut\Datatype\View\Helper;
 
 use TwbBundle\Form\View\Helper\TwbBundleFormRow;
 use TwbBundle\Options\ModuleOptions;
+use Zend\Form\ElementInterface;
 use Zend\Form\View\Helper\FormElement;
 
 //use Zend\Form\ElementInterface;
@@ -46,6 +47,23 @@ class FormRow extends TwbBundleFormRow
         }
 
         return $this->elementHelper;
+    }
+
+    /**
+     * Render element's label
+     * @param Datatype|ElementInterface $oElement
+     * @return string
+     */
+    protected function renderLabel(ElementInterface $oElement)
+    {
+        if (($sLabel = $oElement->getLabel()) && ($oTranslator = $this->getTranslator())) {
+            if($sLabel === $oTranslator->translate($sLabel, $this->getTranslatorTextDomain())) {
+                return $oTranslator->translate($sLabel, 'adminaut');
+            } else {
+                return $oTranslator->translate($sLabel, $this->getTranslatorTextDomain());
+            }
+        }
+        return $sLabel;
     }
 
 //    /**

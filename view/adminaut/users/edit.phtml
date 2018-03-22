@@ -7,8 +7,8 @@ $form->prepare();
 ?>
 <section class="content-header">
     <h1>
-        <?php echo $this->translate('Users') ?>
-        <small><?php echo $this->translate('Edit user') ?></small>
+        <?php echo $this->translate('Users', 'adminaut') ?>
+        <small><?php echo $this->translate('Edit user', 'adminaut') ?></small>
     </h1>
     <?php echo $this->partial('adminaut/partial/breadcrumbs', [
         'pages' => [
@@ -24,7 +24,7 @@ $form->prepare();
         <?php echo $this->form()->openTag($form) ?>
 
         <div class="box-header with-border">
-            <h3 class="box-title"><?php echo $this->translate('Edit user') ?></h3>
+            <h3 class="box-title"><?php echo $this->translate('Edit user', 'adminaut') ?></h3>
         </div>
 
         <div class="box-body">
@@ -33,16 +33,16 @@ $form->prepare();
 
         <div class="box-footer clearfix">
             <button type="submit" name="submit" class="btn btn-primary" value="save">
-                <?php echo $this->translate('Save') ?>
+                <?php echo $this->translate('Save', 'adminaut') ?>
             </button>
             <button type="submit" name="submit" class="btn btn-default" value="save-and-continue">
-                <?php echo $this->translate('Save and continue') ?>
+                <?php echo $this->translate('Save and continue', 'adminaut') ?>
             </button>
             <a href="<?php echo $this->url('adminaut/users') ?>" class="btn btn-link">
-                <?php echo $this->translate('Back to list') ?>
+                <?php echo $this->translate('Back to list', 'adminaut') ?>
             </a>
             <a href="#" data-href="<?php echo $this->url('adminaut/users/delete', ['id' => $this->user->getId()]) ?>" class="btn btn-danger pull-right btn-modal-delete">
-                <?php echo $this->translate('Delete') ?>
+                <?php echo $this->translate('Delete', 'adminaut') ?>
             </a>
         </div>
 
