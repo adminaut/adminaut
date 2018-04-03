@@ -24,49 +24,49 @@ trait AdminautEntityTrait
     protected $id;
 
     /**
-     * @ORM\Column(name="inserted", type="datetime", options={"default":0});
+     * @ORM\Column(name="inserted", type="datetime");
      * @Annotation\Exclude();
      * @var \DateTime
      */
     protected $inserted;
 
     /**
-     * @ORM\Column(name="inserted_by", type="integer", options={"default":0});
+     * @ORM\Column(name="inserted_by", type="integer");
      * @Annotation\Exclude();
      * @var int
      */
     protected $insertedBy = 0;
 
     /**
-     * @ORM\Column(name="updated", type="datetime", options={"default":0});
+     * @ORM\Column(name="updated", type="datetime");
      * @Annotation\Exclude();
      * @var \DateTime
      */
     protected $updated;
 
     /**
-     * @ORM\Column(name="updated_by", type="integer", options={"default":0});
+     * @ORM\Column(name="updated_by", type="integer");
      * @Annotation\Exclude();
      * @var int
      */
     protected $updatedBy = 0;
 
     /**
-     * @ORM\Column(name="deleted", type="boolean", options={"default":false});
+     * @ORM\Column(name="deleted", type="boolean");
      * @Annotation\Exclude();
      * @var bool
      */
     protected $deleted = false;
 
     /**
-     * @ORM\Column(name="deleted_by", type="integer", options={"default":0});
+     * @ORM\Column(name="deleted_by", type="integer");
      * @Annotation\Exclude();
      * @var int
      */
     protected $deletedBy = 0;
 
     /**
-     * @ORM\Column(name="active", type="boolean", options={"default":true});
+     * @ORM\Column(name="active", type="boolean");
      * @Annotation\Options({"label":"Status", "listed":false, "checkbox_label":"Active", "listed_checked_value":"Active", "listed_unchecked_value":"Inactive", "listed":true});
      * @Annotation\Type("Adminaut\Datatype\Checkbox");
      * @var boolean
