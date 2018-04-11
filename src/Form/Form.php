@@ -30,6 +30,11 @@ class Form extends ZendForm
     ];
 
     /**
+     * @var array
+     */
+    protected $widgets = array();
+
+    /**
      * @var string
      */
     protected $primaryField = "id";
@@ -137,5 +142,21 @@ class Form extends ZendForm
     public function setPrimaryField($primaryField)
     {
         $this->primaryField = $primaryField;
+    }
+
+    /**
+     * @return array
+     */
+    public function getWidgets(): array
+    {
+        return $this->widgets;
+    }
+
+    /**
+     * @param array $widgets
+     */
+    public function setWidgets(array $widgets)
+    {
+        $this->widgets = $widgets;
     }
 }

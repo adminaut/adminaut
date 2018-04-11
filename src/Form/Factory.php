@@ -103,4 +103,31 @@ class Factory extends \Zend\Form\Factory
             $type
         ));
     }
+
+    /**
+     * Configure a form based on the provided specification
+     *
+     * Specification follows that of {@link configureFieldset()}, and adds the
+     * following keys:
+     *
+     * - input_filter: input filter instance, named input filter class, or
+     *   array specification for the input filter factory
+     * - hydrator: hydrator instance or named hydrator class
+     *
+     * @param  FormInterface                  $form
+     * @param  array|Traversable|ArrayAccess  $spec
+     * @return FormInterface
+     */
+    public function configureForm(FormInterface $form, $spec)
+    {
+        $spec = $this->validateSpecification($spec, __METHOD__);
+        /** @var Form $form */
+        $form = parent::configureForm($form, $spec);
+
+        if (isset($spec['widgets'])) {
+            $form->setWidgets($spec['widgets']);
+        }
+
+        return $form;
+    }
 }

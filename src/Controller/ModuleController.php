@@ -194,6 +194,7 @@ class ModuleController extends AdminautBaseController
             'primary' => $form->getPrimaryField(),
             'elements' => $elements,
             'tabs' => $tabs,
+            'widgets' => $form->getWidgets(),
             'moduleOption' => $moduleOptions,
         ]);
     }

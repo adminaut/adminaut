@@ -31,6 +31,9 @@ return [
         'form_row' => Datatype\View\Helper\FormRow::class,
         'formRow' => Datatype\View\Helper\FormRow::class,
         'FormRow' => Datatype\View\Helper\FormRow::class,
+
+        // Widget
+        'widget' => Widget\View\Helper\WidgetViewHelper::class,
     ],
     'factories' => [
         Form\View\Helper\FormElement::class => Form\View\Helper\Factory\FormElementFactory::class,
