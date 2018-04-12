@@ -3,9 +3,15 @@ namespace Adminaut\Form\Annotation;
 
 use \Zend\Form\Annotation\FormAnnotationsListener as ZendFormAnnotationsListener;
 use Zend\EventManager\EventManagerInterface;
+use Zend\ServiceManager\ServiceManager;
 
 class FormAnnotationsListener extends ZendFormAnnotationsListener
 {
+    /**
+     * @var ServiceManager
+     */
+    private static $serviceManager;
+
     /**
      * Attach listeners
      *
@@ -39,10 +45,30 @@ class FormAnnotationsListener extends ZendFormAnnotationsListener
         $widgets = array();
         foreach ($annotation->getWidgets() as $widgetClass) {
             if(class_exists($widgetClass)) {
-                $widgets[] = new $widgetClass;
+                if(self::$serviceManager->has($widgetClass)) {
+                    $widgets[] = self::$serviceManager->get($widgetClass);
+                } else {
+                    $widgets[] = new $widgetClass;
+                }
             }
         }
 
         $formSpec['widgets'] = $widgets;
+    }
+
+    /**
+     * @return ServiceManager
+     */
+    public static function getServiceManager(): ServiceManager
+    {
+        return self::$serviceManager;
+    }
+
+    /**
+     * @param ServiceManager $serviceManager
+     */
+    public static function setServiceManager(ServiceManager $serviceManager)
+    {
+        self::$serviceManager = $serviceManager;
     }
 }

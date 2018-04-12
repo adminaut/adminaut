@@ -3,6 +3,7 @@
 namespace Adminaut\Form;
 
 use Adminaut\Datatype\DatatypeManager\DatatypeManagerV3Polyfill;
+use Adminaut\Widget\AbstractWidget;
 use Traversable;
 use Zend\Form\Element;
 use Zend\Form\ElementInterface as ZFElementInterface;
@@ -125,6 +126,11 @@ class Factory extends \Zend\Form\Factory
         $form = parent::configureForm($form, $spec);
 
         if (isset($spec['widgets'])) {
+            /** @var AbstractWidget $widget */
+            if(($widget = reset($spec['widgets'])) !== null) {
+                $widget::setForm($form);
+            }
+
             $form->setWidgets($spec['widgets']);
         }
 

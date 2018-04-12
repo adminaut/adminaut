@@ -390,6 +390,7 @@ class ModuleController extends AdminautBaseController
                 'entity_id' => $entityId,
                 'mode' => 'edit',
             ],
+            'widgets' => $form->getWidgets(),
         ]);
     }
 

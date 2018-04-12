@@ -1,5 +1,6 @@
 <?php
 namespace Adminaut\Widget;
+use Adminaut\Form\Form;
 
 /**
  * Class AbstractWidget
@@ -21,6 +22,11 @@ abstract class AbstractWidget implements WidgetInterface
      * @var string
      */
     protected $color;
+
+    /**
+     * @var Form
+     */
+    protected static $form;
 
     /**
      * @param string $title
@@ -89,5 +95,28 @@ abstract class AbstractWidget implements WidgetInterface
     public function renderFooter()
     {
         return '';
+    }
+
+    /**
+     * @return Form
+     */
+    public static function getForm()
+    {
+        return self::$form;
+    }
+
+    /**
+     * @param Form $form
+     */
+    public static function setForm($form)
+    {
+        self::$form = $form;
+    }
+
+    /**
+     * @return object
+     */
+    public function getEntity() {
+        return self::$form->getObject();
     }
 }

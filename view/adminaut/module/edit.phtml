@@ -80,6 +80,12 @@ $pages = [
                     </div>
                 </div>
             </div>
+
+            <div class="col-xs-12 col-sm-4">
+                <?php foreach ($this->widgets as $widget) { ?>
+                    <?php echo $this->widget($widget); ?>
+                <?php } ?>
+            </div>
         </div>
         <?php echo $this->form()->closeTag() ?>
     </section>

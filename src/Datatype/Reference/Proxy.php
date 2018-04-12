@@ -315,4 +315,47 @@ class Proxy extends \DoctrineModule\Form\Element\Proxy
 
         $this->valueOptions = $options;
     }
+
+    /**
+     * @param $object
+     */
+    public function getMaskedValue($object)
+    {
+        if (!($om = $this->getObjectManager())) {
+            throw new RuntimeException('No object manager was set');
+        }
+
+        if (!($targetClass = $this->getTargetClass())) {
+            throw new RuntimeException('No target class was set');
+        }
+
+        $metadata = $om->getClassMetadata($targetClass);
+        $mask = $this->getMask();
+
+        preg_match_all("^%(.*?)%^", $mask, $matches);
+        $value = $mask;
+        foreach ($matches[1] as $property) {
+            if ($this->getIsMethod() == false && !$metadata->hasField($property)) {
+                throw new RuntimeException(
+                    sprintf(
+                        'Property "%s" could not be found in object "%s"',
+                        $property,
+                        $targetClass
+                    )
+                );
+            }
+
+            $getter = 'get' . ucfirst($property);
+
+            if (!is_callable([$object, $getter])) {
+                throw new RuntimeException(
+                    sprintf('Method "%s::%s" is not callable', $this->getTargetClass(), $getter)
+                );
+            }
+
+            $value = str_replace("%$property%", $object->{$getter}(), $value);
+        }
+
+        return $value;
+    }
 }
