@@ -125,7 +125,7 @@ class Factory extends \Zend\Form\Factory
         /** @var Form $form */
         $form = parent::configureForm($form, $spec);
 
-        if (isset($spec['widgets'])) {
+        if (isset($spec['widgets']) && !empty($spec['widgets'])) {
             /** @var AbstractWidget $widget */
             if(($widget = reset($spec['widgets'])) !== null) {
                 $widget::setForm($form);
