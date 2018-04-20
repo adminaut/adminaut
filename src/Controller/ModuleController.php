@@ -194,6 +194,7 @@ class ModuleController extends AdminautBaseController
             'primary' => $form->getPrimaryField(),
             'elements' => $elements,
             'tabs' => $tabs,
+            'widgets' => $form->getWidgets(),
             'moduleOption' => $moduleOptions,
         ]);
     }
@@ -257,7 +258,9 @@ class ModuleController extends AdminautBaseController
 
                         $fm->upload($form->getElements()[$key], $this->authentication()->getIdentity());
                     }
-
+                    $this->getEventManager()->trigger($moduleId . '.beforeCreateRecord', $this, [
+                        'form' => &$form
+                    ]);
                     $entity = $this->getModuleManager()->create($moduleOptions->getEntityClass(), $form, null, $this->authentication()->getIdentity());
                     $this->getEventManager()->trigger($moduleId . '.createRecord', $this, [
                         'entity' => $entity,
@@ -349,12 +352,17 @@ class ModuleController extends AdminautBaseController
                         $fm->upload($form->getElements()[$key], $this->authentication()->getIdentity());
                     }
 
+                    $this->getEventManager()->trigger($moduleId . '.beforeUpdateRecord', $this, [
+                        'entity' => &$entity,
+                        'form' => &$form
+                    ]);
+
                     $this->getModuleManager()->update($entity, $form, null, $this->authentication()->getIdentity());
 
                     $primaryFieldValue = isset($form->getElements()[$form->getPrimaryField()]) ? (method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue()) : $entity->getId();
                     $this->addSuccessMessage(sprintf($this->translate('Record "%s" has been successfully updated.', 'adminaut'), $primaryFieldValue));
                     $this->getEventManager()->trigger($moduleId . '.updateRecord', $this, [
-                        'entity' => $entity,
+                        'entity' => &$entity,
                     ]);
 
                     if ($post['submit'] == 'save-and-continue') {
@@ -382,6 +390,7 @@ class ModuleController extends AdminautBaseController
                 'entity_id' => $entityId,
                 'mode' => 'edit',
             ],
+            'widgets' => $form->getWidgets(),
         ]);
     }
 
@@ -609,6 +618,11 @@ class ModuleController extends AdminautBaseController
                     }
 
                     if ($action == 'edit') {
+                        $this->getEventManager()->trigger($moduleId . '.beforeUpdateCyclicRecord', $this, [
+                            'entity' => $entity,
+                            'cyclicEntity' => $cyclicEntity,
+                            'form' => &$form
+                        ]);
                         $cyclicEntity = $this->getModuleManager()->update($cyclicEntity, $form, $entity, $this->authentication()->getIdentity());
                         $primaryFieldValue = isset($form->getElements()[$form->getPrimaryField()]) ? (method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue()) : $cyclicEntity->getId();
                         $this->getEventManager()->trigger($moduleId . '.updateCyclicRecord', $this, [
@@ -617,6 +631,10 @@ class ModuleController extends AdminautBaseController
                         ]);
                         $this->addSuccessMessage(sprintf($this->translate('Record "%s" has been successfully updated.', 'adminaut'), $primaryFieldValue));
                     } else {
+                        $this->getEventManager()->trigger($moduleId . '.beforeCreateCyclicRecord', $this, [
+                            'entity' => $entity,
+                            'form' => &$form
+                        ]);
                         $cyclicEntity = $this->getModuleManager()->create($moduleOptions->getEntityClass(), $form, $entity, $this->authentication()->getIdentity());
                         $primaryFieldValue = isset($form->getElements()[$form->getPrimaryField()]) ? (method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue()) : $cyclicEntity->getId();
                         $this->getEventManager()->trigger($moduleId . '.createCyclicRecord', $this, [

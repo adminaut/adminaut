@@ -108,21 +108,11 @@ $pages = [
             </div>
         </div>
 
-        <?php /*<div class="col-xs-12 col-sm-4">
-            <div class="box">
-                <div class="box-header with-border">
-                    <i class="fa fa-fw fa-facebook"></i>
-                    <h3 class="box-title">Facebook</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    </div>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div class="fb-page" data-href="https://www.facebook.com/restaurace.dvorce" data-tabs="timeline, messages, events" data-small-header="false" data-width="1000" data-hide-cover="false" data-show-facepile="true" style="width: 100%;"><blockquote cite="https://www.facebook.com/restaurace.dvorce" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/restaurace.dvorce">Pivovarská restaurace Dvorce</a></blockquote></div>
-                </div>
-            </div>
-        </div> */ ?>
+        <div class="col-xs-12 col-sm-4">
+            <?php foreach ($this->widgets as $widget) { ?>
+                <?php echo $this->widget($widget); ?>
+            <?php } ?>
+        </div>
     </div>
 </section>
 

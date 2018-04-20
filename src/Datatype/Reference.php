@@ -176,7 +176,11 @@ class Reference extends Element implements InputProviderInterface
         $record = $this->getValue(true);
 
         if ($record !== null) {
-            return $record->{'get' . $this->getProxy()->getProperty()}();
+            if($this->getProxy()->getMask()) {
+                return $this->getProxy()->getMaskedValue($record);
+            } else {
+                return $record->{'get' . $this->getProxy()->getProperty()}();
+            }
         } else {
             return '';
         }
