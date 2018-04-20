@@ -8,8 +8,6 @@ use Adminaut\Controller\Plugin\IsAllowedPlugin;
 use Adminaut\Controller\Plugin\TranslatePlugin;
 use Adminaut\Controller\Plugin\TranslatePluralPlugin;
 use Adminaut\Entity\UserEntityInterface;
-use Gettext\Languages\CldrData;
-use Gettext\Languages\Language;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\Response;
 use Zend\I18n\Translator\Translator;
