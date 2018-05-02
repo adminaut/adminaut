@@ -8,6 +8,7 @@ use Adminaut\Form\Annotation\AnnotationBuilder;
 use Adminaut\Form\Element\CyclicSheet;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 use DoctrineModule\Form\Element\ObjectMultiCheckbox;
 use DoctrineModule\Form\Element\ObjectRadio;
 use DoctrineModule\Form\Element\ObjectSelect;
@@ -90,7 +91,78 @@ class ModuleManager extends AManager
 
         $repository = $this->getRepository($entityName);
 
-        return $repository->findBy($criteria, $orderBy);
+        $joined = [];
+        $qb = $repository->createQueryBuilder('e');
+
+        foreach ($criteria as $criterionField => $criterionValue) {
+            if(strpos($criterionField, '.')) {
+                $join = "";
+                $joinAlias = "";
+                foreach ($a = explode('.', $criterionField) as $x) {
+                    if($x === end($a)) { break; }
+
+                    $join .= (!empty($join) ? '.' : '') . $x;
+                    $joinAlias = str_replace('.', '_', $join);
+
+                    if(!in_array($join, $joined)) {
+                        $qb->join('e.' . $join, 'e_' . $joinAlias);
+                        $joined[] = $join;
+                    }
+                }
+
+                $qb->andWhere("e_$joinAlias.$x = :e_$joinAlias_$x");
+                $qb->setParameter("e_$joinAlias_$x", $criterionValue);
+            } else {
+                $qb->andWhere("e.$criterionField = :e_$criterionField");
+                $qb->setParameter("e_$criterionField", $criterionValue);
+            }
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param $entityName
+     * @param array $criteria
+     * @return null|object
+     */
+    public function findOneBy($entityName, array $criteria = [])
+    {
+        $criteria = array_merge(['deleted' => false], $criteria);
+        $repository = $this->getRepository($entityName);
+
+        $joined = [];
+        $qb = $repository->createQueryBuilder('e');
+
+        foreach ($criteria as $criterionField => $criterionValue) {
+            if(strpos($criterionField, '.')) {
+                $join = "";
+                $joinAlias = "";
+                foreach ($a = explode('.', $criterionField) as $x) {
+                    if($x === end($a)) { break; }
+
+                    $join .= (!empty($join) ? '.' : '') . $x;
+                    $joinAlias = str_replace('.', '_', $join);
+
+                    if(!in_array($join, $joined)) {
+                        $qb->join('e.' . $join, 'e_' . $joinAlias);
+                        $joined[] = $join;
+                    }
+                }
+
+                $qb->andWhere("e_$joinAlias.$x = :e_$joinAlias_$x");
+                $qb->setParameter("e_$joinAlias_$x", $criterionValue);
+            } else {
+                $qb->andWhere("e.$criterionField = :e_$criterionField");
+                $qb->setParameter("e_$criterionField", $criterionValue);
+            }
+        }
+
+        try {
+            return $qb->getQuery()->getSingleResult();
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
     /**

@@ -10,6 +10,8 @@ use Adminaut\Manager\ModuleManager;
 use Adminaut\Manager\FileManager;
 use Adminaut\Options\ModuleOptions;
 use Adminaut\Service\AccessControlService;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Zend\Form\Element;
 use Zend\Http\PhpEnvironment\Request;
@@ -38,6 +40,11 @@ class ModuleController extends AdminautBaseController
      */
     private $fileManager;
 
+    /**
+     * @var AccessControlService
+     */
+    private $accessControlService;
+
     //-------------------------------------------------------------------------
 
     /**
@@ -45,12 +52,14 @@ class ModuleController extends AdminautBaseController
      * @param EntityManager $entityManager
      * @param ModuleManager $moduleManager
      * @param FileManager $fileManager
+     * @param AccessControlService $accessControlService
      */
-    public function __construct(EntityManager $entityManager, ModuleManager $moduleManager, FileManager $fileManager)
+    public function __construct(EntityManager $entityManager, ModuleManager $moduleManager, FileManager $fileManager, AccessControlService $accessControlService)
     {
         $this->entityManager = $entityManager;
         $this->moduleManager = $moduleManager;
         $this->fileManager = $fileManager;
+        $this->accessControlService = $accessControlService;
     }
 
     //-------------------------------------------------------------------------
@@ -135,7 +144,11 @@ class ModuleController extends AdminautBaseController
             }
         }
 
-        $list = $this->getModuleManager()->findAll($moduleOptions->getEntityClass());
+        if(!empty($criteria = $this->accessControlService->getModuleCriteria($moduleId))) {
+            $list = $this->getModuleManager()->findby($moduleOptions->getEntityClass(), $criteria);
+        } else {
+            $list = $this->getModuleManager()->findAll($moduleOptions->getEntityClass());
+        }
 
         return new ViewModel([
             'list' => $list,
@@ -169,7 +182,17 @@ class ModuleController extends AdminautBaseController
 
         $form = $this->getModuleManager()->createForm($moduleOptions);
 
-        $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
+        if(!empty($criteria = $this->accessControlService->getModuleCriteria($moduleId))) {
+            $entity = $this->getModuleManager()->findOneby($moduleOptions->getEntityClass(), array_merge(['id' => $entityId], $criteria));
+        } else {
+            $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
+        }
+
+        if (!$entity) {
+            $this->addErrorMessage($this->translate('Record was not found.', 'adminaut'));
+            return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
+        }
+
         $form->bind($entity);
 
         $elements = [];
@@ -314,7 +337,11 @@ class ModuleController extends AdminautBaseController
         $moduleOptions = $this->getModuleManager()->createModuleOptions($moduleId);
 
         /* @var $entity AdminautEntityInterface */
-        $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
+        if(!empty($criteria = $this->accessControlService->getModuleCriteria($moduleId))) {
+            $entity = $this->getModuleManager()->findOneby($moduleOptions->getEntityClass(), array_merge(['id' => $entityId], $criteria));
+        } else {
+            $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
+        }
 
         if (!$entity) {
             $this->addErrorMessage($this->translate('Record was not found.', 'adminaut'));
