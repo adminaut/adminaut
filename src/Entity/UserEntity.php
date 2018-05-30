@@ -31,7 +31,7 @@ class UserEntity implements UserEntityInterface
     /**
      * @ORM\Column(type="string", length=128);
      * @Annotation\Options({"label":"Name", "listed":true});
-     * @Annotation\Flags({"priority":5});
+     * @Annotation\Flags({"priority":25});
      * @Annotation\Type("Adminaut\Datatype\Text");
      * @Annotation\Required(true);
      * @var string
@@ -41,7 +41,7 @@ class UserEntity implements UserEntityInterface
     /**
      * @ORM\Column(type="string", length=128, unique=true);
      * @Annotation\Options({"label":"Email", "listed":true, "primary":true});
-     * @Annotation\Flags({"priority":10});
+     * @Annotation\Flags({"priority":20});
      * @Annotation\Type("Zend\Form\Element\Email");
      * @Annotation\Required(true);
      * @var string
@@ -58,9 +58,18 @@ class UserEntity implements UserEntityInterface
     protected $password = '';
 
     /**
+     * @ORM\Column(name="password_change_on_next_logon", type="boolean", options={"default":0});
+     * @Annotation\Options({"label":" ", "listed":false, "checkbox_label":"Must change password at next logon"});
+     * @Annotation\Flags({"priority":13});
+     * @Annotation\Type("Adminaut\Datatype\Checkbox");
+     * @var boolean
+     */
+    protected $passwordChangeOnNextLogon = false;
+
+    /**
      * @ORM\Column(type="string", length=128);
      * @Annotation\Options({"label":"Role", "empty_option":"Select role", "listed":true});
-     * @Annotation\Flags({"priority":20});
+     * @Annotation\Flags({"priority":10});
      * @Annotation\Type("Zend\Form\Element\Select");
      * @Annotation\Required(true);
      * @var string
@@ -70,7 +79,7 @@ class UserEntity implements UserEntityInterface
     /**
      * @ORM\Column(type="string", length=128, options={"default":"en"});
      * @Annotation\Options({"label":"Language", "availableLanguages":{"cs", "sk", "en", "de"}, "listed":true});
-     * @Annotation\Flags({"priority":19});
+     * @Annotation\Flags({"priority":5});
      * @Annotation\Type("Adminaut\Datatype\Language");
      * @Annotation\Required(true);
      * @var string
@@ -90,7 +99,7 @@ class UserEntity implements UserEntityInterface
      *      },
      *     "listed":true
      * });
-     * @Annotation\Flags({"priority":18});
+     * @Annotation\Flags({"priority":0});
      * @Annotation\Type("Zend\Form\Element\Select");
      * @Annotation\Required(true);
      * @var int
@@ -172,6 +181,22 @@ class UserEntity implements UserEntityInterface
     public function setPassword($password)
     {
         $this->password = $password;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPasswordChangeOnNextLogon(): bool
+    {
+        return $this->passwordChangeOnNextLogon;
+    }
+
+    /**
+     * @param bool $passwordChangeOnNextLogon
+     */
+    public function setPasswordChangeOnNextLogon(bool $passwordChangeOnNextLogon)
+    {
+        $this->passwordChangeOnNextLogon = $passwordChangeOnNextLogon;
     }
 
 //    todo: implement setters and getters as below instead of generating password somewhere else in code

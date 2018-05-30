@@ -6,6 +6,7 @@ use Adminaut\Controller\UsersController;
 use Adminaut\Manager\ModuleManager;
 use Adminaut\Manager\UserManager;
 use Adminaut\Options\UsersOptions;
+use Adminaut\Service\MailService;
 use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
@@ -38,6 +39,9 @@ class UsersControllerFactory implements FactoryInterface
         /** @var UsersOptions $usersOptions */
         $usersOptions = $container->get(UsersOptions::class);
 
-        return new UsersController($entityManager, $userManager, $moduleManager, $usersOptions);
+        /** @var MailService $mailService */
+        $mailService = $container->get(MailService::class);
+
+        return new UsersController($entityManager, $userManager, $moduleManager, $mailService, $usersOptions);
     }
 }

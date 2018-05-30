@@ -8,6 +8,8 @@ use Adminaut\Manager\UserManager;
 use Adminaut\Options\ModuleOptions;
 use Adminaut\Options\UsersOptions;
 use Adminaut\Service\AccessControlService;
+use Adminaut\Datatype\Checkbox;
+use Adminaut\Service\MailService;
 use Doctrine\ORM\EntityManager;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\Response;
@@ -44,6 +46,11 @@ class UsersController extends AdminautBaseController
     private $moduleManager;
 
     /**
+     * @var MailService
+     */
+    private $mailService;
+
+    /**
      * @var UsersOptions
      */
     private $usersOptions;
@@ -57,11 +64,12 @@ class UsersController extends AdminautBaseController
      * @param ModuleManager $moduleManager
      * @param UsersOptions $usersOptions
      */
-    public function __construct(EntityManager $entityManager, UserManager $userManager, ModuleManager $moduleManager, UsersOptions $usersOptions)
+    public function __construct(EntityManager $entityManager, UserManager $userManager, ModuleManager $moduleManager, MailService $mailService, UsersOptions $usersOptions)
     {
         $this->entityManager = $entityManager;
         $this->userManager = $userManager;
         $this->moduleManager = $moduleManager;
+        $this->mailService = $mailService;
         $this->usersOptions = $usersOptions;
     }
 
@@ -172,6 +180,25 @@ class UsersController extends AdminautBaseController
             $rolesData[$roleId] = $role['name'];
         }
         $form->get('role')->setValueOptions($rolesData);
+        $form->add([
+            'type' => Checkbox::class,
+            'name' => 'generatePassword',
+            'options' => [
+                'label' => _('Generate password'),
+            ],
+        ], [
+            'priority' => 14
+        ]);
+        $form->add([
+            'type' => Checkbox::class,
+            'name' => 'sendAccountInformation',
+            'options' => [
+                'label' => " ",
+                'checkbox_label' => _('Send account information to the user')
+            ],
+        ], [
+            'priority' => -1
+        ]);
 
         /** @var Request $request */
         $request = $this->getRequest();
@@ -181,8 +208,13 @@ class UsersController extends AdminautBaseController
             $form->setData($post);
             if ($form->isValid()) {
                 try {
-                    if ($form->has('password')) {
-                        $passwordElement = $form->get('password');
+                    $generatePassword = $form->get('generatePassword')->getValue();
+                    $passwordElement = $form->get('password');
+
+                    if($generatePassword) {
+                        $password = PasswordHelper::generate(16, true);
+                        $passwordElement->setValue(PasswordHelper::hash($password));
+                    } else {
                         $password = $passwordElement->getValue();
 
                         if (empty(trim($password))) {
@@ -194,6 +226,17 @@ class UsersController extends AdminautBaseController
 
                     $user = $this->getModuleManager()->create($moduleOptions->getEntityClass(), $form, null, $this->authentication()->getIdentity());
                     $this->addSuccessMessage($this->translate('User has been successfully created.', 'adminaut'));
+
+                    if($form->has('sendAccountInformation')) {
+                        if($form->get('sendAccountInformation')->getValue() && !empty(trim($password))) {
+                            try {
+                                $this->mailService->sendAccountInformation($user, $password, $this->mailService::ACCOUNT_INFORMATION_OPERATION_CREATE);
+                            } catch(\Exception $e) {
+                                $this->addErrorMessage(sprintf($this->translate('Exception while sending account information: %S', 'adminaut'), $e->getMessage()));
+                            }
+                        }
+                    }
+
                     switch ($post['submit']) {
                         case 'create-and-continue' :
                             return $this->redirect()->toRoute(self::ROUTE_EDIT, ['id' => $user->getId()]);
@@ -203,7 +246,6 @@ class UsersController extends AdminautBaseController
                     }
                 } catch (\Exception $e) {
                     $this->addErrorMessage(sprintf($this->translate('Error: %s', 'adminaut'), $e->getMessage()));
-                    return $this->redirect()->toRoute(self::ROUTE_ADD);
                 }
             }
         }
@@ -249,6 +291,25 @@ class UsersController extends AdminautBaseController
             $rolesData[$roleId] = $role['name'];
         }
         $form->get('role')->setValueOptions($rolesData);
+        $form->add([
+            'type' => Checkbox::class,
+            'name' => 'generatePassword',
+            'options' => [
+                'label' => _('Generate password'),
+            ],
+        ], [
+            'priority' => 14
+        ]);
+        $form->add([
+            'type' => Checkbox::class,
+            'name' => 'sendAccountInformation',
+            'options' => [
+                'label' => " ",
+                'checkbox_label' => _('Send account information to the user')
+            ],
+        ], [
+            'priority' => -1
+        ]);
 
         $form->populateValues($user->toArray());
 
@@ -261,9 +322,13 @@ class UsersController extends AdminautBaseController
 
             if ($form->isValid()) {
                 try {
+                    $generatePassword = $form->get('generatePassword')->getValue();
+                    $passwordElement = $form->get('password');
 
-                    if ($form->has('password')) {
-                        $passwordElement = $form->get('password');
+                    if($generatePassword) {
+                        $password = PasswordHelper::generate(16, true);
+                        $passwordElement->setValue(PasswordHelper::hash($password));
+                    } else {
                         $password = $passwordElement->getValue();
 
                         if (empty(trim($password))) {
@@ -274,8 +339,17 @@ class UsersController extends AdminautBaseController
                     }
 
                     $this->getModuleManager()->update($user, $form, null, $this->authentication()->getIdentity());
-
                     $this->addSuccessMessage($this->translate('User has been successfully updated.', 'adminaut'));
+
+                    if($form->has('sendAccountInformation')) {
+                        if($form->get('sendAccountInformation')->getValue() && !empty(trim($password))) {
+                            try {
+                                $this->mailService->sendAccountInformation($user, $password, $this->mailService::ACCOUNT_INFORMATION_OPERATION_UPDATE);
+                            } catch(\Exception $e) {
+                                $this->addErrorMessage(sprintf($this->translate('Exception while sending account information: %s', 'adminaut'), $e->getMessage()));
+                            }
+                        }
+                    }
 
                     switch ($post['submit']) {
                         case 'save-and-continue' :

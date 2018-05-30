@@ -1,10 +1,16 @@
 <?php
-
 namespace Adminaut\Service\Factory;
 
 use Adminaut\Service\MailService;
 use Interop\Container\ContainerInterface;
+use Zend\I18n\Translator\TranslatorInterface;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Factory\FactoryInterface;
+use MassimoFilippi\MailModule\Adapter\Mailjet\MailjetAdapter;
+use MassimoFilippi\MailModule\Adapter\SparkPost\SparkPostAdapter;
+use MassimoFilippi\MailModule\Adapter\SparkPost\SparkPostSmtpAdapter;
+use Zend\View\Renderer\RendererInterface;
+use Zend\View\Renderer\PhpRenderer;
 
 /**
  * Class MailServiceFactory
@@ -12,24 +18,87 @@ use Zend\ServiceManager\Factory\FactoryInterface;
  */
 class MailServiceFactory implements FactoryInterface
 {
-
     /**
      * @param ContainerInterface $container
      * @param string $requestedName
      * @param array|null $options
-     * @return MailService
+     * @return SlackService
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $options = [];
-
         /** @var array $config */
-        $config = $container->get('Config');
+        $config = $container->get('config');
 
-        if (isset($config['adminaut']['mail_service']) && is_array($config['adminaut']['mail_service'])) {
-            $options = $config['adminaut']['mail_service'];
+        if (false === isset($config['adminaut']['mail_service'])) {
+            throw new ServiceNotCreatedException('Missing configuration for mail module in adminaut.');
         }
 
-        return new MailService($options);
+        /** @var array $slackModuleConfig */
+        $mailServiceConfig = $config['adminaut']['mail_service'];
+
+        if (!isset($mailServiceConfig['enabled']) || false === $mailServiceConfig['enabled']) {
+            throw new ServiceNotCreatedException('MailService is disabled, check your config.');
+        }
+
+        if (false === isset($mailServiceConfig['adapter'])) {
+            throw new ServiceNotCreatedException('Missing adapter name.');
+        }
+
+        $adapterName = $mailServiceConfig['adapter'];
+
+        switch ($adapterName) {
+            case MailjetAdapter::class:
+                if (false === isset($mailServiceConfig['adapter_params']['api_key'])) {
+                    throw new ServiceNotCreatedException('Missing adapter parameter: "api_key".');
+                }
+
+                if (false === isset($mailServiceConfig['adapter_params']['api_secret'])) {
+                    throw new ServiceNotCreatedException('Missing adapter parameter: "api_secret".');
+                }
+
+                $options = [];
+
+                $options['api_key'] = $mailServiceConfig['adapter_params']['api_key'];
+                $options['api_secret'] = $mailServiceConfig['adapter_params']['api_secret'];
+
+                if (true === isset($mailServiceConfig['adapter_params']['sandbox_mode'])) {
+                    $options['sandbox_mode'] = $mailServiceConfig['adapter_params']['sandbox_mode'];
+                }
+
+                $adapter = new MailjetAdapter($options);
+                break;
+            case SparkPostAdapter::class:
+                if (false === isset($mailServiceConfig['adapter_params']['api_key'])) {
+                    throw new ServiceNotCreatedException('Missing adapter parameter: "api_key".');
+                }
+
+                $options = [];
+
+                $options['api_key'] = $mailServiceConfig['adapter_params']['api_key'];
+
+                $adapter = new SparkPostAdapter($options);
+                break;
+            case SparkPostSmtpAdapter::class:
+                if (false === isset($mailServiceConfig['adapter_params']['api_key'])) {
+                    throw new ServiceNotCreatedException('Missing adapter parameter: "api_key".');
+                }
+
+                $options = [];
+
+                $options['api_key'] = $mailServiceConfig['adapter_params']['api_key'];
+
+                $adapter = new SparkPostSmtpAdapter($options);
+                break;
+            default:
+                throw new ServiceNotCreatedException(sprintf('Adapter "%s" could not be found.', $adapterName));
+        }
+
+        /** @var TranslatorInterface $translator */
+        $translator = $container->get('translator');
+
+        /** @var RendererInterface $viewRenderer */
+        $viewRenderer = $container->get(PhpRenderer::class);
+
+        return new MailService($adapter, $mailServiceConfig, $translator, $viewRenderer);
     }
 }

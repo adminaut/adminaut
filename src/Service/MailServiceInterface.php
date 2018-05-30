@@ -2,11 +2,13 @@
 
 namespace Adminaut\Service;
 
+use \MassimoFilippi\MailModule\Service\MailServiceInterface as MfccMailServiceInterface;
+
 /**
  * Interface MailServiceInterface
  * @package Adminaut\Service
  */
-interface MailServiceInterface
+interface MailServiceInterface extends MfccMailServiceInterface
 {
     /**
      * @param $body
@@ -28,14 +30,4 @@ interface MailServiceInterface
      * @param null $toName
      */
     public function sendNotificationMail($body, $toEmail, $toName = null);
-
-    /**
-     * @param $subject
-     * @param $body
-     * @param $fromEmail
-     * @param $fromName
-     * @param $toEmail
-     * @param $toName
-     */
-    public function sendMail($subject, $body, $fromEmail, $fromName, $toEmail, $toName = null);
 }

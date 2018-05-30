@@ -4,6 +4,7 @@ namespace Adminaut\Authentication\Adapter;
 
 use Adminaut\Authentication\Helper\PasswordHelper;
 use Adminaut\Entity\UserEntity;
+use Adminaut\Entity\UserEntityInterface;
 use Adminaut\Entity\UserLoginEntity;
 use Adminaut\Options\AuthAdapterOptions;
 use Adminaut\Repository\UserLoginRepository;
@@ -114,6 +115,25 @@ class AuthAdapter implements AdapterInterface
         $this->deactivateFailedLoginsByUser($user);
 
         return $this->getResult(Result::SUCCESS, _('Authenticated successfully.'), $user);
+    }
+
+    /**
+     * @param UserEntityInterface $user
+     * @param $password
+     * @return Result
+     */
+    public function changePassword($user, $password)
+    {
+        try {
+            $newPasswordHash = PasswordHelper::hash($password);
+
+            $user->setPassword($newPasswordHash);
+            $user->setPasswordChangeOnNextLogon(false);
+            $this->entityManager->flush($user);
+            return $this->getResult(Result::SUCCESS, _('Password changed successfully.'), $user);
+        } catch (\Exception $e) {
+            return $this->getResult(Result::FAILURE, _('Cannot change password, try again later.'));
+        }
     }
 
     //-------------------------------------------------------------------------

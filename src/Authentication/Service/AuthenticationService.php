@@ -3,6 +3,7 @@
 namespace Adminaut\Authentication\Service;
 
 use Adminaut\Authentication\Adapter\AuthAdapter;
+use Adminaut\Authentication\Helper\PasswordHelper;
 use Adminaut\Authentication\Storage\AuthStorage;
 use Adminaut\Entity\UserEntityInterface;
 use Zend\Authentication\AuthenticationServiceInterface;
@@ -131,5 +132,14 @@ class AuthenticationService implements AuthenticationServiceInterface
         if (false === $this->storage->isEmpty()) {
             $this->storage->clear();
         }
+    }
+
+    /**
+     * @param string $password
+     * @return Result
+     */
+    public function changePassword($password)
+    {
+        return $this->getAdapter()->changePassword($this->getIdentity(), $password);
     }
 }

@@ -2,15 +2,28 @@
 
 namespace Adminaut\Service;
 
+use Adminaut\Entity\UserEntityInterface;
 use Adminaut\Service\Exception\RuntimeException;
+use MassimoFilippi\MailModule\Adapter\AdapterInterface;
+use MassimoFilippi\MailModule\Service\MailService as MfccMailService;
+use MassimoFilippi\MailModule\Model\Message\Message;
+use MassimoFilippi\MailModule\Model\Recipient\Recipient;
+use MassimoFilippi\MailModule\Model\Sender\Sender;
+use Zend\I18n\Translator\Translator;
+use Zend\I18n\Translator\TranslatorInterface;
 use Zend\Mail;
+use Zend\View\Model\ViewModel;
+use Zend\View\Renderer\RendererInterface;
 
 /**
  * Class MailService
  * @package Adminaut\Service
  */
-class MailService implements MailServiceInterface
+class MailService extends MfccMailService implements MailServiceInterface
 {
+    const ACCOUNT_INFORMATION_OPERATION_CREATE = 'create';
+    const ACCOUNT_INFORMATION_OPERATION_UPDATE = 'update';
+
     /**
      * @var string
      */
@@ -22,17 +35,43 @@ class MailService implements MailServiceInterface
     protected $systemEmail = 'no-reply@example.com';
 
     /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
+     * @var RendererInterface
+     */
+    protected $viewRenderer;
+
+    /**
+     * @var array
+     */
+    protected $templates = [
+        'account_information' => 'adminaut/email/account-information.phtml',
+        'notification' => 'adminaut/email/notification.phtml',
+    ];
+
+    /**
      * MailService constructor.
      * @param array $options
      */
-    public function __construct(array $options = [])
+    public function __construct(AdapterInterface $adapter, array $options = [], TranslatorInterface $translator, RendererInterface $renderer)
     {
+        parent::__construct($adapter);
+        $this->translator = $translator;
+        $this->viewRenderer = $renderer;
+
         if (array_key_exists('system_name', $options)) {
             $this->setSystemName($options['system_name']);
         }
 
         if (array_key_exists('system_email', $options)) {
             $this->setSystemEmail($options['system_email']);
+        }
+
+        if(array_key_exists('templates', $options)) {
+            $this->templates = array_merge($this->templates, $options['templates']);
         }
     }
 
@@ -69,25 +108,44 @@ class MailService implements MailServiceInterface
     }
 
     /**
-     * @param $body
-     * @param $toEmail
-     * @param null $toName
+     * @param UserEntityInterface $user
+     * @param string $rawPassword
+     * @param string $operation
      */
-    public function sendInvitationMail($body, $toEmail, $toName = null)
+    public function sendAccountInformation(UserEntityInterface $user, string $rawPassword, string $operation = self::ACCOUNT_INFORMATION_OPERATION_CREATE)
     {
-        $subject = sprintf('Invitation - %s', $this->getSystemName());
-        $this->sendMail($subject, $body, $this->getSystemEmail(), $this->getSystemName(), $toEmail, $toName);
+        $subject = sprintf($this->translator->translate('Account Information - %s'), $this->getSystemName());
+        $template = $this->templates['account_information'];
+
+        $viewModel = new ViewModel();
+        $viewModel->setTemplate($template);
+        $viewModel->setVariables([
+            'user' => $user,
+            'operation' => $operation,
+            'raw_password' => $rawPassword,
+            'system_name' => $this->systemName
+        ]);
+        $body = $this->viewRenderer->render($viewModel);
+
+        $sender = new Sender($this->systemEmail, $this->systemName);
+        $recipient = new Recipient($user->getEmail());
+        $recipient->setName($user->getName());
+
+        $message = new Message($sender, $recipient);
+        $message->setSubject($subject);
+        $message->setMessage($body);
+
+        $this->sendMail($message);
     }
 
-    /**
-     * @param $body
-     * @param $toEmail
-     * @param null $toName
-     */
+    public function sendInvitationMail($body, $toEmail, $toName = null)
+    {
+        // TODO: Implement sendInvitationMail() method.
+    }
+
     public function sendPasswordRecoveryMail($body, $toEmail, $toName = null)
     {
-        $subject = sprintf('Password recovery - %s', $this->getSystemName());
-        $this->sendMail($subject, $body, $this->getSystemEmail(), $this->getSystemName(), $toEmail, $toName);
+        // TODO: Implement sendPasswordRecoveryMail() method.
     }
 
     /**
@@ -97,38 +155,23 @@ class MailService implements MailServiceInterface
      */
     public function sendNotificationMail($body, $toEmail, $toName = null)
     {
-        $subject = sprintf('Notification - %s', $this->getSystemName());
-        $this->sendMail($subject, $body, $this->getSystemEmail(), $this->getSystemName(), $toEmail, $toName);
-    }
+        $subject = sprintf($this->translator->translate('Notification - %s'), $this->getSystemName());
+        $template = $this->templates['notification'];
 
-    /**
-     * @param $subject
-     * @param $body
-     * @param $fromEmail
-     * @param $fromName
-     * @param $toEmail
-     * @param null $toName
-     */
-    public function sendMail($subject, $body, $fromEmail, $fromName, $toEmail, $toName = null)
-    {
-        $mail = new Mail\Message();
-        $mail->setEncoding('UTF-8'); // prevents invalid header runtime exception
-        $mail->setSubject($subject);
-        $mail->setBody($body);
-        $mail->setFrom($fromEmail, $fromName);
+        $viewModel = new ViewModel();
+        $viewModel->setTemplate($template);
+        $viewModel->setVariables([
+            'message' => $body
+        ]);
+        $body = $this->viewRenderer->render($viewModel);
 
-        if (null === $toName) {
-            $mail->addTo($toEmail);
-        } else {
-            $mail->addTo($toEmail, $toName);
-        }
+        $sender = new Sender($this->systemEmail, $this->systemName);
+        $recipient = new Recipient($toEmail, $toName);
 
-        $transport = new Mail\Transport\Sendmail();
+        $message = new Message($sender, $recipient);
+        $message->setSubject($subject);
+        $message->setMessage($body);
 
-        try {
-            $transport->send($mail);
-        } catch (\Exception $exception) {
-            throw new RuntimeException('An exception has been thrown during email sending.', 1, $exception);
-        }
+        $this->sendMail($message);
     }
 }

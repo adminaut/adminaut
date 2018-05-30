@@ -71,6 +71,30 @@ return [
             ],
         ],
 
+        'mail_service' => [
+            'enabled' => false,
+            'adapter' => \MassimoFilippi\MailModule\Adapter\Mailjet\MailjetAdapter::class,
+            'adapter_params' => [
+                'api_key' => '---sparkpost-api-key---',
+                'api_secret' => '---mailjet-api-secret---',
+                'sandbox_mode' => false,
+            ],
+//            'adapter' => \MassimoFilippi\MailModule\Adapter\SparkPost\SparkPostAdapter::class,
+//            'adapter_params' => [
+//                'api_key' => '---mailjet-api-key---',
+//            ],
+//            'adapter' => \MassimoFilippi\MailModule\Adapter\SparkPost\SparkPostSmtpAdapter::class,
+//            'adapter_params' => [
+//                'api_key' => '---sparkpost-api-key---',
+//            ],
+            'system_name' => 'Adminaut',
+            'system_email' => '---your-system-email---',
+            'templates' => [
+                'account_information' => 'adminaut/email/account-information.phtml',
+                'notification' => 'adminaut/email/notification.phtml',
+            ],
+        ],
+
         'slack' => [
             'enabled' => false,
             'webhook_url' => 'https://hooks.slack.com/services/#########/#########/########################',

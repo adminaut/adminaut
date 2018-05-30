@@ -251,6 +251,15 @@ return [
                                 ],
                             ],
                         ],
+                        'change-password' => [
+                            'type' => Literal::class,
+                            'options' => [
+                                'route' => '/change-password',
+                                'defaults' => [
+                                    'action' => 'passwordChange',
+                                ],
+                            ],
+                        ],
                         'request-access' => [
                             'type' => Literal::class,
                             'options' => [
