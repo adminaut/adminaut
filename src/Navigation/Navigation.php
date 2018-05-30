@@ -73,11 +73,13 @@ class Navigation extends DefaultNavigationFactory
         }
 
         if ($accessControl->isAllowed('users', AccessControlService::READ)) {
-            $pages[] = [
-                'label' => _('System'),
-                'uri' => '#',
-                'section' => true,
-            ];
+            if(!(isset($modules['system-section']) || (isset($modules['system']) && $modules['system']['type'] === 'section'))) {
+                $pages[] = [
+                    'label' => _('System'),
+                    'uri' => '#',
+                    'section' => true,
+                ];
+            }
             if ($accessControl->isAllowed('users', AccessControlService::READ)) {
                 $pages[] = [
                     'label' => _('Users'),
