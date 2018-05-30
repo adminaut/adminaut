@@ -123,6 +123,7 @@ class UserEntity implements UserEntityInterface
     protected $logins;
 
     /**
+     * @ORM\Column(name="active", type="boolean");
      * @Annotation\Exclude();
      * @var bool
      */
