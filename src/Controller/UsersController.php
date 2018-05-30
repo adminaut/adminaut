@@ -173,6 +173,8 @@ class UsersController extends AdminautBaseController
 
         $moduleOptions = $this->getModuleOptions();
         $form = $this->getModuleManager()->createForm($moduleOptions);
+        $entityClass= $moduleOptions->getEntityClass();
+        $form->bind(new $entityClass);
 
         $roles = $this->config()['adminaut']['roles'];
         $rolesData = ['admin' => 'Admin'];
@@ -193,11 +195,10 @@ class UsersController extends AdminautBaseController
             'type' => Checkbox::class,
             'name' => 'sendAccountInformation',
             'options' => [
-                'label' => " ",
-                'checkbox_label' => _('Send account information to the user')
+                'label' => _('Send account information to the user')
             ],
         ], [
-            'priority' => -1
+            'priority' => 13
         ]);
 
         /** @var Request $request */
@@ -304,11 +305,10 @@ class UsersController extends AdminautBaseController
             'type' => Checkbox::class,
             'name' => 'sendAccountInformation',
             'options' => [
-                'label' => " ",
-                'checkbox_label' => _('Send account information to the user')
+                'label' => _('Send account information to the user')
             ],
         ], [
-            'priority' => -1
+            'priority' => 13
         ]);
 
         $form->populateValues($user->toArray());

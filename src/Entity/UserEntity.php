@@ -59,7 +59,7 @@ class UserEntity implements UserEntityInterface
 
     /**
      * @ORM\Column(name="password_change_on_next_logon", type="boolean", options={"default":0});
-     * @Annotation\Options({"label":" ", "listed":false, "checkbox_label":"Must change password at next logon"});
+     * @Annotation\Options({"listed":false, "label":"Must change password at next logon"});
      * @Annotation\Flags({"priority":13});
      * @Annotation\Type("Adminaut\Datatype\Checkbox");
      * @var boolean
@@ -104,7 +104,7 @@ class UserEntity implements UserEntityInterface
      * @Annotation\Required(true);
      * @var int
      */
-    protected $status = self::STATUS_NEW;
+    protected $status = self::STATUS_ACTIVE;
 
     /**
      * Inverse side.
@@ -121,6 +121,12 @@ class UserEntity implements UserEntityInterface
      * @var ArrayCollection
      */
     protected $logins;
+
+    /**
+     * @Annotation\Exclude();
+     * @var bool
+     */
+    protected $active = true;
 
     //-------------------------------------------------------------------------
 
