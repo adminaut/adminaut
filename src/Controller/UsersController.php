@@ -64,7 +64,7 @@ class UsersController extends AdminautBaseController
      * @param ModuleManager $moduleManager
      * @param UsersOptions $usersOptions
      */
-    public function __construct(EntityManager $entityManager, UserManager $userManager, ModuleManager $moduleManager, MailService $mailService, UsersOptions $usersOptions)
+    public function __construct(EntityManager $entityManager, UserManager $userManager, ModuleManager $moduleManager, $mailService, UsersOptions $usersOptions)
     {
         $this->entityManager = $entityManager;
         $this->userManager = $userManager;
@@ -228,7 +228,7 @@ class UsersController extends AdminautBaseController
                     $user = $this->getModuleManager()->create($moduleOptions->getEntityClass(), $form, null, $this->authentication()->getIdentity());
                     $this->addSuccessMessage($this->translate('User has been successfully created.', 'adminaut'));
 
-                    if($form->has('sendAccountInformation')) {
+                    if($this->mailService && $form->has('sendAccountInformation')) {
                         if($form->get('sendAccountInformation')->getValue() && !empty(trim($password))) {
                             try {
                                 $this->mailService->sendAccountInformation($user, $password, $this->mailService::ACCOUNT_INFORMATION_OPERATION_CREATE);
@@ -341,7 +341,7 @@ class UsersController extends AdminautBaseController
                     $this->getModuleManager()->update($user, $form, null, $this->authentication()->getIdentity());
                     $this->addSuccessMessage($this->translate('User has been successfully updated.', 'adminaut'));
 
-                    if($form->has('sendAccountInformation')) {
+                    if($this->mailService && $form->has('sendAccountInformation')) {
                         if($form->get('sendAccountInformation')->getValue() && !empty(trim($password))) {
                             try {
                                 $this->mailService->sendAccountInformation($user, $password, $this->mailService::ACCOUNT_INFORMATION_OPERATION_UPDATE);
