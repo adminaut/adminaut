@@ -45,7 +45,7 @@ class AuthAdapter implements AdapterInterface
      * @param AuthAdapterOptions $options
      * @param MailServiceInterface $mailService
      */
-    public function __construct(EntityManager $entityManager, AuthAdapterOptions $options, MailServiceInterface $mailService)
+    public function __construct(EntityManager $entityManager, AuthAdapterOptions $options, $mailService)
     {
         $this->entityManager = $entityManager;
         $this->options = $options;
