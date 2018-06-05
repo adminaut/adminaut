@@ -22,7 +22,6 @@ class UserEntity implements UserEntityInterface
     /**
      * Constants
      */
-    const STATUS_UNKNOWN = 0;
     const STATUS_NEW = 1;
     const STATUS_ACTIVE = 2;
     const STATUS_LOCKED = 3;
@@ -87,11 +86,10 @@ class UserEntity implements UserEntityInterface
     protected $language = 'en';
 
     /**
-     * @ORM\Column(type="integer", name="status", options={"default":0});
+     * @ORM\Column(type="integer", name="status", options={"default":2});
      * @Annotation\Options({
      *     "label":"Status",
      *     "value_options":{
-     *          "0":"Unknown",
      *          "1":"New",
      *          "2":"Active",
      *          "3":"Locked",
