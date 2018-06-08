@@ -64,7 +64,7 @@ class MultiReference extends Element implements InputProviderInterface
     /**
      * @var bool
      */
-    protected $useHiddenElement = false;
+    protected $useHiddenElement = true;
 
     /**
      * @var string
@@ -160,7 +160,7 @@ class MultiReference extends Element implements InputProviderInterface
      */
     public function getValue($returnObject = false)
     {
-        if ($this->value === null) {
+        if ($this->value === null || $this->value === '') {
             return null;
         }
 
