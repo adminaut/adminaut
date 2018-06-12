@@ -433,7 +433,7 @@ class ModuleController extends AdminautBaseController
             return $this->redirect()->toRoute(DashboardController::ROUTE_INDEX);
         }
 
-        if (!$this->isAllowed($moduleId, AccessControlService::WRITE)) {
+        if (!$this->isAllowed($moduleId, AccessControlService::READ)) {
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
@@ -487,7 +487,6 @@ class ModuleController extends AdminautBaseController
         if (!$moduleId) {
             return $this->redirect()->toRoute(DashboardController::ROUTE_INDEX);
         }
-
 
         $parentModuleOptions = $this->getModuleManager()->createModuleOptions($moduleId);
 
