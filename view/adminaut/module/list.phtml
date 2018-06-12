@@ -99,6 +99,7 @@
                                 "ordering": true,
                                 "info": true,
                                 "autoWidth": false,
+                                "scrollX": true,
                                 "pageLength": Cookies.get('<?php echo $this->moduleOption->getModuleId(); ?>.dt.length') || 10
                             }).on('length.dt', function (e, settings, len) {
                                 Cookies.set('<?php echo $this->moduleOption->getModuleId(); ?>.dt.length', len);
