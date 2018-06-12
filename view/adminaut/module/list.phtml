@@ -63,7 +63,7 @@
                                     </td>
                                 <?php } ?>
                                 <td class="action-column">
-                                    <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
+                                    <div class="btn-group btn-group-sm" role="group" aria-label="Actions" style="min-width: 135px;">
                                         <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $entity->getId()]); ?>"
                                            class="btn btn-success view"
                                            data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('View', 'adminaut') ?>"
