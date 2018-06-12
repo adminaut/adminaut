@@ -491,7 +491,7 @@ class ModuleController extends AdminautBaseController
 
         $parentModuleOptions = $this->getModuleManager()->createModuleOptions($moduleId);
 
-        if (!$this->isAllowed($parentModuleOptions->getModuleId(), AccessControlService::WRITE)) {
+        if (!$this->isAllowed($parentModuleOptions->getModuleId(), AccessControlService::READ)) {
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
@@ -598,6 +598,9 @@ class ModuleController extends AdminautBaseController
         $cyclicEntity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $cyclicEntityId);
 
         if ($action === 'edit') {
+            if (!$this->isAllowed($parentModuleOptions->getModuleId(), AccessControlService::WRITE)) {
+                return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
+            }
 
             if (!$cyclicEntity) {
                 $this->addErrorMessage($this->translate('Record was not found.', 'adminaut'));
@@ -626,6 +629,10 @@ class ModuleController extends AdminautBaseController
         $request = $this->getRequest();
 
         if ($request->isPost() && !$readonly) {
+            if (!$this->isAllowed($parentModuleOptions->getModuleId(), AccessControlService::WRITE)) {
+                return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
+            }
+
             $postData = $request->getPost()->toArray();
             $files = $request->getFiles()->toArray();
             $post = array_merge_recursive($postData, $files);

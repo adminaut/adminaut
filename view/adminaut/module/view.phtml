@@ -29,7 +29,7 @@ $pages = [
 
 <section class="content">
     <div class="row">
-        <div class="col-xs-12 col-sm-8">
+        <div class="col-xs-12<?php echo sizeof($this->widgets) > 0 ? ' col-md-8' : '' ?>">
             <div class="nav-tabs-custom">
                 <?php if (sizeof($this->tabs) > 1) { ?>
                     <?php echo $this->partial('adminaut/partial/tabs', [
@@ -108,7 +108,7 @@ $pages = [
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-4">
+        <div class="col-xs-12 col-md-4">
             <?php foreach ($this->widgets as $widget) { ?>
                 <?php echo $this->widget($widget); ?>
             <?php } ?>
