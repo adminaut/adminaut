@@ -22,6 +22,11 @@ class AppearanceOptions extends AbstractOptions
     private $skin = 'blue';
 
     /**
+     * @var string|null
+     */
+    private $skinFile;
+
+    /**
      * @var string
      */
     private $title = 'Adminaut';
@@ -64,6 +69,22 @@ class AppearanceOptions extends AbstractOptions
     public function setSkin($skin)
     {
         $this->skin = $skin;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getSkinFile()
+    {
+        return $this->skinFile;
+    }
+
+    /**
+     * @param null|string $skinFile
+     */
+    public function setSkinFile($skinFile)
+    {
+        $this->skinFile = $skinFile;
     }
 
     /**

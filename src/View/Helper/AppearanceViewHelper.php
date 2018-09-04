@@ -40,6 +40,8 @@ class AppearanceViewHelper extends AbstractHelper
                 return $this->appearanceOptions->getFooter();
             case 'skin':
                 return $this->appearanceOptions->getSkin();
+            case 'skin_file':
+                return $this->appearanceOptions->getSkinFile();
             case 'logo':
                 return $this->appearanceOptions->getLogo();
             case 'logo-large':

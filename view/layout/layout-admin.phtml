@@ -16,9 +16,17 @@
         ->prependName('viewport', 'width=device-width, initial-scale=1.0')
         ->prependHttpEquiv('X-UA-Compatible', 'IE=edge');
 
+    $this->headLink()
+        ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/AdminLTE.min.css'));
+
+    if (in_array($this->adminautAppearance('skin'), ['black', 'black-light', 'blue', 'blue-light', 'green', 'green-light', 'purple', 'purple-light', 'red', 'red-light', 'yellow', 'yellow-light'])) {
+        $this->headLink()->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/skins/skin-' . $this->adminautAppearance('skin') . '.min.css'));
+    } else {
+        if($this->adminautAppearance('skin_file')) {
+            $this->headLink()->appendStylesheet($this->basePath($this->adminautAppearance('skin_file')));
+        }
+    }
     echo $this->headLink()
-        ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/AdminLTE.min.css'))
-        ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/skins/skin-' . $this->adminautAppearance('skin') . '.min.css'))
         ->appendStylesheet($this->basePath('adminaut/css/adminaut.css'))
         ->prependStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/blue.css'))
         ->prependStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/flat.css'))
