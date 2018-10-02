@@ -43,8 +43,7 @@ class Navigation extends DefaultNavigationFactory
                     'uri' => '#',
                     'section' => true,
                 ];
-            }
-            if ($item['type'] == 'module') {
+            } elseif ($item['type'] == 'module') {
                 if ($accessControl->isAllowed($key, AccessControlService::READ)) {
                     if (isset($item['module_icon'])) {
                         $icon = 'fa fa-fw ' . $item['module_icon'];
@@ -67,6 +66,41 @@ class Navigation extends DefaultNavigationFactory
                                 ],
                             ],
                         ],
+                    ];
+                }
+            } elseif ($item['type'] == 'link') {
+                if ($accessControl->isAllowed($key, AccessControlService::READ)) {
+                    if (isset($item['icon'])) {
+                        $icon = 'fa fa-fw ' . $item['icon'];
+                    } else {
+                        $icon = 'fa fa-fw fa-link';
+                    }
+
+                    if(isset($item['route'])) {
+                        $uriRouteKey = 'route';
+                        $uriRoute = '#';
+                        $params = [];
+
+                        if(is_array($item['route'])) {
+                            $uriRoute = $item['route'][0];
+
+                            if(isset($item['route'][1])) {
+                                $params = $item['route'][1];
+                            }
+                        } else {
+                            $uriRoute = $item['route'];
+                        }
+                    } elseif(isset($item['uri'])) {
+                        $uriRouteKey = 'uri';
+                        $uriRoute = $item['uri'];
+                    }
+
+                    $pages[] = [
+                        'label' => $item['name'],
+                        $uriRouteKey => $uriRoute,
+                        'params' => $params,
+                        'icon' => $icon,
+                        'pages' => [],
                     ];
                 }
             }
