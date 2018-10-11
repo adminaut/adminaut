@@ -17,6 +17,7 @@ use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\Plugin\FlashMessenger\FlashMessenger;
 use Zend\View\Model\ViewModel;
+use Zend\Http\PhpEnvironment\RemoteAddress;
 
 /**
  * Class AuthController
@@ -130,7 +131,7 @@ class AuthController extends AbstractActionController
                                 ],
                                 [
                                     'title' => 'IP:',
-                                    'value' => $_SERVER['REMOTE_ADDR'],
+                                    'value' => (new RemoteAddress())->setUseProxy()->getIpAddress(),
                                     'short' => true
                                 ],
                             ],
@@ -164,7 +165,7 @@ class AuthController extends AbstractActionController
                             ],
                             [
                                 'title' => 'IP:',
-                                'value' => $_SERVER['REMOTE_ADDR'],
+                                'value' => (new RemoteAddress())->setUseProxy()->getIpAddress(),
                                 'short' => true
                             ],
                         ],
