@@ -12,6 +12,11 @@
         });
 
         $("form:not(.filter) :input:visible:enabled:first").focus();
+        $(document).on('focus', '.select2', function (e) {
+            if (e.originalEvent) {
+                $(this).siblings('select').select2('open');
+            }
+        });
     });
 
     $(document).on('click', '#moduleEntityTable a.primary', function(e){
