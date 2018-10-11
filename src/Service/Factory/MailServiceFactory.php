@@ -3,6 +3,7 @@ namespace Adminaut\Service\Factory;
 
 use Adminaut\Service\MailService;
 use Interop\Container\ContainerInterface;
+use MassimoFilippi\MailModule\Adapter\Google\GoogleSmtpAdapter;
 use Zend\I18n\Translator\TranslatorInterface;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Factory\FactoryInterface;
@@ -88,6 +89,23 @@ class MailServiceFactory implements FactoryInterface
                 $options['api_key'] = $mailServiceConfig['adapter_params']['api_key'];
 
                 $adapter = new SparkPostSmtpAdapter($options);
+                break;
+            case GoogleSmtpAdapter::class:
+                if (false === isset($mailServiceConfig['adapter_params']['username'])) {
+                    throw new ServiceNotCreatedException('Missing adapter parameter: "username".');
+                }
+
+                if (false === isset($mailServiceConfig['adapter_params']['password'])) {
+                    throw new ServiceNotCreatedException('Missing adapter parameter: "password".');
+                }
+
+                $options = [];
+
+                $options['username'] = $mailServiceConfig['adapter_params']['username'];
+                $options['password'] = $mailServiceConfig['adapter_params']['password'];
+                $options['ssl'] = $mailServiceConfig['adapter_params']['ssl'] ?: 'tls';
+
+                $adapter = new GoogleSmtpAdapter($options);
                 break;
             default:
                 throw new ServiceNotCreatedException(sprintf('Adapter "%s" could not be found.', $adapterName));
