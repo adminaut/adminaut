@@ -130,7 +130,7 @@ class AuthController extends AbstractActionController
                                 ],
                                 [
                                     'title' => 'IP:',
-                                    'value' => $_SERVER['REMOTE_ADDR'],
+                                    'value' => !isset($_SERVER['HTTP_X_REAL_IP']) || empty($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['REMOTE_ADDR'] : $_SERVER['HTTP_X_REAL_IP'],
                                     'short' => true
                                 ],
                             ],
@@ -164,7 +164,7 @@ class AuthController extends AbstractActionController
                             ],
                             [
                                 'title' => 'IP:',
-                                'value' => $_SERVER['REMOTE_ADDR'],
+                                'value' => !isset($_SERVER['HTTP_X_REAL_IP']) || empty($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['REMOTE_ADDR'] : $_SERVER['HTTP_X_REAL_IP'],
                                 'short' => true
                             ],
                         ],

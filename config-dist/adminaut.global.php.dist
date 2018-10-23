@@ -75,17 +75,23 @@ return [
             'enabled' => false,
             'adapter' => \MassimoFilippi\MailModule\Adapter\Mailjet\MailjetAdapter::class,
             'adapter_params' => [
-                'api_key' => '---sparkpost-api-key---',
+                'api_key' => '---mailjet-api-key---',
                 'api_secret' => '---mailjet-api-secret---',
                 'sandbox_mode' => false,
             ],
 //            'adapter' => \MassimoFilippi\MailModule\Adapter\SparkPost\SparkPostAdapter::class,
 //            'adapter_params' => [
-//                'api_key' => '---mailjet-api-key---',
+//                'api_key' => '---sparkpost-api-key---',
 //            ],
 //            'adapter' => \MassimoFilippi\MailModule\Adapter\SparkPost\SparkPostSmtpAdapter::class,
 //            'adapter_params' => [
 //                'api_key' => '---sparkpost-api-key---',
+//            ],
+//            'adapter' => \MassimoFilippi\MailModule\Adapter\Google\GoogleSmtpAdapter::class,
+//            'adapter_params' => [
+//                'username' => '---username---',
+//                'password' => '---password---',
+////                'ssl' => 'tls', // tls is default
 //            ],
             'system_name' => 'Adminaut',
             'system_email' => '---your-system-email---',

@@ -92,3 +92,8 @@ h3.static-element {
 #moduleEntityTable .action-column .btn-group {
     min-width: 130px;
 }
+
+span.select2.select2-container--focus .select2-selection, span.select2.select2-container--open .select2-selection {
+    border-color: #3c8dbc;
+    box-shadow: none;
+}
