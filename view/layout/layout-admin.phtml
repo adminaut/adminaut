@@ -205,6 +205,8 @@
 </div>
 <?php echo $this->inlineScript(); ?>
 <script>
+    moment.locale('<?php echo $this->userIdentity()->getLanguage() ?>', { week: { dow: 1 } });
+
     $(document).ready(function () {
         if (("standalone" in window.navigator) && window.navigator.standalone) {
             // For iOS Apps
@@ -216,10 +218,7 @@
                 }
             });
         }
-    });
-</script>
-<script>
-    $(document).ready(function () {
+
         $('form[data-doubleClick="1"]').doubleClickHandler();
     });
 </script>
