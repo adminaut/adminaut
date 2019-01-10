@@ -106,7 +106,7 @@ class UserEntity implements UserEntityInterface
 
     /**
      * Inverse side.
-     * @ORM\OneToMany(targetEntity="UserAccessTokenEntity", mappedBy="user");
+     * @ORM\OneToMany(targetEntity="Adminaut\Entity\UserAccessTokenEntity", mappedBy="user");
      * @Annotation\Exclude();
      * @var ArrayCollection
      */
@@ -114,7 +114,7 @@ class UserEntity implements UserEntityInterface
 
     /**
      * Inverse side.
-     * @ORM\OneToMany(targetEntity="UserLoginEntity", mappedBy="user");
+     * @ORM\OneToMany(targetEntity="Adminaut\Entity\UserLoginEntity", mappedBy="user");
      * @Annotation\Exclude();
      * @var ArrayCollection
      */
