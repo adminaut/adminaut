@@ -21,6 +21,31 @@ return [
             ],
             'may_terminate' => true,
             'child_routes' => [
+                'api' => [
+                    'type' => Segment::class,
+                    'options' => [
+                        'route' => 'api',
+                        'defaults' => [
+                            'controller' => Controller\Api\BaseApiController::class,
+                        ],
+                    ],
+                    'may_terminate' => false,
+                    'child_routes' => [
+                        'module' => [
+                            'type' => Segment::class,
+                            'options' => [
+                                'route' => '/module/:module_id',
+                                'constraints' => [
+                                    'module_id' => CONSTRAINT_KEY,
+                                ],
+                                'defaults' => [
+                                    'controller' => Controller\Api\ModuleApiController::class,
+                                    'action' => false,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
                 'manifest' => [
                     'type' => Literal::class,
                     'options' => [

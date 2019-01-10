@@ -1,3 +1,15 @@
+<?php
+    $datatableColumns = $this->datatableColumns;
+    $datatableOrders = [];
+
+    foreach ($datatableColumns as $i => &$column) {
+        if(isset($column['order'])) {
+            $datatableOrders[] = [$i, $column['order']];
+            unset($column['order']);
+        }
+    }
+?>
+
 <section class="content-header">
     <h1>
         <?php echo $this->escapeHtml($this->moduleOption->getModuleName()) ?>
@@ -34,60 +46,6 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($this->list as $entity) { ?>
-                            <?php /* @var $entity Adminaut\Entity\Base */ ?>
-                            <tr rel="<?php echo $entity->getId(); ?>">
-                                <td>
-                                    <?php if (!$this->hasPrimary) { ?>
-                                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $entity->getId()]); ?>"
-                                           class="primary"><?php echo $entity->getId(); ?></a>
-                                    <?php } else { ?>
-                                        <?php echo $entity->getId(); ?>
-                                    <?php } ?>
-                                </td>
-                                <?php foreach ($this->listedElements as $listedElement) { ?>
-                                    <td>
-                                        <?php if ($listedElement->isPrimary()) { // TODO[petrm] check if method exists ?>
-                                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $entity->getId()]); ?>"
-                                           class="primary">
-                                            <?php } ?>
-                                            <?php $listedElement->setValue($entity->{$listedElement->getName()}) ?>
-                                            <?php if (method_exists($listedElement, 'getListedValue')) { ?>
-                                                <?php echo($listedElement->isPrimary() && empty($listedElement->getListedValue()) ? 'undefined' : $listedElement->getListedValue()); ?>
-                                            <?php } else { ?>
-                                                <?php echo $listedElement->getValue(); ?>
-                                            <?php } ?>
-                                            <?php if ($listedElement->isPrimary()) { ?>
-                                        </a>
-                                    <?php } ?>
-                                    </td>
-                                <?php } ?>
-                                <td class="action-column">
-                                    <div class="btn-group btn-group-sm" role="group" aria-label="Actions" style="min-width: 135px;">
-                                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $entity->getId()]); ?>"
-                                           class="btn btn-success view"
-                                           data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('View', 'adminaut') ?>"
-                                           data-original-title="<?php echo $this->translate('View', 'adminaut') ?>"><i class="fa fa-eye"></i></a>
-                                        <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::WRITE)) { ?>
-                                            <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'edit', 'entity_id' => $entity->getId()]); ?>"
-                                               class="btn btn-primary edit"
-                                               data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('Edit', 'adminaut') ?>"
-                                               data-original-title="<?php echo $this->translate('Edit', 'adminaut') ?>"><i class="fa fa-pencil"></i></a>
-                                            <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $entity->getId(), 'mode' => 'add']); ?>"
-                                               class="btn btn-sm btn-default clone" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('Copy', 'adminaut') ?>"
-                                               data-original-title="<?php echo $this->translate('Copy', 'adminaut') ?>"><i class="fa fa-clone"></i></a>
-                                        <?php }
-                                        if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::FULL)) { ?>
-                                            <a href="#"
-                                               data-href="<?php echo $this->url('adminaut/module/delete', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $entity->getId()]); ?>"
-                                               class="btn btn-danger btn-modal-delete delete"
-                                               data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('Delete', 'adminaut') ?>"
-                                               data-original-title="<?php echo $this->translate('Delete', 'adminaut') ?>"><i class="fa fa-trash"></i></a>
-                                        <?php } ?>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php } ?>
                         </tbody>
                     </table>
                     <script>
@@ -100,9 +58,34 @@
                                 "info": true,
                                 "autoWidth": false,
                                 "scrollX": true,
-                                "pageLength": Cookies.get('<?php echo $this->moduleOption->getModuleId(); ?>.dt.length') || 10
+                                "pageLength": Cookies.get('<?php echo $this->moduleOption->getModuleId(); ?>.dt.length') || 10,
+                                "ajax": "<?php echo $this->url('adminaut/api/module', ['module_id' => $this->moduleOption->getModuleId()]) ?>",
+                                "processing": true,
+                                "serverSide": true,
+                                "columns" : <?php echo json_encode($datatableColumns) ?>,
+                                "order" : <?php echo json_encode($datatableOrders) ?>
                             }).on('length.dt', function (e, settings, len) {
                                 Cookies.set('<?php echo $this->moduleOption->getModuleId(); ?>.dt.length', len);
+                            });
+
+                            $(document).on('init.dt', function(e, settings){
+                                var $table = $(e.target);
+                                var api = new $.fn.dataTable.Api(settings);
+                                var searchTimer = null;
+
+                                $('.dataTables_filter input').unbind().bind("input", function(e) {
+                                    if(this.value.length >= 2 || e.keyCode == 13) {
+                                        clearTimeout(searchTimer);
+                                        searchTimer = setTimeout(function(){$table.data('get-filter', true); api.search($('.dataTables_filter input')[0].value).draw();}, 500);
+                                    }
+
+                                    if(this.value == "") {
+                                        clearTimeout(searchTimer);
+                                        $table.data('get-filter', true);
+                                        api.search("").draw();
+                                    }
+                                    return;
+                                });
                             });
                         })(jQuery);
                     </script>
