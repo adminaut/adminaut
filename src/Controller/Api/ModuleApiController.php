@@ -100,26 +100,26 @@ class ModuleApiController extends BaseApiController
     {
         $this->response->setStatusCode(404);
 
-        return [
+        return new JsonModel([
             'content' => 'Module not found.'
-        ];
+        ]);
     }
 
     // =================================================================================================================
 
-    public function getList()
+    public function datatableAction()
     {
-        if(($moduleId = $this->getModuleId()) === null)
+        if(($moduleId = $this->getModuleId()) === null || !$this->moduleManager->hasModule($moduleId))
         {
             return $this->moduleNotFound();
         }
 
-        if (!$this->hasIdentity() || !$this->isAllowed($moduleId, AccessControlService::READ))
+        if (!$this->hasIdentity() || !$this->isAllowed($moduleId, AccessControlService::READ) || !$this->getRequest()->isPost())
         {
             return $this->returnForbidden();
         }
 
-        $params = $this->params()->fromQuery();
+        $params = $this->params()->fromPost();
 
         /** @var ModuleOptions $moduleOptions */
         $moduleOptions = $this->getModuleOptions();

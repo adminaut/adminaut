@@ -43,6 +43,19 @@ return [
                                     'action' => false,
                                 ],
                             ],
+                            'may_terminate' => true,
+                            'child_routes' => [
+                                'datatable' => [
+                                    'type' => Segment::class,
+                                    'options' => [
+                                        'route' => '/datatable',
+                                        'defaults' => [
+                                            'controller' => Controller\Api\ModuleApiController::class,
+                                            'action' => 'datatable',
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],

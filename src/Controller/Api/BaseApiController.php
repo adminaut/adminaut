@@ -3,6 +3,7 @@ namespace Adminaut\Controller\Api;
 
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Adminaut\Controller\Plugin\AuthenticationPlugin;
+use Zend\View\Model\JsonModel;
 
 /**
  * Class BaseApiController
@@ -25,8 +26,8 @@ class BaseApiController extends AbstractRestfulController
     {
         $this->response->setStatusCode(403);
 
-        return [
+        return new JsonModel([
             'content' => '403 Forbidden'
-        ];
+        ]);
     }
 }
