@@ -58,10 +58,11 @@
                                 "info": true,
                                 "autoWidth": false,
                                 "scrollX": true,
-                                "pageLength": Cookies.get('<?php echo $this->moduleOption->getModuleId(); ?>.dt.length') || 10,
+                                "pageLength": parseInt(Cookies.get('<?php echo $this->moduleOption->getModuleId(); ?>.dt.length')) || 10,
                                 "ajax": {
                                     "url" : "<?php echo $this->url('adminaut/api/module/datatable', ['module_id' => $this->moduleOption->getModuleId()]) ?>",
-                                    "method" : "POST"
+                                    "method" : "POST",
+                                    "deferRender": true
                                 },
                                 "processing": true,
                                 "serverSide": true,
