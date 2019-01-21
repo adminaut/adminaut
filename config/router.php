@@ -21,6 +21,44 @@ return [
             ],
             'may_terminate' => true,
             'child_routes' => [
+                'api' => [
+                    'type' => Segment::class,
+                    'options' => [
+                        'route' => 'api',
+                        'defaults' => [
+                            'controller' => Controller\Api\BaseApiController::class,
+                        ],
+                    ],
+                    'may_terminate' => false,
+                    'child_routes' => [
+                        'module' => [
+                            'type' => Segment::class,
+                            'options' => [
+                                'route' => '/module/:module_id',
+                                'constraints' => [
+                                    'module_id' => CONSTRAINT_KEY,
+                                ],
+                                'defaults' => [
+                                    'controller' => Controller\Api\ModuleApiController::class,
+                                    'action' => false,
+                                ],
+                            ],
+                            'may_terminate' => true,
+                            'child_routes' => [
+                                'datatable' => [
+                                    'type' => Segment::class,
+                                    'options' => [
+                                        'route' => '/datatable',
+                                        'defaults' => [
+                                            'controller' => Controller\Api\ModuleApiController::class,
+                                            'action' => 'datatable',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
                 'manifest' => [
                     'type' => Literal::class,
                     'options' => [

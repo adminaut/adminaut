@@ -97,3 +97,15 @@ span.select2.select2-container--focus .select2-selection, span.select2.select2-c
     border-color: #3c8dbc;
     box-shadow: none;
 }
+
+div.dataTables_processing {
+    top: 0;
+    height: 100%;
+    margin-top: 0;
+    padding-top: 0;
+    background: rgba(255, 255, 255, .8);
+}
+
+div.dataTables_paginate ul.pagination {
+    margin-top: 10px;
+}

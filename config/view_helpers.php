@@ -34,6 +34,10 @@ return [
 
         // Widget
         'widget' => Widget\View\Helper\WidgetViewHelper::class,
+
+        // Datatable fields
+        'primary' => View\Helper\Primary::class,
+        'actions' => View\Helper\Actions::class,
     ],
     'factories' => [
         Form\View\Helper\FormElement::class => Form\View\Helper\Factory\FormElementFactory::class,

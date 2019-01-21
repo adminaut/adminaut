@@ -68,7 +68,7 @@ class ModuleController extends AdminautBaseController
      * @param null $default
      * @return mixed
      */
-    private function getMode($default = null)
+    protected function getMode($default = null)
     {
         return $this->params()->fromRoute('mode', $default);
     }
@@ -77,7 +77,7 @@ class ModuleController extends AdminautBaseController
      * @param null $default
      * @return mixed
      */
-    private function getModuleId($default = null)
+    protected function getModuleId($default = null)
     {
         return $this->params()->fromRoute('module_id', $default);
     }
@@ -86,7 +86,7 @@ class ModuleController extends AdminautBaseController
      * @param null $default
      * @return mixed
      */
-    private function getEntityId($default = null)
+    protected function getEntityId($default = null)
     {
         return $this->params()->fromRoute('entity_id', $default);
     }
@@ -130,19 +130,8 @@ class ModuleController extends AdminautBaseController
 
         $form = $this->getModuleManager()->createForm($moduleOptions);
 
-        $listedElements = [];
-
-        /* @var $element \Zend\Form\Element */
-        foreach ($form->getElements() as $key => $element) {
-            if ($element->getOption('listed')
-                && $this->isAllowed($moduleId, AccessControlService::READ, $key)
-                || (method_exists($element, 'isPrimary')
-                    && $element->isPrimary()
-                    || $element->getOption('primary'))
-            ) {
-                $listedElements[$key] = $element;
-            }
-        }
+        $listedElements = $this->getModuleManager()->getListedElements($moduleId, $form);
+        $datatableColumns = $this->getModuleManager()->getDatatableColumns($moduleId, $form);
 
         if(!empty($criteria = $this->accessControlService->getModuleCriteria($moduleId))) {
             $list = $this->getModuleManager()->findby($moduleOptions->getEntityClass(), $criteria);
@@ -155,6 +144,7 @@ class ModuleController extends AdminautBaseController
             'listedElements' => $listedElements,
             'hasPrimary' => ($form->getPrimaryField() !== 'id'),
             'moduleOption' => $moduleOptions,
+            'datatableColumns' => $datatableColumns
         ]);
     }
 
