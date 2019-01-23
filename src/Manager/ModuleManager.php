@@ -11,6 +11,7 @@ use Adminaut\Service\AccessControlService;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use Doctrine\ORM\NoResultException;
 use DoctrineModule\Form\Element\ObjectMultiCheckbox;
@@ -41,6 +42,11 @@ class ModuleManager extends AManager
      * @var AccessControlService
      */
     private $accessControlService;
+
+    /**
+     * @var array
+     */
+    private $processedColumns = [];
 
     //-------------------------------------------------------------------------
 
@@ -377,6 +383,106 @@ class ModuleManager extends AManager
         $joined = [];
         $qb = $repository->createQueryBuilder('e');
 
+        $this->applyCriteriaToQueryBuilder($qb, $joined, $criteria);
+        $this->applySearchToQueryBuilder($qb, $joined, $searchableElements, $searchString);
+
+        // Order
+        foreach ($orders as $order) {
+            $orderField = $order['order_by'];
+
+            if(strpos($orderField, '.')) {
+                $join = "";
+                $joinAlias = "";
+                foreach ($a = explode('.', $orderField) as $x) {
+                    if($x === end($a)) { break; }
+
+                    $join .= (!empty($join) ? '.' : '') . $x;
+                    $joinAlias = str_replace('.', '_', $join);
+
+                    if(!in_array($join, $joined)) {
+                        $qb->leftJoin('e.' . $join, 'e_' . $joinAlias);
+                        $joined[] = $join;
+                    }
+                }
+
+                $qb->addOrderBy("e_$joinAlias.$x", $order["order_type"]);
+            } else {
+                $qb->addOrderBy("e.$orderField", $order["order_type"]);
+            }
+        }
+
+        return new ORMPaginator($qb->getQuery());
+    }
+
+    public function getDatatableFilters(string $entityName, array $filterableColumns, array $criteria = [], array $searchableElements = [], string $searchString = "")
+    {
+        $criteria = array_merge(['deleted' => false], $criteria);
+        $repository = $this->getRepository($entityName);
+        $qb = $repository->createQueryBuilder('e');
+        $joined = [];
+
+        $this->applyCriteriaToQueryBuilder($qb, $joined, $criteria);
+        $this->applySearchToQueryBuilder($qb, $joined, $searchableElements, $searchString);
+
+        $select =  [];
+        foreach ($filterableColumns as $filterableColumn => $filterableColumnLabel) {
+            if (strpos($filterableColumnLabel, '.')) {
+                $join = "";
+                $joinAlias = "";
+                foreach ($a = explode('.', $filterableColumnLabel) as $x) {
+                    if ($x === end($a)) {
+                        break;
+                    }
+
+                    $join .= (!empty($join) ? '.' : '') . $x;
+                    $joinAlias = str_replace('.', '_', $join);
+
+                    if(!in_array($join, $joined)) {
+                        $qb->leftJoin('e.' . $join, 'e_' . $joinAlias);
+                        $joined[] = $join;
+                    }
+                }
+
+                $select[$filterableColumn] = ["e_$joinAlias.id", "e_$joinAlias.$x"];
+            } else {
+                $select[$filterableColumn] = "e.$filterableColumn";
+            }
+        }
+
+        foreach ($select as $sk => $s) {
+            $sQb = clone $qb;
+
+            if (is_array($s)) {
+                $sQb->select($s)->distinct()
+                    ->andWhere($s[0] . ' IS NOT NULL')
+                    ->andWhere('LENGTH('. $s[1] .') > 0')
+                    ->orderBy($s[1], 'asc');
+            } else {
+                $sQb->select($s)->distinct()
+                    ->andWhere($s . ' IS NOT NULL')
+                    ->andWhere('LENGTH('. $s .') > 0')
+                    ->orderBy($s, 'asc');
+            }
+
+            $result = $sQb->getQuery()->getScalarResult();
+            $filters[$sk] = array_map(function($data) {
+                if ( sizeof($data) > 1 ) {
+                    return $data;
+                }
+
+                return current($data);
+            }, $result);
+        }
+
+        return $filters;
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     * @param array $criteria
+     */
+    private function applyCriteriaToQueryBuilder(QueryBuilder &$qb, array &$joined, $criteria = [])
+    {
         foreach ($criteria as $criterionField => $criterionValue) {
             if(strpos($criterionField, '.')) {
                 $join = "";
@@ -400,7 +506,15 @@ class ModuleManager extends AManager
                 $qb->setParameter("e_$criterionField", $criterionValue);
             }
         }
+    }
 
+    /**
+     * @param QueryBuilder $qb
+     * @param array $searchableElements
+     * @param string $searchString
+     */
+    private function applySearchToQueryBuilder(QueryBuilder &$qb, array &$joined, array $searchableElements = [], string $searchString)
+    {
         if(!empty($searchString)) {
             $searchQB = $qb->expr()->orX();
             foreach ($searchableElements as $criterionField) {
@@ -430,33 +544,6 @@ class ModuleManager extends AManager
             $qb->andWhere($searchQB);
             $qb->setParameter("search", sprintf("%%%s%%", $searchString));
         }
-
-        // Order
-        foreach ($orders as $order) {
-            $orderField = $order['order_by'];
-
-            if(strpos($orderField, '.')) {
-                $join = "";
-                $joinAlias = "";
-                foreach ($a = explode('.', $orderField) as $x) {
-                    if($x === end($a)) { break; }
-
-                    $join .= (!empty($join) ? '.' : '') . $x;
-                    $joinAlias = str_replace('.', '_', $join);
-
-                    if(!in_array($join, $joined)) {
-                        $qb->leftJoin('e.' . $join, 'e_' . $joinAlias);
-                        $joined[] = $join;
-                    }
-                }
-
-                $qb->addOrderBy("e_$joinAlias.$x", $order["order_type"]);
-            } else {
-                $qb->addOrderBy("e.$orderField", $order["order_type"]);
-            }
-        }
-
-        return new ORMPaginator($qb->getQuery());
     }
 
     /**
@@ -505,27 +592,29 @@ class ModuleManager extends AManager
      * @return array
      * @throws \Exception
      */
-    public function getListedElements($moduleId, $form = null)
+    public function getListedColumns($moduleId, $form = null)
     {
-        if(!$form instanceof Form) {
-            $form = $this->moduleManager->createForm($this->createModuleOptions($moduleId));
-        }
+        if ( ! array_key_exists('listed', $this->processedColumns) ) {
+            $this->processColumns($moduleId, $form);
 
-        $listedElements = [];
-
-        /* @var $element \Zend\Form\Element */
-        foreach ($form->getElements() as $key => $element) {
-            if ($element->getOption('listed')
-                && $this->accessControlService->isAllowed($moduleId, AccessControlService::READ, $key)
-                || (method_exists($element, 'isPrimary')
-                    && $element->isPrimary()
-                    || $element->getOption('primary'))
-            ) {
-                $listedElements[$key] = $element;
+            if ( ! array_key_exists('listed', $this->processedColumns) ) {
+                new \Exception("Can't process listed columns.");
             }
         }
 
-        return $listedElements;
+        return $this->processedColumns['listed'];
+    }
+
+    /**
+     * @param $moduleId
+     * @param Form|null $form
+     * @return array
+     * @throws \Exception
+     * @deprecated Use getListedColumns($moduleId, $form = null)
+     */
+    public function getListedElements($moduleId, $form = null)
+    {
+        return $this->getListedColumns($moduleId, $form);
     }
 
     /**
@@ -536,40 +625,15 @@ class ModuleManager extends AManager
      */
     public function getDatatableColumns($moduleId, $form = null)
     {
-        $datatableColumns = [];
-        $listedElements = $this->getListedElements($moduleId, $form);
+        if ( ! array_key_exists('datatable', $this->processedColumns) ) {
+            $this->processColumns($moduleId, $form);
 
-        $datatableColumns[] = [
-            'data' => 'id',
-            'searchable' => false,
-        ];
-
-        /**
-         * @var string $key
-         * @var Datatype|Element $listedElement
-         */
-        foreach ($listedElements as $key => $listedElement) {
-            $datatableColumn = [
-                'data' => $key,
-                'searchable' => $listedElement->getOption('searchable') ?: false,
-                'filtrable' => $listedElement->getOption('filtrable') ?: false,
-
-            ];
-
-            if($listedElement->getOption('sort')) {
-                $datatableColumn['order'] = $listedElement->getOption('sort');
+            if ( ! array_key_exists('datatable', $this->processedColumns) ) {
+                new \Exception("Can't process datatable columns.");
             }
-
-            $datatableColumns[] = $datatableColumn;
         }
 
-        $datatableColumns[] = [
-            'data' => 'actions',
-            'searchable' => false,
-            'orderable' => false,
-        ];
-
-        return $datatableColumns;
+        return $this->processedColumns['datatable'];
     }
 
     /**
@@ -577,40 +641,46 @@ class ModuleManager extends AManager
      * @param Form|null $form
      * @throws \Doctrine\Common\Annotations\AnnotationException
      */
-    public function getSearchableElements($moduleId, $form = null)
+    public function getSearchableColumns($moduleId, $form = null)
     {
-        if(!$form instanceof Form) {
-            $form = $this->moduleManager->createForm($this->createModuleOptions($moduleId));
-        }
+        if ( ! array_key_exists('searchable', $this->processedColumns) ) {
+            $this->processColumns($moduleId, $form);
 
-        $searchableElements = [];
-
-        /* @var $element \Zend\Form\Element */
-        foreach ($form->getElements() as $key => $element) {
-            if ($element->getOption('searchable')
-                && $this->accessControlService->isAllowed($moduleId, AccessControlService::READ, $key)
-                || (method_exists($element, 'isPrimary')
-                    && $element->isPrimary()
-                    || $element->getOption('primary'))
-            ) {
-                if ( $element->getOption('target_class') ) {
-                    if ( $element->getOption('mask') ) {
-                        preg_match_all("^%(.*?)%^", $element->getOption('mask'), $matches);
-                        foreach ($matches[1] as $property) {
-                            $searchableElements[] = sprintf('%s.%s', $key, $property);
-                        }
-                    } elseif ( $element->getOption('property') ) {
-                        $searchableElements[] = sprintf('%s.%s', $key, $element->getOption('property'));
-                    } else {
-                        $searchableElements[] = sprintf('%s.%s', $key, $this->getEntityPrimaryProperty($element->getOption('target_class')));
-                    }
-                } else {
-                    $searchableElements[] = $key;
-                }
+            if ( ! array_key_exists('searchable', $this->processedColumns) ) {
+                new \Exception("Can't process searchable columns.");
             }
         }
 
-        return $searchableElements;
+        return $this->processedColumns['searchable'];
+    }
+
+    /**
+     * @param string $moduleId
+     * @param Form|null $form
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @deprecated Use getSearchableColumns($moduleId, $form = null)
+     */
+    public function getSearchableElements($moduleId, $form = null)
+    {
+        return $this->getSearchableColumns($moduleId, $form);
+    }
+
+    /**
+     * @param string $moduleId
+     * @param Form|null $form
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     */
+    public function getFilterableColumns($moduleId, $form = null)
+    {
+        if ( ! array_key_exists('filterable', $this->processedColumns) ) {
+            $this->processColumns($moduleId, $form);
+
+            if ( ! array_key_exists('filterable', $this->processedColumns) ) {
+                new \Exception("Can't process filterable columns.");
+            }
+        }
+
+        return $this->processedColumns['filterable'];
     }
 
     /**
@@ -655,6 +725,98 @@ class ModuleManager extends AManager
         }
 
         return $orders;
+    }
+
+    private function processColumns($moduleId, $form = null)
+    {
+        if(!$form instanceof Form) {
+            $form = $this->moduleManager->createForm($this->createModuleOptions($moduleId));
+        }
+
+        $listedElements = [];
+        $searchableElements = [];
+        $filterableColumns = [];
+        $datatableColumns = [
+            'id' => [
+                'data' => 'id',
+                'searchable' => false,
+                'filterable' => false,
+            ],
+        ];
+
+        /* @var $element \Zend\Form\Element */
+        foreach ($form->getElements() as $key => $element) {
+            if ($element->getOption('listed')
+                && $this->accessControlService->isAllowed($moduleId, AccessControlService::READ, $key)
+                || (method_exists($element, 'isPrimary')
+                    && $element->isPrimary()
+                    || $element->getOption('primary'))
+            ) {
+                $listedElements[$key] = $element;
+
+                $datatableColumns[$key] = [
+                    'data' => $key,
+                    'searchable' => $element->getOption('searchable') ?: false,
+                    'filterable' => $element->getOption('filterable') ?: false,
+                    'order' => $element->getOption('sort') ?: false,
+                ];
+            }
+
+            if ($element->getOption('searchable')
+                && $this->accessControlService->isAllowed($moduleId, AccessControlService::READ, $key)
+                || (method_exists($element, 'isPrimary')
+                    && $element->isPrimary()
+                    || $element->getOption('primary'))
+            ) {
+                if ( $element->getOption('target_class') ) {
+                    if ( $element->getOption('mask') ) {
+                        preg_match_all("^%(.*?)%^", $element->getOption('mask'), $matches);
+                        foreach ($matches[1] as $property) {
+                            $searchableElements[] = sprintf('%s.%s', $key, $property);
+                        }
+                    } elseif ( $element->getOption('property') ) {
+                        $searchableElements[] = sprintf('%s.%s', $key, $element->getOption('property'));
+                    } else {
+                        $searchableElements[] = sprintf('%s.%s', $key, $this->getEntityPrimaryProperty($element->getOption('target_class')));
+                    }
+                } else {
+                    $searchableElements[] = $key;
+                }
+            }
+
+            if ($element->getOption('filterable')
+                && ($this->accessControlService->isAllowed($moduleId, AccessControlService::READ, $key)
+                || (method_exists($element, 'isPrimary') && $element->isPrimary() || $element->getOption('primary')))
+            ) {
+                if ( $element->getOption('target_class') ) {
+                    if ( $element->getOption('mask') ) {
+                        preg_match_all("^%(.*?)%^", $element->getOption('mask'), $matches);
+                        foreach ($matches[1] as $property) {
+                            $filterableColumns[$key] = sprintf('%s.%s', $key, $property);
+                        }
+                    } elseif ( $element->getOption('property') ) {
+                        $filterableColumns[$key] = sprintf('%s.%s', $key, $element->getOption('property'));
+                    } else {
+                        $filterableColumns[$key] = sprintf('%s.%s', $key, $this->getEntityPrimaryProperty($element->getOption('target_class')));
+                    }
+                } else {
+                    $filterableColumns[$key] = $key;
+                }
+            }
+        }
+
+        $datatableColumns['actions'] = [
+            'data' => 'actions',
+            'searchable' => false,
+            'orderable' => false,
+        ];
+
+        $this->processedColumns = [
+            'listed' => $listedElements,
+            'searchable' => $searchableElements,
+            'datatable' => $datatableColumns,
+            'filterable' => $filterableColumns
+        ];
     }
 
     /**
