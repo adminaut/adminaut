@@ -29,7 +29,7 @@
                         if(column.filterable) {
                             filterCell = $('<td><select></select></td>')
                                 .appendTo($tableFilter)
-                                .find('select').on('change', function () {
+                                .find('select').select2().on('change', function () {
                                     var select = $(this);
                                     if(select.find('option').length > 0) {
                                         var val = select.val();
@@ -59,7 +59,7 @@
                         $.each(filters, function (index, filterOptions) {
                             var $filterSelect = $('#'+ $table.attr('id') +'_wrapper').find('.table-filter td:nth-child(' + (parseInt(index) + 1) + ') select').html('<option value="">All</option>');
                             $.each(filterOptions, function (i, filterOption) {
-                                if (typeof filterOption === "Object") {
+                                if (typeof filterOption === "Object" || typeof filterOption === "object") {
                                     $filterSelect.append('<option value="' + filterOption.id + '"' + (filterOption.id == $filterSelect.data('last-selected') ? ' selected' : '') + '>' + filterOption.name + '</option>');
                                 } else {
                                     $filterSelect.append('<option value="' + filterOption + '"' + (filterOption == $filterSelect.data('last-selected') ? ' selected' : '') + '>' + filterOption + '</option>');

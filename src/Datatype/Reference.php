@@ -187,6 +187,14 @@ class Reference extends Element implements InputProviderInterface
     }
 
     /**
+     * @return array
+     */
+    public function getFilterValue()
+    {
+        return [ 'id' => $this->getValue(), 'name' => $this->getListedValue() ];
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function setValue($value)

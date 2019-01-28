@@ -3,6 +3,7 @@
 namespace Adminaut\Manager;
 
 use Adminaut\Datatype\Datatype;
+use Adminaut\Datatype\DatatypeInterface;
 use Adminaut\Datatype\MultiReference;
 use Adminaut\Datatype\Reference;
 use Adminaut\Form\Annotation\AnnotationBuilder;
@@ -24,6 +25,7 @@ use Adminaut\Options\ModuleOptions;
 use Adminaut\Form\Form;
 use Zend\Form\Annotation\Options;
 use Zend\Form\Element;
+use Zend\Form\ElementInterface;
 use Zend\Form\Fieldset;
 
 /**
@@ -424,53 +426,49 @@ class ModuleManager extends AManager
         $this->applyCriteriaToQueryBuilder($qb, $joined, $criteria);
         $this->applySearchToQueryBuilder($qb, $joined, $searchableElements, $searchString);
 
-        $select =  [];
-        foreach ($filterableColumns as $filterableColumn => $filterableColumnLabel) {
-            if (strpos($filterableColumnLabel, '.')) {
-                $join = "";
-                $joinAlias = "";
-                foreach ($a = explode('.', $filterableColumnLabel) as $x) {
-                    if ($x === end($a)) {
-                        break;
-                    }
-
-                    $join .= (!empty($join) ? '.' : '') . $x;
-                    $joinAlias = str_replace('.', '_', $join);
-
-                    if(!in_array($join, $joined)) {
-                        $qb->leftJoin('e.' . $join, 'e_' . $joinAlias);
-                        $joined[] = $join;
-                    }
-                }
-
-                $select[$filterableColumn] = ["e_$joinAlias.id", "e_$joinAlias.$x"];
-            } else {
-                $select[$filterableColumn] = "e.$filterableColumn";
-            }
-        }
-
-        foreach ($select as $sk => $s) {
+        $filters = [];
+//        $select =  [];
+        /**
+         * @var string $filterableColumn
+         * @var Datatype|ElementInterface $filterableColumnDatatype
+         */
+        foreach ($filterableColumns as $filterableColumn => $filterableColumnDatatype) {
             $sQb = clone $qb;
 
-            if (is_array($s)) {
-                $sQb->select($s)->distinct()
-                    ->andWhere($s[0] . ' IS NOT NULL')
-                    ->andWhere('LENGTH('. $s[1] .') > 0')
-                    ->orderBy($s[1], 'asc');
+            $s = sprintf('e.%s', $filterableColumn);
+            $sQb->select($s)->distinct();
+
+            if ( $filterableColumnDatatype->getOption('target_class') ) {
+//                $sQb->select(['e', str_replace('.', '_', $s)])
+//                    ->leftJoin($s, str_replace('.', '_', $s))
+//                    ->andWhere($s . ' IS NOT NULL');
+
+                $sQb->select(sprintf('%s.id', str_replace('.', '_', $s)))->distinct()
+                    ->leftJoin($s, str_replace('.', '_', $s));
+
+                $targetRepository = $this->entityManager->getRepository($filterableColumnDatatype->getOption('target_class'));
+                $targetQb = $targetRepository->createQueryBuilder($filterableColumn);
+                $sQb = $targetQb->select($filterableColumn)
+                    ->where($sQb->expr()->in(sprintf('%s.id', $filterableColumn), $sQb->getDQL()))
+                    ->setParameters($sQb->getParameters());
             } else {
-                $sQb->select($s)->distinct()
+                $sQb->andWhere('LENGTH('. $s .') > 0')
                     ->andWhere($s . ' IS NOT NULL')
-                    ->andWhere('LENGTH('. $s .') > 0')
                     ->orderBy($s, 'asc');
             }
 
-            $result = $sQb->getQuery()->getScalarResult();
-            $filters[$sk] = array_map(function($data) {
-                if ( sizeof($data) > 1 ) {
-                    return $data;
-                }
+            $q = $sQb->getDQL();
+            $result = $sQb->getQuery()->getResult();
+            $filters[$filterableColumn] = array_map(function($data) use ($filterableColumnDatatype) {
+                $filterableColumnDatatype->setValue(is_array($data) && sizeof($data) == 1 ? current($data) : $data);
 
-                return current($data);
+                if ( method_exists( $filterableColumnDatatype, 'getFilterValue' ) ) {
+                    return $filterableColumnDatatype->getFilterValue();
+                } elseif ( method_exists( $filterableColumnDatatype, 'getListedValue' ) ) {
+                    return $filterableColumnDatatype->getListedValue();
+                } else {
+                    return $filterableColumnDatatype->getValue();
+                }
             }, $result);
         }
 
@@ -788,20 +786,22 @@ class ModuleManager extends AManager
                 && ($this->accessControlService->isAllowed($moduleId, AccessControlService::READ, $key)
                 || (method_exists($element, 'isPrimary') && $element->isPrimary() || $element->getOption('primary')))
             ) {
-                if ( $element->getOption('target_class') ) {
-                    if ( $element->getOption('mask') ) {
-                        preg_match_all("^%(.*?)%^", $element->getOption('mask'), $matches);
-                        foreach ($matches[1] as $property) {
-                            $filterableColumns[$key] = sprintf('%s.%s', $key, $property);
-                        }
-                    } elseif ( $element->getOption('property') ) {
-                        $filterableColumns[$key] = sprintf('%s.%s', $key, $element->getOption('property'));
-                    } else {
-                        $filterableColumns[$key] = sprintf('%s.%s', $key, $this->getEntityPrimaryProperty($element->getOption('target_class')));
-                    }
-                } else {
-                    $filterableColumns[$key] = $key;
-                }
+                $filterableColumns[$key] = $element;
+
+//                if ( $element->getOption('target_class') ) {
+//                    if ( $element->getOption('mask') ) {
+//                        preg_match_all("^%(.*?)%^", $element->getOption('mask'), $matches);
+//                        foreach ($matches[1] as $property) {
+//                            $filterableColumns[$key] = sprintf('%s.%s', $key, $property);
+//                        }
+//                    } elseif ( $element->getOption('property') ) {
+//                        $filterableColumns[$key] = sprintf('%s.%s', $key, $element->getOption('property'));
+//                    } else {
+//                        $filterableColumns[$key] = sprintf('%s.%s', $key, $this->getEntityPrimaryProperty($element->getOption('target_class')));
+//                    }
+//                } else {
+//                    $filterableColumns[$key] = $key;
+//                }
             }
         }
 

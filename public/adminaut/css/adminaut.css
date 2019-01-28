@@ -109,3 +109,11 @@ div.dataTables_processing {
 div.dataTables_paginate ul.pagination {
     margin-top: 10px;
 }
+
+tr.table-filter td {
+    padding: 0 !important;
+}
+
+tr.table-filter td .select2 {
+    width: 100%!important;
+}
