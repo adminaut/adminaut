@@ -18,7 +18,7 @@ class Actions extends AbstractHelper
      */
     public function __invoke(string $moduleId, AdminautEntityInterface $entity)
     {
-        $html .= '<div class="btn-group btn-group-sm" role="group" aria-label="Actions" style="min-width: 135px;">';
+        $html = '<div class="btn-group btn-group-sm" role="group" aria-label="Actions" style="min-width: 135px;">';
         $html .= '    <a href="' . $this->getView()->url('adminaut/module/action', ['module_id' => $moduleId, 'mode' => 'view', 'entity_id' => $entity->getId()]) . '" class="btn btn-success view"
                data-toggle="tooltip" data-placement="top" title="' . $this->getView()->translate('View', 'adminaut') . '"
                data-original-title="' . $this->getView()->translate('View', 'adminaut') . '"><i class="fa fa-eye"></i></a>';
