@@ -26,7 +26,7 @@
             $this->headLink()->appendStylesheet($this->basePath($this->adminautAppearance('skin_file')));
         }
     }
-    echo $this->headLink()
+    $headlink = $this->headLink()
         ->appendStylesheet($this->basePath('adminaut/css/adminaut.css') . '?v=0.0.13')
         ->prependStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/blue.css'))
         ->prependStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/flat.css'))
@@ -34,15 +34,27 @@
         ->prependStylesheet($this->basePath('adminaut/css/dataTables.bootstrap.css'))
         ->prependStylesheet('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
         ->prependStylesheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
-        ->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath('adminaut/img/favicon.ico')], 'APPEND')
-        ->headLink(['rel' => 'manifest', 'href' => $this->url('adminaut/manifest')], 'APPEND')
-        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '114x114', 'href' => $this->basePath('adminaut/img/adminaut-icon-114x114.png')], 'APPEND')
-        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '120x120', 'href' => $this->basePath('adminaut/img/adminaut-icon-120x120.png')], 'APPEND')
-        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '144x144', 'href' => $this->basePath('adminaut/img/adminaut-icon-144x144.png')], 'APPEND')
-        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '152x152', 'href' => $this->basePath('adminaut/img/adminaut-icon-152x152.png')], 'APPEND')
-        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '167x167', 'href' => $this->basePath('adminaut/img/adminaut-icon-167x167.png')], 'APPEND')
-        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '180x180', 'href' => $this->basePath('adminaut/img/adminaut-icon-180x180.png')], 'APPEND')
-        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '1024x1024', 'href' => $this->basePath('adminaut/img/adminaut-icon-1024x1024.png')], 'APPEND');
+        ->headLink(['rel' => 'manifest', 'href' => $this->url('adminaut/manifest')], 'APPEND');
+
+    if ( !empty ( $icons = $this->adminautAppearance('icons') ) ) {
+        foreach ($icons as $size => $icon) {
+            if ($size === 'favicon') {
+                $ext = explode('.', $icon);
+                switch (end($ext)) {
+                    case 'ico': $iconType = "image/vnd.microsoft.icon"; break;
+                    case 'png': $iconType = "image/png"; break;
+                    case 'gif': $iconType = "image/gif"; break;
+                    case 'jpg': $iconType = "image/jpeg"; break;
+                }
+
+                $headlink->headLink(['rel' => 'shortcut icon', 'type' => $iconType, 'href' => $this->basePath($icon)], 'APPEND');
+            } else {
+                $headlink->headLink(['rel' => 'apple-touch-icon', 'sizes' => $size, 'href' => $this->basePath($icon)], 'APPEND');
+            }
+        }
+    }
+
+    echo $headlink;
 
     echo $this->headScript()
         ->appendFile($this->basePath('adminaut/js/adminaut.js?v=0.0.4'))
