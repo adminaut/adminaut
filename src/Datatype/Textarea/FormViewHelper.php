@@ -65,9 +65,8 @@ class FormViewHelper extends FormTextarea
 
         // ckeditor
         if ('ckeditor' === $elementEditor) {
-
-            $this->appendScript('adminaut/themes/adminlte/plugins/ckeditor/config.js'); // todo: make it custom?
             $this->appendScript('adminaut/themes/adminlte/plugins/ckeditor/ckeditor.js');
+            $this->appendScript('adminaut/themes/adminlte/plugins/ckeditor/config.js'); // todo: make it custom?
 
             $render = parent::render($element);
             $render .= $this->getEditorScriptCKEditor($elementId);
@@ -77,7 +76,6 @@ class FormViewHelper extends FormTextarea
 
         // tinymce
         if ('tinymce' === $elementEditor) {
-
             $this->appendScript('adminaut/themes/adminlte/plugins/tinymce/js/tinymce/tinymce.min.js');
 
             $render = parent::render($element);
@@ -94,7 +92,6 @@ class FormViewHelper extends FormTextarea
 
         // autosize javascript works only on plain textarea
         if (true === $elementAutoSize) {
-
             $this->appendScript('adminaut/themes/adminlte/plugins/autosize/autosize.min.js');
 
             $render .= $this->getAutosizeScript($elementId);
