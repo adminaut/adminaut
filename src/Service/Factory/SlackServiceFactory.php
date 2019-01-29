@@ -37,14 +37,14 @@ class SlackServiceFactory implements FactoryInterface
 
         /** @var Client $slackClient */
         $slackClient = new Client($slackModuleConfig['webhook_url'], [
-            'channel' => $slackModuleConfig['defaults']['channel'] ?: null,
-            'username' => $slackModuleConfig['defaults']['username'] ?: null,
-            'icon' => $slackModuleConfig['defaults']['icon'] ?: null,
-            'link_names' => $slackModuleConfig['link_names'] ?: false,
-            'unfurl_links' => $slackModuleConfig['unfurl_links'] ?: false,
-            'unfurl_media' => $slackModuleConfig['unfurl_media'] ?: true,
-            'allow_markdown' => $slackModuleConfig['allow_markdown'] ?: true,
-            'markdown_in_attachments' => $slackModuleConfig['markdown_in_attachments'] ?: [],
+            'channel' => $slackModuleConfig['defaults']['channel'] ?? null,
+            'username' => $slackModuleConfig['defaults']['username'] ?? null,
+            'icon' => $slackModuleConfig['defaults']['icon'] ?? null,
+            'link_names' => $slackModuleConfig['link_names'] ?? false,
+            'unfurl_links' => $slackModuleConfig['unfurl_links'] ?? false,
+            'unfurl_media' => $slackModuleConfig['unfurl_media'] ?? true,
+            'allow_markdown' => $slackModuleConfig['allow_markdown'] ?? true,
+            'markdown_in_attachments' => $slackModuleConfig['markdown_in_attachments'] ?? [],
         ]);
 
         return new SlackService($slackClient);

@@ -103,7 +103,7 @@ class MailServiceFactory implements FactoryInterface
 
                 $options['username'] = $mailServiceConfig['adapter_params']['username'];
                 $options['password'] = $mailServiceConfig['adapter_params']['password'];
-                $options['ssl'] = $mailServiceConfig['adapter_params']['ssl'] ?: 'tls';
+                $options['ssl'] = $mailServiceConfig['adapter_params']['ssl'] ?? 'tls';
 
                 $adapter = new GoogleSmtpAdapter($options);
                 break;
