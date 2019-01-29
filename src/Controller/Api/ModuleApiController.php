@@ -129,23 +129,23 @@ class ModuleApiController extends BaseApiController
         $listedElements = $this->moduleManager->getListedElements($moduleId, $form);
         $searchableElements = $this->moduleManager->getSearchableElements($moduleId, $form);
         $datatableElements = $this->moduleManager->getDatatableColumns($moduleId, $form);
-        $orders = $this->moduleManager->getOrderedElements($params['order']?: [], $moduleId, $form);
+        $orders = $this->moduleManager->getOrderedElements($params['order'] ?? [], $moduleId, $form);
 
         if(!empty($criteria = $this->accessControlService->getModuleCriteria($moduleId))) {
-            $ormPaginator = $this->moduleManager->getDatatable($moduleOptions->getEntityClass(), $criteria, $searchableElements, $params['search']['value'] ?: "", $orders);
+            $ormPaginator = $this->moduleManager->getDatatable($moduleOptions->getEntityClass(), $criteria, $searchableElements, $params['search']['value'] ?? "", $orders);
         } else {
-            $ormPaginator = $this->moduleManager->getDatatable($moduleOptions->getEntityClass(), [], $searchableElements, $params['search']['value'] ?: "", $orders);
+            $ormPaginator = $this->moduleManager->getDatatable($moduleOptions->getEntityClass(), [], $searchableElements, $params['search']['value'] ?? "", $orders);
         }
 
         $paginator = new Paginator(new DoctrineAdapter($ormPaginator));
-        $paginator->setItemCountPerPage((int)$params['length'] ?: 10);
-        $paginator->setCurrentPageNumber((((int)$params['start'] ?: 0) / ((int)$params['length'] ?: 10)) + 1);
+        $paginator->setItemCountPerPage((int)$params['length'] ?? 10);
+        $paginator->setCurrentPageNumber((((int)$params['start'] ?? 0) / ((int)$params['length'] ?? 10)) + 1);
 
         $primaryHelper = $this->viewHelperManager->get('primary');
         $actionsHelper = $this->viewHelperManager->get('actions');
 
         $return = [];
-        $return['draw'] = ((int)$params['draw']) ?: 1;
+        $return['draw'] = ((int)$params['draw']) ?? 1;
         $return['recordsFiltered'] = $return['recordsTotal'] = count($ormPaginator);
 //        $return['filters'] = $filters;
         $return['data'] = [];
