@@ -132,6 +132,6 @@ class AccessControlService
             return $criteria;
         }
 
-        return $criteria;
+        return [];
     }
 }
