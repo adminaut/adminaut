@@ -120,7 +120,7 @@ class ModuleApiController extends BaseApiController
         }
 
         $params = $this->params()->fromPost();
-        $searchValue = $params['search']['value'] ?: "";
+        $searchValue = $params['search']['value'] ?? "";
 
         /** @var ModuleOptions $moduleOptions */
         $moduleOptions = $this->getModuleOptions();
@@ -131,7 +131,7 @@ class ModuleApiController extends BaseApiController
         $searchableColumns = $this->moduleManager->getSearchableColumns($moduleId, $form);
         $filterableColumns = $this->moduleManager->getFilterableColumns($moduleId, $form);
         $datatableColumns = $this->moduleManager->getDatatableColumns($moduleId, $form);
-        $orders = $this->moduleManager->getOrderedElements($params['order']?: [], $moduleId, $form);
+        $orders = $this->moduleManager->getOrderedElements($params['order'] ?? [], $moduleId, $form);
         $columnSearch = [];
 
         $columnNames = array_keys($datatableColumns);
@@ -167,14 +167,14 @@ class ModuleApiController extends BaseApiController
         }
 
         $paginator = new Paginator(new DoctrineAdapter($ormPaginator));
-        $paginator->setItemCountPerPage((int)$params['length'] ?: 10);
-        $paginator->setCurrentPageNumber((((int)$params['start'] ?: 0) / ((int)$params['length'] ?: 10)) + 1);
+        $paginator->setItemCountPerPage((int)$params['length'] ?? 10);
+        $paginator->setCurrentPageNumber((((int)$params['start'] ?? 0) / ((int)$params['length'] ?? 10)) + 1);
 
         $primaryHelper = $this->viewHelperManager->get('primary');
         $actionsHelper = $this->viewHelperManager->get('actions');
 
         $return = [];
-        $return['draw'] = ((int)$params['draw']) ?: 1;
+        $return['draw'] = ((int)$params['draw']) ?? 1;
         $return['recordsFiltered'] = $return['recordsTotal'] = count($ormPaginator);
         $return['filters'] = $filters;
         $return['data'] = [];
