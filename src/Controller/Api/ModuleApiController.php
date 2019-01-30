@@ -132,12 +132,29 @@ class ModuleApiController extends BaseApiController
         $filterableColumns = $this->moduleManager->getFilterableColumns($moduleId, $form);
         $datatableColumns = $this->moduleManager->getDatatableColumns($moduleId, $form);
         $orders = $this->moduleManager->getOrderedElements($params['order']?: [], $moduleId, $form);
+        $columnSearch = [];
+
+        $columnNames = array_keys($datatableColumns);
+        foreach ($params['columns'] as $i => $_column) {
+            if (isset($_column['search']) && isset($_column['search']['value']) && !empty($_column['search']['value'])) {
+//                $columnsSearch[$i] = $_column['search']['value'];
+                /** @var Datatype|Element $filterableColumnDatatype */
+                $filterableColumnDatatype = $filterableColumns[$columnNames[$i]];
+                $filterableColumnDatatype->setValue($_column['search']['value']);
+
+                if ( method_exists($filterableColumnDatatype, 'getInsertValue') ) {
+                    $columnSearch[$columnNames[$i]] = $filterableColumnDatatype->getInsertValue();
+                } else {
+                    $columnSearch[$columnNames[$i]] = $filterableColumnDatatype->getValue();
+                }
+            }
+        }
 
         $criteria = $this->accessControlService->getModuleCriteria($moduleId);
-        $ormPaginator = $this->moduleManager->getDatatable($moduleOptions->getEntityClass(), $criteria, $searchableColumns, $searchValue, $orders);
+        $ormPaginator = $this->moduleManager->getDatatable($moduleOptions->getEntityClass(), $criteria, $searchableColumns, $searchValue, $columnSearch, $orders);
 
         if ( !empty( $filterableColumns ) ) {
-            $_filters = $this->moduleManager->getDatatableFilters($moduleOptions->getEntityClass(), $filterableColumns, $criteria, $searchableColumns, $searchValue);
+            $_filters = $this->moduleManager->getDatatableFilters($moduleOptions->getEntityClass(), $filterableColumns, $criteria, $searchableColumns, $searchValue, $columnSearch);
 
             $dtColumns = array_keys($datatableColumns);
 

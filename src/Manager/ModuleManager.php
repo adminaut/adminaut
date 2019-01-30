@@ -376,7 +376,7 @@ class ModuleManager extends AManager
      * @param string $searchString
      * @param array $orders
      */
-    public function getDatatable(string $entityName, array $criteria = [], array $searchableElements = [], string $searchString = "", array $orders = [])
+    public function getDatatable(string $entityName, array $criteria = [], array $searchableElements = [], string $searchString = "", array $columnSearch = [], array $orders = [])
     {
         $criteria = array_merge(['deleted' => false], $criteria);
 
@@ -387,6 +387,7 @@ class ModuleManager extends AManager
 
         $this->applyCriteriaToQueryBuilder($qb, $joined, $criteria);
         $this->applySearchToQueryBuilder($qb, $joined, $searchableElements, $searchString);
+        $this->applyColumnSearchToQueryBuilder($qb, $joined, $columnSearch);
 
         // Order
         foreach ($orders as $order) {
@@ -427,7 +428,6 @@ class ModuleManager extends AManager
         $this->applySearchToQueryBuilder($qb, $joined, $searchableElements, $searchString);
 
         $filters = [];
-//        $select =  [];
         /**
          * @var string $filterableColumn
          * @var Datatype|ElementInterface $filterableColumnDatatype
@@ -439,12 +439,11 @@ class ModuleManager extends AManager
             $sQb->select($s)->distinct();
 
             if ( $filterableColumnDatatype->getOption('target_class') ) {
-//                $sQb->select(['e', str_replace('.', '_', $s)])
-//                    ->leftJoin($s, str_replace('.', '_', $s))
-//                    ->andWhere($s . ' IS NOT NULL');
+                $sQb->select(sprintf('%s.id', str_replace('.', '_', $s)))->distinct();
 
-                $sQb->select(sprintf('%s.id', str_replace('.', '_', $s)))->distinct()
-                    ->leftJoin($s, str_replace('.', '_', $s));
+                if ( !in_array($filterableColumn, $joined) ) {
+                    $sQb->leftJoin($s, str_replace('.', '_', $s));
+                }
 
                 $targetRepository = $this->entityManager->getRepository($filterableColumnDatatype->getOption('target_class'));
                 $targetQb = $targetRepository->createQueryBuilder($filterableColumn);
@@ -497,12 +496,24 @@ class ModuleManager extends AManager
                     }
                 }
 
-                $qb->andWhere("e_$joinAlias.$x = :e_$joinAlias_$x");
-                $qb->setParameter("e_$joinAlias_$x", $criterionValue);
+                $qb->andWhere("e_$joinAlias.$x = :ce_$joinAlias_$x");
+                $qb->setParameter("ce_$joinAlias_$x", $criterionValue);
             } else {
-                $qb->andWhere("e.$criterionField = :e_$criterionField");
-                $qb->setParameter("e_$criterionField", $criterionValue);
+                $qb->andWhere("e.$criterionField = :ce_$criterionField");
+                $qb->setParameter("ce_$criterionField", $criterionValue);
             }
+        }
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     * @param array $criteria
+     */
+    private function applyColumnSearchToQueryBuilder(QueryBuilder &$qb, array &$joined, $columnSearch = [])
+    {
+        foreach ($columnSearch as $column => $value) {
+            $qb->andWhere("e.$column = :cse_$column");
+            $qb->setParameter("cse_$column", $value);
         }
     }
 
@@ -787,27 +798,13 @@ class ModuleManager extends AManager
                 || (method_exists($element, 'isPrimary') && $element->isPrimary() || $element->getOption('primary')))
             ) {
                 $filterableColumns[$key] = $element;
-
-//                if ( $element->getOption('target_class') ) {
-//                    if ( $element->getOption('mask') ) {
-//                        preg_match_all("^%(.*?)%^", $element->getOption('mask'), $matches);
-//                        foreach ($matches[1] as $property) {
-//                            $filterableColumns[$key] = sprintf('%s.%s', $key, $property);
-//                        }
-//                    } elseif ( $element->getOption('property') ) {
-//                        $filterableColumns[$key] = sprintf('%s.%s', $key, $element->getOption('property'));
-//                    } else {
-//                        $filterableColumns[$key] = sprintf('%s.%s', $key, $this->getEntityPrimaryProperty($element->getOption('target_class')));
-//                    }
-//                } else {
-//                    $filterableColumns[$key] = $key;
-//                }
             }
         }
 
         $datatableColumns['actions'] = [
             'data' => 'actions',
             'searchable' => false,
+            'filterable' => false,
             'orderable' => false,
         ];
 

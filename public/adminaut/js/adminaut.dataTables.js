@@ -17,55 +17,47 @@
             initComplete : function( settings, json ) {
                 var api = this.api();
 
-                if(filterable.length) {
-                    var $tableFilter = $('<tr class="table-filter"></tr>').appendTo($('#'+ $table.attr('id') +'_wrapper').find('thead:first'));
-                    $.each(options.columns, function(index, column){
-                        if(column.visible === false) {
-                            $('<td style="display:none!important;"></td>').appendTo($tableFilter);
-                            return;
-                        }
+                $.each(options.columns, function(index, column) {
+                    $('.dataTables_scrollHead .table-filter td:nth-child('+ (index+1) +') select').select2().on('change', function () {
+                        var select = $(this);
+                        if(select.find('option').length > 0) {
+                            var val = select.val();
+                            select.data('last-selected', val);
+                            api.column(index).search(val, false, false).draw();
 
-                        var filterCell = null;
-                        if(column.filterable) {
-                            filterCell = $('<td><select></select></td>')
-                                .appendTo($tableFilter)
-                                .find('select').select2().on('change', function () {
-                                    var select = $(this);
-                                    if(select.find('option').length > 0) {
-                                        var val = select.val();
-                                        select.data('last-selected', val);
-                                        api.column(index).search(val, false, false).draw();
-                                    }
-                                });
-
-                            filterCell = filterCell.parents('td');
-                        } else {
-                            filterCell = $('<td></td>').appendTo($tableFilter);
-                        }
-
-                        if(initResponsiveColumns[index] === false || initResponsiveColumns[index] === '-') {
-                            filterCell.addClass("hidden");
+                            if (select.val() !== "") {
+                                select.parents('td').find('.select2-selection').css('background', '#fffaca');
+                            } else {
+                                select.parents('td').find('.select2-selection').removeAttr('style');
+                            }
                         }
                     });
-                }
+                });
             },
             ajax: {
                 method : "POST",
                 deferRender : true,
                 complete: function(response) {
+                    var api = $table.DataTable();
                     var filters = response.responseJSON.filters;
 
                     if ( filters !== undefined ) {
                         $.each(filters, function (index, filterOptions) {
-                            var $filterSelect = $('#'+ $table.attr('id') +'_wrapper').find('.table-filter td:nth-child(' + (parseInt(index) + 1) + ') select').html('<option value="">All</option>');
-                            $.each(filterOptions, function (i, filterOption) {
-                                if (typeof filterOption === "Object" || typeof filterOption === "object") {
-                                    $filterSelect.append('<option value="' + filterOption.id + '"' + (filterOption.id == $filterSelect.data('last-selected') ? ' selected' : '') + '>' + filterOption.name + '</option>');
-                                } else {
-                                    $filterSelect.append('<option value="' + filterOption + '"' + (filterOption == $filterSelect.data('last-selected') ? ' selected' : '') + '>' + filterOption + '</option>');
-                                }
-                            });
+                            var column = api.columns(index);
+                            var columnIndex = $(column.header()).index() + 1;
+
+                            if ( columnIndex !== -1 ) {
+                                var $filterSelect = $('#' + $table.attr('id') + '_wrapper').find('.table-filter td:nth-child(' + columnIndex + ') select').html('<option value="">All</option>');
+                                $.each(filterOptions, function (i, filterOption) {
+                                    if (typeof filterOption === "Object" || typeof filterOption === "object") {
+                                        $filterSelect.append('<option value="' + filterOption.id + '"' + (filterOption.id == $filterSelect.data('last-selected') ? ' selected' : '') + '>' + filterOption.name + '</option>');
+                                    } else {
+                                        $filterSelect.append('<option value="' + filterOption + '"' + (filterOption == $filterSelect.data('last-selected') ? ' selected' : '') + '>' + filterOption + '</option>');
+                                    }
+                                });
+                            }
                         });
+
                         $table.data('get-filter', false);
                     }
                 }
@@ -79,25 +71,16 @@
         var filterable = [];
 
         $.each(options.columns, function(index, column){
+            var $tableFilter = $table.find('tr.table-filter').length ? $table.find('tr.table-filter') : $('<tr class="table-filter"></tr>').prependTo($table.find('thead'));
+
             if(column.filterable === true) {
-                filterable.push(index);
+                var filterCell = $('<td><select></select></td>').appendTo($tableFilter);
+            } else {
+                $('<td></td>').appendTo($tableFilter);
             }
         });
 
-        $table.DataTable(options)
-            .on( 'responsive-resize.dt', function ( e, datatable, columns ) {
-                $.each(columns, function(index, column){
-                    var $filterRow = $table.find('.table-filter');
-
-                    if(column === false || column === '-') {
-                        $filterRow.find('td:nth-child('+ (parseInt(index)+1) +')').addClass("hidden");
-                    } else {
-                        $filterRow.find('td:nth-child('+ (parseInt(index)+1) +')').removeClass("hidden");
-                    }
-                });
-
-                initResponsiveColumns = columns;
-            } );
+        $table.DataTable(options);
 
         $(document).on('init.dt', function(e, settings){
             var api = new $.fn.dataTable.Api(settings);
@@ -106,7 +89,7 @@
             $('.dataTables_filter input').unbind().bind("input", function(e) {
                 if(this.value.length >= 2 || e.keyCode == 13) {
                     clearTimeout(searchTimer);
-                    searchTimer = setTimeout(function(){$table.data('get-filter', true); api.search($('.dataTables_filter input')[0].value).draw();}, searchDelay);
+                    searchTimer = setTimeout(function(){$table.data('get-filter', true); api.search($('.dataTables_filter input')[0].value).draw();}, 500);
                 }
 
                 if(this.value == "") {
