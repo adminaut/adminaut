@@ -3,7 +3,7 @@
     $datatableOrders = [];
 
     foreach ($datatableColumns as $i => &$column) {
-        if(isset($column['order'])) {
+        if(isset($column['order']) && $column['order']) {
             $datatableOrders[] = [$i, $column['order']];
             unset($column['order']);
         }
@@ -40,6 +40,7 @@
                         <tr>
                             <th>#</th>
                             <?php foreach ($this->listedElements as $listedElement) { ?>
+                                <?php if ($listedElement->getName() === 'id') { continue; } ?>
                                 <th><?php echo $listedElement->getOption('label') ?></th>
                             <?php } ?>
                             <th><?php echo $this->translate('Actions', 'adminaut'); ?></th>
@@ -50,46 +51,15 @@
                     </table>
                     <script>
                         (function ($) {
-                            $('#moduleEntityTable').DataTable({
-                                "paging": true,
-                                "lengthChange": true,
-                                "searching": true,
-                                "ordering": true,
-                                "info": true,
-                                "autoWidth": false,
-                                "scrollX": true,
-                                "pageLength": parseInt(Cookies.get('<?php echo $this->moduleOption->getModuleId(); ?>.dt.length')) || 10,
-                                "ajax": {
-                                    "url" : "<?php echo $this->url('adminaut/api/module/datatable', ['module_id' => $this->moduleOption->getModuleId()]) ?>",
-                                    "method" : "POST",
-                                    "deferRender": true
+                            $('#moduleEntityTable').adminautDataTable({
+                                pageLength : parseInt(Cookies.get('<?php echo $this->moduleOption->getModuleId(); ?>.dt.length')) || 10,
+                                ajax : {
+                                    url : "<?php echo $this->url('adminaut/api/module/datatable', ['module_id' => $this->moduleOption->getModuleId()]) ?>"
                                 },
-                                "processing": true,
-                                "serverSide": true,
-                                "columns" : <?php echo json_encode($datatableColumns) ?>,
-                                "order" : <?php echo json_encode($datatableOrders) ?>
+                                columns : <?php echo json_encode($datatableColumns) ?>,
+                                order : <?php echo json_encode($datatableOrders) ?>
                             }).on('length.dt', function (e, settings, len) {
                                 Cookies.set('<?php echo $this->moduleOption->getModuleId(); ?>.dt.length', len);
-                            });
-
-                            $(document).on('init.dt', function(e, settings){
-                                var $table = $(e.target);
-                                var api = new $.fn.dataTable.Api(settings);
-                                var searchTimer = null;
-
-                                $('.dataTables_filter input').unbind().bind("input", function(e) {
-                                    if(this.value.length >= 2 || e.keyCode == 13) {
-                                        clearTimeout(searchTimer);
-                                        searchTimer = setTimeout(function(){$table.data('get-filter', true); api.search($('.dataTables_filter input')[0].value).draw();}, 500);
-                                    }
-
-                                    if(this.value == "") {
-                                        clearTimeout(searchTimer);
-                                        $table.data('get-filter', true);
-                                        api.search("").draw();
-                                    }
-                                    return;
-                                });
                             });
                         })(jQuery);
                     </script>

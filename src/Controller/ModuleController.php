@@ -144,7 +144,7 @@ class ModuleController extends AdminautBaseController
             'listedElements' => $listedElements,
             'hasPrimary' => ($form->getPrimaryField() !== 'id'),
             'moduleOption' => $moduleOptions,
-            'datatableColumns' => $datatableColumns
+            'datatableColumns' => array_values($datatableColumns)
         ]);
     }
 

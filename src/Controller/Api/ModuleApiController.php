@@ -120,21 +120,50 @@ class ModuleApiController extends BaseApiController
         }
 
         $params = $this->params()->fromPost();
+        $searchValue = $params['search']['value'] ?: "";
 
         /** @var ModuleOptions $moduleOptions */
         $moduleOptions = $this->getModuleOptions();
         /** @var Form $form */
         $form = $this->moduleManager->createForm($moduleOptions);
 
-        $listedElements = $this->moduleManager->getListedElements($moduleId, $form);
-        $searchableElements = $this->moduleManager->getSearchableElements($moduleId, $form);
-        $datatableElements = $this->moduleManager->getDatatableColumns($moduleId, $form);
+        $listedElements = $this->moduleManager->getListedColumns($moduleId, $form);
+        $searchableColumns = $this->moduleManager->getSearchableColumns($moduleId, $form);
+        $filterableColumns = $this->moduleManager->getFilterableColumns($moduleId, $form);
+        $datatableColumns = $this->moduleManager->getDatatableColumns($moduleId, $form);
         $orders = $this->moduleManager->getOrderedElements($params['order']?: [], $moduleId, $form);
+        $columnSearch = [];
 
-        if(!empty($criteria = $this->accessControlService->getModuleCriteria($moduleId))) {
-            $ormPaginator = $this->moduleManager->getDatatable($moduleOptions->getEntityClass(), $criteria, $searchableElements, $params['search']['value'] ?: "", $orders);
-        } else {
-            $ormPaginator = $this->moduleManager->getDatatable($moduleOptions->getEntityClass(), [], $searchableElements, $params['search']['value'] ?: "", $orders);
+        $columnNames = array_keys($datatableColumns);
+        foreach ($params['columns'] as $i => $_column) {
+            if (isset($_column['search']) && isset($_column['search']['value']) && !empty($_column['search']['value'])) {
+//                $columnsSearch[$i] = $_column['search']['value'];
+                /** @var Datatype|Element $filterableColumnDatatype */
+                $filterableColumnDatatype = $filterableColumns[$columnNames[$i]];
+                $filterableColumnDatatype->setValue($_column['search']['value']);
+
+                if ( method_exists($filterableColumnDatatype, 'getInsertValue') ) {
+                    $columnSearch[$columnNames[$i]] = $filterableColumnDatatype->getInsertValue();
+                } else {
+                    $columnSearch[$columnNames[$i]] = $filterableColumnDatatype->getValue();
+                }
+            }
+        }
+
+        $criteria = $this->accessControlService->getModuleCriteria($moduleId);
+        $ormPaginator = $this->moduleManager->getDatatable($moduleOptions->getEntityClass(), $criteria, $searchableColumns, $searchValue, $columnSearch, $orders);
+
+        if ( !empty( $filterableColumns ) ) {
+            $_filters = $this->moduleManager->getDatatableFilters($moduleOptions->getEntityClass(), $filterableColumns, $criteria, $searchableColumns, $searchValue, $columnSearch);
+
+            $dtColumns = array_keys($datatableColumns);
+
+            $filters = [];
+            foreach (array_keys($_filters) as $columnName) {
+                if ($columnKey = array_search($columnName, $dtColumns)) {
+                    $filters[$columnKey] = $_filters[$columnName];
+                }
+            }
         }
 
         $paginator = new Paginator(new DoctrineAdapter($ormPaginator));
@@ -147,7 +176,7 @@ class ModuleApiController extends BaseApiController
         $return = [];
         $return['draw'] = ((int)$params['draw']) ?: 1;
         $return['recordsFiltered'] = $return['recordsTotal'] = count($ormPaginator);
-//        $return['filters'] = $filters;
+        $return['filters'] = $filters;
         $return['data'] = [];
 
         foreach ($paginator as $entity) {

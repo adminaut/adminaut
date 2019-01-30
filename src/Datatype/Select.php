@@ -67,6 +67,14 @@ class Select extends \Zend\Form\Element\Select
     /**
      * @return array
      */
+    public function getFilterValue()
+    {
+        return [ 'id' => $this->getValue(), 'name' => $this->getListedValue() ];
+    }
+
+    /**
+     * @return array
+     */
     public function getAttributes()
     {
         $this->attributes['id'] = $this->attributes['name'];
