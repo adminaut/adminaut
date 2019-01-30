@@ -707,11 +707,12 @@ class ModuleManager extends AManager
 
         $orders = [];
         $datatableColumns = $this->getDatatableColumns($moduleId, $form);
+        $dtColumnNames = array_keys($datatableColumns);
 
         foreach ($dtOrders as $dtOrder) {
-            $column = $dtOrder['column'];
+            $column = (int) $dtOrder['column'];
             $dir = $dtOrder['dir'];
-            $elementKey = $datatableColumns[$column]['data'];
+            $elementKey = $datatableColumns[$dtColumnNames[$column]]['data'];
 
             if ($form->has($elementKey)) {
                 $element = $form->get($elementKey);
