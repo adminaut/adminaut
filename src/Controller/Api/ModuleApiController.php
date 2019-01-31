@@ -153,12 +153,12 @@ class ModuleApiController extends BaseApiController
         $criteria = $this->accessControlService->getModuleCriteria($moduleId);
         $ormPaginator = $this->moduleManager->getDatatable($moduleOptions->getEntityClass(), $criteria, $searchableColumns, $searchValue, $columnSearch, $orders);
 
+        $filters = [];
         if ( !empty( $filterableColumns ) ) {
             $_filters = $this->moduleManager->getDatatableFilters($moduleOptions->getEntityClass(), $filterableColumns, $criteria, $searchableColumns, $searchValue, $columnSearch);
 
             $dtColumns = array_keys($datatableColumns);
 
-            $filters = [];
             foreach (array_keys($_filters) as $columnName) {
                 if ($columnKey = array_search($columnName, $dtColumns)) {
                     $filters[$columnKey] = $_filters[$columnName];
