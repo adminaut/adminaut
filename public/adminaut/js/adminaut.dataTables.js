@@ -54,6 +54,10 @@
                                     } else {
                                         $filterSelect.append('<option value="' + filterOption + '"' + (filterOption == $filterSelect.data('last-selected') ? ' selected' : '') + '>' + filterOption + '</option>');
                                     }
+
+                                    if (i === filterOptions.length - 1) {
+                                        api.columns.adjust();
+                                    }
                                 });
                             }
                         });
