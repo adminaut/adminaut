@@ -27,7 +27,7 @@
         }
     }
     $headlink = $this->headLink()
-        ->appendStylesheet($this->basePath('adminaut/css/adminaut.css') . '?v=0.0.13')
+        ->appendStylesheet($this->basePath('adminaut/css/adminaut.css') . '?v=0.0.20')
         ->prependStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/blue.css'))
         ->prependStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/flat.css'))
         ->prependStylesheet($this->basePath('adminaut/themes/adminlte/plugins/select2/select2.css'))
@@ -58,7 +58,7 @@
     echo $headlink;
 
     echo $this->headScript()
-        ->appendFile($this->basePath('adminaut/js/adminaut.js?v=0.0.4'))
+        ->appendFile($this->basePath('adminaut/js/adminaut.js?v=0.0.20'))
         ->prependFile('//maps.googleapis.com/maps/api/js?libraries=places&key=' . $this->adminautVariable('google-maps-api'))// todo: move do view helpers
         ->prependFile($this->basePath('adminaut/js/js.cookie.js'))
         ->prependFile($this->basePath('adminaut/themes/adminlte/dist/js/app.js'))
