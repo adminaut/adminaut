@@ -66,7 +66,7 @@ abstract class AbstractWidget implements WidgetInterface
      */
     public function setColor(string $color)
     {
-        if(!in_array($string, ['primary', 'success', 'warning', 'danger'])) {
+        if(!in_array($color, ['primary', 'success', 'warning', 'danger'])) {
             return new \InvalidArgumentException('Color can be only primary, success, warning or danger');
         }
 
@@ -118,5 +118,13 @@ abstract class AbstractWidget implements WidgetInterface
      */
     public function getEntity() {
         return self::$form->getObject();
+    }
+
+    /**
+     * @return bool
+     */
+    public function display()
+    {
+        return true;
     }
 }
