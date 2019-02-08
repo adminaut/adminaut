@@ -233,6 +233,9 @@ class ModuleController extends AdminautBaseController
         $entityClass = $moduleOptions->getEntityClass();
         $fm = $this->getFilemanager();
         $form = $this->getModuleManager()->createForm($moduleOptions);
+        $this->getEventManager()->trigger($moduleId . '.onCreateAddForm', $this, [
+            'form' => &$form,
+        ]);
         if ($entityId) {
             $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
             $form->bind($entity);
@@ -341,6 +344,10 @@ class ModuleController extends AdminautBaseController
         $fm = $this->getFilemanager();
         /* @var $form \Adminaut\Form\Form */
         $form = $this->getModuleManager()->createForm($moduleOptions);
+        $this->getEventManager()->trigger($moduleId . '.onCreateEditForm', $this, [
+            'entity' => &$entity,
+            'form' => &$form,
+        ]);
 
         $tabs = $form->getTabs();
         $tabs[$this->params()->fromRoute('tab')]['active'] = true;
