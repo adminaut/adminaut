@@ -89,7 +89,7 @@ $pages[] = [
                                 </td>
                                 <?php foreach ($this->listedElements as $listedElement) { ?>
                                     <td>
-                                        <?php if ($listedElement->isPrimary()) { ?>
+                                        <?php if ((method_exists($listedElement, 'isPrimary') && $listedElement->isPrimary()) || $listedElement->getOption('primary') === true) { ?>
                                         <a href="<?php echo $this->url('adminaut/module/action/tab/action', [
                                             'module_id' => $this->url_params['module_id'],
                                             'mode' => 'edit',
@@ -103,11 +103,11 @@ $pages[] = [
                                             <?php } ?>
                                             <?php $listedElement->setValue($entity->{$listedElement->getName()}) ?>
                                             <?php if (method_exists($listedElement, 'getListedValue')) { ?>
-                                                <?php echo($listedElement->isPrimary() && empty($listedElement->getListedValue()) ? 'undefined' : $listedElement->getListedValue()); ?>
+                                                <?php echo(((method_exists($listedElement, 'isPrimary') && $listedElement->isPrimary()) || $listedElement->getOption('primary') === true) && empty($listedElement->getListedValue()) ? 'undefined' : $listedElement->getListedValue()); ?>
                                             <?php } else { ?>
                                                 <?php echo $listedElement->getValue(); ?>
                                             <?php } ?>
-                                            <?php if ($listedElement->isPrimary()) { ?>
+                                            <?php if ((method_exists($listedElement, 'isPrimary') && $listedElement->isPrimary()) || $listedElement->getOption('primary') === true) { ?>
                                         </a>
                                     <?php } ?>
                                     </td>
@@ -143,7 +143,7 @@ $pages[] = [
                                 "ordering": true,
                                 "info": true,
                                 "autoWidth": false,
-                                "pageLength": Cookies.get('cyclicEntityTable.dt.length') || 10
+                                "pageLength": parseInt(Cookies.get('cyclicEntityTable.dt.length') || 10)
                             }).on('length.dt', function (e, settings, len) {
                                 Cookies.set('cyclicEntityTable.dt.length', len);
                             });
