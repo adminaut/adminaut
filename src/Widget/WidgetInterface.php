@@ -8,6 +8,11 @@ namespace Adminaut\Widget;
 interface WidgetInterface
 {
     /**
+     * @return bool
+     */
+    public function display();
+
+    /**
      * @param string $title
      * @return void
      */

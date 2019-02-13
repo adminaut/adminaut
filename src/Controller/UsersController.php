@@ -3,6 +3,7 @@
 namespace Adminaut\Controller;
 
 use Adminaut\Authentication\Helper\PasswordHelper;
+use Adminaut\Entity\AdminautEntityInterface;
 use Adminaut\Manager\ModuleManager;
 use Adminaut\Manager\UserManager;
 use Adminaut\Options\ModuleOptions;
@@ -148,14 +149,35 @@ class UsersController extends AdminautBaseController
             return $this->redirect()->toRoute(self::ROUTE_INDEX);
         }
 
+        /** @var AdminautEntityInterface $user */
         $user = $this->getUserManager()->findOneById($id);
 
         if (null === $user) {
+            $this->addErrorMessage($this->translate('User was not found.', 'adminaut'));
             return $this->redirect()->toRoute(self::ROUTE_INDEX);
         }
 
+
+        $moduleOptions = $this->getModuleOptions();
+
+        $form = $this->getModuleManager()->createForm($moduleOptions);
+
+        $form->bind($user);
+
+        $elements = [];
+
+        /* @var $element \Zend\Form\Element */
+        foreach ($form->getElements() as $key => $element) {
+            $elements[$element->getName()] = $element;
+        }
+
+        $tabs = $form->getTabs();
+        $tabs[$this->params()->fromRoute('tab')]['active'] = true;
+
         return new ViewModel([
             'user' => $user,
+            'elements' => $elements,
+            'widgets' => $form->getWidgets(),
         ]);
     }
 
@@ -311,7 +333,8 @@ class UsersController extends AdminautBaseController
             'priority' => 13
         ]);
 
-        $form->populateValues($user->toArray());
+        $form->bind($user);
+//        $form->populateValues($user->toArray());
 
         /** @var Request $request */
         $request = $this->getRequest();
@@ -368,6 +391,7 @@ class UsersController extends AdminautBaseController
             'form' => $form,
             'tabs' => $tabs,
             'user' => $user,
+            'widgets' => $form->getWidgets(),
             'url_params' => [
                 'id' => $user->getId(),
             ],

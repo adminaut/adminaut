@@ -6,6 +6,7 @@ use Adminaut\Authentication\Adapter\AuthAdapter;
 use Adminaut\Authentication\Service\AuthenticationService;
 use Adminaut\Authentication\Storage\AuthStorage;
 use Interop\Container\ContainerInterface;
+use Zend\EventManager\EventManagerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
@@ -30,6 +31,10 @@ class AuthenticationServiceFactory implements FactoryInterface
         /** @var AuthStorage $storage */
         $storage = $container->get(AuthStorage::class);
 
-        return new AuthenticationService($adapter, $storage);
+        $eventManager      = $container->get('EventManager');
+
+        $as = new AuthenticationService($adapter, $storage);
+        $as->setEventManager($eventManager);
+        return $as;
     }
 }
