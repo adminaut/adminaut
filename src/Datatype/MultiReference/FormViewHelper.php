@@ -43,7 +43,7 @@ class FormViewHelper extends AbstractHelper
 
         if ($datatype->getVisualization() == 'select') {
             $select = new Select();
-            $selectViewHelper = $this->getView()->plugin('formSelect');
+            $selectViewHelper = $this->getView()->plugin('datatypeFormSelect');
             foreach ($datatype->getObjectVars() as $key => $value) {
                 if ($key == 'emptyValue') {
                     $select->setUnselectedValue($value);
