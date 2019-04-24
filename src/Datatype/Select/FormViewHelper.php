@@ -38,7 +38,7 @@ class FormViewHelper extends ZendFormSelect
 
         $render = parent::render($element);
 
-        $render .= '<script>$("select").select2();</script>';
+        $render .= '<script>$("select#'. $element->getName() .'").select2();</script>';
 
         return $render;
     }
