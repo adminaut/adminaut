@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
-"POT-Creation-Date: 2018-05-30 14:48+0200\n"
-"PO-Revision-Date: 2018-05-30 08:53-0400\n"
-"Last-Translator: HrobocopAlso <maxim@mxm.cz>\n"
+"POT-Creation-Date: 2019-08-19 17:52+0200\n"
+"PO-Revision-Date: 2019-08-19 16:01\n"
+"Last-Translator: HrobocopAlso\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,8 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SearchPathExcluded-1: *.jpg\n"
+"X-Poedit-SearchPathExcluded-2: *.png\n"
 "X-Crowdin-Project: adminaut\n"
 "X-Crowdin-Language: de\n"
 "X-Crowdin-File: /develop/language/source/Adminaut.po\n"
@@ -49,51 +51,73 @@ msgstr ""
 msgid "Cannot change password, try again later."
 msgstr ""
 
-#: src/Controller/AdminautBaseController.php:64
+#: src/Controller/AdminautBaseController.php:62
 msgid "Wild application error occurred."
 msgstr "Wilder Anwendungsfehler aufgetreten."
 
 #: src/Controller/InstallController.php:79
-#: src/Controller/UsersController.php:228
+#: src/Controller/UsersController.php:251
 msgid "User has been successfully created."
 msgstr "Benutzer wurde erfolgreich erstellt."
 
 #: src/Controller/InstallController.php:84
-#: src/Controller/ModuleController.php:303
-#: src/Controller/ModuleController.php:401
-#: src/Controller/ModuleController.php:620
-#: src/Controller/ModuleController.php:676
-#: src/Controller/ModuleController.php:744
-#: src/Controller/UsersController.php:248
-#: src/Controller/UsersController.php:362
-#: src/Controller/UsersController.php:395
+#: src/Controller/ModuleController.php:319
+#: src/Controller/ModuleController.php:321
+#: src/Controller/ModuleController.php:442
+#: src/Controller/ModuleController.php:444
+#: src/Controller/ModuleController.php:662
+#: src/Controller/ModuleController.php:722
+#: src/Controller/ModuleController.php:790
+#: src/Controller/UsersController.php:271
+#: src/Controller/UsersController.php:385
+#: src/Controller/UsersController.php:419
 #, php-format
 msgid "Error: %s"
 msgstr "Fehler: %s"
 
-#: src/Controller/ModuleController.php:192
-#: src/Controller/ModuleController.php:347
-#: src/Controller/ModuleController.php:449
-#: src/Controller/ModuleController.php:505
-#: src/Controller/ModuleController.php:603
-#: src/Controller/ModuleController.php:734
+#: src/Controller/ModuleController.php:183
+#: src/Controller/ModuleController.php:362
+#: src/Controller/ModuleController.php:489
+#: src/Controller/ModuleController.php:544
+#: src/Controller/ModuleController.php:645
+#: src/Controller/ModuleController.php:780
 msgid "Record was not found."
 msgstr "Datensatz wurde nicht gefunden."
 
-#: src/Controller/ModuleController.php:292
-#: src/Controller/ModuleController.php:671
+#: src/Controller/ModuleController.php:286
+#: src/Controller/ModuleController.php:717
 #, php-format
 msgid "Record \"%s\" has been successfully created."
 msgstr "Datensatz ''%s'' wurde erfolgreich erstellt."
 
-#: src/Controller/ModuleController.php:390
-#: src/Controller/ModuleController.php:659
+#: src/Controller/ModuleController.php:309
+#: src/Controller/ModuleController.php:311
+#: src/Controller/ModuleController.php:432
+#: src/Controller/ModuleController.php:434
+#, php-format
+msgid "Cannot save record, there is already a record with value '%s' in the field '%s' - the value must be unique."
+msgstr ""
+
+#: src/Controller/ModuleController.php:313
+#: src/Controller/ModuleController.php:436
+#, php-format
+msgid "Cannot save record, there is already a record with value '%s' in the column '%s' - the value must be unique."
+msgstr ""
+
+#: src/Controller/ModuleController.php:316
+#: src/Controller/ModuleController.php:439
+#, php-format
+msgid "Cannot save record, there is already a record with value '%s' - the value must be unique."
+msgstr ""
+
+#: src/Controller/ModuleController.php:409
+#: src/Controller/ModuleController.php:705
 #, php-format
 msgid "Record \"%s\" has been successfully updated."
 msgstr "Datensatz ''%s'' wurde erfolgreich aktualisiert."
 
-#: src/Controller/ModuleController.php:613
-#: src/Controller/ModuleController.php:741
+#: src/Controller/ModuleController.php:655
+#: src/Controller/ModuleController.php:787
 #, php-format
 msgid "Record \"%s\" has been deleted."
 msgstr "Datensatz ''%s'' wurde gelöscht."
@@ -118,30 +142,34 @@ msgstr "Kennwort konnte nicht geändert werden."
 msgid "Password does not match current password."
 msgstr "Kennwort passt nicht den aktuellen Kennwort an."
 
-#: src/Controller/UsersController.php:187
-#: src/Controller/UsersController.php:298
+#: src/Controller/UsersController.php:156
+msgid "User was not found."
+msgstr ""
+
+#: src/Controller/UsersController.php:211
+#: src/Controller/UsersController.php:321
 msgid "Generate password"
 msgstr ""
 
-#: src/Controller/UsersController.php:197
-#: src/Controller/UsersController.php:308
+#: src/Controller/UsersController.php:220
+#: src/Controller/UsersController.php:330
 msgid "Send account information to the user"
 msgstr ""
 
-#: src/Controller/UsersController.php:235
+#: src/Controller/UsersController.php:258
 msgid "Exception while sending account information: %S"
 msgstr ""
 
-#: src/Controller/UsersController.php:342
+#: src/Controller/UsersController.php:365
 msgid "User has been successfully updated."
 msgstr "Benutzer wurde erfolgreich aktualisiert."
 
-#: src/Controller/UsersController.php:349
+#: src/Controller/UsersController.php:372
 #, php-format
 msgid "Exception while sending account information: %s"
 msgstr ""
 
-#: src/Controller/UsersController.php:393
+#: src/Controller/UsersController.php:417
 msgid "User has been successfully deleted."
 msgstr "Benutzer wurde erfolgreich gelöscht."
 
@@ -159,15 +187,15 @@ msgstr "Ansicht ist keine Instanz von %s."
 msgid "Enter a location"
 msgstr "Einen Standort eingeben"
 
-#: src/Datatype/Reference/FormViewHelper.php:97
+#: src/Datatype/Reference/FormViewHelper.php:99
 #, php-format
-msgid "New record can be added <a href=\"%s\">here</a>"
+msgid "New record can be added <a href=\"%s\" tabindex=\"-1\">here</a>"
 msgstr ""
 
 #: src/Form/RoleForm.php:43 src/Form/RoleForm.php:46 src/Form/UserForm.php:52
 #: src/Form/UserForm.php:55 src/Form/UserSettingsForm.php:24
 #: src/Form/UserSettingsForm.php:27 view/adminaut/profile/index.phtml:44
-#: view/adminaut/users/index.phtml:29 view/adminaut/users/view.phtml:21
+#: view/adminaut/users/index.phtml:29
 msgid "Name"
 msgstr "Name"
 
@@ -193,7 +221,6 @@ msgstr "Neues Kennwort wiederholen"
 #: src/Form/UserForm.php:63 src/Form/UserForm.php:66
 #: src/Form/UserLoginForm.php:31 src/Form/UserLoginForm.php:35
 #: view/adminaut/profile/index.phtml:49 view/adminaut/users/index.phtml:30
-#: view/adminaut/users/view.phtml:27
 msgid "Email"
 msgstr "E-Mail"
 
@@ -213,7 +240,6 @@ msgstr "Rolle wählen"
 
 #: src/Form/UserForm.php:98 view/adminaut/profile/index.phtml:59
 #: view/adminaut/profile/index.phtml:62 view/adminaut/users/index.phtml:46
-#: view/adminaut/users/view.phtml:33 view/adminaut/users/view.phtml:36
 msgid "Active"
 msgstr "Aktiv"
 
@@ -234,15 +260,15 @@ msgstr "Sprache"
 msgid "Dashboard"
 msgstr "Übersicht"
 
-#: src/Navigation/Navigation.php:77
+#: src/Navigation/Navigation.php:112
 msgid "System"
 msgstr "System"
 
-#: src/Navigation/Navigation.php:83 view/adminaut/users/add.phtml:10
+#: src/Navigation/Navigation.php:119 view/adminaut/users/add.phtml:10
 #: view/adminaut/users/add.phtml:15 view/adminaut/users/edit.phtml:10
 #: view/adminaut/users/edit.phtml:15 view/adminaut/users/index.phtml:3
-#: view/adminaut/users/index.phtml:7 view/adminaut/users/view.phtml:3
-#: view/adminaut/users/view.phtml:8
+#: view/adminaut/users/index.phtml:7 view/adminaut/users/view.phtml:12
+#: view/adminaut/users/view.phtml:17
 msgid "Users"
 msgstr "Benutzer"
 
@@ -271,6 +297,31 @@ msgstr ""
 #, php-format
 msgid "Notification - %s"
 msgstr ""
+
+#: src/View/Helper/Actions.php:23 src/View/Helper/Actions.php:24
+#: view/adminaut/module/cyclicTab.phtml:179
+msgid "View"
+msgstr "Ansehen"
+
+#: src/View/Helper/Actions.php:27 src/View/Helper/Actions.php:28
+#: view/adminaut/module-cyclic-tab/edit.phtml:4
+#: view/adminaut/module/cyclicTab.phtml:157
+#: view/adminaut/module/cyclicTab.phtml:179 view/adminaut/module/edit.phtml:27
+#: view/adminaut/module/view.phtml:86 view/adminaut/users/view.phtml:67
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: src/View/Helper/Actions.php:30 src/View/Helper/Actions.php:31
+#: view/adminaut/module/edit.phtml:68
+msgid "Copy"
+msgstr "Kopieren"
+
+#: src/View/Helper/Actions.php:36 src/View/Helper/Actions.php:37
+#: view/adminaut/module/edit.phtml:74 view/adminaut/module/edit.phtml:75
+#: view/adminaut/profile/access-tokens.phtml:62
+#: view/adminaut/users/edit.phtml:45
+msgid "Delete"
+msgstr "Löschen"
 
 #: view/adminaut/auth/login.phtml:20
 #: view/adminaut/auth/password-change.phtml:20
@@ -324,14 +375,6 @@ msgstr ""
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: view/adminaut/module-cyclic-tab/edit.phtml:4
-#: view/adminaut/module/cyclicTab.phtml:157
-#: view/adminaut/module/cyclicTab.phtml:179 view/adminaut/module/edit.phtml:27
-#: view/adminaut/module/list.phtml:74 view/adminaut/module/list.phtml:75
-#: view/adminaut/module/view.phtml:86 view/adminaut/users/view.phtml:45
-msgid "Edit"
-msgstr "Bearbeiten"
-
 #: view/adminaut/module-cyclic-tab/index.phtml:4
 #: view/adminaut/module-tab/index.phtml:4
 msgid "List"
@@ -357,19 +400,14 @@ msgstr "Erstellen und neu"
 #: view/adminaut/module/add.phtml:56 view/adminaut/module/cyclicTab.phtml:160
 #: view/adminaut/module/edit.phtml:64 view/adminaut/module/view.phtml:90
 #: view/adminaut/users/add.phtml:45 view/adminaut/users/edit.phtml:42
-#: view/adminaut/users/view.phtml:49
+#: view/adminaut/users/view.phtml:71
 msgid "Back to list"
 msgstr "Zurück zur Liste"
 
-#: view/adminaut/module/cyclicTab.phtml:64 view/adminaut/module/list.phtml:33
+#: view/adminaut/module/cyclicTab.phtml:64 view/adminaut/module/list.phtml:46
 #: view/adminaut/users/index.phtml:33
 msgid "Actions"
 msgstr "Aktionen"
-
-#: view/adminaut/module/cyclicTab.phtml:179 view/adminaut/module/list.phtml:69
-#: view/adminaut/module/list.phtml:70
-msgid "View"
-msgstr "Ansehen"
 
 #: view/adminaut/module/cyclicTab.phtml:179
 msgid "Add new"
@@ -392,24 +430,12 @@ msgstr ""
 msgid "Save and continue"
 msgstr "Speichern und fortsetzen"
 
-#: view/adminaut/module/edit.phtml:68 view/adminaut/module/list.phtml:77
-#: view/adminaut/module/list.phtml:78
-msgid "Copy"
-msgstr "Kopieren"
-
-#: view/adminaut/module/edit.phtml:74 view/adminaut/module/edit.phtml:75
-#: view/adminaut/module/list.phtml:84 view/adminaut/module/list.phtml:85
-#: view/adminaut/profile/access-tokens.phtml:62
-#: view/adminaut/users/edit.phtml:45
-msgid "Delete"
-msgstr "Löschen"
-
 #: view/adminaut/module/index.phtml:3 view/adminaut/module/index.phtml:7
 msgid "Module"
 msgstr "Modul"
 
-#: view/adminaut/module/view.phtml:42 view/adminaut/users/view.phtml:9
-#: view/adminaut/users/view.phtml:18
+#: view/adminaut/module/view.phtml:42 view/adminaut/users/view.phtml:18
+#: view/adminaut/users/view.phtml:28
 msgid "Detail"
 msgstr "Detail"
 
@@ -420,7 +446,7 @@ msgstr "Detail"
 #: view/adminaut/profile/index.phtml:3 view/adminaut/profile/index.phtml:8
 #: view/adminaut/profile/logins.phtml:3 view/adminaut/profile/logins.phtml:8
 #: view/adminaut/profile/settings.phtml:5
-#: view/adminaut/profile/settings.phtml:10 view/layout/layout-admin.phtml:137
+#: view/adminaut/profile/settings.phtml:10 view/layout/layout-admin.phtml:161
 msgid "Profile"
 msgstr "Profil"
 
@@ -486,7 +512,6 @@ msgid "Change"
 msgstr "Ändern"
 
 #: view/adminaut/profile/index.phtml:64 view/adminaut/users/index.phtml:48
-#: view/adminaut/users/view.phtml:38
 msgid "Inactive"
 msgstr "Inaktiv"
 
@@ -529,19 +554,19 @@ msgstr ""
 msgid "Status"
 msgstr "Status"
 
-#: view/layout/layout-admin.phtml:107
+#: view/layout/layout-admin.phtml:131
 msgid "Toggle navigation"
 msgstr "Navigation umschalten"
 
-#: view/layout/layout-admin.phtml:142
+#: view/layout/layout-admin.phtml:166
 msgid "Sign out"
 msgstr "Abmelden"
 
-#: view/layout/layout-admin.phtml:172
+#: view/layout/layout-admin.phtml:196
 msgid "Search..."
 msgstr "Suche..."
 
-#: view/layout/layout-admin.phtml:194
+#: view/layout/layout-admin.phtml:218
 #, php-format
 msgid "Powered by %s."
 msgstr "Powered by %s."
@@ -565,8 +590,4 @@ msgstr "Nein"
 #: view/partial/deleteModal.phtml:13
 msgid "Yes, delete it"
 msgstr "Ja, löschen"
-
-#: public/adminaut/themes/adminlte/dist/img/photo4.jpg:3457
-msgid "k5<Y$]&#RCbE"
-msgstr ""
 
