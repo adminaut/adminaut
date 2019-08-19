@@ -6,10 +6,12 @@ use Adminaut\Datatype\Datatype;
 use Adminaut\Datatype\DatatypeInterface;
 use Adminaut\Datatype\MultiReference;
 use Adminaut\Datatype\Reference;
+use Adminaut\Exception\DuplicateValueForUniqueException;
 use Adminaut\Form\Annotation\AnnotationBuilder;
 use Adminaut\Form\Element\CyclicSheet;
 use Adminaut\Service\AccessControlService;
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -221,8 +223,12 @@ class ModuleManager extends AManager
             $entity->setInsertedBy($admin->getId());
         }
 
-        $this->entityManager->persist($entity);
-        $this->entityManager->flush();
+        try {
+            $this->entityManager->persist($entity);
+            $this->entityManager->flush();
+        } catch (UniqueConstraintViolationException $e) {
+            var_dump($e); die();
+        }
 
         return $entity;
     }
@@ -242,7 +248,33 @@ class ModuleManager extends AManager
             $entity->setUpdatedBy($admin->getId());
         }
 
-        $this->entityManager->flush();
+        try {
+            $this->entityManager->flush();
+        } catch (UniqueConstraintViolationException $e) {
+            preg_match('/Duplicate entry \'([^\']*)\' for key \'([^\']*)\'/', $e->getMessage(), $matches);
+
+            if (isset($matches[1])) {
+                $invalidValue = $matches[1];
+
+                if (isset($matches[2])) {
+                    $uniqueKey = $matches[2];
+
+                    $classMetadata = $this->entityManager->getClassMetadata(get_class($entity));
+                    $_tableIndexes = $this->entityManager->getConnection()->getSchemaManager()->listTableIndexes($classMetadata->getTableName());
+
+                    if (array_key_exists(strtolower($uniqueKey), $_tableIndexes)) {
+                        $column = array_shift($_tableIndexes[strtolower($uniqueKey)]->getColumns());
+                        $field = $classMetadata->getFieldForColumn($column);
+
+                        throw new DuplicateValueForUniqueException($invalidValue, $column, $field, 0, $e);
+                    }
+                }
+
+                throw new DuplicateValueForUniqueException($invalidValue, null ,null, 0, $e);
+            }
+
+            throw $e;
+        }
 
         return $entity;
     }
