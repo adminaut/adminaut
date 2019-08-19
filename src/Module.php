@@ -2,7 +2,9 @@
 
 namespace Adminaut;
 
+use Adminaut\Form\Annotation\FormAnnotationsListener;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\EventManager\EventInterface;
 use Zend\Mvc\MvcEvent;
 
 /**
@@ -11,6 +13,22 @@ use Zend\Mvc\MvcEvent;
  */
 class Module implements ConfigProviderInterface
 {
+
+    /**
+     * Listen to the bootstrap event
+     *
+     * @param EventInterface|MvcEvent $e
+     * @return array
+     */
+    public function onBootstrap(EventInterface $e)
+    {
+        /** @var Application $app */
+        $app = $e->getApplication();
+
+        $serviceManager = $app->getServiceManager();
+
+        FormAnnotationsListener::setServiceManager($serviceManager);
+    }
 
     /**
      * @param MvcEvent $e
@@ -38,6 +56,7 @@ class Module implements ConfigProviderInterface
             'service_manager'    => include __DIR__ . '/../config/service_manager.php',
             'view_helpers'       => include __DIR__ . '/../config/view_helpers.php',
             'view_manager'       => include __DIR__ . '/../config/view_manager.php',
+            'translator'         => include __DIR__ . '/../config/translator.php'
         ];
     }
 }

@@ -7,6 +7,12 @@
     margin-right: 7px;
 }
 
+.datatype-file .file-icon img.datatype-file-image-preview {
+    background: #ecf0f5;
+    border-radius: 3px;
+    border: 1px solid #d2d6de;
+}
+
 .datatype-file .file-info button {
     display: block;
 }

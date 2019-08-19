@@ -29,7 +29,8 @@ class Datatype extends TwbBundleFormElement
         $this->addType('datatypeDateTime', 'datatypeFormDateTime');
         $this->addType('datatypeFile', 'datatypeFormFile');
         $this->addType('datatypeTextarea', 'datatypeFormTextarea');
-        $this->addType('datatypeUrlKey', 'datatypeFormUrlKey');
+        $this->addType('datatypeSlug', 'datatypeFormSlug');
+        $this->addType('datatypeColor', 'datatypeFormColor');
 
         parent::__construct($options);
     }

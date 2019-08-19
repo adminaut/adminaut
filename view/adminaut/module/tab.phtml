@@ -12,7 +12,7 @@ $pages = [
 ];
 
 $actions = [];
-if ($this->isAllowed($this->moduleOption->getModuleName(), \Adminaut\Service\AccessControlService::WRITE)) {
+if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::WRITE)) {
     $actions[] = [
         'url' => $this->url('adminaut/module/action', [
             'module_id' => $this->moduleOption->getModuleId(),

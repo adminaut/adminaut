@@ -29,9 +29,11 @@ class Select extends \Zend\Form\Element\Select
             return '';
         }
 
+        $key = (string) $key;
+
         $valueOptions = $this->getValueOptions();
 
-        if (array_key_exists($key, $valueOptions)) {
+        if (array_key_exists((string) $key, $valueOptions)) {
             return $valueOptions[$key];
         }
 
@@ -60,6 +62,14 @@ class Select extends \Zend\Form\Element\Select
     public function getEditValue()
     {
         return $this->getValue();
+    }
+
+    /**
+     * @return array
+     */
+    public function getFilterValue()
+    {
+        return [ 'id' => $this->getValue(), 'name' => $this->getListedValue() ];
     }
 
     /**

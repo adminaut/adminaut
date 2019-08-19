@@ -22,6 +22,11 @@ class AppearanceOptions extends AbstractOptions
     private $skin = 'blue';
 
     /**
+     * @var string|null
+     */
+    private $skinFile;
+
+    /**
      * @var string
      */
     private $title = 'Adminaut';
@@ -51,6 +56,20 @@ class AppearanceOptions extends AbstractOptions
     private $themeColor = '#3c8dbc';
 
     /**
+     * @var string[]
+     */
+    private $icons = [
+        'favicon' => 'adminaut/img/favicon.ico',
+        '114x114' => 'adminaut/img/adminaut-icon-114x114.png',
+        '120x120' => 'adminaut/img/adminaut-icon-120x120.png',
+        '144x144' => 'adminaut/img/adminaut-icon-144x144.png',
+        '152x152' => 'adminaut/img/adminaut-icon-152x152.png',
+        '167x167' => 'adminaut/img/adminaut-icon-167x167.png',
+        '180x180' => 'adminaut/img/adminaut-icon-180x180.png',
+        '1024x1024' => 'adminaut/img/adminaut-icon-1024x1024.png',
+    ];
+
+    /**
      * @return string
      */
     public function getSkin()
@@ -64,6 +83,22 @@ class AppearanceOptions extends AbstractOptions
     public function setSkin($skin)
     {
         $this->skin = $skin;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getSkinFile()
+    {
+        return $this->skinFile;
+    }
+
+    /**
+     * @param null|string $skinFile
+     */
+    public function setSkinFile($skinFile)
+    {
+        $this->skinFile = $skinFile;
     }
 
     /**
@@ -144,5 +179,18 @@ class AppearanceOptions extends AbstractOptions
     public function setThemeColor($themeColor)
     {
         $this->themeColor = $themeColor;
+    }
+
+    public function getIcons()
+    {
+        return $this->icons;
+    }
+
+    /**
+     * @param string[] $icons
+     */
+    public function setIcons($icons)
+    {
+        $this->icons = $icons;
     }
 }

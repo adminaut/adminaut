@@ -4,6 +4,7 @@ namespace Adminaut\Authentication\Adapter\Factory;
 
 use Adminaut\Authentication\Adapter\AuthAdapter;
 use Adminaut\Options\AuthAdapterOptions;
+use Adminaut\Service\MailService;
 use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
@@ -30,6 +31,16 @@ class AuthAdapterFactory implements FactoryInterface
         /** @var AuthAdapterOptions $options */
         $options = $container->get(AuthAdapterOptions::class);
 
-        return new AuthAdapter($entityManager, $options);
+        /** @var array $config */
+        $config = $container->get('config');
+
+        /** @var MailService|null $mailService */
+        $mailService = null;
+
+        if (isset($config['adminaut']['mail_service']) && isset($config['adminaut']['mail_service']['enabled']) && true === $config['adminaut']['mail_service']['enabled']) {
+            $mailService = $container->get(MailService::class);
+        }
+
+        return new AuthAdapter($entityManager, $options, $mailService);
     }
 }

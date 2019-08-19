@@ -94,7 +94,10 @@ class FormViewHelper extends AbstractHelper
 
         if (!$datatype->isSubEntityReference()) {
             $moduleId = $this->getAdminModulesManager()->getModuleByEntityClass($datatype->getProxy()->getTargetClass());
-            $sRender .= '<p class="help-block">' . sprintf('New record can be added <a href="%s">here</a>', $this->getView()->url('adminaut/module/action', ['module_id' => $moduleId, 'mode' => 'add'])) . '</p>';
+
+            if($moduleId) {
+                $sRender .= '<p class="help-block">' . sprintf($this->view->translate('New record can be added <a href="%s" tabindex="-1">here</a>', 'adminaut'), $this->getView()->url('adminaut/module/action', ['module_id' => $moduleId, 'mode' => 'add'])) . '</p>';
+            }
         }
         return $sRender;
     }

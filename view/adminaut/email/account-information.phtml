@@ -1,0 +1,21 @@
+<?php
+    /** @var \Adminaut\Entity\UserEntityInterface $user */
+
+    $title = ($this->operation === \Adminaut\Service\MailService::ACCOUNT_INFORMATION_OPERATION_CREATE)
+        ? sprintf($this->translate('Welcome to %s'), $this->system_name)
+        : sprintf($this->translate('Your account has been updated - %s'), $this->system_name);
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><?php echo $title ?></title>
+</head>
+<body>
+
+    <h1><?php echo $title ?></h1>
+    <label style="font-weight:bold;"><?php echo $this->translate('System URL') ?>: </label> <a href="<?php echo $this->url(\Adminaut\Controller\AuthController::ROUTE_LOGIN, [], ['force_canonical' => true]) ?>"><?php echo $this->url(\Adminaut\Controller\AuthController::ROUTE_LOGIN, [], ['force_canonical' => true]) ?></a><br>
+    <label style="font-weight:bold;"><?php echo $this->translate('Your e-mail') ?>: </label> <?php echo $user->getEmail() ?><br>
+    <label style="font-weight:bold;"><?php echo $this->translate('Your password') ?>: </label> <?php echo $this->raw_password ?>
+</body>
+</html>

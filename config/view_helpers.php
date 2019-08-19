@@ -18,19 +18,26 @@ return [
         'datatypeFormGooglePlaceId' => Datatype\GooglePlaceId\FormViewHelper::class,
         'datatypeFormDateTime' => Datatype\DateTime\FormViewHelper::class,
         'datatypeFormTextarea' => Datatype\Textarea\FormViewHelper::class,
-        'datatypeFormUrlKey' => Datatype\UrlKey\FormViewHelper::class,
+        'datatypeFormSlug' => Datatype\Slug\FormViewHelper::class,
+        'datatypeFormColor' => Datatype\Color\FormViewHelper::class,
 
         // detail helpers
         'datatypeDetail' => Datatype\View\Helper\datatypeDetailViewHelper::class,
         'datatypeLocationDetail' => Datatype\Location\DetailViewHelper::class,
         'datatypeGoogleMapDetail' => Datatype\GoogleMap\DetailViewHelper::class,
         'datatypeGoogleStreetViewDetail' => Datatype\GoogleStreetView\DetailViewHelper::class,
-        'datatypeTextareaDetail' => Datatype\Textarea\DetailViewHelper::class,
 
         'formrow' => Datatype\View\Helper\FormRow::class,
         'form_row' => Datatype\View\Helper\FormRow::class,
         'formRow' => Datatype\View\Helper\FormRow::class,
         'FormRow' => Datatype\View\Helper\FormRow::class,
+
+        // Widget
+        'widget' => Widget\View\Helper\WidgetViewHelper::class,
+
+        // Datatable fields
+        'primary' => View\Helper\Primary::class,
+        'actions' => View\Helper\Actions::class,
     ],
     'factories' => [
         Form\View\Helper\FormElement::class => Form\View\Helper\Factory\FormElementFactory::class,
@@ -52,6 +59,8 @@ return [
         Datatype\View\Helper\FormRow::class => Datatype\View\Helper\Factory\FormRowFactory::class,
         Datatype\View\Helper\Datatype::class => Datatype\View\Helper\Factory\DatatypeFactory::class,
 
+        Datatype\File\DetailViewHelper::class => Datatype\File\Factory\DetailViewHelperFactory::class,
+
         'datatypeFormReference' => Datatype\Reference\Factory\FormViewHelperFactory::class,
     ],
     'aliases' => [
@@ -65,7 +74,6 @@ return [
         'adminautAppearance' => View\Helper\AppearanceViewHelper::class,
         'adminautVariable' => View\Helper\VariableViewHelper::class,
 
-        'datatypeFormFile' => Datatype\File\FormViewHelper::class,
         'formElement' => Form\View\Helper\FormElement::class,
         'FormElement' => Form\View\Helper\FormElement::class,
         'form_element' => Form\View\Helper\FormElement::class,
@@ -77,5 +85,9 @@ return [
         'formRow' => Datatype\View\Helper\FormRow::class,
         'FormRow' => Datatype\View\Helper\FormRow::class,
         'datatype' => Datatype\View\Helper\Datatype::class,
+
+        // Datatypes
+        'datatypeFormFile' => Datatype\File\FormViewHelper::class,
+        'datatypeFileDetail' => Datatype\File\DetailViewHelper::class
     ],
 ];

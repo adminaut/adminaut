@@ -93,4 +93,14 @@ interface AdminautEntityInterface
      * @param bool $active
      */
     public function setActive($active);
+
+    /**
+     * @return string
+     */
+    public function getPrimaryField();
+
+    /**
+     * @return mixed
+     */
+    public function getPrimaryFieldValue();
 }

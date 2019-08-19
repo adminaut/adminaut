@@ -50,7 +50,7 @@ class FormViewHelper extends AbstractHelper
             class="form-control datatype-googleplaceid-input" id="' . $identifier . '-input"></div>';
         $sRender .= '</div><div class="row">';
         $sRender .= '<div class="col-xs-12">
-            <input id="' . $identifier . '-search-input" class="controls" type="text" placeholder="' . $this->view->translate('Enter a location') . '">
+            <input id="' . $identifier . '-search-input" class="controls" type="text" placeholder="' . $this->view->translate('Enter a location', 'adminaut') . '">
             <div class="datatype-googleplaceid-map" id="' . $identifier . '-map" style="margin-top: 15px; min-height: 300px;"></div>
         </div>';
         $sRender .= '</div>';

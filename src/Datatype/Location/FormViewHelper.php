@@ -85,7 +85,7 @@ class FormViewHelper extends AbstractHelper
         $sRender .= '&#9;<input type="' . ($datatype->isUseHiddenElement() ? 'hidden' : 'text') . '" name="' . $datatype->getLongitudeElement()->getName() . '" value="' . $datatype->getLongitudeElement()->getValue() . '"' . ($datatype->getLongitudeElement()->getAttribute('placeholder') ? 'placeholder="' . $datatype->getLongitudeElement()->getAttribute('placeholder') . '"' : '') . ' />';
 
         $sRender .= '    <div class="datatype-location-search-container">';
-        $sRender .= '        <input class="controls search-input" type="text" placeholder="' . $this->view->translate('Enter a location') . '">';
+        $sRender .= '        <input class="controls search-input" type="text" placeholder="' . $this->view->translate('Enter a location', 'adminaut') . '">';
         if ($datatype->isEnableDownloadData()) {
             $sRender .= '        <button class="gm-button download-data-button" type="button"><i class="fa fa-level-down"></i></button>';
         }

@@ -4,10 +4,12 @@ namespace Adminaut\Authentication\Adapter;
 
 use Adminaut\Authentication\Helper\PasswordHelper;
 use Adminaut\Entity\UserEntity;
+use Adminaut\Entity\UserEntityInterface;
 use Adminaut\Entity\UserLoginEntity;
 use Adminaut\Options\AuthAdapterOptions;
 use Adminaut\Repository\UserLoginRepository;
 use Adminaut\Repository\UserRepository;
+use Adminaut\Service\MailServiceInterface;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -30,17 +32,24 @@ class AuthAdapter implements AdapterInterface
      */
     private $options;
 
+    /**
+     * @var MailServiceInterface
+     */
+    private $mailService;
+
     //-------------------------------------------------------------------------
 
     /**
      * AuthAdapter constructor.
      * @param EntityManager $entityManager
      * @param AuthAdapterOptions $options
+     * @param MailServiceInterface $mailService
      */
-    public function __construct(EntityManager $entityManager, AuthAdapterOptions $options)
+    public function __construct(EntityManager $entityManager, AuthAdapterOptions $options, $mailService)
     {
         $this->entityManager = $entityManager;
         $this->options = $options;
+        $this->mailService = $mailService;
     }
 
     //-------------------------------------------------------------------------
@@ -78,7 +87,10 @@ class AuthAdapter implements AdapterInterface
             if (true === $this->options->isAutomaticUnlockDisabled()) {
                 $user->setStatus(UserEntity::STATUS_LOCKED);
                 $this->entityManager->flush($user);
-                return $this->getResult(Result::FAILURE, sprintf(_('Account has been locked.')));
+
+                $_message = _('Account has been locked.');
+                $this->mailService->sendNotificationMail($_message, $user->getEmail(), $user->getName());
+                return $this->getResult(Result::FAILURE, $_message);
             }
 
             /** @var UserLoginEntity $lastFailedLogin */
@@ -88,7 +100,9 @@ class AuthAdapter implements AdapterInterface
             $unlockDT = $this->getUnlockDateTime($lastFailedLogin);
 
             if ($nowDT < $unlockDT) {
-                return $this->getResult(Result::FAILURE, sprintf(_('Account has been locked until %s.'), $unlockDT->format('Y-m-d H:i:s')));
+                $_message = sprintf(_('Account has been locked until %s.'), $unlockDT->format('Y-m-d H:i:s'));
+                $this->mailService->sendNotificationMail($_message, $user->getEmail(), $user->getName());
+                return $this->getResult(Result::FAILURE, $_message);
             }
         }
 
@@ -101,6 +115,25 @@ class AuthAdapter implements AdapterInterface
         $this->deactivateFailedLoginsByUser($user);
 
         return $this->getResult(Result::SUCCESS, _('Authenticated successfully.'), $user);
+    }
+
+    /**
+     * @param UserEntityInterface $user
+     * @param $password
+     * @return Result
+     */
+    public function changePassword($user, $password)
+    {
+        try {
+            $newPasswordHash = PasswordHelper::hash($password);
+
+            $user->setPassword($newPasswordHash);
+            $user->setPasswordChangeOnNextLogon(false);
+            $this->entityManager->flush($user);
+            return $this->getResult(Result::SUCCESS, _('Password changed successfully.'), $user);
+        } catch (\Exception $e) {
+            return $this->getResult(Result::FAILURE, _('Cannot change password, try again later.'));
+        }
     }
 
     //-------------------------------------------------------------------------

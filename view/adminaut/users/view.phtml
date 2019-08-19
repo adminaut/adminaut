@@ -1,6 +1,15 @@
+<?php
+/** @var array $elements */
+/** @var array $ignoreFields */
+/** @var string $primary */
+/** @var array $ignoredFields */
+$ignoredFields = ['password'];
+
+?>
+
 <section class="content-header">
     <h1>
-        <?php echo $this->translate('Users') ?>
+        <?php echo $this->translate('Users', 'adminaut') ?>
         <small><?php echo $this->escapeHtml($this->user->getName()) ?></small>
     </h1>
     <?php echo $this->partial('adminaut/partial/breadcrumbs', [
@@ -12,42 +21,63 @@
 </section>
 
 <section class="content">
-    <?php echo $this->partial('adminaut/partial/messages') ?>
-    <div class="box">
-        <div class="box-header with-border">
-            <h3 class="box-title"><?php echo $this->translate('Detail') ?></h3>
-        </div>
-        <div class="box-body">
-            <h4><?php echo $this->translate('Name') ?></h4>
-            <p>
-                <?php echo $this->escapeHtml($this->user->getName()) ?>
-            </p>
-            <hr/>
+    <div class="row">
+        <div class="col-xs-12<?php echo sizeof($this->widgets) > 0 ? ' col-md-8' : '' ?>">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><?php echo $this->translate('Detail', 'adminaut') ?></h3>
+                </div>
+                <div class="box-body">
+                    <fieldset class="form-horizontal">
+                        <?php echo $this->partial('adminaut/partial/messages') ?>
+                        <?php foreach ($elements as $fieldName => $field) { ?>
+                            <?php
+                            if (in_array($fieldName, $ignoredFields)) {
+                                continue;
+                            }
 
-            <h4><?php echo $this->translate('Email') ?></h4>
-            <p>
-                <?php echo $this->escapeHtml($this->user->getEmail()) ?>
-            </p>
-            <hr/>
-
-            <h4><?php echo $this->translate('Active') ?></h4>
-            <p>
-                <?php if ($this->user->isActive()) { ?>
-                    <span class="label label-success"><?php echo $this->translate('Active') ?></span>
-                <?php } else { ?>
-                    <span class="label label-danger"><?php echo $this->translate('Inactive') ?></span>
-                <?php } ?>
-            </p>
+                            if ($field instanceof \Adminaut\Datatype\GoogleMap) {
+                                if ($field->getLongitudeVariable()) {
+                                    if (isset($elements[$field->getLongitudeVariable()])) {
+                                        $field->setConnectedElement($elements[$field->getLongitudeVariable()]);
+                                        $ignoredFields[] = $field->getLongitudeVariable();
+                                    }
+                                }
+                            } else if ($field instanceof \Adminaut\Datatype\Location) {
+                                if ($field->getLongitudeProperty()) {
+                                    if (isset($elements[$field->getLongitudeProperty()])) {
+                                        $field->setLongitudeElement($elements[$field->getLongitudeProperty()]);
+                                        $ignoredFields[] = $field->getLongitudeProperty();
+                                    }
+                                }
+                            }
+                            ?>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"><?php echo $field->getLabel() ?></label>
+                                <div class="col-sm-10 view-value">
+                                    <?php echo $this->datatypeDetail($field) ?>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </fieldset>
+                </div>
+                <div class="box-footer">
+                    <?php if ($this->isAllowed('users', 2)) { ?>
+                        <a href="<?php echo $this->url('adminaut/users/edit', ['id' => $this->user->getId()]) ?>" class="btn btn-primary">
+                            <?php echo $this->translate('Edit', 'adminaut') ?>
+                        </a>
+                    <?php } ?>
+                    <a href="<?php echo $this->url('adminaut/users') ?>" class="btn btn-link">
+                        <?php echo $this->translate('Back to list', 'adminaut') ?>
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="box-footer">
-            <?php if ($this->isAllowed('users', 2)) { ?>
-                <a href="<?php echo $this->url('adminaut/users/edit', ['id' => $this->user->getId()]) ?>" class="btn btn-primary">
-                    <?php echo $this->translate('Edit') ?>
-                </a>
+
+        <div class="col-xs-12 col-md-4">
+            <?php foreach ($this->widgets as $widget) { ?>
+                <?php echo $this->widget($widget); ?>
             <?php } ?>
-            <a href="<?php echo $this->url('adminaut/users') ?>" class="btn btn-link">
-                <?php echo $this->translate('Back to list') ?>
-            </a>
         </div>
     </div>
 </section>

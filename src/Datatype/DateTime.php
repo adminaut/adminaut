@@ -113,7 +113,8 @@ class DateTime extends \Zend\Form\Element\DateTime
             } else {
                 $value = $this->getValue();
             }
-            return $value->format($this->getFormat());
+
+            return $value ? $value->format($this->getFormat()) : "";
         }
         return "";
     }

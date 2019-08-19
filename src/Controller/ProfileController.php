@@ -91,11 +91,11 @@ class ProfileController extends AdminautBaseController
 
                     $this->entityManager->flush($user);
 
-                    $this->addSuccessMessage($this->translate('Settings have been changed.'));
+                    $this->addSuccessMessage($this->translate('Settings have been changed.', 'adminaut'));
 
                     return $this->redirect()->toRoute(self::ROUTE_SETTINGS);
                 } catch (\Exception $e) {
-                    $this->addErrorMessage($this->translate('Setting could not be changed.'));
+                    $this->addErrorMessage($this->translate('Setting could not be changed.', 'adminaut'));
                 }
             }
         }
@@ -136,14 +136,14 @@ class ProfileController extends AdminautBaseController
                         $user->setPassword($newPasswordHash);
                         $this->entityManager->flush($user);
 
-                        $this->addSuccessMessage($this->translate('Password has been changed.'));
+                        $this->addSuccessMessage($this->translate('Password has been changed.', 'adminaut'));
 
                         return $this->redirect()->toRoute(self::ROUTE_CHANGE_PASSWORD);
                     } catch (\Exception $exception) {
-                        $this->addErrorMessage($this->translate('Password could not be changed.'));
+                        $this->addErrorMessage($this->translate('Password could not be changed.', 'adminaut'));
                     }
                 } else {
-                    $this->addWarningMessage($this->translate('Password does not match current password.'));
+                    $this->addWarningMessage($this->translate('Password does not match current password.', 'adminaut'));
                 }
             }
         }

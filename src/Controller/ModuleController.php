@@ -3,6 +3,7 @@
 namespace Adminaut\Controller;
 
 use Adminaut\Datatype\Reference;
+use Adminaut\Exception\DuplicateValueForUniqueException;
 use Adminaut\Form\Form;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Adminaut\Entity\AdminautEntityInterface;
@@ -10,6 +11,8 @@ use Adminaut\Manager\ModuleManager;
 use Adminaut\Manager\FileManager;
 use Adminaut\Options\ModuleOptions;
 use Adminaut\Service\AccessControlService;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Zend\Form\Element;
 use Zend\Http\PhpEnvironment\Request;
@@ -38,6 +41,11 @@ class ModuleController extends AdminautBaseController
      */
     private $fileManager;
 
+    /**
+     * @var AccessControlService
+     */
+    private $accessControlService;
+
     //-------------------------------------------------------------------------
 
     /**
@@ -45,12 +53,14 @@ class ModuleController extends AdminautBaseController
      * @param EntityManager $entityManager
      * @param ModuleManager $moduleManager
      * @param FileManager $fileManager
+     * @param AccessControlService $accessControlService
      */
-    public function __construct(EntityManager $entityManager, ModuleManager $moduleManager, FileManager $fileManager)
+    public function __construct(EntityManager $entityManager, ModuleManager $moduleManager, FileManager $fileManager, AccessControlService $accessControlService)
     {
         $this->entityManager = $entityManager;
         $this->moduleManager = $moduleManager;
         $this->fileManager = $fileManager;
+        $this->accessControlService = $accessControlService;
     }
 
     //-------------------------------------------------------------------------
@@ -59,7 +69,7 @@ class ModuleController extends AdminautBaseController
      * @param null $default
      * @return mixed
      */
-    private function getMode($default = null)
+    protected function getMode($default = null)
     {
         return $this->params()->fromRoute('mode', $default);
     }
@@ -68,7 +78,7 @@ class ModuleController extends AdminautBaseController
      * @param null $default
      * @return mixed
      */
-    private function getModuleId($default = null)
+    protected function getModuleId($default = null)
     {
         return $this->params()->fromRoute('module_id', $default);
     }
@@ -77,7 +87,7 @@ class ModuleController extends AdminautBaseController
      * @param null $default
      * @return mixed
      */
-    private function getEntityId($default = null)
+    protected function getEntityId($default = null)
     {
         return $this->params()->fromRoute('entity_id', $default);
     }
@@ -121,27 +131,21 @@ class ModuleController extends AdminautBaseController
 
         $form = $this->getModuleManager()->createForm($moduleOptions);
 
-        $listedElements = [];
+        $listedElements = $this->getModuleManager()->getListedElements($moduleId, $form);
+        $datatableColumns = $this->getModuleManager()->getDatatableColumns($moduleId, $form);
 
-        /* @var $element \Zend\Form\Element */
-        foreach ($form->getElements() as $key => $element) {
-            if ($element->getOption('listed')
-                && $this->isAllowed($moduleId, AccessControlService::READ, $key)
-                || (method_exists($element, 'isPrimary')
-                    && $element->isPrimary()
-                    || $element->getOption('primary'))
-            ) {
-                $listedElements[$key] = $element;
-            }
+        if(!empty($criteria = $this->accessControlService->getModuleCriteria($moduleId))) {
+            $list = $this->getModuleManager()->findby($moduleOptions->getEntityClass(), $criteria);
+        } else {
+            $list = $this->getModuleManager()->findAll($moduleOptions->getEntityClass());
         }
-
-        $list = $this->getModuleManager()->findAll($moduleOptions->getEntityClass());
 
         return new ViewModel([
             'list' => $list,
             'listedElements' => $listedElements,
             'hasPrimary' => ($form->getPrimaryField() !== 'id'),
             'moduleOption' => $moduleOptions,
+            'datatableColumns' => array_values($datatableColumns)
         ]);
     }
 
@@ -169,7 +173,17 @@ class ModuleController extends AdminautBaseController
 
         $form = $this->getModuleManager()->createForm($moduleOptions);
 
-        $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
+        if(!empty($criteria = $this->accessControlService->getModuleCriteria($moduleId))) {
+            $entity = $this->getModuleManager()->findOneby($moduleOptions->getEntityClass(), array_merge(['id' => $entityId], $criteria));
+        } else {
+            $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
+        }
+
+        if (!$entity) {
+            $this->addErrorMessage($this->translate('Record was not found.', 'adminaut'));
+            return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
+        }
+
         $form->bind($entity);
 
         $elements = [];
@@ -194,6 +208,7 @@ class ModuleController extends AdminautBaseController
             'primary' => $form->getPrimaryField(),
             'elements' => $elements,
             'tabs' => $tabs,
+            'widgets' => $form->getWidgets(),
             'moduleOption' => $moduleOptions,
         ]);
     }
@@ -219,6 +234,9 @@ class ModuleController extends AdminautBaseController
         $entityClass = $moduleOptions->getEntityClass();
         $fm = $this->getFilemanager();
         $form = $this->getModuleManager()->createForm($moduleOptions);
+        $this->getEventManager()->trigger($moduleId . '.onCreateAddForm', $this, [
+            'form' => &$form,
+        ]);
         if ($entityId) {
             $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
             $form->bind($entity);
@@ -257,13 +275,15 @@ class ModuleController extends AdminautBaseController
 
                         $fm->upload($form->getElements()[$key], $this->authentication()->getIdentity());
                     }
-
+                    $this->getEventManager()->trigger($moduleId . '.beforeCreateRecord', $this, [
+                        'form' => &$form
+                    ]);
                     $entity = $this->getModuleManager()->create($moduleOptions->getEntityClass(), $form, null, $this->authentication()->getIdentity());
                     $this->getEventManager()->trigger($moduleId . '.createRecord', $this, [
                         'entity' => $entity,
                     ]);
                     $primaryFieldValue = isset($form->getElements()[$form->getPrimaryField()]) ? (method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue()) : $entity->getId();
-                    $this->addSuccessMessage(sprintf($this->translate('Record "%s" has been successfully created.'), $primaryFieldValue));
+                    $this->addSuccessMessage(sprintf($this->translate('Record "%s" has been successfully created.', 'adminaut'), $primaryFieldValue));
                     switch ($post['submit']) {
                         case 'create-and-continue' :
                             return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'entity_id' => $entity->getId(), 'mode' => 'edit']);
@@ -273,11 +293,32 @@ class ModuleController extends AdminautBaseController
                         default :
                             return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'entity_id' => $entity->getId(), 'mode' => 'view']);
                     }
-                } catch (\Exception $e) {
-                    $this->addErrorMessage(sprintf($this->translate('Error: %s'), $e->getMessage()));
+                } catch (DuplicateValueForUniqueException $e) {
+                    $columnName = $e->getColumnName();
+                    $formFieldName = $e->getFormFieldName();
 
-                    // todo: delete, do not redirect when error occurred
-                    //return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'mode' => 'add']);
+                    if (!empty($columnName) || !empty($formFieldName)) {
+                        if ($form->has($formFieldName)) {
+                            $formField = $form->get($formFieldName);
+                            if (method_exists($formField, 'getListedValue')) {
+                                $value = $formField->getListedValue();
+                            } else {
+                                $value = $e->getInvalidValue();
+                            }
+
+                            $message = sprintf($this->translate("Cannot save record, there is already a record with value '%s' in the field '%s' - the value must be unique.", 'adminaut'), $value, $form->get($formFieldName)->getLabel());
+                        } elseif (!empty($formFieldName)) {
+                            $message = sprintf($this->translate("Cannot save record, there is already a record with value '%s' in the field '%s' - the value must be unique.", 'adminaut'), $invalidValue, $formFieldName);
+                        } else {
+                            $message = sprintf($this->translate("Cannot save record, there is already a record with value '%s' in the column '%s' - the value must be unique.", 'adminaut'), $invalidValue, $columnName);
+                        }
+                    } else {
+                        $message = sprintf($this->translate("Cannot save record, there is already a record with value '%s' - the value must be unique.", 'adminaut'), $e->getInvalidValue());
+                    }
+
+                    $this->addErrorMessage(sprintf($this->translate('Error: %s', 'adminaut'), $message));
+                } catch (\Exception $e) {
+                    $this->addErrorMessage(sprintf($this->translate('Error: %s', 'adminaut'), $e->getMessage()));
                 }
             }
         }
@@ -311,16 +352,24 @@ class ModuleController extends AdminautBaseController
         $moduleOptions = $this->getModuleManager()->createModuleOptions($moduleId);
 
         /* @var $entity AdminautEntityInterface */
-        $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
+        if(!empty($criteria = $this->accessControlService->getModuleCriteria($moduleId))) {
+            $entity = $this->getModuleManager()->findOneby($moduleOptions->getEntityClass(), array_merge(['id' => $entityId], $criteria));
+        } else {
+            $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
+        }
 
         if (!$entity) {
-            $this->addErrorMessage($this->translate('Record was not found.'));
+            $this->addErrorMessage($this->translate('Record was not found.', 'adminaut'));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
         $fm = $this->getFilemanager();
         /* @var $form \Adminaut\Form\Form */
         $form = $this->getModuleManager()->createForm($moduleOptions);
+        $this->getEventManager()->trigger($moduleId . '.onCreateEditForm', $this, [
+            'entity' => &$entity,
+            'form' => &$form,
+        ]);
 
         $tabs = $form->getTabs();
         $tabs[$this->params()->fromRoute('tab')]['active'] = true;
@@ -349,12 +398,17 @@ class ModuleController extends AdminautBaseController
                         $fm->upload($form->getElements()[$key], $this->authentication()->getIdentity());
                     }
 
+                    $this->getEventManager()->trigger($moduleId . '.beforeUpdateRecord', $this, [
+                        'entity' => &$entity,
+                        'form' => &$form
+                    ]);
+
                     $this->getModuleManager()->update($entity, $form, null, $this->authentication()->getIdentity());
 
                     $primaryFieldValue = isset($form->getElements()[$form->getPrimaryField()]) ? (method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue()) : $entity->getId();
-                    $this->addSuccessMessage(sprintf($this->translate('Record "%s" has been successfully updated.'), $primaryFieldValue));
+                    $this->addSuccessMessage(sprintf($this->translate('Record "%s" has been successfully updated.', 'adminaut'), $primaryFieldValue));
                     $this->getEventManager()->trigger($moduleId . '.updateRecord', $this, [
-                        'entity' => $entity,
+                        'entity' => &$entity,
                     ]);
 
                     if ($post['submit'] == 'save-and-continue') {
@@ -362,11 +416,32 @@ class ModuleController extends AdminautBaseController
                     } else {
                         return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'view']);
                     }
-                } catch (\Exception $e) {
-                    $this->addErrorMessage(sprintf($this->translate('Error: %s'), $e->getMessage()));
+                } catch (DuplicateValueForUniqueException $e) {
+                    $columnName = $e->getColumnName();
+                    $formFieldName = $e->getFormFieldName();
 
-                    // todo: delete, do not redirect when error occurred
-                    //return $this->redirect()->toRoute('adminaut/module/action', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'edit']);
+                    if (!empty($columnName) || !empty($formFieldName)) {
+                        if ($form->has($formFieldName)) {
+                            $formField = $form->get($formFieldName);
+                            if (method_exists($formField, 'getListedValue')) {
+                                $value = $formField->getListedValue();
+                            } else {
+                                $value = $e->getInvalidValue();
+                            }
+
+                            $message = sprintf($this->translate("Cannot save record, there is already a record with value '%s' in the field '%s' - the value must be unique.", 'adminaut'), $value, $form->get($formFieldName)->getLabel());
+                        } elseif (!empty($formFieldName)) {
+                            $message = sprintf($this->translate("Cannot save record, there is already a record with value '%s' in the field '%s' - the value must be unique.", 'adminaut'), $invalidValue, $formFieldName);
+                        } else {
+                            $message = sprintf($this->translate("Cannot save record, there is already a record with value '%s' in the column '%s' - the value must be unique.", 'adminaut'), $invalidValue, $columnName);
+                        }
+                    } else {
+                        $message = sprintf($this->translate("Cannot save record, there is already a record with value '%s' - the value must be unique.", 'adminaut'), $e->getInvalidValue());
+                    }
+
+                    $this->addErrorMessage(sprintf($this->translate('Error: %s', 'adminaut'), $message));
+                } catch (\Exception $e) {
+                    $this->addErrorMessage(sprintf($this->translate('Error: %s', 'adminaut'), $e->getMessage()));
                 }
             }
         }
@@ -382,6 +457,7 @@ class ModuleController extends AdminautBaseController
                 'entity_id' => $entityId,
                 'mode' => 'edit',
             ],
+            'widgets' => $form->getWidgets(),
         ]);
     }
 
@@ -397,7 +473,7 @@ class ModuleController extends AdminautBaseController
             return $this->redirect()->toRoute(DashboardController::ROUTE_INDEX);
         }
 
-        if (!$this->isAllowed($moduleId, AccessControlService::WRITE)) {
+        if (!$this->isAllowed($moduleId, AccessControlService::READ)) {
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
@@ -410,7 +486,7 @@ class ModuleController extends AdminautBaseController
         /* @var $entity AdminautEntityInterface */
         $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
         if (!$entity) {
-            $this->addErrorMessage($this->translate('Record was not found.'));
+            $this->addErrorMessage($this->translate('Record was not found.', 'adminaut'));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
@@ -452,10 +528,9 @@ class ModuleController extends AdminautBaseController
             return $this->redirect()->toRoute(DashboardController::ROUTE_INDEX);
         }
 
-
         $parentModuleOptions = $this->getModuleManager()->createModuleOptions($moduleId);
 
-        if (!$this->isAllowed($parentModuleOptions->getModuleId(), AccessControlService::WRITE)) {
+        if (!$this->isAllowed($parentModuleOptions->getModuleId(), AccessControlService::READ)) {
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
@@ -466,7 +541,7 @@ class ModuleController extends AdminautBaseController
         /* @var $entity AdminautEntityInterface */
         $entity = $this->getModuleManager()->findOneById($parentModuleOptions->getEntityClass(), $entityId);
         if (!$entity) {
-            $this->addErrorMessage($this->translate('Record was not found.'));
+            $this->addErrorMessage($this->translate('Record was not found.', 'adminaut'));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
@@ -558,12 +633,16 @@ class ModuleController extends AdminautBaseController
         }
         $form->getElements()['reference_property']->setValue($referencedProperty);
 
+        /** @var AdminautEntityInterface $cyclicEntity */
         $cyclicEntity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $cyclicEntityId);
 
         if ($action === 'edit') {
+            if (!$this->isAllowed($parentModuleOptions->getModuleId(), AccessControlService::WRITE)) {
+                return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
+            }
 
             if (!$cyclicEntity) {
-                $this->addErrorMessage($this->translate('Record was not found.'));
+                $this->addErrorMessage($this->translate('Record was not found.', 'adminaut'));
                 return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => $mode, 'tab' => $currentTab]);
             }
 
@@ -572,16 +651,15 @@ class ModuleController extends AdminautBaseController
         } else if ($action == 'delete') {
 
             try {
-                $form->bind($cyclicEntity);
-                $primaryFieldValue = isset($form->getElements()[$form->getPrimaryField()]) ? (method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue()) : $cyclicEntity->getId();
-                $this->addSuccessMessage(sprintf($this->translate('Record "%s" has been deleted.'), $primaryFieldValue));
+                $this->getModuleManager()->delete($cyclicEntity, $this->authentication()->getIdentity());
+                $this->addSuccessMessage(sprintf($this->translate('Record "%s" has been deleted.', 'adminaut'), $cyclicEntity->getPrimaryFieldValue()));
                 $this->getEventManager()->trigger($moduleId . '.deleteCyclicRecord', $this, [
                     'entity' => $entity,
                     'cyclicEntity' => $cyclicEntity,
                 ]);
                 return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => $mode, 'tab' => $currentTab]);
             } catch (\Exception $e) {
-                $this->addErrorMessage(sprintf($this->translate('Error: %s'), $e->getMessage()));
+                $this->addErrorMessage(sprintf($this->translate('Error: %s', 'adminaut'), $e->getMessage()));
                 return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => $mode, 'tab' => $currentTab]);
             }
         }
@@ -590,6 +668,10 @@ class ModuleController extends AdminautBaseController
         $request = $this->getRequest();
 
         if ($request->isPost() && !$readonly) {
+            if (!$this->isAllowed($parentModuleOptions->getModuleId(), AccessControlService::WRITE)) {
+                return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
+            }
+
             $postData = $request->getPost()->toArray();
             $files = $request->getFiles()->toArray();
             $post = array_merge_recursive($postData, $files);
@@ -609,26 +691,35 @@ class ModuleController extends AdminautBaseController
                     }
 
                     if ($action == 'edit') {
+                        $this->getEventManager()->trigger($moduleId . '.beforeUpdateCyclicRecord', $this, [
+                            'entity' => $entity,
+                            'cyclicEntity' => $cyclicEntity,
+                            'form' => &$form
+                        ]);
                         $cyclicEntity = $this->getModuleManager()->update($cyclicEntity, $form, $entity, $this->authentication()->getIdentity());
                         $primaryFieldValue = isset($form->getElements()[$form->getPrimaryField()]) ? (method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue()) : $cyclicEntity->getId();
                         $this->getEventManager()->trigger($moduleId . '.updateCyclicRecord', $this, [
                             'entity' => $entity,
                             'cyclicEntity' => $cyclicEntity,
                         ]);
-                        $this->addSuccessMessage(sprintf($this->translate('Record "%s" has been successfully updated.'), $primaryFieldValue));
+                        $this->addSuccessMessage(sprintf($this->translate('Record "%s" has been successfully updated.', 'adminaut'), $primaryFieldValue));
                     } else {
+                        $this->getEventManager()->trigger($moduleId . '.beforeCreateCyclicRecord', $this, [
+                            'entity' => $entity,
+                            'form' => &$form
+                        ]);
                         $cyclicEntity = $this->getModuleManager()->create($moduleOptions->getEntityClass(), $form, $entity, $this->authentication()->getIdentity());
                         $primaryFieldValue = isset($form->getElements()[$form->getPrimaryField()]) ? (method_exists($form->getElements()[$form->getPrimaryField()], 'getListedValue') ? $form->getElements()[$form->getPrimaryField()]->getListedValue() : $form->getElements()[$form->getPrimaryField()]->getValue()) : $cyclicEntity->getId();
                         $this->getEventManager()->trigger($moduleId . '.createCyclicRecord', $this, [
                             'entity' => $entity,
                             'cyclicEntity' => $cyclicEntity,
                         ]);
-                        $this->addSuccessMessage(sprintf($this->translate('Record "%s" has been successfully created.'), $primaryFieldValue));
+                        $this->addSuccessMessage(sprintf($this->translate('Record "%s" has been successfully created.', 'adminaut'), $primaryFieldValue));
                     }
 
                     return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'edit', 'tab' => $currentTab]);
                 } catch (\Exception $e) {
-                    $this->addErrorMessage(sprintf($this->translate('Error: %s'), $e->getMessage()));
+                    $this->addErrorMessage(sprintf($this->translate('Error: %s', 'adminaut'), $e->getMessage()));
                     return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'edit', 'tab' => $currentTab]);
                 }
             }
@@ -686,17 +777,17 @@ class ModuleController extends AdminautBaseController
         /* @var $entity AdminautEntityInterface */
         $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
         if (!$entity) {
-            $this->addErrorMessage($this->translate('Record was not found.'));
+            $this->addErrorMessage($this->translate('Record was not found.', 'adminaut'));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
         try {
             $this->getModuleManager()->delete($entity, $this->authentication()->getIdentity());
             $primaryFieldValue = $entity->{'get' . ucfirst($primaryField)}();
-            $this->addSuccessMessage(sprintf($this->translate('Record "%s" has been deleted.'), $primaryFieldValue));
+            $this->addSuccessMessage(sprintf($this->translate('Record "%s" has been deleted.', 'adminaut'), $primaryFieldValue));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId, 'entity_id' => $entityId]);
         } catch (\Exception $e) {
-            $this->addErrorMessage(sprintf($this->translate('Error: %s'), $e->getMessage()));
+            $this->addErrorMessage(sprintf($this->translate('Error: %s', 'adminaut'), $e->getMessage()));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId, 'entity_id' => $entityId]);
         }
     }

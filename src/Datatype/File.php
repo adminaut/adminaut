@@ -74,6 +74,7 @@ class File extends Element\File
             $this->value = $value->getName();
         } else {
             $this->value = $value;
+            $this->setFile(null);
         }
         return $this;
     }

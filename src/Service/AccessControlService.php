@@ -101,4 +101,37 @@ class AccessControlService
 
         return $allowed;
     }
+
+    public function getModuleCriteria($module)
+    {
+        if (!$this->user) {
+            if (!$this->authenticationService->hasIdentity()) {
+                return [];
+            }
+
+            $this->user = $this->authenticationService->getIdentity();
+        }
+
+        if ($this->user->getRole() === 'admin') {
+            return [];
+        }
+
+        if (!isset($this->roles[$this->user->getRole()])) {
+            return [];
+        }
+
+        $role = $this->roles[$this->user->getRole()];
+        if (isset($role['modules'][$module]['criteria'])) {
+            $criteria = $role['modules'][$module]['criteria'];
+            foreach ($criteria as $field => $value) {
+                if($value === '%user%') {
+                    $criteria[$field] = $this->user;
+                }
+            }
+
+            return $criteria;
+        }
+
+        return [];
+    }
 }

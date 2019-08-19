@@ -40,6 +40,8 @@ class AppearanceViewHelper extends AbstractHelper
                 return $this->appearanceOptions->getFooter();
             case 'skin':
                 return $this->appearanceOptions->getSkin();
+            case 'skin_file':
+                return $this->appearanceOptions->getSkinFile();
             case 'logo':
                 return $this->appearanceOptions->getLogo();
             case 'logo-large':
@@ -50,6 +52,8 @@ class AppearanceViewHelper extends AbstractHelper
                 return isset($this->appearanceOptions->getLogo()['type']) ? $this->appearanceOptions->getLogo()['type'] : null;
             case 'theme-color':
                 return $this->appearanceOptions->getThemeColor();
+            case 'icons':
+                return $this->appearanceOptions->getIcons();
             default:
                 return null;
         }

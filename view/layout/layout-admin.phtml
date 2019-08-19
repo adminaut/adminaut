@@ -16,36 +16,60 @@
         ->prependName('viewport', 'width=device-width, initial-scale=1.0')
         ->prependHttpEquiv('X-UA-Compatible', 'IE=edge');
 
-    echo $this->headLink()
-        ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/AdminLTE.min.css'))
-        ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/skins/skin-' . $this->adminautAppearance('skin') . '.min.css'))
-        ->appendStylesheet($this->basePath('adminaut/css/adminaut.css'))
+    $this->headLink()
+        ->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/AdminLTE.min.css'));
+
+    if (in_array($this->adminautAppearance('skin'), ['black', 'black-light', 'blue', 'blue-light', 'green', 'green-light', 'purple', 'purple-light', 'red', 'red-light', 'yellow', 'yellow-light'])) {
+        $this->headLink()->appendStylesheet($this->basePath('adminaut/themes/adminlte/dist/css/skins/skin-' . $this->adminautAppearance('skin') . '.min.css'));
+    } else {
+        if($this->adminautAppearance('skin_file')) {
+            $this->headLink()->appendStylesheet($this->basePath($this->adminautAppearance('skin_file')));
+        }
+    }
+    $headlink = $this->headLink()
+        ->appendStylesheet($this->basePath('adminaut/css/adminaut.css') . '?v=0.0.21')
         ->prependStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/blue.css'))
         ->prependStylesheet($this->basePath('adminaut/themes/adminlte/plugins/iCheck/flat/flat.css'))
+        ->prependStylesheet($this->basePath('adminaut/themes/adminlte/plugins/select2/select2.css'))
         ->prependStylesheet($this->basePath('adminaut/css/dataTables.responsive.css'))
         ->prependStylesheet($this->basePath('adminaut/css/dataTables.bootstrap.css'))
         ->prependStylesheet('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
         ->prependStylesheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
-        ->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath('adminaut/img/favicon.ico')], 'APPEND')
-        ->headLink(['rel' => 'manifest', 'href' => $this->url('adminaut/manifest')], 'APPEND')
-        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '114x114', 'href' => $this->basePath('adminaut/img/adminaut-icon-114x114.png')], 'APPEND')
-        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '120x120', 'href' => $this->basePath('adminaut/img/adminaut-icon-120x120.png')], 'APPEND')
-        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '144x144', 'href' => $this->basePath('adminaut/img/adminaut-icon-144x144.png')], 'APPEND')
-        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '152x152', 'href' => $this->basePath('adminaut/img/adminaut-icon-152x152.png')], 'APPEND')
-        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '167x167', 'href' => $this->basePath('adminaut/img/adminaut-icon-167x167.png')], 'APPEND')
-        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '180x180', 'href' => $this->basePath('adminaut/img/adminaut-icon-180x180.png')], 'APPEND')
-        ->headLink(['rel' => 'apple-touch-icon', 'sizes' => '1024x1024', 'href' => $this->basePath('adminaut/img/adminaut-icon-1024x1024.png')], 'APPEND');
+        ->headLink(['rel' => 'manifest', 'href' => $this->url('adminaut/manifest')], 'APPEND');
+
+    if ( !empty ( $icons = $this->adminautAppearance('icons') ) ) {
+        foreach ($icons as $size => $icon) {
+            if ($size === 'favicon') {
+                $ext = explode('.', $icon);
+                switch (end($ext)) {
+                    case 'ico': $iconType = "image/vnd.microsoft.icon"; break;
+                    case 'png': $iconType = "image/png"; break;
+                    case 'gif': $iconType = "image/gif"; break;
+                    case 'jpg': $iconType = "image/jpeg"; break;
+                }
+
+                $headlink->headLink(['rel' => 'shortcut icon', 'type' => $iconType, 'href' => $this->basePath($icon)], 'APPEND');
+            } else {
+                $headlink->headLink(['rel' => 'apple-touch-icon', 'sizes' => $size, 'href' => $this->basePath($icon)], 'APPEND');
+            }
+        }
+    }
+
+    echo $headlink;
 
     echo $this->headScript()
-        ->appendFile($this->basePath('adminaut/js/adminaut.js?v=0.0.4'))
+        ->appendFile($this->basePath('adminaut/js/adminaut.js?v=0.0.21'))
         ->prependFile('//maps.googleapis.com/maps/api/js?libraries=places&key=' . $this->adminautVariable('google-maps-api'))// todo: move do view helpers
         ->prependFile($this->basePath('adminaut/js/js.cookie.js'))
         ->prependFile($this->basePath('adminaut/themes/adminlte/dist/js/app.js'))
         ->prependFile($this->basePath('adminaut/themes/adminlte/plugins/slimScroll/jquery.slimscroll.min.js'))
         ->prependFile($this->basePath('adminaut/themes/adminlte/plugins/iCheck/icheck.min.js'))
-        ->prependFile($this->basePath('adminaut/js/jquery.doubleClick.js'))
+        ->prependFile($this->basePath('adminaut/themes/adminlte/plugins/select2/select2.full.min.js'))
+        ->prependFile($this->basePath('adminaut/js/jquery.doubleClickHandler.js'))
         ->prependFile($this->basePath('adminaut/js/dataTables.bootstrap.min.js'))
+        ->prependFile($this->basePath('adminaut/js/adminaut.dataTables.js'))
         ->prependFile($this->basePath('adminaut/js/jquery.dataTables.min.js'))
+        ->prependFile($this->basePath('adminaut/js/deepmerge.js'))
         ->prependFile($this->basePath('adminaut/js/moment.min.js'))
         ->prependFile('//gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js')
         ->prependFile('//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
@@ -104,7 +128,7 @@
         <nav class="navbar navbar-static-top">
             <!-- Sidebar toggle button-->
             <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                <span class="sr-only"><?php echo $this->translate("Toggle navigation"); ?></span>
+                <span class="sr-only"><?php echo $this->translate("Toggle navigation", 'adminaut'); ?></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -134,12 +158,12 @@
                             <li class="user-footer">
                                 <div class="pull-left">
                                     <a href="<?php echo $this->url('adminaut/profile') ?>" class="btn btn-default btn-flat">
-                                        <?php echo $this->translate('Profile') ?>
+                                        <?php echo $this->translate('Profile', 'adminaut') ?>
                                     </a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="<?php echo $this->url('adminaut/auth/logout') ?>" class="btn btn-default btn-flat">
-                                        <?php echo $this->translate('Sign out') ?>
+                                        <?php echo $this->translate('Sign out', 'adminaut') ?>
                                     </a>
                                 </div>
                             </li>
@@ -169,7 +193,7 @@
                 <!-- search form -->
                 <form action="#" method="get" class="sidebar-form">
                     <div class="input-group">
-                        <input type="text" name="q" class="form-control" placeholder="<?php echo $this->translate("Search...") ?>">
+                        <input type="text" name="q" class="form-control" placeholder="<?php echo $this->translate("Search...", 'adminaut') ?>">
                         <div class="input-group-btn">
                             <button type="submit" name="search" id="search-btn" class="btn btn-flat">
                                 <i class="fa fa-search"></i>
@@ -191,12 +215,14 @@
 
     <footer class="main-footer">
         <?php echo $this->adminautAppearance('footer') ?>
-        <?php echo sprintf($this->translate('Powered by %s.'), '<a href="http://adminaut.com/" target="_blank">Adminaut</a>') ?>
+        <?php echo sprintf($this->translate('Powered by %s.', 'adminaut'), '<a href="http://adminaut.com/" target="_blank">Adminaut</a>') ?>
     </footer>
 
 </div>
 <?php echo $this->inlineScript(); ?>
 <script>
+    moment.locale('<?php echo $this->userIdentity()->getLanguage() ?>', { week: { dow: 1 } });
+
     $(document).ready(function () {
         if (("standalone" in window.navigator) && window.navigator.standalone) {
             // For iOS Apps
@@ -208,12 +234,9 @@
                 }
             });
         }
+
+        $('form[data-doubleClick="1"]').doubleClickHandler();
     });
-</script>
-<script>
-    //    $(document).ready(function () {
-    //        $('form[data-doubleclick="1"]').doubleClickHandler();
-    //    });
 </script>
 </body>
 </html>

@@ -2,6 +2,7 @@
 
 /** @var \Zend\Form\Form $form */
 $form = $this->form;
+$form->setAttribute('data-doubleClick', true);
 $form->prepare();
 
 /** @var string $primary */
@@ -49,7 +50,7 @@ $pages = [
                         ]) ?>
                     <?php } else { ?>
                         <div class="box-header with-border">
-                            <h3 class="box-title"><?php echo $this->translate('Edit record') ?></h3>
+                            <h3 class="box-title"><?php echo $this->translate('Edit record', 'adminaut') ?></h3>
                         </div>
                     <?php } ?>
                     <div class="tab-content">
@@ -57,27 +58,33 @@ $pages = [
                         <?php echo $this->formCollection($form) ?>
                     </div>
                     <div class="box-footer clearfix">
-                        <button type="submit" name="submit" value="save" class="btn btn-primary"><?php echo $this->translate('Save') ?></button>
-                        <button type="submit" name="submit" value="save-and-continue" class="btn btn-default"><?php echo $this->translate('Save and continue') ?></button>
+                        <button type="submit" name="submit" value="save" class="btn btn-primary"><?php echo $this->translate('Save', 'adminaut') ?></button>
+                        <button type="submit" name="submit" value="save-and-continue" class="btn btn-default"><?php echo $this->translate('Save and continue', 'adminaut') ?></button>
                         <a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->moduleOption->getModuleId()]) ?>" class="btn btn-link">
-                            <?php echo $this->translate('Back to list') ?>
+                            <?php echo $this->translate('Back to list', 'adminaut') ?>
                         </a>
                         <div class="pull-right">
                             <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode' => 'add']) ?>"
-                               class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="Copy" data-original-title="<?php echo $this->translate('Copy') ?>">
+                               class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="Copy" data-original-title="<?php echo $this->translate('Copy', 'adminaut') ?>">
                                 <i class="fa fa-clone"></i>
                             </a>
                             <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::FULL)) { ?>
                                 <a href="#"
                                    data-href="<?php echo $this->url('adminaut/module/delete', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId()]) ?>"
-                                   class="btn btn-sm btn-danger btn-modal-delete" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('Delete') ?>"
-                                   data-original-title="<?php echo $this->translate('Delete') ?>">
+                                   class="btn btn-sm btn-danger btn-modal-delete" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('Delete', 'adminaut') ?>"
+                                   data-original-title="<?php echo $this->translate('Delete', 'adminaut') ?>">
                                     <i class="fa fa-trash"></i>
                                 </a>
                             <?php } ?>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-4">
+                <?php foreach ($this->widgets as $widget) { ?>
+                    <?php echo $this->widget($widget); ?>
+                <?php } ?>
             </div>
         </div>
         <?php echo $this->form()->closeTag() ?>

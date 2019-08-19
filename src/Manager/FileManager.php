@@ -8,6 +8,7 @@ use Adminaut\Entity\FileKeyword;
 use Adminaut\Exception;
 use Doctrine\ORM\EntityManager;
 use League\Flysystem\Adapter\Local as LocalAdapter;
+use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use WideImage\WideImage;
 use Zend\Form\ElementInterface;
@@ -182,56 +183,108 @@ class FileManager extends AManager
      * @param int $height
      * @return mixed
      * @throws \Exception
-     * @deprecated use ImageHelper
      */
-    public function getThumbImage(FileEntity $file, $width = 200, $height = 200)
+    public function getThumbImage(FileEntity $image, $width = 'auto', $height = 'auto', $mode = 'clip', $cropAreaX = 'center', $cropAreaY = 'center', $bg = 'ffffff', $alpha = 0)
     {
-        $sourceImage = $file->getSavePath();
-        $resultImage = $file->getSavePath() . '-' . $width . '-' . $height . '.' . $file->getFileExtension();
+        /** @var Local $publicAdapter */
+        $publicAdapter = $this->publicFilesystem->getAdapter();
 
-        /** @var LocalAdapter $fsAdapter */
-        $fsAdapter = $this->getPrivateFilesystem()->getAdapter();
+        /** @var string $sourcePath */
+        $sourcePath = $image->getSavePath();
 
-        if (!$this->getPublicFilesystem()->has($resultImage)) {
-            try {
-                $exif = exif_read_data($fsAdapter->applyPathPrefix($sourceImage));
-                $_file = $this->getPrivateFilesystem()->read($sourceImage);
-                $image = WideImage::load($_file);
+        /** @var string $sourceExtension */
+        $sourceExtension = $image->getFileExtension();
 
-                // Todo: Fork WideImage and add exifOrient operation!
-                if (method_exists($image, 'exifOrient')) {
-                    $ort = isset($exif['Orientation']) ? $exif['Orientation'] : 1;
+        if ($width == 'auto' && $height == 'auto') {
+            $resultPath = $sourcePath . '.' . $sourceExtension;
+        } else if ($mode == 'clip' && ($width == 'auto' || $height == 'auto')) {
+            if ($width != 'auto') {
+                $resultPath = $sourcePath . '-' . $width . '-auto.' . $sourceExtension;
+            } else {
+                $resultPath = $sourcePath . '-auto-' . $height . '.' . $sourceExtension;
+            }
+        } else {
+            $hash = md5($mode . '&' . $cropAreaX . '&' . $cropAreaY . '&' . $bg . '&' . $alpha);
+            $resultPath = $sourcePath . '-' . $width . '-' . $height . '-' . $hash . '.' . $sourceExtension;
+        }
 
-                    $image_data = $image
-                        ->exifOrient($ort)
-                        ->resize($width, $height, 'outside')
-                        ->crop('center', 'center', $width, $height)
-                        ->asString($file->getFileExtension());
-                } else {
-                    $image_data = $image
-                        ->resize($width, $height, 'outside')
-                        ->crop('center', 'center', $width, $height)
-                        ->asString($file->getFileExtension());
+        if (!$this->publicFilesystem->has($resultPath)) {
+            /** @var Local $privateAdapter */
+            $privateAdapter = $this->privateFilesystem->getAdapter();
+            $fullPath = realpath($privateAdapter->applyPathPrefix($sourcePath));
+
+            if($this->privateFilesystem->getMimetype($sourcePath) === 'image/svg+xml') {
+                $resultPath = $sourcePath . '.svg';
+
+                if (!$this->publicFilesystem->has($resultPath)) {
+                    $original = $this->privateFilesystem->read($sourcePath);
+                    $this->publicFilesystem->write($resultPath, $original);
+                }
+            } else {
+                $original = WideImage::load($fullPath);
+                $result = $original->copy();
+
+                if (function_exists('exif_read_data')) {
+                    $exifData = @exif_read_data($fullPath);
+                    $orientation = isset($exifData['Orientation']) ? $exifData['Orientation'] : 1;
+                    $result = $result->correctExif($orientation);
                 }
 
-                $this->getPublicFilesystem()->write($resultImage, $image_data);
-            } catch (\Exception $e) {
-                throw new \Exception(
-                    'Thumbnail cannot be saved.', 0, $e
-                );
+                if ($width !== 'auto' || $height !== 'auto') {
+                    switch ($mode) {
+                        case 'scale':
+                            $_w = $width == 'auto' ? null : $width;
+                            $_h = $height == 'auto' ? null : $height;
+
+                            $result = $result->resize($_w, $_h, 'fill');
+                            break;
+
+                        case 'crop':
+                            $_w = $width == 'auto' ? '100%' : $width;
+                            $_h = $height == 'auto' ? '100%' : $height;
+                            $allowedCropAreasX = ['left', 'center', 'right'];
+                            $allowedCropAreasY = ['top', 'center', 'middle', 'bottom'];
+                            $_cax = in_array($cropAreaX, $allowedCropAreasX) || is_integer($cropAreaX) ? $cropAreaX : 'center';
+                            $_cay = in_array($cropAreaY, $allowedCropAreasY) || is_integer($cropAreaY) ? $cropAreaY : 'center';
+
+                            $result = $result->crop($_cax, $_cay, $_w, $_h);
+                            break;
+
+                        case 'fill':
+                            $_w = $width == 'auto' ? null : $width;
+                            $_h = $height == 'auto' ? null : $height;
+
+                            $_cw = $width == 'auto' ? '100%' : $width;
+                            $_ch = $height == 'auto' ? '100%' : $height;
+                            $_bg = str_replace('#', '', $bg);
+                            list($r, $g, $b) = sscanf($_bg, "%02x%02x%02x");
+                            $_bg = $original->allocateColorAlpha($r, $g, $b, $alpha);
+
+                            $result = $result->resize($_w, $_h)->resizeCanvas($_cw, $_ch, 'center', 'center', $_bg);
+                            break;
+
+                        default:
+                            $_w = $width == 'auto' ? null : $width;
+                            $_h = $height == 'auto' ? null : $height;
+
+                            $result = $result->resize($_w, $_h);
+                            break;
+                    }
+                }
+
+                $this->publicFilesystem->write($resultPath, $result->asString($sourceExtension));
             }
         }
 
-//        /** @var LocalAdapter $fsAdapterCache */
-//        $fsAdapterCache = $this->getPublicFilesystem()->getAdapter();
+        $publicPath = str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', realpath($publicAdapter->applyPathPrefix('/')));
 
-//        return $fsAdapterCache->applyPathPrefix($resultImage);
+        // fix windows directory separators
+        $publicPath = str_replace('\\', '/', $publicPath);
 
-//        return str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', str_replace('\\', '/', realpath($fsAdapterCache->getPathPrefix() . $resultImage)));
+        // remove / from string beginning
+        $publicPath = ltrim($publicPath, '/');
 
-
-        // todo: make prefix configurable
-        return '_cache/files/' . $resultImage;
+        return '/' . $publicPath . '/' . $resultPath;
     }
 
     /**

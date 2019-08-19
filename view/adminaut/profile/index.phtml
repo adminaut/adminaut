@@ -1,6 +1,6 @@
 <section class="content-header">
     <h1>
-        <?php echo $this->translate('Profile') ?>
+        <?php echo $this->translate('Profile', 'adminaut') ?>
         <small><?php echo $this->escapeHtml($this->user->getName()) ?></small>
     </h1>
     <?php echo $this->partial('adminaut/partial/breadcrumbs', [
@@ -16,56 +16,56 @@
         <ul class="nav nav-tabs">
             <li class="active">
                 <a href="<?php echo $this->url('adminaut/profile') ?>">
-                    <?php echo $this->translate('Overview') ?>
+                    <?php echo $this->translate('Overview', 'adminaut') ?>
                 </a>
             </li>
             <li>
                 <a href="<?php echo $this->url('adminaut/profile/settings') ?>">
-                    <?php echo $this->translate('Settings') ?>
+                    <?php echo $this->translate('Settings', 'adminaut') ?>
                 </a>
             </li>
             <li>
                 <a href="<?php echo $this->url('adminaut/profile/change-password') ?>">
-                    <?php echo $this->translate('Change password') ?>
+                    <?php echo $this->translate('Change password', 'adminaut') ?>
                 </a>
             </li>
             <li>
                 <a href="<?php echo $this->url('adminaut/profile/logins') ?>">
-                    <?php echo $this->translate('Logins') ?>
+                    <?php echo $this->translate('Logins', 'adminaut') ?>
                 </a>
             </li>
             <li>
                 <a href="<?php echo $this->url('adminaut/profile/access-tokens') ?>">
-                    <?php echo $this->translate('Access tokens') ?>
+                    <?php echo $this->translate('Access tokens', 'adminaut') ?>
                 </a>
             </li>
         </ul>
         <div class="tab-content">
-            <h4><?php echo $this->translate('Name') ?></h4>
+            <h4><?php echo $this->translate('Name', 'adminaut') ?></h4>
             <p>
                 <?php echo $this->escapeHtml($this->user->getName()) ?>
             </p>
             <hr/>
-            <h4><?php echo $this->translate('Email') ?></h4>
+            <h4><?php echo $this->translate('Email', 'adminaut') ?></h4>
             <p>
                 <?php echo $this->escapeHtml($this->user->getEmail()) ?>
             </p>
             <hr/>
-            <h4><?php echo $this->translate('Role') ?></h4>
+            <h4><?php echo $this->translate('Role', 'adminaut') ?></h4>
             <p>
                 <?php echo $this->escapeHtml($this->user->getRole()) ?>
             </p>
             <hr/>
-            <h4><?php echo $this->translate('Active') ?></h4>
+            <h4><?php echo $this->translate('Active', 'adminaut') ?></h4>
             <p>
                 <?php if ($this->user->isActive()) { ?>
-                    <span class="label label-success"><?php echo $this->translate('Active') ?></span>
+                    <span class="label label-success"><?php echo $this->translate('Active', 'adminaut') ?></span>
                 <?php } else { ?>
-                    <span class="label label-danger"><?php echo $this->translate('Inactive') ?></span>
+                    <span class="label label-danger"><?php echo $this->translate('Inactive', 'adminaut') ?></span>
                 <?php } ?>
             </p>
             <hr/>
-            <h4><?php echo $this->translate('Created at') ?></h4>
+            <h4><?php echo $this->translate('Created at', 'adminaut') ?></h4>
             <p>
                 <?php echo $this->escapeHtml($this->user->getInserted()->format('Y-m-d H:i')) ?>
             </p>

@@ -1,6 +1,6 @@
 <section class="content-header">
     <h1>
-        <?php echo $this->translate('Users') ?>
+        <?php echo $this->translate('Users', 'adminaut') ?>
     </h1>
     <?php echo $this->partial('adminaut/partial/breadcrumbs', [
         'pages' => [
@@ -16,7 +16,7 @@
         <div class="box-header with-border">
             <?php if ($this->isAllowed('users', \Adminaut\Service\AccessControlService::WRITE)) { ?>
                 <a href="<?php echo $this->url('adminaut/users/add') ?>" class="btn btn-primary">
-                    <?php echo $this->translate('Add user') ?>
+                    <?php echo $this->translate('Add user', 'adminaut') ?>
                 </a>
             <?php } ?>
         </div>
@@ -26,11 +26,11 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th><?php echo $this->translate('Name') ?></th>
-                    <th><?php echo $this->translate('Email') ?></th>
-                    <th><?php echo $this->translate('Role') ?></th>
-                    <th><?php echo $this->translate('Status') ?></th>
-                    <th><?php echo $this->translate('Actions') ?></th>
+                    <th><?php echo $this->translate('Name', 'adminaut') ?></th>
+                    <th><?php echo $this->translate('Email', 'adminaut') ?></th>
+                    <th><?php echo $this->translate('Role', 'adminaut') ?></th>
+                    <th><?php echo $this->translate('Status', 'adminaut') ?></th>
+                    <th><?php echo $this->translate('Actions', 'adminaut') ?></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -43,9 +43,9 @@
                         <td><?php echo $this->escapeHtml($entity->getRole()) ?></td>
                         <td>
                             <?php if ($entity->isActive()) { ?>
-                                <span class="label label-success"><?php echo $this->translate('Active') ?></span>
+                                <span class="label label-success"><?php echo $this->translate('Active', 'adminaut') ?></span>
                             <?php } else { ?>
-                                <span class="label label-danger"><?php echo $this->translate('Inactive') ?></span>
+                                <span class="label label-danger"><?php echo $this->translate('Inactive', 'adminaut') ?></span>
                             <?php } ?>
                         </td>
                         <td>
@@ -75,7 +75,7 @@
         <div class="box-footer clearfix">
             <?php if ($this->isAllowed('users', \Adminaut\Service\AccessControlService::WRITE)) { ?>
                 <a href="<?php echo $this->url('adminaut/users/add') ?>" class="btn btn-primary">
-                    <?php echo $this->translate('Add user') ?>
+                    <?php echo $this->translate('Add user', 'adminaut') ?>
                 </a>
             <?php } ?>
         </div>

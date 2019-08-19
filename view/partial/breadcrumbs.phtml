@@ -7,7 +7,7 @@
 ], $pages) ?>
 <ol class="breadcrumb">
     <?php foreach ($pages as $page) { ?>
-        <?php $_title = $this->escapeHtml($this->translate($page['title'])) ?>
+        <?php $_title = $this->escapeHtml($this->translate($page['title'], 'adminaut')) ?>
         <?php if (isset($page['url'])) { ?>
             <li>
                 <a href="<?php echo $page['url'] ?>"><?php echo $_title ?></a>

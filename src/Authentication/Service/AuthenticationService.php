@@ -7,13 +7,19 @@ use Adminaut\Authentication\Storage\AuthStorage;
 use Adminaut\Entity\UserEntityInterface;
 use Zend\Authentication\AuthenticationServiceInterface;
 use Zend\Authentication\Result;
+use Zend\EventManager\EventManagerAwareInterface;
+use Zend\EventManager\EventManagerAwareTrait;
 
 /**
  * Class AuthenticationService
  * @package Adminaut\Authentication\Service
  */
-class AuthenticationService implements AuthenticationServiceInterface
+class AuthenticationService implements AuthenticationServiceInterface, EventManagerAwareInterface
 {
+    use EventManagerAwareTrait;
+
+    const EVENT_AUTHENTICATION_SUCCESS = 'adminaut.authentication.success';
+    const EVENT_AUTHENTICATION_CLEAR = 'adminaut.authentication.clear';
 
     /**
      * @var AuthAdapter
@@ -88,6 +94,9 @@ class AuthenticationService implements AuthenticationServiceInterface
             $result->getCode() === Result::SUCCESS
             && $result->getIdentity() instanceof UserEntityInterface
         ) {
+            $this->getEventManager()->trigger(self::EVENT_AUTHENTICATION_SUCCESS, $this, [
+                'identity' => $result->getIdentity(),
+            ]);
             $this->storage->write($result->getIdentity());
         }
 
@@ -129,7 +138,19 @@ class AuthenticationService implements AuthenticationServiceInterface
     public function clearIdentity()
     {
         if (false === $this->storage->isEmpty()) {
+            $this->getEventManager()->trigger(self::EVENT_AUTHENTICATION_CLEAR, $this, [
+                'identity' => $this->getIdentity(),
+            ]);
             $this->storage->clear();
         }
+    }
+
+    /**
+     * @param string $password
+     * @return Result
+     */
+    public function changePassword($password)
+    {
+        return $this->getAdapter()->changePassword($this->getIdentity(), $password);
     }
 }

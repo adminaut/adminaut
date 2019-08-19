@@ -39,6 +39,16 @@ interface UserEntityInterface extends AdminautEntityInterface
     public function setPassword($password);
 
     /**
+     * @return bool
+     */
+    public function isPasswordChangeOnNextLogon();
+
+    /**
+     * @param bool $passwordChangeOnNextLogon
+     */
+    public function setPasswordChangeOnNextLogon(bool $passwordChangeOnNextLogon);
+
+    /**
      * @return string
      */
     public function getRole();

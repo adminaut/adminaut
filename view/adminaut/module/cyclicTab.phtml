@@ -61,7 +61,7 @@ $pages[] = [
                                 <th><?php echo $listedElement->getOption('label'); ?></th>
                             <?php } ?>
                             <?php if ($this->mode === 'edit') { ?>
-                                <th><?php echo $this->translate('Actions'); ?></th>
+                                <th><?php echo $this->translate('Actions', 'adminaut'); ?></th>
                             <?php } ?>
                         </tr>
                         </thead>
@@ -89,7 +89,7 @@ $pages[] = [
                                 </td>
                                 <?php foreach ($this->listedElements as $listedElement) { ?>
                                     <td>
-                                        <?php if ($listedElement->isPrimary()) { ?>
+                                        <?php if ((method_exists($listedElement, 'isPrimary') && $listedElement->isPrimary()) || $listedElement->getOption('primary') === true) { ?>
                                         <a href="<?php echo $this->url('adminaut/module/action/tab/action', [
                                             'module_id' => $this->url_params['module_id'],
                                             'mode' => 'edit',
@@ -103,11 +103,11 @@ $pages[] = [
                                             <?php } ?>
                                             <?php $listedElement->setValue($entity->{$listedElement->getName()}) ?>
                                             <?php if (method_exists($listedElement, 'getListedValue')) { ?>
-                                                <?php echo($listedElement->isPrimary() && empty($listedElement->getListedValue()) ? 'undefined' : $listedElement->getListedValue()); ?>
+                                                <?php echo(((method_exists($listedElement, 'isPrimary') && $listedElement->isPrimary()) || $listedElement->getOption('primary') === true) && empty($listedElement->getListedValue()) ? 'undefined' : $listedElement->getListedValue()); ?>
                                             <?php } else { ?>
                                                 <?php echo $listedElement->getValue(); ?>
                                             <?php } ?>
-                                            <?php if ($listedElement->isPrimary()) { ?>
+                                            <?php if ((method_exists($listedElement, 'isPrimary') && $listedElement->isPrimary()) || $listedElement->getOption('primary') === true) { ?>
                                         </a>
                                     <?php } ?>
                                     </td>
@@ -119,7 +119,7 @@ $pages[] = [
                                                 <a href="<?php echo $this->url('adminaut/module/action/tab/action', ['module_id' => $this->url_params['module_id'], 'mode' => 'edit', 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId(), 'entity_action' => 'edit'], ['fragment' => 'form']); ?>"
                                                    type="button" class="btn btn-info"
                                                    data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fa fa-pencil"></i></a>
-                                                <a href="<?php echo $this->url('adminaut/module/action/tab/action', ['module_id' => $this->url_params['module_id'], 'mode' => 'edit', 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId(), 'entity_action' => 'delete']); ?>"
+                                                <a href="#" data-href="<?php echo $this->url('adminaut/module/action/tab/action', ['module_id' => $this->url_params['module_id'], 'mode' => 'edit', 'entity_id' => $this->url_params['entity_id'], 'tab' => $this->currentTab, 'cyclic_entity_id' => $entity->getId(), 'entity_action' => 'delete']); ?>"
                                                    type="button" class="btn btn-danger btn-modal-delete"
                                                    data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><i class="fa fa-trash"></i></a>
                                             <?php } else if ($readonly) { ?>
@@ -143,7 +143,7 @@ $pages[] = [
                                 "ordering": true,
                                 "info": true,
                                 "autoWidth": false,
-                                "pageLength": Cookies.get('cyclicEntityTable.dt.length') || 10
+                                "pageLength": parseInt(Cookies.get('cyclicEntityTable.dt.length') || 10)
                             }).on('length.dt', function (e, settings, len) {
                                 Cookies.set('cyclicEntityTable.dt.length', len);
                             });
@@ -152,12 +152,12 @@ $pages[] = [
                 </div>
                 <?php if ($this->mode == 'view') { ?>
                     <div class="box-footer clearfix">
-                        <?php if ($this->isAllowed($this->parentModuleOption->getModuleName(), 2)) { ?>
+                        <?php if ($this->isAllowed($this->parentModuleOption->getModuleId(), 2)) { ?>
                             <a href="<?php echo $this->url('adminaut/module/action/tab', ['module_id' => $this->url_params['module_id'], 'entity_id' => $this->url_params['entity_id'], 'mode' => 'edit', 'tab' => $this->currentTab]); ?>"
-                               class="btn btn-primary"><?php echo $this->translate('Edit'); ?></a>
+                               class="btn btn-primary"><?php echo $this->translate('Edit', 'adminaut'); ?></a>
                         <?php } ?>
                         <a href="<?php echo $this->url('adminaut/module/list', ['module_id' => $this->parentModuleOption->getModuleId()]); ?>"
-                           class="btn btn-link"><?php echo $this->translate('Back to list'); ?></a>
+                           class="btn btn-link"><?php echo $this->translate('Back to list', 'adminaut'); ?></a>
                     </div>
                 <?php } ?>
             </div>
@@ -176,7 +176,7 @@ $pages[] = [
             <div class="box <?php echo ($this->action == 'edit') ? 'box-info' : 'box-primary' ?>">
                 <div class="box-header with-border">
                     <i class="fa fa-fw <?php echo ($readonly) ? "fa-eye" : (($this->action == "edit") ? "fa-pencil" : "fa-plus") ?>"></i>
-                    <h3 class="box-title"><?php echo ($readonly) ? $this->translate('View') : (($this->action == "edit") ? $this->translate('Edit') : $this->translate('Add new')) ?></h3>
+                    <h3 class="box-title"><?php echo ($readonly) ? $this->translate('View', 'adminaut') : (($this->action == "edit") ? $this->translate('Edit', 'adminaut') : $this->translate('Add new', 'adminaut')) ?></h3>
                     <div class="box-tools pull-right">
                         <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                     </div>
@@ -188,7 +188,7 @@ $pages[] = [
                     <div class="box-footer clearfix">
                         <?php if ($this->action === 'edit') { ?>
                             <button type="submit" name="submit" class="btn btn-primary" value="">
-                                <?php echo $this->translate('Save') ?>
+                                <?php echo $this->translate('Save', 'adminaut') ?>
                             </button>
                             <a href="<?php echo $this->url('adminaut/module/action/tab', [
                                     'module_id' => $this->url_params['module_id'],
@@ -197,11 +197,11 @@ $pages[] = [
                                     'tab' => $this->currentTab,
                                     'cyclic_entity_id' => $entity->getId()]
                             ) ?>" class="btn btn-default">
-                                <?php echo $this->translate('Cancel') ?>
+                                <?php echo $this->translate('Cancel', 'adminaut') ?>
                             </a>
                         <?php } else { ?>
                             <button type="submit" name="submit" class="btn btn-primary" value="">
-                                <?php echo $this->translate('Create') ?>
+                                <?php echo $this->translate('Create', 'adminaut') ?>
                             </button>
                         <?php } ?>
                     </div>

@@ -1,3 +1,15 @@
+<?php
+    $datatableColumns = $this->datatableColumns;
+    $datatableOrders = [];
+
+    foreach ($datatableColumns as $i => &$column) {
+        if(isset($column['order']) && $column['order']) {
+            $datatableOrders[] = [$i, $column['order']];
+            unset($column['order']);
+        }
+    }
+?>
+
 <section class="content-header">
     <h1>
         <?php echo $this->escapeHtml($this->moduleOption->getModuleName()) ?>
@@ -16,7 +28,7 @@
                 <div class="box-header with-border">
                     <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::WRITE)) { ?>
                         <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'add']); ?>"
-                           class="btn btn-primary pull-left"><i class="fa fa-plus"></i> <?php echo $this->translate($this->moduleOption->getLabels()['add_record']) ?></a>
+                           class="btn btn-primary pull-left"><i class="fa fa-plus"></i> <?php echo $this->translate($this->moduleOption->getLabels()['add_record'], 'adminaut') ?></a>
                     <?php } ?>
                 </div>
                 <!-- /.box-header -->
@@ -28,78 +40,24 @@
                         <tr>
                             <th>#</th>
                             <?php foreach ($this->listedElements as $listedElement) { ?>
+                                <?php if ($listedElement->getName() === 'id') { continue; } ?>
                                 <th><?php echo $listedElement->getOption('label') ?></th>
                             <?php } ?>
-                            <th><?php echo $this->translate('Actions'); ?></th>
+                            <th><?php echo $this->translate('Actions', 'adminaut'); ?></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($this->list as $entity) { ?>
-                            <?php /* @var $entity Adminaut\Entity\Base */ ?>
-                            <tr rel="<?php echo $entity->getId(); ?>">
-                                <td>
-                                    <?php if (!$this->hasPrimary) { ?>
-                                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $entity->getId()]); ?>"
-                                           class="primary"><?php echo $entity->getId(); ?></a>
-                                    <?php } else { ?>
-                                        <?php echo $entity->getId(); ?>
-                                    <?php } ?>
-                                </td>
-                                <?php foreach ($this->listedElements as $listedElement) { ?>
-                                    <td>
-                                        <?php if ($listedElement->isPrimary()) { // TODO[petrm] check if method exists ?>
-                                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $entity->getId()]); ?>"
-                                           class="primary">
-                                            <?php } ?>
-                                            <?php $listedElement->setValue($entity->{$listedElement->getName()}) ?>
-                                            <?php if (method_exists($listedElement, 'getListedValue')) { ?>
-                                                <?php echo($listedElement->isPrimary() && empty($listedElement->getListedValue()) ? 'undefined' : $listedElement->getListedValue()); ?>
-                                            <?php } else { ?>
-                                                <?php echo $listedElement->getValue(); ?>
-                                            <?php } ?>
-                                            <?php if ($listedElement->isPrimary()) { ?>
-                                        </a>
-                                    <?php } ?>
-                                    </td>
-                                <?php } ?>
-                                <td>
-                                    <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
-                                        <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'view', 'entity_id' => $entity->getId()]); ?>"
-                                           type="button" class="btn btn-success"
-                                           data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('View') ?>"
-                                           data-original-title="<?php echo $this->translate('View') ?>"><i class="fa fa-eye"></i></a>
-                                        <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::WRITE)) { ?>
-                                            <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'edit', 'entity_id' => $entity->getId()]); ?>"
-                                               type="button" class="btn btn-primary"
-                                               data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('Edit') ?>"
-                                               data-original-title="<?php echo $this->translate('Edit') ?>"><i class="fa fa-pencil"></i></a>
-                                            <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $entity->getId(), 'mode' => 'add']); ?>"
-                                               class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('Copy') ?>"
-                                               data-original-title="<?php echo $this->translate('Copy') ?>"><i class="fa fa-clone"></i></a>
-                                        <?php }
-                                        if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::FULL)) { ?>
-                                            <a href="#"
-                                               data-href="<?php echo $this->url('adminaut/module/delete', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $entity->getId()]); ?>"
-                                               type="button" class="btn btn-danger btn-modal-delete"
-                                               data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('Delete') ?>"
-                                               data-original-title="<?php echo $this->translate('Delete') ?>"><i class="fa fa-trash"></i></a>
-                                        <?php } ?>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php } ?>
                         </tbody>
                     </table>
                     <script>
                         (function ($) {
-                            $('#moduleEntityTable').DataTable({
-                                "paging": true,
-                                "lengthChange": true,
-                                "searching": true,
-                                "ordering": true,
-                                "info": true,
-                                "autoWidth": false,
-                                "pageLength": Cookies.get('<?php echo $this->moduleOption->getModuleId(); ?>.dt.length') || 10
+                            $('#moduleEntityTable').adminautDataTable({
+                                pageLength : parseInt(Cookies.get('<?php echo $this->moduleOption->getModuleId(); ?>.dt.length')) || 10,
+                                ajax : {
+                                    url : "<?php echo $this->url('adminaut/api/module/datatable', ['module_id' => $this->moduleOption->getModuleId()]) ?>"
+                                },
+                                columns : <?php echo json_encode($datatableColumns) ?>,
+                                order : <?php echo json_encode($datatableOrders) ?>
                             }).on('length.dt', function (e, settings, len) {
                                 Cookies.set('<?php echo $this->moduleOption->getModuleId(); ?>.dt.length', len);
                             });

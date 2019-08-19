@@ -4,6 +4,7 @@ namespace Adminaut\Manager\Factory;
 
 use Adminaut\Manager\ModuleManager;
 use Adminaut\Options\AdminautOptions;
+use Adminaut\Service\AccessControlService;
 use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
@@ -30,6 +31,9 @@ class ModuleManagerFactory implements FactoryInterface
         /** @var AdminautOptions $adminautOptions */
         $adminautOptions = $container->get(AdminautOptions::class);
 
-        return new ModuleManager($entityManager, $adminautOptions->getModules());
+        /** @var AccessControlService $accessControlService */
+        $accessControlService = $container->get(AccessControlService::class);
+
+        return new ModuleManager($entityManager, $accessControlService, $adminautOptions->getModules());
     }
 }

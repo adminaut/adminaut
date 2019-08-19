@@ -22,7 +22,6 @@ class UserEntity implements UserEntityInterface
     /**
      * Constants
      */
-    const STATUS_UNKNOWN = 0;
     const STATUS_NEW = 1;
     const STATUS_ACTIVE = 2;
     const STATUS_LOCKED = 3;
@@ -31,8 +30,9 @@ class UserEntity implements UserEntityInterface
     /**
      * @ORM\Column(type="string", length=128);
      * @Annotation\Options({"label":"Name", "listed":true});
-     * @Annotation\Flags({"priority":5});
+     * @Annotation\Flags({"priority":25});
      * @Annotation\Type("Adminaut\Datatype\Text");
+     * @Annotation\Required(true);
      * @var string
      */
     protected $name = '';
@@ -40,8 +40,9 @@ class UserEntity implements UserEntityInterface
     /**
      * @ORM\Column(type="string", length=128, unique=true);
      * @Annotation\Options({"label":"Email", "listed":true, "primary":true});
-     * @Annotation\Flags({"priority":10});
+     * @Annotation\Flags({"priority":20});
      * @Annotation\Type("Zend\Form\Element\Email");
+     * @Annotation\Required(true);
      * @var string
      */
     protected $email = '';
@@ -56,10 +57,20 @@ class UserEntity implements UserEntityInterface
     protected $password = '';
 
     /**
+     * @ORM\Column(name="password_change_on_next_logon", type="boolean", options={"default":0});
+     * @Annotation\Options({"listed":false, "label":"Must change password at next logon"});
+     * @Annotation\Flags({"priority":13});
+     * @Annotation\Type("Adminaut\Datatype\Checkbox");
+     * @var boolean
+     */
+    protected $passwordChangeOnNextLogon = false;
+
+    /**
      * @ORM\Column(type="string", length=128);
      * @Annotation\Options({"label":"Role", "empty_option":"Select role", "listed":true});
-     * @Annotation\Flags({"priority":20});
+     * @Annotation\Flags({"priority":10});
      * @Annotation\Type("Zend\Form\Element\Select");
+     * @Annotation\Required(true);
      * @var string
      */
     protected $role = '';
@@ -67,22 +78,35 @@ class UserEntity implements UserEntityInterface
     /**
      * @ORM\Column(type="string", length=128, options={"default":"en"});
      * @Annotation\Options({"label":"Language", "availableLanguages":{"cs", "sk", "en", "de"}, "listed":true});
-     * @Annotation\Flags({"priority":19});
+     * @Annotation\Flags({"priority":5});
      * @Annotation\Type("Adminaut\Datatype\Language");
+     * @Annotation\Required(true);
      * @var string
      */
     protected $language = 'en';
 
     /**
-     * @ORM\Column(type="integer", name="status", options={"default":0});
-     * @Annotation\Exclude();
+     * @ORM\Column(type="integer", name="status", options={"default":2});
+     * @Annotation\Options({
+     *     "label":"Status",
+     *     "value_options":{
+     *          "1":"New",
+     *          "2":"Active",
+     *          "3":"Locked",
+     *          "4":"Banned"
+     *      },
+     *     "listed":true
+     * });
+     * @Annotation\Flags({"priority":0});
+     * @Annotation\Type("Zend\Form\Element\Select");
+     * @Annotation\Required(true);
      * @var int
      */
-    protected $status = self::STATUS_NEW;
+    protected $status = self::STATUS_ACTIVE;
 
     /**
      * Inverse side.
-     * @ORM\OneToMany(targetEntity="UserAccessTokenEntity", mappedBy="user");
+     * @ORM\OneToMany(targetEntity="Adminaut\Entity\UserAccessTokenEntity", mappedBy="user");
      * @Annotation\Exclude();
      * @var ArrayCollection
      */
@@ -90,11 +114,18 @@ class UserEntity implements UserEntityInterface
 
     /**
      * Inverse side.
-     * @ORM\OneToMany(targetEntity="UserLoginEntity", mappedBy="user");
+     * @ORM\OneToMany(targetEntity="Adminaut\Entity\UserLoginEntity", mappedBy="user");
      * @Annotation\Exclude();
      * @var ArrayCollection
      */
     protected $logins;
+
+    /**
+     * @ORM\Column(name="active", type="boolean");
+     * @Annotation\Exclude();
+     * @var bool
+     */
+    protected $active = true;
 
     //-------------------------------------------------------------------------
 
@@ -155,6 +186,22 @@ class UserEntity implements UserEntityInterface
     public function setPassword($password)
     {
         $this->password = $password;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPasswordChangeOnNextLogon(): bool
+    {
+        return $this->passwordChangeOnNextLogon;
+    }
+
+    /**
+     * @param bool $passwordChangeOnNextLogon
+     */
+    public function setPasswordChangeOnNextLogon(bool $passwordChangeOnNextLogon)
+    {
+        $this->passwordChangeOnNextLogon = $passwordChangeOnNextLogon;
     }
 
 //    todo: implement setters and getters as below instead of generating password somewhere else in code

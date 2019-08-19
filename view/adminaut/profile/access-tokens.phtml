@@ -1,6 +1,6 @@
 <section class="content-header">
     <h1>
-        <?php echo $this->translate('Profile') ?>
+        <?php echo $this->translate('Profile', 'adminaut') ?>
         <small><?php echo $this->escapeHtml($this->user->getName()) ?></small>
     </h1>
     <?php echo $this->partial('adminaut/partial/breadcrumbs', [
@@ -16,27 +16,27 @@
         <ul class="nav nav-tabs">
             <li>
                 <a href="<?php echo $this->url('adminaut/profile') ?>">
-                    <?php echo $this->translate('Overview') ?>
+                    <?php echo $this->translate('Overview', 'adminaut') ?>
                 </a>
             </li>
             <li>
                 <a href="<?php echo $this->url('adminaut/profile/settings') ?>">
-                    <?php echo $this->translate('Settings') ?>
+                    <?php echo $this->translate('Settings', 'adminaut') ?>
                 </a>
             </li>
             <li>
                 <a href="<?php echo $this->url('adminaut/profile/change-password') ?>">
-                    <?php echo $this->translate('Change password') ?>
+                    <?php echo $this->translate('Change password', 'adminaut') ?>
                 </a>
             </li>
             <li>
                 <a href="<?php echo $this->url('adminaut/profile/logins') ?>">
-                    <?php echo $this->translate('Logins') ?>
+                    <?php echo $this->translate('Logins', 'adminaut') ?>
                 </a>
             </li>
             <li class="active">
                 <a href="<?php echo $this->url('adminaut/profile/access-tokens') ?>">
-                    <?php echo $this->translate('Access tokens') ?>
+                    <?php echo $this->translate('Access tokens', 'adminaut') ?>
                 </a>
             </li>
         </ul>
@@ -45,9 +45,9 @@
                 <thead>
                 <tr>
                     <th style="width: 16px">#</th>
-                    <th><?php echo $this->translate('Hash') ?></th>
-                    <th><?php echo $this->translate('Created') ?></th>
-                    <th style="width: 40px"><?php echo $this->translate('Action') ?></th>
+                    <th><?php echo $this->translate('Hash', 'adminaut') ?></th>
+                    <th><?php echo $this->translate('Created', 'adminaut') ?></th>
+                    <th style="width: 40px"><?php echo $this->translate('Action', 'adminaut') ?></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -59,7 +59,7 @@
                         <td><?php echo $accessToken->getInserted()->format('Y-m-d H:i') ?></td>
                         <td>
                             <a class="btn btn-xs btn-danger" href="<?php echo $this->url('adminaut/profile/access-tokens/delete', ['id' => $accessToken->getId()]) ?>">
-                                <?php echo $this->translate('Delete') ?>
+                                <?php echo $this->translate('Delete', 'adminaut') ?>
                             </a>
                         </td>
                     </tr>
@@ -68,7 +68,7 @@
             </table>
             <div class="text-center">
                 <a class="btn btn-danger" href="<?php echo $this->url('adminaut/profile/access-tokens/delete-all') ?>">
-                    <?php echo $this->translate('Delete all') ?>
+                    <?php echo $this->translate('Delete all', 'adminaut') ?>
                 </a>
             </div>
         </div>
