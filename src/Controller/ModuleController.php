@@ -718,6 +718,30 @@ class ModuleController extends AdminautBaseController
                     }
 
                     return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'edit', 'tab' => $currentTab]);
+                } catch (DuplicateValueForUniqueException $e) {
+                    $columnName = $e->getColumnName();
+                    $formFieldName = $e->getFormFieldName();
+
+                    if (!empty($columnName) || !empty($formFieldName)) {
+                        if ($form->has($formFieldName)) {
+                            $formField = $form->get($formFieldName);
+                            if (method_exists($formField, 'getListedValue')) {
+                                $value = $formField->getListedValue();
+                            } else {
+                                $value = $e->getInvalidValue();
+                            }
+
+                            $message = sprintf($this->translate("Cannot save record, there is already a record with value '%s' in the field '%s' - the value must be unique.", 'adminaut'), $value, $form->get($formFieldName)->getLabel());
+                        } elseif (!empty($formFieldName)) {
+                            $message = sprintf($this->translate("Cannot save record, there is already a record with value '%s' in the field '%s' - the value must be unique.", 'adminaut'), $invalidValue, $formFieldName);
+                        } else {
+                            $message = sprintf($this->translate("Cannot save record, there is already a record with value '%s' in the column '%s' - the value must be unique.", 'adminaut'), $invalidValue, $columnName);
+                        }
+                    } else {
+                        $message = sprintf($this->translate("Cannot save record, there is already a record with value '%s' - the value must be unique.", 'adminaut'), $e->getInvalidValue());
+                    }
+
+                    $this->addErrorMessage(sprintf($this->translate('Error: %s', 'adminaut'), $message));
                 } catch (\Exception $e) {
                     $this->addErrorMessage(sprintf($this->translate('Error: %s', 'adminaut'), $e->getMessage()));
                     return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => 'edit', 'tab' => $currentTab]);
