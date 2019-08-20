@@ -7,6 +7,7 @@ use Adminaut\Datatype\DatatypeInterface;
 use Adminaut\Datatype\MultiReference;
 use Adminaut\Datatype\Reference;
 use Adminaut\Exception\DuplicateValueForUniqueException;
+use Adminaut\Exception\UniqueNotNullableException;
 use Adminaut\Form\Annotation\AnnotationBuilder;
 use Adminaut\Form\Element\CyclicSheet;
 use Adminaut\Service\AccessControlService;
@@ -322,6 +323,19 @@ class ModuleManager extends AManager
         if ($admin instanceof UserEntityInterface) {
             $entity->setDeletedBy($admin->getId());
         }
+
+        $classMetadata = $this->entityManager->getClassMetadata(get_class($entity));
+        $deletedData = [];
+        foreach ($classMetadata->fieldMappings as $field) {
+            if (true === $field['unique'] && true === $field['nullable']) {
+                $deletedData[$field['fieldName']] = $entity->{$field['fieldName']};
+                $entity->{$field['fieldName']} = null;
+            } elseif (true === $field['unique'] && false === $field['nullable']) {
+                throw new UniqueNotNullableException($field['fieldName']);
+            }
+        }
+
+        $entity->setDeletedData($deletedData);
 
         $this->entityManager->flush();
 

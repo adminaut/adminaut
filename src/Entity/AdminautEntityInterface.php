@@ -85,6 +85,16 @@ interface AdminautEntityInterface
     public function setDeletedBy($deletedBy);
 
     /**
+     * @return array
+     */
+    public function getDeletedData();
+
+    /**
+     * @param array $deletedData
+     */
+    public function setDeletedData($deletedData);
+
+    /**
      * @return bool
      */
     public function isActive();
