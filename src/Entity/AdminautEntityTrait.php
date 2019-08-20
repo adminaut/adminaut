@@ -66,6 +66,13 @@ trait AdminautEntityTrait
     protected $deletedBy = 0;
 
     /**
+     * @ORM\Column(name="deleted_data", type="json_array", nullable=true);
+     * @Annotation\Exclude();
+     * @var array|null
+     */
+    protected $deletedData;
+
+    /**
      * @ORM\Column(name="active", type="boolean");
      * @Annotation\Options({"label":"Status", "listed":false, "checkbox_label":"Active", "listed_checked_value":"Active", "listed_unchecked_value":"Inactive", "listed":true});
      * @Annotation\Type("Adminaut\Datatype\Checkbox");
@@ -198,6 +205,22 @@ trait AdminautEntityTrait
     public function setDeletedBy($deletedBy)
     {
         $this->deletedBy = $deletedBy;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getDeletedData()
+    {
+        return $this->deletedData;
+    }
+
+    /**
+     * @param array|null $deletedData
+     */
+    public function setDeletedData($deletedData)
+    {
+        $this->deletedData = $deletedData;
     }
 
     /**
