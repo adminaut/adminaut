@@ -14,6 +14,11 @@ class Slug extends Text
     protected $target;
 
     /**
+     * @var boolean
+     */
+    protected $convertCylliric = false;
+
+    /**
      * @var array
      */
     protected $attributes = [
@@ -32,6 +37,10 @@ class Slug extends Text
 
         if (isset($options['target'])) {
             $this->setTarget($options['target']);
+        }
+
+        if (isset($options['convert-cylliric'])) {
+            $this->setConvertCylliric($options['convert-cylliric']);
         }
 
         parent::setOptions($options);
@@ -55,14 +64,35 @@ class Slug extends Text
     }
 
     /**
+     * @return bool
+     */
+    public function isConvertCylliric()
+    {
+        return $this->convertCylliric;
+    }
+
+    /**
+     * @param bool $convertCylliric
+     */
+    public function setConvertCylliric($convertCylliric)
+    {
+        $this->convertCylliric = $convertCylliric;
+    }
+
+    /**
      * @return array
      */
     public function getAttributes()
     {
         $attributes = parent::getAttributes();
         $attributes['class'] = 'slug-input form-control';
+
         if(!empty($this->getTarget())) {
             $attributes['data-target'] = $this->getTarget();
+        }
+
+        if(!empty($this->isConvertCylliric())) {
+            $attributes['data-convert-cylliric'] = $this->isConvertCylliric();
         }
 
         return $attributes;

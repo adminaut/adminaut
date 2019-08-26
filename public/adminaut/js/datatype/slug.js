@@ -10,6 +10,14 @@
         return str;
     };
 
+    var cylliric2Latin = function(str) {
+        var a = {"Ё":"YO","Й":"I","Ц":"TS","У":"U","К":"K","Е":"E","Н":"N","Г":"G","Ш":"SH","Щ":"SCH","З":"Z","Х":"H","Ъ":"'","ё":"yo","й":"i","ц":"ts","у":"u","к":"k","е":"e","н":"n","г":"g","ш":"sh","щ":"sch","з":"z","х":"h","ъ":"'","Ф":"F","Ы":"I","В":"V","А":"a","П":"P","Р":"R","О":"O","Л":"L","Д":"D","Ж":"ZH","Э":"E","ф":"f","ы":"i","в":"v","а":"a","п":"p","р":"r","о":"o","л":"l","д":"d","ж":"zh","э":"e","Я":"Ya","Ч":"CH","С":"S","М":"M","И":"I","Т":"T","Ь":"'","Б":"B","Ю":"YU","я":"ya","ч":"ch","с":"s","м":"m","и":"i","т":"t","ь":"'","б":"b","ю":"yu"};
+
+        return str.split('').map(function (char) {
+            return a[char] || char;
+        }).join("");
+    }
+
     $(document).ready(function () {
         $('.slug-input').each(function () {
             $slugInput = $(this);
@@ -20,7 +28,13 @@
                     $targetElement.on('keyup', function () {
                         $_slug = $(this).data('slug-input');
                         if (!$_slug.hasClass('slug-lock')) {
-                            $_slug.val(slug($(this).val()));
+                            let _slug = $(this).val();
+
+                            if ($slugInput.data('convertCylliric') === 1) {
+                                _slug = cylliric2Latin(_slug);
+                            }
+
+                            $_slug.val(slug(_slug));
                         }
                     }).on('blur', function () {
                         $(this).data('slug-input').addClass('slug-lock');
@@ -34,8 +48,13 @@
         $('body').on('click', '.slug-refresh', function() {
             $slugInput = $(this).parents('.input-group').find('input.slug-input');
             $targetElement = $('input[name="' + $slugInput.data('target') + '"]');
+            let _slug = $targetElement.val();
 
-            $slugInput.val(slug($targetElement.val())).addClass('slug-lock');
+            if ($slugInput.data('convertCylliric') === 1) {
+                _slug = cylliric2Latin(_slug);
+            }
+
+            $slugInput.val(slug(_slug)).addClass('slug-lock');
         });
     })
 })(jQuery);
