@@ -11,6 +11,7 @@ use Adminaut\Entity\UserEntityInterface;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\Response;
 use Zend\I18n\Translator\Translator;
+use Zend\I18n\Translator\TranslatorInterface;
 use Zend\I18n\View\Helper\Translate;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
@@ -70,6 +71,8 @@ class AdminautBaseController extends AbstractActionController
      */
     public function onDispatch(MvcEvent $e)
     {
+        $serviceLocator = $e->getApplication()->getServiceManager();
+
         if (!$this->authentication()->hasIdentity()) {
 
             /** @var Request $request */
@@ -85,20 +88,26 @@ class AdminautBaseController extends AbstractActionController
             $userEntity = $this->authentication()->getIdentity();
 
             if(!empty($userEntity->getLanguage())) {
-                /** @var Translate $translateHelper */
-                $translateHelper = $this->viewHelper('translate');
-                $layout = $this->layout();
+                /** @var TranslatorInterface|null $translator */
+                $translator = null;
+                if ($serviceLocator->has('MvcTranslator')) {
+                    $translator = $serviceLocator->get('MvcTranslator');
+                } elseif ($serviceLocator->has(TranslatorInterface::class)) {
+                    $translator = $serviceLocator->get(TranslatorInterface::class);
+                } elseif ($serviceLocator->has('Translator')) {
+                    $translator = $serviceLocator->get('Translator');
+                }
 
-                /** @var Translator $translator */
-                $translator = $translateHelper->getTranslator();
-                $translator->setLocale('en_US');
-                $translator->setFallbackLocale('en_US');
+                if ($translator instanceof TranslatorInterface) {
+                    $translator->setLocale('en_US');
+                    $translator->setFallbackLocale('en_US');
 
-                switch ($userEntity->getLanguage()) {
-                    case 'en': $translator->setLocale('en_US'); break;
-                    case 'de': $translator->setLocale('de_DE'); break;
-                    case 'cs': $translator->setLocale('cs_CZ'); break;
-                    case 'sk': $translator->setLocale('sk_SK'); break;
+                    switch ($userEntity->getLanguage()) {
+                        case 'en': $translator->setLocale('en_US'); break;
+                        case 'de': $translator->setLocale('de_DE'); break;
+                        case 'cs': $translator->setLocale('cs_CZ'); break;
+                        case 'sk': $translator->setLocale('sk_SK'); break;
+                    }
                 }
             }
         }

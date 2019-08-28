@@ -7,6 +7,7 @@ use Adminaut\Options\AdminautOptions;
 use Adminaut\Service\AccessControlService;
 use Doctrine\ORM\EntityManager;
 use Interop\Container\ContainerInterface;
+use Zend\I18n\Translator\TranslatorInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
@@ -34,6 +35,16 @@ class ModuleManagerFactory implements FactoryInterface
         /** @var AccessControlService $accessControlService */
         $accessControlService = $container->get(AccessControlService::class);
 
-        return new ModuleManager($entityManager, $accessControlService, $adminautOptions->getModules());
+        /** @var TranslatorInterface|null $translator */
+        $translator = null;
+        if ($container->has('MvcTranslator')) {
+            $translator = $container->get('MvcTranslator');
+        } elseif ($container->has(TranslatorInterface::class)) {
+            $translator = $container->get(TranslatorInterface::class);
+        } elseif ($container->has('Translator')) {
+            $translator = $container->get('Translator');
+        }
+
+        return new ModuleManager($entityManager, $accessControlService, $adminautOptions->getModules(), $translator);
     }
 }

@@ -31,6 +31,7 @@ use Zend\Form\Annotation\Options;
 use Zend\Form\Element;
 use Zend\Form\ElementInterface;
 use Zend\Form\Fieldset;
+use Zend\I18n\Translator\TranslatorInterface;
 
 /**
  * Class ModuleManager
@@ -54,6 +55,11 @@ class ModuleManager extends AManager
      */
     private $processedColumns = [];
 
+    /**
+     * @var TranslatorInterface|null
+     */
+    private $translator;
+
     //-------------------------------------------------------------------------
 
     /**
@@ -64,12 +70,14 @@ class ModuleManager extends AManager
     public function __construct(
         EntityManager $entityManager,
         AccessControlService $accessControlService,
-        array $modules = []
+        array $modules = [],
+        ?TranslatorInterface $translator = null
     ) {
         parent::__construct($entityManager);
 
         $this->accessControlService = $accessControlService;
         $this->modules = $modules;
+        $this->translator = $translator;
     }
 
     //-------------------------------------------------------------------------
@@ -392,6 +400,10 @@ class ModuleManager extends AManager
                 }
             } else if ($element->getOption('primary') === true) {
                 $form->setPrimaryField($element->getName());
+            }
+
+            if ($this->translator !== null && method_exists($element, 'setTranslator')) {
+                $element->setTranslator($this->translator);
             }
 
 
@@ -873,7 +885,7 @@ class ModuleManager extends AManager
 
             if ($element->getOption('filterable')
                 && ($this->accessControlService->isAllowed($moduleId, AccessControlService::READ, $key)
-                || (method_exists($element, 'isPrimary') && $element->isPrimary() || $element->getOption('primary')))
+                    || (method_exists($element, 'isPrimary') && $element->isPrimary() || $element->getOption('primary')))
             ) {
                 $filterableColumns[$key] = $element;
             }

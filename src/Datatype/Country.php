@@ -2,7 +2,8 @@
 
 namespace Adminaut\Datatype;
 
-use League\ISO3166\ISO3166;
+use PeterColes\Countries\Maker;
+use Zend\I18n\Translator\TranslatorInterface;
 
 /**
  * Class Country
@@ -26,6 +27,11 @@ class Country extends Select
     protected $listName = true;
 
     /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
      * Country constructor.
      * @param null $name
      * @param array $options
@@ -33,12 +39,6 @@ class Country extends Select
     public function __construct($name = null, array $options = [])
     {
         parent::__construct($name, $options);
-
-        $iso3166 = new ISO3166();
-
-        foreach ($iso3166->all() as $country) {
-            $this->countries[$country['alpha2']] = $country['name'];
-        }
     }
 
     /**
@@ -46,6 +46,12 @@ class Country extends Select
      */
     public function getCountries()
     {
+        if (empty($this->countries)) {
+            $locale = $this->translator !== null ? $this->translator->getLocale() : 'en';
+            $countryList = new Maker();
+            $this->countries = $countryList->lookup($locale)->toArray();
+        }
+
         return $this->countries;
     }
 
@@ -129,7 +135,12 @@ class Country extends Select
      */
     public function getValueOptions()
     {
-        $valueOptions = ['' => 'Select country'];
+        if ($this->translator !== null) {
+            $valueOptions = ['' => $this->translator->translate('Select country')];
+        } else {
+            $valueOptions = ['' => 'Select country'];
+        }
+
         if (is_array($this->getAvailableCountries())) {
             foreach ($this->getAvailableCountries() as $country) {
                 if (!isset($this->getCountries()[$country])) {
@@ -160,5 +171,21 @@ class Country extends Select
     public function setValueOptions(array $options)
     {
         return $this;
+    }
+
+    /**
+     * @return TranslatorInterface|null
+     */
+    public function getTranslator(): ?TranslatorInterface
+    {
+        return $this->translator;
+    }
+
+    /**
+     * @param TranslatorInterface|null $translator
+     */
+    public function setTranslator(?TranslatorInterface $translator = null): void
+    {
+        $this->translator = $translator;
     }
 }
