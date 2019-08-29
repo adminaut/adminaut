@@ -16,7 +16,7 @@ class Slug extends Text
     /**
      * @var boolean
      */
-    protected $convertCylliric = false;
+    protected $convertCyrillic = false;
 
     /**
      * @var array
@@ -39,8 +39,8 @@ class Slug extends Text
             $this->setTarget($options['target']);
         }
 
-        if (isset($options['convert-cylliric'])) {
-            $this->setConvertCylliric($options['convert-cylliric']);
+        if (isset($options['convert-cyrillic'])) {
+            $this->setConvertCyrillic($options['convert-cyrillic']);
         }
 
         parent::setOptions($options);
@@ -66,17 +66,17 @@ class Slug extends Text
     /**
      * @return bool
      */
-    public function isConvertCylliric()
+    public function isConvertCyrillic()
     {
-        return $this->convertCylliric;
+        return $this->convertCyrillic;
     }
 
     /**
-     * @param bool $convertCylliric
+     * @param bool $convertCyrillic
      */
-    public function setConvertCylliric($convertCylliric)
+    public function setConvertCyrillic($convertCyrillic)
     {
-        $this->convertCylliric = $convertCylliric;
+        $this->convertCyrillic = $convertCyrillic;
     }
 
     /**
@@ -91,8 +91,8 @@ class Slug extends Text
             $attributes['data-target'] = $this->getTarget();
         }
 
-        if(!empty($this->isConvertCylliric())) {
-            $attributes['data-convert-cylliric'] = $this->isConvertCylliric();
+        if(!empty($this->isConvertCyrillic())) {
+            $attributes['data-convert-cyrillic'] = $this->isConvertCyrillic();
         }
 
         return $attributes;
