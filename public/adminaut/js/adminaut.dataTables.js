@@ -21,7 +21,7 @@
                     $('.dataTables_scrollHead .table-filter td:nth-child('+ (index+1) +') select').select2().on('change', function () {
                         var select = $(this);
                         if(select.find('option').length > 0) {
-                            var val = select.val();
+                            var val = select.val() === "" ? null : select.val();
                             select.data('last-selected', val);
                             api.column(index).search(val, false, false).draw();
 
