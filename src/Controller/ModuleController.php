@@ -567,6 +567,13 @@ class ModuleController extends AdminautBaseController
         $moduleEntity = new $moduleEntityClass();
         $form->bind($moduleEntity);
 
+        if (!$action) {
+            $this->getEventManager()->trigger(sprintf('%s_%s.onCreateAddForm', $moduleId, $currentTab), $this, [
+                'entity' => &$moduleEntity,
+                'form' => &$form,
+            ]);
+        }
+
         /* @var $element \Zend\Form\Element */
         $listedElements = [];
         foreach ($form->getElements() as $key => $element) {
@@ -645,6 +652,11 @@ class ModuleController extends AdminautBaseController
                 $this->addErrorMessage($this->translate('Record was not found.', 'adminaut'));
                 return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => $mode, 'tab' => $currentTab]);
             }
+
+            $this->getEventManager()->trigger(sprintf('%s_%s.onCreateEditForm', $moduleId, $currentTab), $this, [
+                'entity' => &$cyclicEntity,
+                'form' => &$form,
+            ]);
 
             $form->bind($cyclicEntity);
 
