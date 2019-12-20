@@ -30,4 +30,16 @@ class Date extends DateTime
             'step' => new \DateInterval("P{$stepValue}D"),
         ]);
     }
+
+    /**
+     * @param mixed $value
+     * @return $this
+     */
+    public function setValue($value)
+    {
+        parent::setValue($value);
+        $this->value->setTime(0, 0, 0);
+
+        return $this;
+    }
 }
