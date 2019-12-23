@@ -39,7 +39,7 @@ class Date extends DateTime
     {
         parent::setValue($value);
         
-        if ($this->value instance \DateTime) {
+        if ($this->value instance of \DateTime) {
             $this->value->setTime(0, 0, 0);
         }
 
