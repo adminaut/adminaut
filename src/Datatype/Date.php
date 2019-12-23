@@ -38,7 +38,10 @@ class Date extends DateTime
     public function setValue($value)
     {
         parent::setValue($value);
-        $this->value->setTime(0, 0, 0);
+        
+        if ($this->value instance \DateTime) {
+            $this->value->setTime(0, 0, 0);
+        }
 
         return $this;
     }
