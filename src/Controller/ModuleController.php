@@ -234,15 +234,17 @@ class ModuleController extends AdminautBaseController
         $entityClass = $moduleOptions->getEntityClass();
         $fm = $this->getFilemanager();
         $form = $this->getModuleManager()->createForm($moduleOptions);
-        $this->getEventManager()->trigger($moduleId . '.onCreateAddForm', $this, [
-            'form' => &$form,
-        ]);
         if ($entityId) {
             $entity = $this->getModuleManager()->findOneById($moduleOptions->getEntityClass(), $entityId);
             $form->bind($entity);
         } else {
             $form->bind(new $entityClass());
         }
+
+        $this->getEventManager()->trigger($moduleId . '.onCreateAddForm', $this, [
+            'form' => &$form,
+            'entity' => &$entity
+        ]);
 
         /* @var Element $element */
         foreach ($form->getElements() as $element) {
