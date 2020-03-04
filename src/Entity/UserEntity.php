@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 //use Zend\Crypt\Password\Bcrypt;
 use Zend\Form\Annotation;
 
+_('Must change password at next logon');
+
 /**
  * Class UserEntity
  * @package Adminaut\Entity

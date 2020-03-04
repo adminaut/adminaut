@@ -65,7 +65,7 @@ $pages = [
                         </a>
                         <div class="pull-right">
                             <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'entity_id' => $this->entity->getId(), 'mode' => 'add']) ?>"
-                               class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="Copy" data-original-title="<?php echo $this->translate('Copy', 'adminaut') ?>">
+                               class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('Copy', 'adminaut') ?>" data-original-title="<?php echo $this->translate('Copy', 'adminaut') ?>">
                                 <i class="fa fa-clone"></i>
                             </a>
                             <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::FULL)) { ?>

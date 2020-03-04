@@ -94,13 +94,13 @@ $pages = [
                             'module_id' => $this->moduleOption->getModuleId(),
                             'entity_id' => $this->entity->getId(),
                             'mode' => 'add',
-                        ]) ?>" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="Copy" data-original-title="Copy">
+                        ]) ?>" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('Copy', 'adminaut') ?>" data-original-title="Copy">
                             <i class="fa fa-clone"></i>
                         </a>
                         <a href="#" data-href="<?php echo $this->url('adminaut/module/delete', [
                             'module_id' => $this->moduleOption->getModuleId(),
                             'entity_id' => $this->entity->getId(),
-                        ]) ?>" class="btn btn-sm btn-danger btn-modal-delete" data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete">
+                        ]) ?>" class="btn btn-sm btn-danger btn-modal-delete" data-toggle="tooltip" data-placement="top" title="<?php echo $this->translate('Delete', 'adminaut') ?>" data-original-title="Delete">
                             <i class="fa fa-trash"></i>
                         </a>
                     </div>

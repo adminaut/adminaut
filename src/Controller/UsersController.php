@@ -208,7 +208,7 @@ class UsersController extends AdminautBaseController
             'type' => Checkbox::class,
             'name' => 'generatePassword',
             'options' => [
-                'label' => _('Generate password'),
+                'label' => $this->translate('Generate password', 'adminaut'),
             ],
         ], [
             'priority' => 14
@@ -217,7 +217,7 @@ class UsersController extends AdminautBaseController
             'type' => Checkbox::class,
             'name' => 'sendAccountInformation',
             'options' => [
-                'label' => _('Send account information to the user')
+                'label' => $this->translate('Send account information to the user', 'adminaut')
             ],
         ], [
             'priority' => 13

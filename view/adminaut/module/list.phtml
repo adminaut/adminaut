@@ -69,7 +69,7 @@
                 <div class="box-footer clearfix">
                     <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::WRITE)) { ?>
                         <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'add']); ?>"
-                           class="btn btn-primary pull-left"><i class="fa fa-plus"></i> <?php echo $this->moduleOption->getLabels()['add_record'] ?></a>
+                           class="btn btn-primary pull-left"><i class="fa fa-plus"></i> <?php echo $this->translate($this->moduleOption->getLabels()['add_record'], 'adminaut') ?></a>
                     <?php } ?>
                 </div>
             </div>

@@ -3,6 +3,7 @@
 namespace Adminaut\Controller\Plugin;
 
 use Zend\I18n\Translator\Translator;
+use Zend\I18n\Translator\TranslatorInterface;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
 /**
@@ -19,9 +20,9 @@ class TranslatePluralPlugin extends AbstractPlugin
 
     /**
      * TranslatePluralPlugin constructor.
-     * @param Translator $translator
+     * @param TranslatorInterface $translator
      */
-    public function __construct(Translator $translator)
+    public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
