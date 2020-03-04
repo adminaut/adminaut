@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2020-03-04 17:16+0100\n"
-"PO-Revision-Date: 2020-03-04 16:24\n"
+"PO-Revision-Date: 2020-03-04 16:43\n"
 "Last-Translator: Matúš Petrofčík <petrofcikmatus@gmail.com>\n"
 "Language-Team: Czech\n"
 "Language: cs_CZ\n"
@@ -41,15 +41,15 @@ msgstr "Účet byl zablokován do %s."
 
 #: src/Authentication/Adapter/AuthAdapter.php:117
 msgid "Authenticated successfully."
-msgstr ""
+msgstr "Úspěšně ověřeno."
 
 #: src/Authentication/Adapter/AuthAdapter.php:133
 msgid "Password changed successfully."
-msgstr ""
+msgstr "Heslo změněno."
 
 #: src/Authentication/Adapter/AuthAdapter.php:135
 msgid "Cannot change password, try again later."
-msgstr ""
+msgstr "Nelze změnit heslo, opakujte akci později."
 
 #: src/Controller/AdminautBaseController.php:63
 msgid "Wild application error occurred."
@@ -129,11 +129,11 @@ msgstr "Záznam \"%s\" byl odstraněn."
 
 #: src/Controller/ProfileController.php:94
 msgid "Settings have been changed."
-msgstr ""
+msgstr "Nastavení bylo uloženo."
 
 #: src/Controller/ProfileController.php:98
 msgid "Setting could not be changed."
-msgstr ""
+msgstr "Heslo se nepodařilo změnit."
 
 #: src/Controller/ProfileController.php:139
 msgid "Password has been changed."
@@ -141,15 +141,15 @@ msgstr "Heslo bylo změněno."
 
 #: src/Controller/ProfileController.php:143
 msgid "Password could not be changed."
-msgstr ""
+msgstr "Heslo se nepodařilo změnit."
 
 #: src/Controller/ProfileController.php:146
 msgid "Password does not match current password."
-msgstr ""
+msgstr "Heslo neodpovídá aktuálnímu heslu."
 
 #: src/Controller/UsersController.php:156
 msgid "User was not found."
-msgstr ""
+msgstr "Uživatel nebyl nalezen."
 
 #: src/Controller/UsersController.php:211
 #: src/Controller/UsersController.php:321
@@ -199,7 +199,7 @@ msgstr "Zadejte polohu"
 #: src/Datatype/Reference/FormViewHelper.php:99
 #, php-format
 msgid "New record can be added <a href=\"%s\" tabindex=\"-1\">here</a>"
-msgstr ""
+msgstr "Nový záznam může být přidán <a href=\"%s\" tabindex=\"-1\">zde</a>"
 
 #: src/Entity/UserEntity.php:10
 msgid "Must change password at next logon"
@@ -258,7 +258,7 @@ msgstr "Aktivní"
 
 #: src/Form/UserLoginChangePasswordForm.php:51
 msgid "Continue"
-msgstr ""
+msgstr "Pokračovat"
 
 #: src/Form/UserLoginForm.php:56
 msgid "Sign in"
@@ -304,12 +304,12 @@ msgstr "Obecné"
 #: src/Service/MailService.php:117
 #, php-format
 msgid "Account Information - %s"
-msgstr ""
+msgstr "Informace o účtu - %s"
 
 #: src/Service/MailService.php:158 view/adminaut/email/notification.phtml:5
 #, php-format
 msgid "Notification - %s"
-msgstr ""
+msgstr "Oznámení - %s"
 
 #: src/View/Helper/Actions.php:23 src/View/Helper/Actions.php:24
 #: view/adminaut/module/cyclicTab.phtml:179
@@ -355,24 +355,24 @@ msgstr "Vyžádat přístup"
 #: view/adminaut/email/account-information.phtml:5
 #, php-format
 msgid "Welcome to %s"
-msgstr ""
+msgstr "Vítejte v %s"
 
 #: view/adminaut/email/account-information.phtml:6
 #, php-format
 msgid "Your account has been updated - %s"
-msgstr ""
+msgstr "Váš účet byl aktualizován - %s"
 
 #: view/adminaut/email/account-information.phtml:17
 msgid "System URL"
-msgstr ""
+msgstr "Systémová URL"
 
 #: view/adminaut/email/account-information.phtml:18
 msgid "Your e-mail"
-msgstr ""
+msgstr "Váš e-mail"
 
 #: view/adminaut/email/account-information.phtml:19
 msgid "Your password"
-msgstr ""
+msgstr "Vaše heslo"
 
 #: view/adminaut/install/index.phtml:14
 msgid "Register first user"
@@ -382,7 +382,7 @@ msgstr "Registrovat prvního uživatele"
 #: view/adminaut/module-cyclic-tab/edit.phtml:3
 #: view/adminaut/module-cyclic-tab/index.phtml:3
 msgid "Module cyclic tab"
-msgstr ""
+msgstr "Cyklická záložka"
 
 #: view/adminaut/module-cyclic-tab/add.phtml:4
 #: view/adminaut/module/add.phtml:21
@@ -392,7 +392,7 @@ msgstr "Přidat"
 #: view/adminaut/module-cyclic-tab/index.phtml:4
 #: view/adminaut/module-tab/index.phtml:4
 msgid "List"
-msgstr ""
+msgstr "List"
 
 #: view/adminaut/module-tab/index.phtml:3
 msgid "Module tab"
@@ -535,11 +535,11 @@ msgstr "Vytvořeno"
 
 #: view/adminaut/profile/logins.phtml:48
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: view/adminaut/profile/logins.phtml:50
 msgid "IP Address"
-msgstr ""
+msgstr "IP adresa"
 
 #: view/adminaut/profile/logins.phtml:51
 msgid "User Agent"
@@ -547,11 +547,11 @@ msgstr ""
 
 #: view/adminaut/profile/logins.phtml:61
 msgid "Failed"
-msgstr ""
+msgstr "Neúspěch"
 
 #: view/adminaut/profile/logins.phtml:63
 msgid "Success"
-msgstr ""
+msgstr "Úspěch"
 
 #: view/adminaut/users/add.phtml:11 view/adminaut/users/add.phtml:16
 #: view/adminaut/users/add.phtml:27 view/adminaut/users/index.phtml:19
