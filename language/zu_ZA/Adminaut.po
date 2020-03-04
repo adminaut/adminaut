@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
-"POT-Creation-Date: 2019-08-19 17:52+0200\n"
-"PO-Revision-Date: 2019-08-19 16:01\n"
-"Last-Translator: HrobocopAlso\n"
+"POT-Creation-Date: 2020-03-04 17:16+0100\n"
+"PO-Revision-Date: 2020-03-04 16:24\n"
+"Last-Translator: Matúš Petrofčík <petrofcikmatus@gmail.com>\n"
 "Language-Team: Zulu\n"
 "Language: zu_ZA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: crowdin.com\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-Basepath: ../..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-KeywordsList: translate;translatePlural:1,2;translateContext:1c,2;translateContextPlural:1c,2,3\n"
@@ -51,7 +51,7 @@ msgstr "crwdns183:0crwdne183:0"
 msgid "Cannot change password, try again later."
 msgstr "crwdns184:0crwdne184:0"
 
-#: src/Controller/AdminautBaseController.php:62
+#: src/Controller/AdminautBaseController.php:63
 msgid "Wild application error occurred."
 msgstr "crwdns182:0crwdne182:0"
 
@@ -61,13 +61,14 @@ msgid "User has been successfully created."
 msgstr "crwdns134:0crwdne134:0"
 
 #: src/Controller/InstallController.php:84
-#: src/Controller/ModuleController.php:319
 #: src/Controller/ModuleController.php:321
-#: src/Controller/ModuleController.php:442
+#: src/Controller/ModuleController.php:323
 #: src/Controller/ModuleController.php:444
-#: src/Controller/ModuleController.php:662
-#: src/Controller/ModuleController.php:722
-#: src/Controller/ModuleController.php:790
+#: src/Controller/ModuleController.php:446
+#: src/Controller/ModuleController.php:676
+#: src/Controller/ModuleController.php:758
+#: src/Controller/ModuleController.php:760
+#: src/Controller/ModuleController.php:828
 #: src/Controller/UsersController.php:271
 #: src/Controller/UsersController.php:385
 #: src/Controller/UsersController.php:419
@@ -76,48 +77,52 @@ msgid "Error: %s"
 msgstr "crwdns64:0%scrwdne64:0"
 
 #: src/Controller/ModuleController.php:183
-#: src/Controller/ModuleController.php:362
-#: src/Controller/ModuleController.php:489
-#: src/Controller/ModuleController.php:544
-#: src/Controller/ModuleController.php:645
-#: src/Controller/ModuleController.php:780
+#: src/Controller/ModuleController.php:364
+#: src/Controller/ModuleController.php:491
+#: src/Controller/ModuleController.php:546
+#: src/Controller/ModuleController.php:654
+#: src/Controller/ModuleController.php:818
 msgid "Record was not found."
 msgstr "crwdns136:0crwdne136:0"
 
-#: src/Controller/ModuleController.php:286
-#: src/Controller/ModuleController.php:717
+#: src/Controller/ModuleController.php:288
+#: src/Controller/ModuleController.php:731
 #, php-format
 msgid "Record \"%s\" has been successfully created."
 msgstr "crwdns139:0%scrwdne139:0"
 
-#: src/Controller/ModuleController.php:309
 #: src/Controller/ModuleController.php:311
-#: src/Controller/ModuleController.php:432
+#: src/Controller/ModuleController.php:313
 #: src/Controller/ModuleController.php:434
+#: src/Controller/ModuleController.php:436
+#: src/Controller/ModuleController.php:748
+#: src/Controller/ModuleController.php:750
 #, php-format
 msgid "Cannot save record, there is already a record with value '%s' in the field '%s' - the value must be unique."
 msgstr "crwdns210:0%scrwdnd210:0%scrwdne210:0"
 
-#: src/Controller/ModuleController.php:313
-#: src/Controller/ModuleController.php:436
+#: src/Controller/ModuleController.php:315
+#: src/Controller/ModuleController.php:438
+#: src/Controller/ModuleController.php:752
 #, php-format
 msgid "Cannot save record, there is already a record with value '%s' in the column '%s' - the value must be unique."
 msgstr "crwdns212:0%scrwdnd212:0%scrwdne212:0"
 
-#: src/Controller/ModuleController.php:316
-#: src/Controller/ModuleController.php:439
+#: src/Controller/ModuleController.php:318
+#: src/Controller/ModuleController.php:441
+#: src/Controller/ModuleController.php:755
 #, php-format
 msgid "Cannot save record, there is already a record with value '%s' - the value must be unique."
 msgstr "crwdns214:0%scrwdne214:0"
 
-#: src/Controller/ModuleController.php:409
-#: src/Controller/ModuleController.php:705
+#: src/Controller/ModuleController.php:411
+#: src/Controller/ModuleController.php:719
 #, php-format
 msgid "Record \"%s\" has been successfully updated."
 msgstr "crwdns140:0%scrwdne140:0"
 
-#: src/Controller/ModuleController.php:655
-#: src/Controller/ModuleController.php:787
+#: src/Controller/ModuleController.php:669
+#: src/Controller/ModuleController.php:825
 #, php-format
 msgid "Record \"%s\" has been deleted."
 msgstr "crwdns141:0%scrwdne141:0"
@@ -173,6 +178,10 @@ msgstr "crwdns188:0%scrwdne188:0"
 msgid "User has been successfully deleted."
 msgstr "crwdns71:0crwdne71:0"
 
+#: src/Datatype/Country.php:139
+msgid "Select country"
+msgstr "crwdns220:0crwdne220:0"
+
 #: src/Datatype/DatatypeHelperTrait.php:25
 msgid "Method getView() does not exist."
 msgstr "crwdns165:0crwdne165:0"
@@ -191,6 +200,10 @@ msgstr "crwdns167:0crwdne167:0"
 #, php-format
 msgid "New record can be added <a href=\"%s\" tabindex=\"-1\">here</a>"
 msgstr "crwdns218:0%scrwdne218:0"
+
+#: src/Entity/UserEntity.php:10
+msgid "Must change password at next logon"
+msgstr "crwdns222:0crwdne222:0"
 
 #: src/Form/RoleForm.php:43 src/Form/RoleForm.php:46 src/Form/UserForm.php:52
 #: src/Form/UserForm.php:55 src/Form/UserSettingsForm.php:24
@@ -312,12 +325,13 @@ msgid "Edit"
 msgstr "crwdns88:0crwdne88:0"
 
 #: src/View/Helper/Actions.php:30 src/View/Helper/Actions.php:31
-#: view/adminaut/module/edit.phtml:68
+#: view/adminaut/module/edit.phtml:68 view/adminaut/module/view.phtml:97
 msgid "Copy"
 msgstr "crwdns175:0crwdne175:0"
 
 #: src/View/Helper/Actions.php:36 src/View/Helper/Actions.php:37
 #: view/adminaut/module/edit.phtml:74 view/adminaut/module/edit.phtml:75
+#: view/adminaut/module/view.phtml:103
 #: view/adminaut/profile/access-tokens.phtml:62
 #: view/adminaut/users/edit.phtml:45
 msgid "Delete"
