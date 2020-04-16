@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
-"POT-Creation-Date: 2020-03-04 17:16+0100\n"
-"PO-Revision-Date: 2020-03-04 16:24\n"
+"POT-Creation-Date: 2020-04-16 12:07+0200\n"
+"PO-Revision-Date: 2020-04-16 10:21\n"
 "Last-Translator: Matúš Petrofčík <petrofcikmatus@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -190,6 +190,11 @@ msgstr "Verfahren getView() existiert nicht."
 #, php-format
 msgid "View is not instance of %s."
 msgstr "Ansicht ist keine Instanz von %s."
+
+#: src/Datatype/File.php:120
+#, php-format
+msgid "The uploaded file exceeds the maximum file size. Maximum file size is %s."
+msgstr ""
 
 #: src/Datatype/GooglePlaceId/FormViewHelper.php:53
 #: src/Datatype/Location/FormViewHelper.php:88
