@@ -4,6 +4,7 @@ namespace Adminaut\Datatype;
 
 use Zend\InputFilter\FileInput;
 use Zend\Validator\File\IsImage;
+use Zend\Validator\File\UploadFile;
 use Zend\Validator\ValidatorInterface;
 
 /**
@@ -45,13 +46,10 @@ class FileImage extends File
      */
     public function getInputSpecification()
     {
-        return [
-            'type' => FileInput::class,
-            'name' => $this->getName(),
-            'required' => false,
-            'validators' => [
-                $this->getValidator(),
-            ],
-        ];
+        $inputSpec = parent::getInputSpecification();
+        $inputSpec['type'] = FileInput::class;
+        $inputSpec['validators'][] = $this->getValidator();
+
+        return $inputSpec;
     }
 }

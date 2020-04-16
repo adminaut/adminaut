@@ -263,6 +263,8 @@ class UsersController extends AdminautBaseController
                     switch ($post['submit']) {
                         case 'create-and-continue' :
                             return $this->redirect()->toRoute(self::ROUTE_EDIT, ['id' => $user->getId()]);
+                        case 'create-and-new' :
+                            return $this->redirect()->toRoute(self::ROUTE_ADD);
                         case 'create' :
                         default :
                             return $this->redirect()->toRoute(self::ROUTE_INDEX);
