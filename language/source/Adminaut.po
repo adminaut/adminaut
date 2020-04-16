@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Adminaut\n"
-"POT-Creation-Date: 2020-03-04 17:16+0100\n"
-"PO-Revision-Date: 2020-03-04 17:17+0100\n"
+"POT-Creation-Date: 2020-04-16 12:07+0200\n"
+"PO-Revision-Date: 2020-04-16 12:07+0200\n"
 "Last-Translator: Matúš Petrofčík <petrofcikmatus@gmail.com>\n"
 "Language-Team: Adminaut\n"
 "Language: en_US\n"
@@ -193,6 +193,12 @@ msgstr ""
 #: src/Datatype/DatatypeHelperTrait.php:31
 #, php-format
 msgid "View is not instance of %s."
+msgstr ""
+
+#: src/Datatype/File.php:120
+#, php-format
+msgid ""
+"The uploaded file exceeds the maximum file size. Maximum file size is %s."
 msgstr ""
 
 #: src/Datatype/GooglePlaceId/FormViewHelper.php:53
