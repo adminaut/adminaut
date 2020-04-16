@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
 "POT-Creation-Date: 2020-04-16 12:07+0200\n"
-"PO-Revision-Date: 2020-04-16 10:21\n"
+"PO-Revision-Date: 2020-04-16 10:24\n"
 "Last-Translator: Matúš Petrofčík <petrofcikmatus@gmail.com>\n"
 "Language-Team: Czech\n"
 "Language: cs_CZ\n"
@@ -194,7 +194,7 @@ msgstr ""
 #: src/Datatype/File.php:120
 #, php-format
 msgid "The uploaded file exceeds the maximum file size. Maximum file size is %s."
-msgstr ""
+msgstr "Nahraný soubor překračuje maximální velikost souboru. Maximální velikost souboru je %s."
 
 #: src/Datatype/GooglePlaceId/FormViewHelper.php:53
 #: src/Datatype/Location/FormViewHelper.php:88
