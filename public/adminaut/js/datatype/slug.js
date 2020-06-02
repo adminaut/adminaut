@@ -36,7 +36,7 @@
 
                             $_slug.val(slug(_slug));
                         }
-                    }).on('blur', function () {
+                    }).on('change', function () {
                         $(this).data('slug-input').addClass('slug-lock');
                     });
                 }
