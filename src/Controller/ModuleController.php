@@ -184,6 +184,11 @@ class ModuleController extends AdminautBaseController
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId]);
         }
 
+        $this->getEventManager()->trigger($moduleId . '.onCreateViewForm', $this, [
+            'form' => &$form,
+            'entity' => &$entity
+        ]);
+
         $form->bind($entity);
 
         $elements = [];
