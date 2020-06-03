@@ -136,7 +136,7 @@ class ModuleApiController extends BaseApiController
 
         $columnNames = array_keys($datatableColumns);
         foreach ($params['columns'] as $i => $_column) {
-            if (isset($_column['search']) && isset($_column['search']['value']) && strlen($_column['search']['value']) > 0) {
+            if (isset($_column['search']) && isset($_column['search']['value']) && strlen($_column['search']['value']) > 0 && $_column['search']['value'] !== 'null') {
 //                $columnsSearch[$i] = $_column['search']['value'];
                 /** @var Datatype|Element $filterableColumnDatatype */
                 $filterableColumnDatatype = $filterableColumns[$columnNames[$i]];
