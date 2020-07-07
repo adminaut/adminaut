@@ -8,6 +8,8 @@ use Adminaut\Manager\UserManager;
 use Adminaut\Service\MailService;
 use Interop\Container\ContainerInterface;
 use MassimoFilippi\SlackModule\Service\SlackService;
+use Zend\I18n\Translator\TranslatorInterface;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
 /**
@@ -42,11 +44,25 @@ class AuthControllerFactory implements FactoryInterface
             $slackService = $container->get('adminautSlackService');
         }
 
+        if ( !( $container->has('MvcTranslator') || $container->has(TranslatorInterface::class) || $container->has('Translator')) ) {
+            throw new ServiceNotCreatedException('Zend I18n Translator not configured');
+        }
+
+        /** @var TranslatorInterface $translator */
+        if ($container->has('MvcTranslator')) {
+            $translator = $container->get('MvcTranslator');
+        } elseif ($container->has(TranslatorInterface::class)) {
+            $translator = $container->get(TranslatorInterface::class);
+        } elseif ($container->has('Translator')) {
+            $translator = $container->get('Translator');
+        }
+
         return new AuthController(
             $authenticationService,
             $userManager,
             $slackService,
-            $container->get(MailService::class)
+            $container->get(MailService::class),
+            $translator
         );
     }
 }

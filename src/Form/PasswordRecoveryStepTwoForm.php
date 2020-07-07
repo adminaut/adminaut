@@ -39,7 +39,6 @@ class PasswordRecoveryStepTwoForm extends Form
             'attributes' => [
                 'id' => 'newPassword',
                 'class' => 'form-control',
-                'placeholder' => _('New password'),
             ],
         ]);
 
@@ -73,7 +72,6 @@ class PasswordRecoveryStepTwoForm extends Form
             'attributes' => [
                 'id' => 'newPasswordAgain',
                 'class' => 'form-control',
-                'placeholder' => _('New password again'),
             ],
         ]);
 

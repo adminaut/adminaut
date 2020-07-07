@@ -151,7 +151,7 @@ class MailService extends MfccMailService implements MailServiceInterface
      */
     public function sendPasswordRecoveryMail($recoveryKey, $toEmail, $toName = null)
     {
-        $subject = sprintf($this->translator->translate('Password recovery - %s'), $this->getSystemName());
+        $subject = sprintf($this->translator->translate('Password recovery - %s', 'adminaut'), $this->getSystemName());
         $template = $this->templates['password_recovery'];
 
         $viewModel = new ViewModel();

@@ -17,6 +17,8 @@ use Maknz\Slack\Message;
 use MassimoFilippi\SlackModule\Service\SlackService;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\Response;
+use Zend\I18n\Translator\Translator;
+use Zend\I18n\Translator\TranslatorInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\Plugin\FlashMessenger\FlashMessenger;
 use Zend\View\Model\ViewModel;
@@ -59,6 +61,11 @@ class AuthController extends AbstractActionController
      */
     private $mailService;
 
+    /**
+     * @var Translator
+     */
+    private $translator;
+
     //-------------------------------------------------------------------------
 
     /**
@@ -67,17 +74,20 @@ class AuthController extends AbstractActionController
      * @param UserManager $userManager
      * @param SlackService|null $slackService
      * @param MailService $mailService
+     * @param TranslatorInterface $translator
      */
     public function __construct(
         AuthenticationService $authenticationService,
         UserManager $userManager,
         $slackService,
-        MailService $mailService
+        MailService $mailService,
+        TranslatorInterface $translator
     ) {
         $this->authenticationService = $authenticationService;
         $this->userManager = $userManager;
         $this->slackService = $slackService;
         $this->mailService = $mailService;
+        $this->translator = $translator;
     }
 
     //-------------------------------------------------------------------------
@@ -306,6 +316,13 @@ class AuthController extends AbstractActionController
 
                 if ($user = $this->userManager->findOneByEmail($formData['email'])) {
                     try {
+                        switch ($user->getLanguage()) {
+                            case 'en': $this->translator->setLocale('en_US'); break;
+                            case 'de': $this->translator->setLocale('de_DE'); break;
+                            case 'cs': $this->translator->setLocale('cs_CZ'); break;
+                            case 'sk': $this->translator->setLocale('sk_SK'); break;
+                        }
+
                         $this->userManager->setPasswordRecoveryKey($user);
 
                         $this->mailService->sendPasswordRecoveryMail($user->getPasswordRecoveryKey(), $user->getEmail(), $user->getName());
@@ -347,6 +364,13 @@ class AuthController extends AbstractActionController
             $email = $this->params()->fromRoute('email');
             $key = $this->params()->fromRoute('key');
             if ($user = $this->userManager->findByEmailAndPasswordRecoveryKey($email, $key)) {
+                switch ($user->getLanguage()) {
+                    case 'en': $this->translator->setLocale('en_US'); break;
+                    case 'de': $this->translator->setLocale('de_DE'); break;
+                    case 'cs': $this->translator->setLocale('cs_CZ'); break;
+                    case 'sk': $this->translator->setLocale('sk_SK'); break;
+                }
+
                 if (new \DateTime() > $user->getPasswordRecoveryExpiresAt()) {
                     $this->flashMessenger()->addWarningMessage($this->translate('Email or password recovery key is invalid.', 'adminaut'));
                     return $this->redirect()->toRoute(self::ROUTE_LOGIN);
