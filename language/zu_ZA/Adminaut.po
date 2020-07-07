@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: adminaut\n"
-"POT-Creation-Date: 2020-04-16 12:07+0200\n"
-"PO-Revision-Date: 2020-04-16 10:22\n"
+"POT-Creation-Date: 2020-07-02 14:52+0200\n"
+"PO-Revision-Date: 2020-07-02 12:58\n"
 "Last-Translator: Matúš Petrofčík <petrofcikmatus@gmail.com>\n"
 "Language-Team: Zulu\n"
 "Language: zu_ZA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.3.1\n"
 "X-Poedit-Basepath: ../..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-KeywordsList: translate;translatePlural:1,2;translateContext:1c,2;translateContextPlural:1c,2,3\n"
@@ -19,8 +19,10 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-1: *.jpg\n"
 "X-Poedit-SearchPathExcluded-2: *.png\n"
 "X-Crowdin-Project: adminaut\n"
+"X-Crowdin-Project-ID: 261538\n"
 "X-Crowdin-Language: zu\n"
 "X-Crowdin-File: /develop/language/source/Adminaut.po\n"
+"X-Crowdin-File-ID: 5\n"
 
 #: src/Authentication/Adapter/AuthAdapter.php:71
 #: src/Authentication/Adapter/AuthAdapter.php:76
@@ -55,74 +57,94 @@ msgstr "crwdns184:0crwdne184:0"
 msgid "Wild application error occurred."
 msgstr "crwdns182:0crwdne182:0"
 
+#: src/Controller/AuthController.php:313
+msgid "Please, check your email for password recovery link"
+msgstr "crwdns226:0crwdne226:0"
+
+#: src/Controller/AuthController.php:317 src/Controller/AuthController.php:372
+msgid "Unexpected error"
+msgstr "crwdns228:0crwdne228:0"
+
+#: src/Controller/AuthController.php:320
+msgid "User could not be found."
+msgstr "crwdns230:0crwdne230:0"
+
+#: src/Controller/AuthController.php:351 src/Controller/AuthController.php:368
+msgid "Email or password recovery key is invalid."
+msgstr "crwdns232:0crwdne232:0"
+
+#: src/Controller/AuthController.php:362
+msgid "Your password has been updated."
+msgstr "crwdns234:0crwdne234:0"
+
 #: src/Controller/InstallController.php:79
 #: src/Controller/UsersController.php:251
 msgid "User has been successfully created."
 msgstr "crwdns134:0crwdne134:0"
 
 #: src/Controller/InstallController.php:84
-#: src/Controller/ModuleController.php:321
-#: src/Controller/ModuleController.php:323
-#: src/Controller/ModuleController.php:444
-#: src/Controller/ModuleController.php:446
-#: src/Controller/ModuleController.php:676
-#: src/Controller/ModuleController.php:758
-#: src/Controller/ModuleController.php:760
-#: src/Controller/ModuleController.php:828
-#: src/Controller/UsersController.php:271
-#: src/Controller/UsersController.php:385
-#: src/Controller/UsersController.php:419
+#: src/Controller/ModuleController.php:326
+#: src/Controller/ModuleController.php:328
+#: src/Controller/ModuleController.php:449
+#: src/Controller/ModuleController.php:451
+#: src/Controller/ModuleController.php:681
+#: src/Controller/ModuleController.php:763
+#: src/Controller/ModuleController.php:765
+#: src/Controller/ModuleController.php:833
+#: src/Controller/UsersController.php:273
+#: src/Controller/UsersController.php:387
+#: src/Controller/UsersController.php:421
 #, php-format
 msgid "Error: %s"
 msgstr "crwdns64:0%scrwdne64:0"
 
 #: src/Controller/ModuleController.php:183
-#: src/Controller/ModuleController.php:364
-#: src/Controller/ModuleController.php:491
-#: src/Controller/ModuleController.php:546
-#: src/Controller/ModuleController.php:654
-#: src/Controller/ModuleController.php:818
+#: src/Controller/ModuleController.php:369
+#: src/Controller/ModuleController.php:496
+#: src/Controller/ModuleController.php:551
+#: src/Controller/ModuleController.php:659
+#: src/Controller/ModuleController.php:823
 msgid "Record was not found."
 msgstr "crwdns136:0crwdne136:0"
 
-#: src/Controller/ModuleController.php:288
-#: src/Controller/ModuleController.php:731
+#: src/Controller/ModuleController.php:293
+#: src/Controller/ModuleController.php:736
 #, php-format
 msgid "Record \"%s\" has been successfully created."
 msgstr "crwdns139:0%scrwdne139:0"
 
-#: src/Controller/ModuleController.php:311
-#: src/Controller/ModuleController.php:313
-#: src/Controller/ModuleController.php:434
-#: src/Controller/ModuleController.php:436
-#: src/Controller/ModuleController.php:748
-#: src/Controller/ModuleController.php:750
+#: src/Controller/ModuleController.php:316
+#: src/Controller/ModuleController.php:318
+#: src/Controller/ModuleController.php:439
+#: src/Controller/ModuleController.php:441
+#: src/Controller/ModuleController.php:753
+#: src/Controller/ModuleController.php:755
 #, php-format
 msgid "Cannot save record, there is already a record with value '%s' in the field '%s' - the value must be unique."
 msgstr "crwdns210:0%scrwdnd210:0%scrwdne210:0"
 
-#: src/Controller/ModuleController.php:315
-#: src/Controller/ModuleController.php:438
-#: src/Controller/ModuleController.php:752
+#: src/Controller/ModuleController.php:320
+#: src/Controller/ModuleController.php:443
+#: src/Controller/ModuleController.php:757
 #, php-format
 msgid "Cannot save record, there is already a record with value '%s' in the column '%s' - the value must be unique."
 msgstr "crwdns212:0%scrwdnd212:0%scrwdne212:0"
 
-#: src/Controller/ModuleController.php:318
-#: src/Controller/ModuleController.php:441
-#: src/Controller/ModuleController.php:755
+#: src/Controller/ModuleController.php:323
+#: src/Controller/ModuleController.php:446
+#: src/Controller/ModuleController.php:760
 #, php-format
 msgid "Cannot save record, there is already a record with value '%s' - the value must be unique."
 msgstr "crwdns214:0%scrwdne214:0"
 
-#: src/Controller/ModuleController.php:411
-#: src/Controller/ModuleController.php:719
+#: src/Controller/ModuleController.php:416
+#: src/Controller/ModuleController.php:724
 #, php-format
 msgid "Record \"%s\" has been successfully updated."
 msgstr "crwdns140:0%scrwdne140:0"
 
-#: src/Controller/ModuleController.php:669
-#: src/Controller/ModuleController.php:825
+#: src/Controller/ModuleController.php:674
+#: src/Controller/ModuleController.php:830
 #, php-format
 msgid "Record \"%s\" has been deleted."
 msgstr "crwdns141:0%scrwdne141:0"
@@ -152,12 +174,12 @@ msgid "User was not found."
 msgstr "crwdns216:0crwdne216:0"
 
 #: src/Controller/UsersController.php:211
-#: src/Controller/UsersController.php:321
+#: src/Controller/UsersController.php:323
 msgid "Generate password"
 msgstr "crwdns185:0crwdne185:0"
 
 #: src/Controller/UsersController.php:220
-#: src/Controller/UsersController.php:330
+#: src/Controller/UsersController.php:332
 msgid "Send account information to the user"
 msgstr "crwdns186:0crwdne186:0"
 
@@ -165,16 +187,16 @@ msgstr "crwdns186:0crwdne186:0"
 msgid "Exception while sending account information: %S"
 msgstr "crwdns187:0%Scrwdne187:0"
 
-#: src/Controller/UsersController.php:365
+#: src/Controller/UsersController.php:367
 msgid "User has been successfully updated."
 msgstr "crwdns70:0crwdne70:0"
 
-#: src/Controller/UsersController.php:372
+#: src/Controller/UsersController.php:374
 #, php-format
 msgid "Exception while sending account information: %s"
 msgstr "crwdns188:0%scrwdne188:0"
 
-#: src/Controller/UsersController.php:417
+#: src/Controller/UsersController.php:419
 msgid "User has been successfully deleted."
 msgstr "crwdns71:0crwdne71:0"
 
@@ -210,6 +232,32 @@ msgstr "crwdns218:0%scrwdne218:0"
 msgid "Must change password at next logon"
 msgstr "crwdns222:0crwdne222:0"
 
+#: src/Form/PasswordRecoveryStepOneForm.php:36
+#: src/Form/PasswordRecoveryStepOneForm.php:42 src/Form/UserForm.php:63
+#: src/Form/UserForm.php:66 src/Form/UserLoginForm.php:31
+#: src/Form/UserLoginForm.php:35 view/adminaut/profile/index.phtml:49
+#: view/adminaut/users/index.phtml:30
+msgid "Email"
+msgstr "crwdns73:0crwdne73:0"
+
+#: src/Form/PasswordRecoveryStepTwoForm.php:37
+#: src/Form/PasswordRecoveryStepTwoForm.php:42
+#: src/Form/UserChangePasswordForm.php:39
+#: src/Form/UserChangePasswordForm.php:42
+#: src/Form/UserLoginChangePasswordForm.php:29
+#: src/Form/UserLoginChangePasswordForm.php:32
+msgid "New password"
+msgstr "crwdns150:0crwdne150:0"
+
+#: src/Form/PasswordRecoveryStepTwoForm.php:71
+#: src/Form/PasswordRecoveryStepTwoForm.php:76
+#: src/Form/UserChangePasswordForm.php:50
+#: src/Form/UserChangePasswordForm.php:53
+#: src/Form/UserLoginChangePasswordForm.php:40
+#: src/Form/UserLoginChangePasswordForm.php:43
+msgid "New password again"
+msgstr "crwdns151:0crwdne151:0"
+
 #: src/Form/RoleForm.php:43 src/Form/RoleForm.php:46 src/Form/UserForm.php:52
 #: src/Form/UserForm.php:55 src/Form/UserSettingsForm.php:24
 #: src/Form/UserSettingsForm.php:27 view/adminaut/profile/index.phtml:44
@@ -221,26 +269,6 @@ msgstr "crwdns72:0crwdne72:0"
 #: src/Form/UserChangePasswordForm.php:31
 msgid "Current password"
 msgstr "crwdns149:0crwdne149:0"
-
-#: src/Form/UserChangePasswordForm.php:39
-#: src/Form/UserChangePasswordForm.php:42
-#: src/Form/UserLoginChangePasswordForm.php:29
-#: src/Form/UserLoginChangePasswordForm.php:32
-msgid "New password"
-msgstr "crwdns150:0crwdne150:0"
-
-#: src/Form/UserChangePasswordForm.php:50
-#: src/Form/UserChangePasswordForm.php:53
-#: src/Form/UserLoginChangePasswordForm.php:40
-#: src/Form/UserLoginChangePasswordForm.php:43
-msgid "New password again"
-msgstr "crwdns151:0crwdne151:0"
-
-#: src/Form/UserForm.php:63 src/Form/UserForm.php:66
-#: src/Form/UserLoginForm.php:31 src/Form/UserLoginForm.php:35
-#: view/adminaut/profile/index.phtml:49 view/adminaut/users/index.phtml:30
-msgid "Email"
-msgstr "crwdns73:0crwdne73:0"
 
 #: src/Form/UserForm.php:74 src/Form/UserForm.php:77
 #: src/Form/UserLoginForm.php:43 src/Form/UserLoginForm.php:47
@@ -306,12 +334,18 @@ msgstr "crwdns172:0crwdne172:0"
 msgid "General"
 msgstr "crwdns173:0crwdne173:0"
 
-#: src/Service/MailService.php:117
+#: src/Service/MailService.php:118
 #, php-format
 msgid "Account Information - %s"
 msgstr "crwdns191:0%scrwdne191:0"
 
-#: src/Service/MailService.php:158 view/adminaut/email/notification.phtml:5
+#: src/Service/MailService.php:154
+#: view/adminaut/email/password-recovery.phtml:4
+#, php-format
+msgid "Password recovery - %s"
+msgstr "crwdns236:0%scrwdne236:0"
+
+#: src/Service/MailService.php:184 view/adminaut/email/notification.phtml:5
 #, php-format
 msgid "Notification - %s"
 msgstr "crwdns192:0%scrwdne192:0"
@@ -342,6 +376,23 @@ msgstr "crwdns175:0crwdne175:0"
 msgid "Delete"
 msgstr "crwdns100:0crwdne100:0"
 
+#: view/adminaut/auth/forgotten-password.phtml:6
+msgid "Forgotten password"
+msgstr "crwdns238:0crwdne238:0"
+
+#: view/adminaut/auth/forgotten-password.phtml:14
+msgid "Enter your email"
+msgstr "crwdns240:0crwdne240:0"
+
+#: view/adminaut/auth/forgotten-password.phtml:26
+#: view/adminaut/auth/password-recovery.phtml:20
+msgid "Back"
+msgstr "crwdns242:0crwdne242:0"
+
+#: view/adminaut/auth/forgotten-password.phtml:31
+msgid "Recover password"
+msgstr "crwdns244:0crwdne244:0"
+
 #: view/adminaut/auth/login.phtml:20
 #: view/adminaut/auth/password-change.phtml:20
 msgid "Sign in to start your session"
@@ -352,10 +403,17 @@ msgstr "crwdns105:0crwdne105:0"
 msgid "I forgot my password"
 msgstr "crwdns106:0crwdne106:0"
 
-#: view/adminaut/auth/login.phtml:28
 #: view/adminaut/auth/password-change.phtml:28
 msgid "Request access"
 msgstr "crwdns107:0crwdne107:0"
+
+#: view/adminaut/auth/password-recovery.phtml:13
+msgid "Set your new password"
+msgstr "crwdns246:0crwdne246:0"
+
+#: view/adminaut/auth/password-recovery.phtml:26
+msgid "Set new password"
+msgstr "crwdns248:0crwdne248:0"
 
 #: view/adminaut/email/account-information.phtml:5
 #, php-format
@@ -378,6 +436,21 @@ msgstr "crwdns196:0crwdne196:0"
 #: view/adminaut/email/account-information.phtml:19
 msgid "Your password"
 msgstr "crwdns197:0crwdne197:0"
+
+#: view/adminaut/email/password-recovery.phtml:15
+#, php-format
+msgid "Someone requested a new password for %s."
+msgstr "crwdns250:0%scrwdne250:0"
+
+#: view/adminaut/email/password-recovery.phtml:16
+#, php-format
+msgid "For reset your password <a href=\"%s\">click here</a>."
+msgstr "crwdns252:0%scrwdne252:0"
+
+#: view/adminaut/email/password-recovery.phtml:18
+#, php-format
+msgid "Link will expire at <strong>%s</strong>"
+msgstr "crwdns254:0%scrwdne254:0"
 
 #: view/adminaut/install/index.phtml:14
 msgid "Register first user"
