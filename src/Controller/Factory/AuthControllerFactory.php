@@ -5,6 +5,7 @@ namespace Adminaut\Controller\Factory;
 use Adminaut\Authentication\Service\AuthenticationService;
 use Adminaut\Controller\AuthController;
 use Adminaut\Manager\UserManager;
+use Adminaut\Service\MailService;
 use Interop\Container\ContainerInterface;
 use MassimoFilippi\SlackModule\Service\SlackService;
 use Zend\ServiceManager\Factory\FactoryInterface;
@@ -41,6 +42,11 @@ class AuthControllerFactory implements FactoryInterface
             $slackService = $container->get('adminautSlackService');
         }
 
-        return new AuthController($authenticationService, $userManager, $slackService);
+        return new AuthController(
+            $authenticationService,
+            $userManager,
+            $slackService,
+            $container->get(MailService::class)
+        );
     }
 }

@@ -5,6 +5,7 @@ namespace Adminaut\Manager;
 use Adminaut\Authentication\Helper\PasswordHelper;
 use Adminaut\Entity\UserEntity;
 use Adminaut\Repository\UserRepository;
+use Adminaut\Service\RecoveryKeyGenerator;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -65,6 +66,16 @@ class UserManager extends AManager
     public function findOneById($id)
     {
         return $this->getUserRepository()->findOneById($id);
+    }
+
+    /**
+     * @param string $email
+     * @param string $passwordRecoveryKey
+     * @return UserEntity|null
+     */
+    public function findByEmailAndPasswordRecoveryKey(string $email, string $passwordRecoveryKey)
+    {
+        return $this->getUserRepository()->findOneByEmailAndPasswordRecoveryKey($email, $passwordRecoveryKey);
     }
 
     /**
@@ -157,5 +168,33 @@ class UserManager extends AManager
         $this->entityManager->flush();
 
         return $user;
+    }
+
+    /**
+     * @param UserEntity $user
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function setPasswordRecoveryKey(UserEntity $user)
+    {
+        $user->setPasswordRecoveryKey(RecoveryKeyGenerator::generate());
+        $user->setPasswordRecoveryExpiresAt(new \DateTime('+15 minutes'));
+
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @param UserEntity $user
+     * @param string $password
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function setPasswordUsingRecoveryKey(UserEntity $user, string $password)
+    {
+        $user->setPasswordRecoveryKey(null);
+        $user->setPasswordRecoveryExpiresAt(null);
+        $user->setPassword(PasswordHelper::hash($password));
+
+        $this->entityManager->flush();
     }
 }

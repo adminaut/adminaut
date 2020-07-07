@@ -64,4 +64,19 @@ class UserRepository extends EntityRepository
     {
         return count($this->findAll());
     }
+
+    /**
+     * @param string $email
+     * @param string $passwordRecoveryKey
+     * @return UserEntity|null
+     */
+    public function findOneByEmailAndPasswordRecoveryKey(string $email, string $passwordRecoveryKey)
+    {
+        return $this->findOneBy([
+            'email' => $email,
+            'passwordRecoveryKey' => $passwordRecoveryKey,
+            'status' => UserEntity::STATUS_ACTIVE,
+            'deleted' => false,
+        ]);
+    }
 }

@@ -289,6 +289,20 @@ return [
                                 ],
                             ],
                         ],
+                        'password-recovery' => [
+                            'type' => Segment::class,
+                            'options' => [
+                                'route' => '/password-recovery',
+                                'route' => '/:email/:key',
+                                'defaults' => [
+                                    'action' => 'passwordRecovery',
+                                ],
+                                'constraints' => [
+                                    'email' => '[a-zA-Z0-9-@.]+',
+                                    'key' => '[a-zA-Z0-9]{32}',
+                                ],
+                            ],
+                        ],
                         'change-password' => [
                             'type' => Literal::class,
                             'options' => [

@@ -23,10 +23,10 @@ $form->prepare();
         <a href="<?php echo $this->url(\Adminaut\Controller\AuthController::ROUTE_FORGOTTEN_PASSWORD) ?>">
             <?php echo $this->translate('I forgot my password', 'adminaut') ?>
         </a>
-        <br>
+        <?php /*<br>
         <a href="<?php echo $this->url(\Adminaut\Controller\AuthController::ROUTE_REQUEST_ACCESS) ?>">
             <?php echo $this->translate('Request access', 'adminaut') ?>
-        </a>
+        </a>*/ ?>
     </div>
     <?php echo $this->form()->closeTag() ?>
 </div>

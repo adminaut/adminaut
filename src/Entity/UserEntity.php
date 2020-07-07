@@ -107,6 +107,20 @@ class UserEntity implements UserEntityInterface
     protected $status = self::STATUS_ACTIVE;
 
     /**
+     * @ORM\Column(type="string", name="password_recovery_key", nullable=true)
+     * @Annotation\Exclude()
+     * @var null|string
+     */
+    protected $passwordRecoveryKey = null;
+
+    /**
+     * @ORM\Column(type="datetime", name="password_recovery_expires_at", nullable=true)
+     * @Annotation\Exclude()
+     * @var null|\DateTime
+     */
+    protected $passwordRecoveryExpiresAt = null;
+
+    /**
      * Inverse side.
      * @ORM\OneToMany(targetEntity="Adminaut\Entity\UserAccessTokenEntity", mappedBy="user");
      * @Annotation\Exclude();
@@ -289,6 +303,42 @@ class UserEntity implements UserEntityInterface
     public function setStatus($status)
     {
         $this->status = $status;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPasswordRecoveryKey(): ?string
+    {
+        return $this->passwordRecoveryKey;
+    }
+
+    /**
+     * @param string|null $passwordRecoveryKey
+     * @return UserEntity
+     */
+    public function setPasswordRecoveryKey(?string $passwordRecoveryKey): UserEntity
+    {
+        $this->passwordRecoveryKey = $passwordRecoveryKey;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getPasswordRecoveryExpiresAt(): ?\DateTime
+    {
+        return $this->passwordRecoveryExpiresAt;
+    }
+
+    /**
+     * @param \DateTime|null $passwordRecoveryExpiresAt
+     * @return UserEntity
+     */
+    public function setPasswordRecoveryExpiresAt(?\DateTime $passwordRecoveryExpiresAt): UserEntity
+    {
+        $this->passwordRecoveryExpiresAt = $passwordRecoveryExpiresAt;
+        return $this;
     }
 
     /**

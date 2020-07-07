@@ -50,6 +50,7 @@ class MailService extends MfccMailService implements MailServiceInterface
     protected $templates = [
         'account_information' => 'adminaut/email/account-information.phtml',
         'notification' => 'adminaut/email/notification.phtml',
+        'password_recovery' => 'adminaut/email/password-recovery.phtml',
     ];
 
     /**
@@ -143,9 +144,34 @@ class MailService extends MfccMailService implements MailServiceInterface
         // TODO: Implement sendInvitationMail() method.
     }
 
-    public function sendPasswordRecoveryMail($body, $toEmail, $toName = null)
+    /**
+     * @param $recoveryKey
+     * @param $toEmail
+     * @param string|null $toName
+     */
+    public function sendPasswordRecoveryMail($recoveryKey, $toEmail, $toName = null)
     {
-        // TODO: Implement sendPasswordRecoveryMail() method.
+        $subject = sprintf($this->translator->translate('Password recovery - %s'), $this->getSystemName());
+        $template = $this->templates['password_recovery'];
+
+        $viewModel = new ViewModel();
+        $viewModel->setTemplate($template);
+        $viewModel->setVariables([
+            'email' => $toEmail,
+            'recoveryKey' => $recoveryKey,
+            'system_name' => $this->systemName
+        ]);
+        $body = $this->viewRenderer->render($viewModel);
+
+        $sender = new Sender($this->systemEmail, $this->systemName);
+        $recipient = new Recipient($toEmail);
+        $recipient->setName($toName);
+
+        $message = new Message($sender, $recipient);
+        $message->setSubject($subject);
+        $message->setMessage($body);
+
+        $this->sendMail($message);
     }
 
     /**

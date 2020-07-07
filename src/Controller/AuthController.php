@@ -5,11 +5,14 @@ namespace Adminaut\Controller;
 use Adminaut\Authentication\Service\AuthenticationService;
 use Adminaut\Controller\Plugin\AuthenticationPlugin;
 use Adminaut\Form\InputFilter\UserLoginChangePasswordInputFilter;
+use Adminaut\Form\PasswordRecoveryStepOneForm;
+use Adminaut\Form\PasswordRecoveryStepTwoForm;
 use Adminaut\Form\UserChangePasswordForm;
 use Adminaut\Form\UserLoginChangePasswordForm;
 use Adminaut\Form\UserLoginForm;
 use Adminaut\Form\InputFilter\UserLoginInputFilter;
 use Adminaut\Manager\UserManager;
+use Adminaut\Service\MailService;
 use Maknz\Slack\Message;
 use MassimoFilippi\SlackModule\Service\SlackService;
 use Zend\Http\PhpEnvironment\Request;
@@ -51,6 +54,11 @@ class AuthController extends AbstractActionController
      */
     private $slackService;
 
+    /**
+     * @var MailService
+     */
+    private $mailService;
+
     //-------------------------------------------------------------------------
 
     /**
@@ -58,12 +66,18 @@ class AuthController extends AbstractActionController
      * @param AuthenticationService $authenticationService
      * @param UserManager $userManager
      * @param SlackService|null $slackService
+     * @param MailService $mailService
      */
-    public function __construct(AuthenticationService $authenticationService, UserManager $userManager, $slackService)
-    {
+    public function __construct(
+        AuthenticationService $authenticationService,
+        UserManager $userManager,
+        $slackService,
+        MailService $mailService
+    ) {
         $this->authenticationService = $authenticationService;
         $this->userManager = $userManager;
         $this->slackService = $slackService;
+        $this->mailService = $mailService;
     }
 
     //-------------------------------------------------------------------------
@@ -277,8 +291,95 @@ class AuthController extends AbstractActionController
      */
     public function forgottenPasswordAction()
     {
-        // todo: implement
-        return $this->indexAction();
+        if ($this->authenticationService->hasIdentity()) {
+            return $this->redirect()->toRoute(DashboardController::ROUTE_INDEX);
+        }
+
+        $form = new PasswordRecoveryStepOneForm();
+
+        if ($this->getRequest()->isPost()) {
+
+            $form->setData($this->getRequest()->getPost());
+
+            if ($form->isValid()) {
+                $formData = $form->getData();
+
+                if ($user = $this->userManager->findOneByEmail($formData['email'])) {
+                    try {
+                        $this->userManager->setPasswordRecoveryKey($user);
+
+                        $this->mailService->sendPasswordRecoveryMail($user->getPasswordRecoveryKey(), $user->getEmail(), $user->getName());
+
+                        $this->flashMessenger()->addSuccessMessage($this->translate('Please, check your email for password recovery link', 'adminaut'));
+
+                        return $this->redirect()->toRoute(self::ROUTE_INDEX);
+                    } catch (\Exception $exception) {
+                        $this->flashMessenger()->addErrorMessage($this->translate('Unexpected error', 'adminaut'));
+                    }
+                } else {
+                    $this->flashMessenger()->addWarningMessage($this->translate('User could not be found.', 'adminaut'));
+                }
+            }
+        }
+
+        $this->layout()->setVariables([
+            'bodyClasses' => ['login-page'],
+        ]);
+        $this->layout('layout/admin-blank');
+
+        return new ViewModel([
+            'form' => $form,
+        ]);
+    }
+
+    /**
+     * @return Response
+     */
+    public function passwordRecoveryAction()
+    {
+        if ($this->authenticationService->hasIdentity()) {
+            return $this->redirect()->toRoute(DashboardController::ROUTE_INDEX);
+        }
+
+        $form = new PasswordRecoveryStepTwoForm();
+        
+        try {
+            $email = $this->params()->fromRoute('email');
+            $key = $this->params()->fromRoute('key');
+            if ($user = $this->userManager->findByEmailAndPasswordRecoveryKey($email, $key)) {
+                if (new \DateTime() > $user->getPasswordRecoveryExpiresAt()) {
+                    $this->flashMessenger()->addWarningMessage($this->translate('Email or password recovery key is invalid.', 'adminaut'));
+                    return $this->redirect()->toRoute(self::ROUTE_LOGIN);
+                }
+
+                if (true === $this->getRequest()->isPost()) {
+                    $form->setData($this->getRequest()->getPost());
+
+                    if ($form->isValid()) {
+                        $formData = $form->getData();
+                        $this->userManager->setPasswordUsingRecoveryKey($user, $formData['newPassword']);
+
+                        $this->flashMessenger()->addSuccessMessage($this->translate('Your password has been updated.', 'adminaut'));
+                        return $this->redirect()->toRoute(AuthController::ROUTE_LOGIN);
+                    }
+                }
+
+            } else {
+                $this->flashMessenger()->addWarningMessage($this->translate('Email or password recovery key is invalid.', 'adminaut'));
+                return $this->redirect()->toRoute(self::ROUTE_LOGIN);
+            }
+        } catch (\Exception $e) {
+            $this->flashMessenger()->addErrorMessage($this->translate('Unexpected error', 'adminaut'));
+        }
+
+        $this->layout()->setVariables([
+            'bodyClasses' => ['login-page'],
+        ]);
+        $this->layout('layout/admin-blank');
+
+        return new ViewModel([
+            'form' => $form,
+        ]);
     }
 
     /**
