@@ -31,7 +31,7 @@ class FormViewHelper extends ZendFormElement
     public function render(ElementInterface $element)
     {
         $element->setAttribute('type', 'text');
-        $this->appendScript('adminaut/js/datatype/slug.js');
+        $this->appendScript('adminaut/js/datatype/slug.js?v=0.44.2');
 
         return parent::render($element);
     }

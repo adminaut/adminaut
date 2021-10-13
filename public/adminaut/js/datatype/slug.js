@@ -1,5 +1,6 @@
 (function ($) {
     var slug = function (str) {
+        str = str.replace(/\n/g, "-");
         str = str.replace(/^\s+|\s+$/g, '').toLowerCase();
         var from = "ÁÄÂÀÃÅČÇĆĎÉĚËÈÊẼĔȆÍÌÎÏŇÑÓÖÒÔÕØŘŔŠŤÚŮÜÙÛÝŸŽáäâàãåčçćďéěëèêẽĕȇíìîïňñóöòôõøðřŕšťúůüùûýÿžþÞĐđßÆa·/_,:;";
         var to = "AAAAAACCCDEEEEEEEEIIIINNOOOOOORRSTUUUUUYYZaaaaaacccdeeeeeeeeiiiinnooooooorrstuuuuuyyzbBDdBAa------";
@@ -21,7 +22,7 @@
     $(document).ready(function () {
         $('.slug-input').each(function () {
             $slugInput = $(this);
-            $targetElement = $('input[name="' + $slugInput.data('target') + '"]').data('slug-input', $slugInput);
+            $targetElement = $('input[name="' + $slugInput.data('target') + '"], textarea[name="' + $slugInput.data('target') + '"]').data('slug-input', $slugInput);
 
             if ($targetElement.length > 0) {
                 if($slugInput.val() === "") {
@@ -47,7 +48,7 @@
 
         $('body').on('click', '.slug-refresh', function() {
             $slugInput = $(this).parents('.input-group').find('input.slug-input');
-            $targetElement = $('input[name="' + $slugInput.data('target') + '"]');
+            $targetElement = $('input[name="' + $slugInput.data('target') + '"], textarea[name="' + $slugInput.data('target') + '"]');
             let _slug = $targetElement.val();
 
             if ($slugInput.data('convertCyrillic') === 1) {

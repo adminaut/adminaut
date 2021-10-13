@@ -201,7 +201,7 @@ class UserEntity implements UserEntityInterface
      */
     public function setPassword($password)
     {
-        $this->password = $password;
+        $this->password = empty($password) ? $this->password : $password;
     }
 
     /**
