@@ -373,6 +373,7 @@ class ModuleController extends AdminautBaseController
         $fm = $this->getFilemanager();
         /* @var $form \Adminaut\Form\Form */
         $form = $this->getModuleManager()->createForm($moduleOptions);
+        $form->bind($entity);
         $this->getEventManager()->trigger($moduleId . '.onCreateEditForm', $this, [
             'entity' => &$entity,
             'form' => &$form,
@@ -380,7 +381,6 @@ class ModuleController extends AdminautBaseController
 
         $tabs = $form->getTabs();
         $tabs[$this->params()->fromRoute('tab')]['active'] = true;
-        $form->bind($entity);
 
         /** @var Request $request */
         $request = $this->getRequest();
@@ -660,15 +660,13 @@ class ModuleController extends AdminautBaseController
                 return $this->redirect()->toRoute('adminaut/module/action/tab', ['module_id' => $moduleId, 'entity_id' => $entityId, 'mode' => $mode, 'tab' => $currentTab]);
             }
 
+            $form->bind($cyclicEntity);
             $this->getEventManager()->trigger(sprintf('%s_%s.onCreateEditForm', $moduleId, $currentTab), $this, [
                 'entity' => &$cyclicEntity,
                 'form' => &$form,
             ]);
 
-            $form->bind($cyclicEntity);
-
         } else if ($action == 'delete') {
-
             try {
                 $this->getModuleManager()->delete($cyclicEntity, $this->authentication()->getIdentity());
                 $this->addSuccessMessage(sprintf($this->translate('Record "%s" has been deleted.', 'adminaut'), $cyclicEntity->getPrimaryFieldValue()));
