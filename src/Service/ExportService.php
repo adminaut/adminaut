@@ -184,7 +184,7 @@ class ExportService
             }
         }
 
-        $paginator = new Paginator(new DoctrineAdapter($ormPaginator));
+        $paginator = $ormPaginator;
 
         $data = [];
 
