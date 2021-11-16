@@ -4,6 +4,7 @@ namespace Adminaut\Controller\Api\Factory;
 use Adminaut\Controller\Api\ModuleApiController;
 use Adminaut\Manager\ModuleManager;
 use Adminaut\Service\AccessControlService;
+use Adminaut\Service\ExportService;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use Zend\ServiceManager\Exception\ServiceNotCreatedException;
@@ -33,7 +34,8 @@ class ModuleApiControllerFactory implements FactoryInterface
         return new ModuleApiController(
             $moduleManager,
             $accessControlService,
-            $viewHelperManager
+            $viewHelperManager,
+            $container->get(ExportService::class)
         );
     }
 }

@@ -40,6 +40,7 @@ return [
         Service\MailService::class => Service\Factory\MailServiceFactory::class,
         Service\ManifestService::class => Service\Factory\ManifestServiceFactory::class,
         'adminautSlackService' => Service\Factory\SlackServiceFactory::class,
+        Service\ExportService::class => Service\Factory\ExportServiceFactory::class,
 
         // Translator service
         Translator::class => TranslatorServiceFactory::class,

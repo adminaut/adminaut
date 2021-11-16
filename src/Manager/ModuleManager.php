@@ -782,6 +782,24 @@ class ModuleManager extends AManager
     }
 
     /**
+     * @param string $moduleId
+     * @param Form|null $form
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     */
+    public function getExportableColumns($moduleId, $form = null)
+    {
+        if ( ! array_key_exists('exportable', $this->processedColumns) ) {
+            $this->processColumns($moduleId, $form);
+
+            if ( ! array_key_exists('exportable', $this->processedColumns) ) {
+                new \Exception("Can't process exportable columns.");
+            }
+        }
+
+        return $this->processedColumns['exportable'];
+    }
+
+    /**
      * @param array $dtOrders
      * @param $moduleId
      * @param null $form
@@ -820,6 +838,8 @@ class ModuleManager extends AManager
                 } else {
                     $orders[] = ['order_by' => $elementKey, 'order_type' => $dir];
                 }
+            } elseif ('id' === $elementKey) {
+                $orders[] = ['order_by' => $elementKey, 'order_type' => $dir];
             }
         }
 
@@ -835,6 +855,7 @@ class ModuleManager extends AManager
         $listedElements = [];
         $searchableElements = [];
         $filterableColumns = [];
+        $exportableColumns = [];
         $datatableColumns = [
             'id' => [
                 'data' => 'id',
@@ -889,6 +910,14 @@ class ModuleManager extends AManager
             ) {
                 $filterableColumns[$key] = $element;
             }
+
+            if ((
+                    (method_exists($element, 'isExportable') && $element->isExportable() || $element->getOption('exportable'))
+                    || (method_exists($element, 'isPrimary') && $element->isPrimary() || $element->getOption('primary'))
+                ) && $this->accessControlService->isAllowed($moduleId, AccessControlService::READ, $key)
+            ) {
+                $exportableColumns[$key] = $element;
+            }
         }
 
         $datatableColumns['actions'] = [
@@ -902,7 +931,8 @@ class ModuleManager extends AManager
             'listed' => $listedElements,
             'searchable' => $searchableElements,
             'datatable' => $datatableColumns,
-            'filterable' => $filterableColumns
+            'filterable' => $filterableColumns,
+            'exportable' => $exportableColumns
         ];
     }
 

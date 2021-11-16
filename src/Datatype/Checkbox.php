@@ -106,6 +106,14 @@ class Checkbox extends \Zend\Form\Element\Checkbox
         }
     }
 
+    /**
+     * @return string
+     */
+    public function getExportValue()
+    {
+        return $this->isChecked() ? $this->getListedCheckedValue() : $this->getListedUncheckedValue();
+    }
+
     public function getFilterValue()
     {
         if ($this->isChecked()) {

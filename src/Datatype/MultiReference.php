@@ -194,7 +194,11 @@ class MultiReference extends Element implements InputProviderInterface
         $records = $this->getValue(true);
         foreach ($records as $record) {
             if ($record !== null) {
-                $result[] = $record->{'get' . $this->getProxy()->getProperty()}();
+                if($this->getProxy()->getMask()) {
+                    $result[] = $this->getProxy()->getMaskedValue($record);
+                } else {
+                    $result[] = $record->{'get' . $this->getProxy()->getProperty()}();
+                }
             } else {
                 $result[] = '';
             }

@@ -1,0 +1,86 @@
+<!-- Modal -->
+<div class="modal fade" id="adminaut_export_modal" tabindex="-1" role="dialog" aria-labelledby="adminaut_export_modal_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="<?php echo $this->url('adminaut/api/module/export', ['module_id' => $this->moduleOption->getModuleId()]) ?>" method="post" class="form-horizontal" id="export_form">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="adminaut_export_modal_label"><?php echo $this->translate('Export options', 'adminaut') ?></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group hidden" id="export_filters_group">
+                        <label class="col-sm-2 control-label"><?php echo $this->translate('Filter', 'adminaut') ?></label>
+                        <div class="col-sm-4 radio">
+                            <input type="radio" name="filters" class="form-control" id="export_filters_all" value="all" checked><label class="checkbox-label" for="export_filters_all"> <?php echo $this->translate('All records', 'adminaut') ?></label>
+                        </div>
+                        <div class="col-sm-6 radio">
+                            <input type="radio" name="filters" class="form-control" id="export_filters_filtered" value="filtered"><label class="checkbox-label" for="export_filters_filtered"> <?php echo $this->translate('Currently filtered records', 'adminaut') ?></label>
+                        </div>
+                    </div>
+                    <div class="form-group hidden" id="export_sort_group">
+                        <label class="col-sm-2 control-label"><?php echo $this->translate('Sort order', 'adminaut') ?></label>
+                        <div class="col-sm-4 radio">
+                            <input type="radio" name="sort" class="form-control" id="export_sort_default" value="default" checked><label class="checkbox-label" for="export_sort_default"> <?php echo $this->translate('Default sort order', 'adminaut') ?></label>
+                        </div>
+                        <div class="col-sm-6 radio">
+                            <input type="radio" name="sort" class="form-control" id="export_sort_current" value="current"><label class="checkbox-label" for="export_sort_current"> <?php echo $this->translate('Current sort order', 'adminaut') ?></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"><?php echo $this->translate('Format', 'adminaut') ?></label>
+                        <div class="col-sm-4 radio">
+                            <input type="radio" name="format" class="form-control" id="export_format_csv" value="csv" checked><label class="checkbox-label" for="export_format_csv"> CSV</label>
+                        </div>
+                        <div class="col-sm-4 radio">
+                            <input type="radio" name="format" class="form-control" id="export_format_xlsx" value="xlsx"><label class="checkbox-label" for="export_format_xlsx"> XSLX</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->translate('Close', 'adminaut') ?></button>
+                    <button type="submit" class="btn btn-success"><?php echo $this->translate('Export', 'adminaut') ?></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function($) {
+        var dataTable = $('#moduleEntityTable').DataTable();
+
+        $('#export_form').on('submit', function() {
+            var $form = $(this);
+            var ajaxParams = dataTable.ajax.params();
+
+            $form.append($.map(ajaxParams.columns, function(column, i) {
+                return convertObjectToInputs(column, 'columns['+i+']');
+            }));
+
+            $form.append($.map(ajaxParams.order, function(column, i) {
+                return convertObjectToInputs(column, 'order['+i+']');
+            }));
+
+            $form.append($('<input>', {
+                type: 'hidden',
+                name: 'search',
+                value: ajaxParams.search.value,
+            }));
+        });
+
+        $('#adminaut_export_modal').on('hide.bs.modal', function() {
+            $('input[name^="columns"], input[name^="order"], input[name="search"]').remove();
+            $('#export_filters_all').iCheck('check');
+            $('#export_sort_default').iCheck('check');
+            $('#export_format_csv').iCheck('check');
+        });
+
+        $(document)
+            .on('change', '#moduleEntityTable_wrapper .table-filter select, #moduleEntityTable_wrapper input[type="search"]', function() {
+                $('#export_filters_group').removeClass('hidden');
+            })
+            .on('click', '#moduleEntityTable_wrapper .sorting', function() {
+                $('#export_sort_group').removeClass('hidden');
+            })
+    })(jQuery);
+</script>

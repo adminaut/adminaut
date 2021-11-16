@@ -1,3 +1,22 @@
+function convertObjectToInputs(object, inputNamePrefix, inputArray) {
+    inputNamePrefix = undefined !== inputNamePrefix ? inputNamePrefix : "";
+    inputArray = undefined !== inputArray ? inputArray : [];
+
+    $.each(Object.keys(object), function(_, key) {
+        if ("object" === typeof object[key]) {
+            convertObjectToInputs(object[key], inputNamePrefix + '['+ key +']', inputArray);
+        } else {
+            inputArray.push($('<input>', {
+                type: 'hidden',
+                name: inputNamePrefix + '['+ key +']',
+                value: object[key]
+            }));
+        }
+    });
+
+    return inputArray;
+}
+
 (function ($) {
     $(document).ready(function () {
         $('input').iCheck({

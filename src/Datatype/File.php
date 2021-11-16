@@ -95,6 +95,18 @@ class File extends Element\File
     }
 
     /**
+     * @return string
+     */
+    public function getExportValue()
+    {
+        if($this->file) {
+            return sprintf('%s (%s)', $this->file->getName(), $this->file->getFormattedSize());
+        }
+
+        return '';
+    }
+
+    /**
      * @param array|\Traversable $options
      * @return \Zend\Form\Element
      */

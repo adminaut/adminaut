@@ -42,6 +42,11 @@ trait Datatype
     protected $searchable = false;
 
     /**
+     * @var bool
+     */
+    protected $exportable = false;
+
+    /**
      * @var string|null
      */
     protected $defaultSort = null;
@@ -129,6 +134,24 @@ trait Datatype
     }
 
     /**
+     * @return bool
+     */
+    public function isExportable(): bool
+    {
+        return $this->exportable;
+    }
+
+    /**
+     * @param bool $exportable
+     * @return Datatype
+     */
+    public function setExportable(bool $exportable)
+    {
+        $this->exportable = $exportable;
+        return $this;
+    }
+
+    /**
      * @return null|string
      */
     public function getDefaultSort()
@@ -166,6 +189,10 @@ trait Datatype
             $options['primary'] = $this->isPrimary();
         }
 
+        if (isset($options['exportable'])) {
+            $this->setExportable((bool) $options['exportable']);
+        }
+
         parent::setOptions($options);
         return $this;
     }
@@ -192,6 +219,14 @@ trait Datatype
     public function getListedValue()
     {
         return $this->getValue();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExportValue()
+    {
+        return $this->getListedValue() ?? "";
     }
 
     /**

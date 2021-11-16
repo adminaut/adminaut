@@ -53,7 +53,8 @@
     "massimo-filippi/mail-module": "^1.0",
     "petercoles/multilingual-country-list": "^1.2",
     "gettext/languages": "^2.3",
-    "almasaeed2010/adminlte": "^2.3"
+    "almasaeed2010/adminlte": "^2.3",
+    "phpoffice/phpspreadsheet": "^1.18"
   },
   "autoload": {
     "psr-4": {

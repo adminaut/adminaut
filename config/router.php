@@ -55,6 +55,15 @@ return [
                                         ],
                                     ],
                                 ],
+                                'export' => [
+                                    'type' => Segment::class,
+                                    'options' => [
+                                        'route' => '/export',
+                                        'defaults' => [
+                                            'action' => 'export',
+                                        ],
+                                    ],
+                                ],
                             ],
                         ],
                     ],

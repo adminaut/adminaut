@@ -1,11 +1,13 @@
 <?php
 namespace Adminaut\Controller\Api;
 
+use Adminaut\Controller\DashboardController;
 use Adminaut\Datatype\Datatype;
 use Adminaut\Form\Form;
 use Adminaut\Manager\ModuleManager;
 use Adminaut\Options\ModuleOptions;
 use Adminaut\Service\AccessControlService;
+use Adminaut\Service\ExportService;
 use Zend\Form\Element;
 use Zend\Paginator\Paginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
@@ -34,6 +36,11 @@ class ModuleApiController extends BaseApiController
     protected $viewHelperManager;
 
     /**
+     * @var ExportService
+     */
+    protected $exportService;
+
+    /**
      * ModuleApiController constructor.
      * @param ModuleManager $moduleManager
      * @param AccessControlService $accessControlService
@@ -41,11 +48,13 @@ class ModuleApiController extends BaseApiController
     public function __construct(
         ModuleManager $moduleManager,
         AccessControlService $accessControlService,
-        HelperPluginManager $viewHelperManager
+        HelperPluginManager $viewHelperManager,
+        ExportService $exportService
     ) {
         $this->moduleManager = $moduleManager;
         $this->accessControlService = $accessControlService;
         $this->viewHelperManager = $viewHelperManager;
+        $this->exportService = $exportService;
     }
 
     // =================================================================================================================
@@ -209,5 +218,33 @@ class ModuleApiController extends BaseApiController
         }
 
         return new JsonModel($return);
+    }
+
+    public function exportAction()
+    {
+        if(($moduleId = $this->getModuleId()) === null || !$this->moduleManager->hasModule($moduleId))
+        {
+            return $this->redirect()->toRoute(DashboardController::ROUTE_INDEX);
+        }
+
+        if (!$this->hasIdentity() || !$this->isAllowed($moduleId, AccessControlService::READ) || !$this->getRequest()->isPost())
+        {
+            return $this->redirect()->toRoute(DashboardController::ROUTE_INDEX);
+        }
+
+        $columns = [];
+        $search = "";
+        $sort = [];
+
+        if ('filtered' === $this->params()->fromPost('filters', 'all')) {
+            $columns = $this->params()->fromPost('columns', $columns);
+            $search = $this->params()->fromPost('search', $search);
+        }
+
+        if ('current' === $this->params()->fromPost('sort', 'default')) {
+            $sort = $this->params()->fromPost('order', $sort);
+        }
+
+        $this->exportService->export($moduleId, $columns, $sort, $search, $this->params()->fromPost('format', 'csv'));
     }
 }

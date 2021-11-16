@@ -133,6 +133,7 @@ class ModuleController extends AdminautBaseController
 
         $listedElements = $this->getModuleManager()->getListedElements($moduleId, $form);
         $datatableColumns = $this->getModuleManager()->getDatatableColumns($moduleId, $form);
+        $isExportable = sizeof($this->getModuleManager()->getExportableColumns($moduleId, $form)) > 1;
 
         if(!empty($criteria = $this->accessControlService->getModuleCriteria($moduleId))) {
             $list = $this->getModuleManager()->findby($moduleOptions->getEntityClass(), $criteria);
@@ -145,7 +146,8 @@ class ModuleController extends AdminautBaseController
             'listedElements' => $listedElements,
             'hasPrimary' => ($form->getPrimaryField() !== 'id'),
             'moduleOption' => $moduleOptions,
-            'datatableColumns' => array_values($datatableColumns)
+            'datatableColumns' => array_values($datatableColumns),
+            'isExportable' => $isExportable,
         ]);
     }
 
@@ -824,7 +826,8 @@ class ModuleController extends AdminautBaseController
 
         try {
             $this->getModuleManager()->delete($entity, $this->authentication()->getIdentity());
-            $primaryFieldValue = $entity->{'get' . ucfirst($primaryField)}();
+
+            $primaryFieldValue = $entity->getPrimaryFieldValue();
             $this->addSuccessMessage(sprintf($this->translate('Record "%s" has been deleted.', 'adminaut'), $primaryFieldValue));
             return $this->redirect()->toRoute('adminaut/module/list', ['module_id' => $moduleId, 'entity_id' => $entityId]);
         } catch (\Exception $e) {
