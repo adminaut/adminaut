@@ -28,7 +28,10 @@
                 <div class="box-header with-border">
                     <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::WRITE)) { ?>
                         <a href="<?php echo $this->url('adminaut/module/action', ['module_id' => $this->moduleOption->getModuleId(), 'mode' => 'add']); ?>"
-                           class="btn btn-primary pull-left"><i class="fa fa-plus"></i> <?php echo $this->translate($this->moduleOption->getLabels()['add_record'], 'adminaut') ?></a>
+                           class="btn btn-primary"><i class="fa fa-plus"></i> <?php echo $this->translate($this->moduleOption->getLabels()['add_record'], 'adminaut') ?></a>
+                    <?php } ?>
+                    <?php if ($this->isExportable) { ?>
+                    <button class="btn btn-success" data-toggle="modal" data-target="#adminaut_export_modal"><i class="fa fa-download"></i> <?php echo $this->translate('Data export', 'adminaut') ?></button>
                     <?php } ?>
                 </div>
                 <!-- /.box-header -->
@@ -82,4 +85,7 @@
 
 <?php if ($this->isAllowed($this->moduleOption->getModuleId(), \Adminaut\Service\AccessControlService::FULL)) { ?>
     <?php echo $this->partial('adminaut/partial/deleteModal'); ?>
+<?php } ?>
+<?php if ($this->isExportable) { ?>
+<?php echo $this->partial('adminaut/partial/exportModal'); ?>
 <?php } ?>
