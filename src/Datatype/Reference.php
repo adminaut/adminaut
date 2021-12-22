@@ -96,12 +96,12 @@ class Reference extends Element implements InputProviderInterface
     {
         $this->getProxy()->setOptions($options);
 
-        if (isset($this->options['empty_option'])) {
-            $this->setEmptyOption($this->options['empty_option']);
+        if (isset($options['empty_option'])) {
+            $this->setEmptyOption($options['empty_option']);
         }
 
-        if (isset($this->options['disable_inarray_validator'])) {
-            $this->setDisableInArrayValidator($this->options['disable_inarray_validator']);
+        if (isset($options['disable_inarray_validator'])) {
+            $this->setDisableInArrayValidator($options['disable_inarray_validator']);
         }
 
         if (isset($options['use_hidden_element'])) {
