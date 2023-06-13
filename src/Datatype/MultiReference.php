@@ -5,7 +5,7 @@ namespace Adminaut\Datatype;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
-use DoctrineModule\Form\Element\Proxy;
+use Adminaut\Datatype\Reference\Proxy;
 use RuntimeException;
 use Zend\Form\Annotation\Options;
 use Zend\Form\Element;
