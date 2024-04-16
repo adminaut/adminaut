@@ -135,14 +135,7 @@ class ModuleController extends AdminautBaseController
         $datatableColumns = $this->getModuleManager()->getDatatableColumns($moduleId, $form);
         $isExportable = sizeof($this->getModuleManager()->getExportableColumns($moduleId, $form)) > 1;
 
-        if(!empty($criteria = $this->accessControlService->getModuleCriteria($moduleId))) {
-            $list = $this->getModuleManager()->findby($moduleOptions->getEntityClass(), $criteria);
-        } else {
-            $list = $this->getModuleManager()->findAll($moduleOptions->getEntityClass());
-        }
-
         return new ViewModel([
-            'list' => $list,
             'listedElements' => $listedElements,
             'hasPrimary' => ($form->getPrimaryField() !== 'id'),
             'moduleOption' => $moduleOptions,
